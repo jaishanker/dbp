@@ -1,0 +1,55 @@
+<% options = [["Search Member","Search Member"],["Banner 1","Banner 1"],["Banner 2","Banner 2"],
+  ["Banner 3","Banner 3"],["####Design Central","####Design Central"],["My Designs","My Designs"],
+  ["Upload Your Designs Now","Upload Your Designs Now"],["Top Rated Designers","Top Rated Designers"],
+  ["Comments on Desings","Comments on Desings"],["Recent Design Post","Recent Design Post"],["####Discussion Lounge","####Discussion Lounge"],
+  ["Active Forum Paticipants","Active Forum Paticipants"],["Popular Group","Popular Group"],["####Learning Center","####Learning Center"],
+  ["Request Tutorial","Request Tutorial"],["Active Contributors","Active Contributors"],["Top Rated Materials","Top Rated Materials"],
+  ["####Home Page","####Home Page"],["Belts","Belts"],["Activity Stream","Activity Stream"],["Recent Post","Recent Post"]
+]%>
+
+<div class="spacer01"></div>
+<h1>Index page Right Navigation</h1>
+<form id="form1" name="form1" method="post" action="">
+  <table border="0" cellpadding="5" cellspacing="0" id="mytable01">
+    <tr>
+      <th width="26%">List of Sections</th>
+      <th width="74%">Position No.</th>
+    </tr>
+    <tr>
+      <td><%=select("", "select2",options,{},{ :class => "select01", :onchange => ""}) %></td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><%=select("", "select2",options,{},{ :class => "select01", :onchange => ""}) %></td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td><%=select("", "select2",options,{},{ :class => "select01", :onchange => ""}) %></td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td><%=select("", "select2",options,{},{ :class => "select01", :onchange => ""}) %></td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td><%=select("", "select2",options,{},{ :class => "select01", :onchange => ""}) %></td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td><%=select("", "select2",options,{},{ :class => "select01", :onchange => ""}) %></td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <td><%=select("", "select2",options,{},{ :class => "select01", :onchange => ""}) %></td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <td><%=select("", "select2",options,{},{ :class => "select01", :onchange => ""}) %></td>
+      <td>8</td>
+    </tr>
+  </table>
+  <div class="buton">
+        <input type="submit" name="button" id="button" value="Save" class="grnbtn02" />
+        <input type="reset" name="button2" id="button2" value="Reset" class="grnbtn02" />
+    </div>
+</form>

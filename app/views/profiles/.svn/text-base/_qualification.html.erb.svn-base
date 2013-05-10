@@ -1,0 +1,64 @@
+<div id="qualification">	
+    <form action="" method="get"> 
+            <div class="proform">
+                    <div class="formrow">
+                    <p class="c3">Have you done a Diploma in Mechanical Engineering?:</p>
+                                    <p class="c4"><%=@profile.diploma%></p>
+                    </div>
+                    <div class="formrow">
+                    <p class="c3">Have you done a BE in Mechanical Engineering?:</p>
+                                    <p class="c4"><%=@profile.be%></p>
+                    </div>
+                    <div class="formrow">
+                    <p class="c3">Do you hold a Master’s degree in Mechanical Engineering?:</p>
+                                    <p class="c4"><%=@profile.masters%></p>
+                    </div>
+                    <div class="formrow">
+                    <p class="c3">Year of Graduation:</p>
+                                    <p class="c4"><%=@profile.graduation_year%></p>
+                </div>
+                <div class="frm_brd"></div>
+
+             <%@user_qualifications.each do|user_qualification|%>
+                    <div class="proform_l">
+                            <div class="formrow">
+                            <p class="c1">Qualification:</p>
+                            <p class="c2 view"><%=h user_qualification.qualification%></p>
+                        </div>
+                            <div class="formrow">
+                            <p class="c1">Specialization / Major:</p>
+                            <p class="c2 view"><%=h user_qualification.specification%></p>
+                        </div>
+                            <div class="formrow">
+                            <p class="c1">Year of Passing:</p>
+                            <p class="c2 view"><%=h user_qualification.year_of_passing%></p>
+                        </div>
+                        </div>                
+                <div class="frm_brd"></div>               
+             <%end%>
+           </div>
+
+            <div class="proform">
+            <div class="proform_l">
+                    <div class="formrow">
+                    <p class="c1">&nbsp;</p>
+                    <p class="c2">         
+                        <%if @user == current_user%>
+                            <input name="Save" onclick = "<%= remote_function :update => "ComContent1",:url =>{ :action => :edit_qualifications}, :before => "$('#spinner').show();",:complete => "$('#spinner').hide();" , :class => "grnbtn01"%>"  type="button" value="Edit" class="grnbtn01" />         
+                                  <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner",:style=>"display:none; width: 20px; margin-top: 0px;" ) %>
+                        <%end%> 
+                    </p>
+                </div>
+                </div>
+        </div>
+        </form>
+        <p class="spacer01"></p>    
+      </div>
+
+<script>
+  $(document).ready(function(){
+    $.metadata.setType("attr", "validate");
+  });
+
+</script>
+

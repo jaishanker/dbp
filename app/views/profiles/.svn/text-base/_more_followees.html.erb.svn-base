@@ -1,0 +1,6 @@
+  <%= render :partial => "following", :collection => @followees%>
+  <div id="more_followees_link">
+            <p class="spacer03"><span class="grnbtn02"><%= link_to_remote "Click for more",    :url => { :action => "get_more_followees", :offset => @offset, :user_id => @user.id }, :before => "$('#spinner_show').show()", :complete => "destroyDiv('more_followees_link')"%></span>
+                  <span> <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner_show",:style=>"display:none; width: 16px; margin-top: 0px;" ) %> </span>
+            </p> 
+  </div>

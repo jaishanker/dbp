@@ -1,0 +1,42 @@
+<div class='<%= cycle("cBoxblue","cBoxorange","cBoxgreen") %>'>
+    <div class="cBoxhead">
+        <p class="headtxt">
+            Active Members
+        </p>
+        <%= link_to "more +", experts_path() ,:class=>"more" %>
+    </div>
+    <div class="cBoxcontainer">
+        <!-- Three col start -->
+        <div class="snaprow">
+            <% unless @top_belts.length == 0 %>
+            <% @top_belts.each do |t| %>
+            <div class="c1">
+                <p class="snap clear">
+                    <%= link_to get_image(t,'user','thumb','nobrd'),my_page_path(:user_id => t.id) %>                
+                    <%#= get_image(t,'user','thumb') %>
+                </p>
+                    <%if t.profile.pic_present%>
+                                     <%class_name = get_class(t.expertise_points||0)%>
+                                    <%unless class_name == "belt_white"%>
+                                            <span class="<%= class_name%>"></span>   
+                                    <%end%>   
+                    <%end%>
+                <p class="mname">
+                    <%= link_to get_name(t.login,8),my_page_path(:user_id => t.id) %>
+                    <!--<a href="My_Page.html"><%#=truncate(t.first_name,8)%></a>-->
+                </p>
+            </div> 
+            <%end %>
+            <% else %>
+            No top belts user found<% end %>
+            <!--<div class="c1">
+            <p class="snap clear"><a href="Members_Page.html">
+            <img src="../images/snap03.gif" width="36" height="36" class="nobrd" /></a></p>
+            <p class="mname"><span class="nonmem"></span><a href="Members_Page.html">User08</a></p>
+            </div>-->
+        </div>
+        <!-- Three col end -->
+        <p class="spacer01">
+        </p>
+    </div>
+</div>

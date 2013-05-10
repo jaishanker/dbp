@@ -1,0 +1,67 @@
+<!-- Profile File Include --><%#= javascript_include_tag "Profile" %>
+<div class="clear">
+</div>
+
+<!-- Container Start -->
+    <div class="content">
+    	<!-- Left Col Start -->
+      <div class="c1">
+        <!-- Set Priority File Include -->
+         <%#= javascript_include_tag "SetPriority"%>
+        <div class="clear"></div>
+           <!-- Blue Box start -->
+            <div class="Blue4pxbox"><code>$(this).corner();</code>
+                <div class="whiteBoxContent">
+                <!-- Group Start -->
+                    <div class="pageheading">
+                      <p class="c1 head14">Network Comments</p>
+                      <p class="c2">
+                      <!--
+                      	<select name="" class="select01">
+                      	  <option value="">Sort Comments by</option>
+                        	<option value="">Photo</option>
+                        	<option value="">Name</option>
+                        	<option value="">Date</option>
+                        </select>
+                        -->
+                      </p>
+					</div>
+                <div class="brdBot01"></div>
+                <!-- Form Start -->
+                <!-- Three col comment start -->
+                <div class="group" id="freinds_comments">
+                     <%unless @friends_comments.empty?%>
+                          <%= render :partial => "friends_comment" , :collection => @friends_comments%> 
+                     <div id="more_frnd_comments_link">                    
+                         <p class="spacer03">
+                           <span class="grnbtn02">
+                               <%= link_to_remote "Show More",    :url => { :action => "get_more_friends_comments", :offset => @offset}, :before => "$('#spinner_show').show()", :complete => "destroyDiv('more_frnd_comments_link')"%>
+                           </span>
+                          <span> <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner_show",:style=>"display:none; width: 16px; margin-top: 0px;" ) %> </span>
+                        </p>
+                      </div>
+                    <%else%>
+                       No network comments
+                    <%end%>
+                </div>
+                <div class="clear"></div>
+                <!-- Three col comment end -->
+                <!-- Form End -->
+                <div class="clear"></div>
+                <p class="clear"></p>
+
+                <!-- Group End -->
+
+                </div>
+            </div>
+            <!-- Blue Box end -->
+			<div class="spacer"></div>
+        </div>
+    	<!-- Left Col End -->
+    	<!-- Right Col Start -->
+        <div class="c2 rightcol" id="rightcol_learning">
+           <%= render :partial => "/learnings/right_col" %>
+        </div>
+    	<!-- Right Col End -->
+    </div>
+    <!-- Container End -->

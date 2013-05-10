@@ -1,0 +1,71 @@
+<div class="clear">
+</div>
+<!-- Head Link Start -->
+<div class="headlink">
+    <div class="c1">
+        <div class="navLink01" style="width:473px;">
+            <ul>
+                <li class="first L2">
+                    <a href="/admin/designs" class="hvr01" id="L2">Design Central</a>
+                </li>
+                <li class="L1">
+                    <a href="/admin/discussions" class="hvr" id="L1">Discussion Lounge</a>
+                </li>
+                <li class="L3">
+                    <a href="/admin/learnings" class="hvr" id="L3">Learning Center</a>
+                </li>
+                <li class="L4">
+                    <a href="/admin/contests" class="hvr" id="L4">Contest</a>
+                </li>
+                <li class="L5 last">
+                    <a href="/admin/members" class="hvr01" id="L5">Members</a>
+                </li>
+				<!--
+                <li class="last L5">
+                    <a href="/admin/jobs" class="hvr01" id="L6">CSWP</a>
+                </li>-->
+            </ul>
+        </div>
+    </div>
+    <div class="c2">
+        <div class="iconlink">
+            <a href="/admin/groups">
+                <p class="groups brdleft GP1">
+                    groups
+                </p>
+            </a>
+            <a href="/admin/games">
+                <p class="games brdleft GP2">
+                    games
+                </p>
+            </a>
+            <a href="/admin/news">
+                <p class="news brdleft GP3">
+                    news
+                </p>
+            </a>
+			<!--
+            <a href="#">
+                <p class="rss brdleft GP4">
+                    RSS feed
+                </p>
+            </a>
+			-->
+            <a href="/blog/wp-admin">
+                <p class="blogs brdleft GP5">
+                    blogs
+                </p>
+            </a>
+            <a href="/admin/events">
+                <p class="events brdleft GP6">
+                    events
+                </p>
+            </a>
+            <a href="#">
+                <p class="sitemap GP7">
+                    sitemap
+                </p>
+            </a>
+        </div>
+    </div>
+</div>

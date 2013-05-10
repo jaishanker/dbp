@@ -1,0 +1,76 @@
+<!-- Four col comment start -->
+<div class="group">
+  <div class="fourCol">
+    <div class="c1">
+      <%= get_image(@group,'groups','small')%>
+    </div>
+    <div class="c2">
+      <p class="cc2">Name:</p>
+      <p class="cc2">Type:</p>
+      <p class="cc2">Members:</p>
+    </div>
+    <div class="c3">
+      <p class="cc3">
+            <%= @group.name%>
+      </p>
+      <p class="cc3"><%= !@group.type.nil? ? @group.type : "<br/>"%></p>
+      <p class="cc3">
+           <%if @group.users.size == 0%>
+                None
+           <%else%>
+                <%=link_to number_with_delimiter(@group.users.size).to_s+" members",members_group_path(@group),:class => "orange"%>             
+           <%end%>
+       </p>       
+    </div>
+    <div class="c4">
+      <%if logged_in?%>
+              <%if @group.owner_id == current_user.id%>
+                        <%= link_to "Edit", edit_group_path(@group), :class => "grnbtn" %>       
+                        <%= link_to "Delete", delete_group_path(@group), :class => "grnbtn",:confirm=>"Are you sure you want to delete this group?" %>                                  
+               <%else%>      
+                    <%unless @group.users.include?(current_user)%>
+                      <%= link_to "Join Group", join_group_path(@group), :class => "grnbtn"%>
+                    <%else%>
+                      <%= link_to "Unjoin", unjoin_group_path(@group), :class => "grnbtn",:confirm=>"Are you sure you want to unjoin this group?"%>
+                    <%end%>
+               <%end%>
+      <%else%>
+                <a href="javascript:void(0);" class="ask_login"> Login  </a>to join this group  
+      <%end%>
+      <%if logged_in? %>
+          <div>&nbsp;</div>
+        <p class="combox" style="float:right;text-align:right;">
+          <span class="abuse"></span>
+          <% @comment = "GroupReportAbuse" %>
+          <a id="href_2012748673" onclick="return hs.htmlExpand(this, { objectType:'ajax',outlineType:'rounded-white',width:450,height:325  },'Report Abuse' )" href="<%=report_abuse_path%>/?id=<%=@group.id%>&flag=group&type_id=<%=@comment%>">Report Abuse</a>
+        </p>
+        <!--<p class="">
+        <a href="javascript:void(0);"  onclick = "toggleAbuseDiv()" style="float:right;text-align:right;font-size:9px;">Report abuse</a>
+        </p>-->
+      <%end %>
+    </div>
+  </div>
+</div>
+<!-- Four col comment end -->
+<div class="clear brdDot01"></div>
+<!-- Three col comment start -->
+<div class="group"  id="activities">
+  <div class="threCol">
+    <div class="head">Recent Activities</div>
+  </div>
+  <%unless @group_activities.empty?%>
+    <%= render :partial => 'activity_streams/activity_stream', :collection => @group_activities%>
+    <div id="more_activities_link">
+      <p class="spacer03">
+        <span class="grnbtn02">
+          <%= link_to_remote "Show More",  :url =>  get_more_activities_groups_path(:group_id => @group.id, :offset => @offset)  , :before => "$('#spinner_show').show()", :complete => "destroyDiv('more_activities_link')"%>
+        </span>
+        <span> <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner_show",:style=>"display:none; width: 16px; margin-top: 0px;" ) %> </span>
+      </p>
+    </div>
+  <%else%>
+    Sorry, no recent activities
+  <%end%>
+</div>
+<div class="clear"></div>
+<!-- Three col comment end -->

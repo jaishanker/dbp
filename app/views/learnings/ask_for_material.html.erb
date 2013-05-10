@@ -1,0 +1,127 @@
+<div class="spacer01">
+</div>
+<!-- Set Priority File Include -->
+<%#= javascript_include_tag "SetPriority" %>
+<div class="clear">
+</div>
+<!-- Container Start -->
+<div class="content">
+    <!-- Blue Box start -->
+    <div class="Blue4pxbox">
+        <code>
+            $(this).corner();
+        </code>
+        <div class="profileForm">
+            <!-- Page Head start -->
+            <div class="pageheading">
+                <div class="c1 head14">
+                    Request Tutorials
+                </div>
+            </div>
+            <!-- Page Head end -->
+            <div class="brdBot01">
+            </div>
+            <%=@learning_request.pref_format = ""%>
+            <% form_for @learning_request,:url => {:action => :add_learning_request} do |f| %>
+            <!-- Form Start -->
+            <p class="spacer04">
+            <div class="uplooad">
+                <!--<div class="formrow">
+                    <p class="c1">
+                        Tutorial Title:
+                    </p>
+                    <div class="c2">
+                        <%= f.text_field :title,:class => "inputtxt04" %>
+                        <p class = "clear"/>
+                        <font color="red">
+                            <%= f.error_message_on :title %>
+                        </font>
+                    </div>
+                </div>-->
+                <div class="formrow">
+                    <p class="c1">
+                        Tutorial Topic:
+                    </p>
+                    <div class="c2">
+                        <%= f.text_field :topic,:class => "inputtxt04" %>
+                        <p class = "clear"/>
+                        <font color="red">
+                            <%= f.error_message_on :topic %>
+                        </font>
+                    </div>
+                </div>
+                <div class="formrow">
+                    <p class="c1">
+                        Preferred Format:
+                    </p>
+                    <p class="c2">
+                        <%= check_box_tag "learning_request[pref_format][]","Audio",@learning_request.pref_format.include?("Audio"),:class => "el01" %>
+                        <label class="lable01">
+                            Audio
+                        </label>
+                        <%= check_box_tag "learning_request[pref_format][]","Video",@learning_request.pref_format.include?("Video"),:class => "el01" %>
+                        <label class="lable01">
+                            Video
+                        </label>
+                        <%= check_box_tag "learning_request[pref_format][]","PDF",@learning_request.pref_format.include?("PDF"),:class => "el01" %>
+                        <label class="lable01">
+                            PDF
+                        </label>
+                        <%= check_box_tag "learning_request[pref_format][]","DOC",@learning_request.pref_format.include?("DOC"),:class => "el01" %>
+                        <label class="lable01">
+                            DOC
+                        </label>
+                        <%= check_box_tag "learning_request[pref_format][]","XLS",@learning_request.pref_format.include?("XLS"),:class => "el01" %>
+                        <label class="lable01">
+                            XLS
+                        </label>
+                        <%= check_box_tag "learning_request[pref_format][]","PPT",@learning_request.pref_format.include?("PPT"),:class => "el01" %>
+                        <label class="lable01">
+                            PPT
+                        </label>
+                        <%= check_box_tag "learning_request[pref_format][]","GIF/JPG",@learning_request.pref_format.include?("GIF/JPG"),:class => "el01" %>
+                        <label class="lable02">
+                            GIF/JPG
+                        </label>
+                    </p>
+                </div>
+                <div class="formrow">
+                    <p class="c1">
+                        Additional Comments:
+                    </p>
+                    <div class="c2">
+                        <%= f.text_area :description,:class => "txtarea01" %>
+                        <p class = "clear"/>
+                        <font color="red">
+                            <%= f.error_message_on :description %>
+                        </font>
+                    </div>
+                </div>
+                <div class="formrow">
+                  <p class="c1">
+                    How much is <%= @learning_request.captcha.task %> ? 
+                  </p>
+                  <div class="c2">
+                      <%= f.text_field :captcha_solution, :class=> "inputtxt01" %>
+                      <%= f.hidden_field :captcha_secret %>
+                        <p class = "clear"/>
+                       <font color="red">
+                            <%= f.error_message_on :captcha_solution %>
+                        </font>
+                    </div>
+                </div>
+                <div class="formrow">
+                    <p class="c1">
+                    </p>
+                    <p class="c2">
+                        <%= f.submit "Submit",:class => "grnbtn" %>
+                    </p>
+                </div>
+            </div>
+            <% end %>
+            <!-- Form End -->
+        </div>
+    </div>
+    <!-- Blue Box end -->
+</div>
+<!-- Container End -->

@@ -1,0 +1,4 @@
+
+class DesignRating < Rating
+
+end

@@ -1,0 +1,95 @@
+class CswpController < ApplicationController
+  
+  def index
+  end
+  
+  def hall_of_fame
+    p"=============== called hall_of_fame ============"
+#    if params[:certification] == "all"
+#      params[:certification] = nil
+#    end
+#    params[:certification] = "("+params[:certification]+")"
+#    if params[:certification]
+#     @hof = HallOfFame.find_by_cetification(params[:certification],params[:page] || 1)                
+#    else
+       @hof = HallOfFame.find_active(params[:page] || 1)    
+#    end
+    @no_of_pages = (@hof.total_entries.to_f / PER_PAGE).ceil    
+    session[:certification] = nil
+  end
+  
+  def cswp_test
+    
+  end
+  
+  def new
+    session[:hof_photo_error] = nil
+    @hof = HallOfFame.find_by_user_id(current_user.id)    
+    if @hof.nil?
+        @hof = HallOfFame.new
+     end
+  end
+  
+  def create
+    @hof = HallOfFame.new(params[:hall_of_fame])
+    picture = Picture.new
+    @hof.status = 0
+    @hof.user_id = current_user.id
+    if request.headers['HTTP_USER_AGENT'].to_s.include?('IE')
+      picture.version = "IE"
+    else
+      picture.version = "Other"
+    end
+      existing_hof = HallOfFame.find_by_user_id(current_user.id)
+      if existing_hof.nil?
+          picture.photo = params[:photo]
+          @hof.pictures << picture
+      else
+          picture = existing_hof.pictures.last.photo
+          @hof.pictures.build(:photo => picture )
+      end
+
+#    @hof.pictures.build(:photo => params[:photo])
+
+    @hof.save
+
+    if @hof.errors.empty?
+      session[:hof_photo_error] = nil
+      flash[:notice] = "Your cswp profile is added and sent to admin for approval"
+      redirect_to :action => :hall_of_fame
+    else
+
+      if  @hof.errors.on('pictures')
+        session[:hof_photo_error] = "Please upload valid image file"
+      else
+        session[:hof_photo_error] = nil
+      end
+
+      render :action => :new
+    end
+
+  end
+  
+  def filter
+      if params[:page].nil?
+        if params[:certification].nil?
+           session[:certification] = nil
+        end
+      else
+        if params[:certification].nil?
+          params[:certification] = session[:certification]
+        end
+      end    
+    if params[:certification].nil?
+       @hof = HallOfFame.find_active(params[:page] || 1)           
+        flash[:error] = "Please select certification"       
+    else
+         session[:certification] = params[:certification]
+         @hof = HallOfFame.find_by_cetification(params[:certification],params[:page] || 1)         
+    end      
+    @no_of_pages = (@hof.total_entries.to_f / PER_PAGE).ceil    
+    render :action => "hall_of_fame.html.erb"
+  end
+  
+  
+end

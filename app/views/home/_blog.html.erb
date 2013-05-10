@@ -1,0 +1,38 @@
+<div class="greenhead">
+    <p class="warrow">
+    </p>
+    <p class="fleft head">
+        Blog's
+    </p>
+  <!--
+    <p class="fleft">
+        <a href="#" class="white">Total Blog's : 624</a>
+    </p>
+	-->
+    <a href="/blog" class="more">more + </a>
+</div>
+<div class="flashnews" style = "height:0px;" >
+    <p class="Blog">
+    </p>
+    <p class="txt">
+        Socialize with the members, share views  and get maximum out of it. 
+    </p>
+</div>
+<!-- Two col comment start -->
+<% @blog.first(2).each do |b| %>
+<div class="twocol">
+    <div class="c3">
+        <p class="head01">
+            <a href = "<%=b['link']%>" ><%= b['title'] %></a>
+        </p>
+        <p>
+            <%= %>
+        </p>
+        <p class="clear padbot5">
+        </p>
+        <p class="txt">
+            <%= b['description'] %>
+        </p>
+    </div>
+</div>
+<% end %>

@@ -1,0 +1,435 @@
+# Methods added to this helper will be available to all templates in the application.
+module ApplicationHelper
+  
+  def get_image(element,type,size="small",class_name = "",style = "")
+    image = element.pictures.last
+    if image.nil?      
+      if type == 'user'
+            if size == 'thumb'
+                return image_tag("userphoto.gif",:width => 36,:height => 36,:alt => "",:class => class_name)
+            elsif size == 'thumb_large'
+                return image_tag("userphoto.gif",:width => 98,:height => 98,:alt => "",:class => class_name)
+            end   
+       elsif type == 'groups' or type == 'design' or type == 'learning' or type == 'news'
+            if size == 'small'
+              return image_tag("DBP-default-images/img_default_small.jpg",:width => "",:height => "",:alt => "",:class => class_name)
+            elsif size == 'thumb_large'
+              return image_tag("DBP-default-images/img_default_medium.jpg",:width => "",:height => "",:alt => "",:class => class_name)
+            else  size == 'medium'
+              return image_tag("DBP-default-images/img_default_medium.jpg",:width => "",:height => "",:alt => "",:class => class_name)
+            end
+        else
+            return image_tag("#{type}.png",:width => 36,:height => 36,:alt => "",:class => class_name)
+        end
+    else
+      image_tag(image.photo.url(size.intern),:class => class_name,:style => style)
+    end
+  end
+  
+  
+  def get_name(name, length = 25)
+    
+    truncate(name,:length => length)
+    
+  end
+  
+  def get_view_count(count)
+    case count
+      when nil
+      "0 views"
+      when 1
+      "1 view"
+    else
+      "#{count} views"
+    end
+  end
+  
+  def time_ago(original, options = {})    
+    time_to_go = time_ago_in_words(original).to_s+" ago"
+    return time_to_go
+    #    unless original + 2.minutes < Time.now
+    #      if ( Time.now - original) < 60.0
+    #        return "1 minute ago"
+    #      else
+    #        return "2 minute ago"
+    #      end
+    #    end
+    #    
+    #    
+    #    start_date = options.delete(:start_date) || Time.now
+    #    later = options.delete(:later) || false
+    #    round = options.delete(:round) || 6
+    #    
+    #    fr_date=start_date -1.day
+    #    
+    #    fr_date_sec= start_date -1.hour
+    #    fr_date_mon= start_date -29.day
+    #    if original  > fr_date_sec 
+    #      round = 5
+    #      
+    #    elsif  original >fr_date   
+    #      round = 4
+    #      
+    #    elsif original >fr_date_mon
+    #      round = 3
+    #    else
+    #      round = options.delete(:round) || 2
+    #    end
+    #    #    p 'i am here 00000000000000000000000000000001'
+    #    #    puts  round.inspect
+    #    
+    #    max_seconds = options.delete(:max_seconds) || 32556926
+    #    date_format = options.delete(:date_format) || :default
+    #    
+    #    # array of time period chunks
+    #    chunks = [
+    #    [60 * 60 * 24 * 365 , "year"],
+    #    
+    #    [60 * 60 * 24 * 30 , "month"],
+    #    [60 * 60 * 24 * 7, "week"],
+    #    [60 * 60 * 24 , "day"],
+    #    [60 * 60 , "hour"],
+    #    [60 , "minute"],
+    #    [1 , "second"]
+    #    ]
+    #    
+    #    if later
+    #      since = original.to_i-start_date.to_i
+    #    else
+    #      since = start_date.to_i - original.to_i
+    #    end
+    #    time = []
+    #    
+    #    if since < max_seconds
+    #      # Loop trough all the chunks
+    #      totaltime = 0
+    #      
+    #      for chunk in chunks[0..round]
+    #        seconds    = chunk[0]
+    #        name       = chunk[1]
+    #        
+    #        count = ((since - totaltime) / seconds).floor
+    #        
+    #        time << pluralize(count, name) unless count == 0
+    #        
+    #        totaltime += count * seconds
+    #      end
+    #      
+    #      if time.empty?
+    #        "less than a #{chunks[round-1][1]} ago"
+    #      else
+    #        if time.length == 2
+    #          time.first.to_s + " ago"
+    #        else
+    #        "#{time.join(',')} #{later ? 'later' : 'ago'}"
+    #        end
+    #      end
+    #    else
+    #      original.to_formatted_s(date_format)
+    #    end
+  end
+  
+  # gets total posts count for topic
+  def get_post_in_topic(topic)
+    count = 0
+    topic.posts.each do |t|
+      count = count + 1
+    end
+    return count
+  end
+  
+  
+  # gets total posts count for sub category
+  def get_post_count_sc(sc)
+    count = 0
+    sc.topics.each do |t|
+      count += t.posts.count
+    end
+    return count
+  end
+  
+  
+  def get_view_count_master(item)
+    count = 0
+    item.each do |t|
+      count += t.view_count.nil? ? 0 : t.view_count
+    end
+    return count
+  end
+  
+  def get_ratings_count(item)
+    count = 0
+    item.each do |t|
+      count += 1 if t.rating.to_i > 0
+    end
+    return count 
+  end
+  
+  def get_favorites_count(item)
+    count = 0
+    item.each do |t|
+      count += t.favorites.length
+    end
+    return count 
+  end
+  
+  
+  # gets total view count for sub category
+  def get_view_count_sc(sc)
+    count = 0
+    sc.topics.each do |t|
+      count += t.view_count.nil? ? 0 : t.view_count
+    end
+    return count
+  end
+  
+  def get_member_count_sc(sc)
+    count = []
+    sc.topics.each do |t|
+      t.posts.each do |p|
+        count << p.user_id
+      end
+    end
+    return count.uniq.length
+  end
+  
+  def get_post_user_count(posts)
+    u = []
+    
+    posts.each do |p|
+      u << p.user_id
+    end
+    return u.uniq.length
+    
+  end
+  
+  def get_id(controller)
+    id = ""
+    case controller
+      when "designs"
+      id = "P2"
+      when "discussions"
+      id = "P1"
+      when "learnings"
+      id = "P3"
+      when "contest"
+      id = "P4"
+      when "members"
+      id = "P5"
+      when "cswp"
+      id = "P5"
+    end
+  end
+  
+  
+  def get_format(assets)
+    format = assets.collect(&:data_content_type).uniq
+    fmt = ""
+    format.each do |f|
+      fmt << get_fmt(f)  << ", "
+    end
+    return fmt.chop.chop
+  end
+  
+  def get_single_format(assets)
+    format = assets.data_content_type
+    fmt = ""
+    fmt << get_fmt(format)
+    return fmt
+  end
+  
+  def get_size(assets)
+    format = assets.collect(&:data_file_size)
+    size = 0.0
+    format.each do |f|
+      size += f.to_f unless f.nil?
+    end
+    return  sprintf("%.3f", size / (1024.0 * 1024.0))
+  end
+  
+  def get_fmt(f)
+    format =  f
+    op = ""
+    case format
+      when "application/vnd.ms-excel"
+      op = "XLS"
+      when "application/zip"
+      op = "ZIP"
+      when "application/pdf"
+      op = "PDF"
+      when "application/msword"
+      op = "DOC"
+    else
+      op = "Other"
+    end
+    
+    #    if format.include?("image")
+    #      op = "IMG"
+    #
+    #    end
+    return op
+    
+  end
+  
+  def get_my_page_link(link_name, user_id, class_name="")
+    return link_to link_name,my_page_path(:user_id => user_id), :class => class_name
+  end
+  
+  def check_access(user, obj)
+    obj_member = obj+"_member"
+    obj_following = obj+"_following"
+    privacy_setting = PrivacySetting.find_by_user_id(user.id)
+    if privacy_setting
+      select_query = "select #{obj_member} as objm from privacy_settings where id = #{privacy_setting.id}"
+      member_access = PrivacySetting.find_by_sql(select_query).first.objm
+      if member_access.to_s == "1" or user == current_user
+        return true
+        #      elsif @user.following?(current_user)
+        #        select_query = "select #{obj_following} as objf from privacy_settings where id = #{privacy_setting.id}"
+        #        following_access = PrivacySetting.find_by_sql(select_query).first.objf
+        #        if following_access.to_s == "1"
+        #          return true
+        #        else
+        #          return false
+        #        end
+      else
+        return false
+      end
+    else
+      return false
+    end
+    
+  end
+  
+  
+  def get_user_status(status)
+    case status.to_i
+      when 0,1,2
+      "Active"
+      when 10
+      "Deactive"
+    end
+    
+  end
+  
+  def get_user_belt(u)
+    unless u.points.nil?
+      if u.points > BLACK_BELT_POINTS
+        
+        return image_tag("cap_black.gif",:alt => "Black Belt")
+        
+      elsif u.points > ORANGE_BELT_POINTS
+        return image_tag("cap_orange.gif",:alt => "Orange Belt")
+      else
+        return image_tag("cap_red.gif",:alt => "Green Belt")
+      end
+    else
+      return image_tag("cap_red.gif",:alt => "Green Belt")
+    end
+    
+  end
+  
+  def get_right_panel_banner(banner,type,position = 'Top')
+    html = ""
+    banner.each do |b|
+      if b.banner_page.include?(type) and b.pictures.last != nil and b.banner_position == position
+        html << "<a href = \"#{b.banner_link}\" target = \"_blank\" >"
+        html << "<img  class = \"nobrd\" src = \"#{b.pictures.last.photo.url}\" alt = \"#{b.name}\" /></a>" << "<p class=\"spacer01\"></p>"
+      end
+    end
+    return html
+  end
+  
+  def get_class(expertise_points)    
+     if expertise_points.to_i >= 4000
+      class_name =  'belt_black'
+    elsif expertise_points.to_i >= 2000 and expertise_points.to_i < 4000
+      class_name =  'belt_green'
+    elsif expertise_points.to_i >= 1000 and expertise_points.to_i < 2000
+      class_name =  'belt_blue'    
+    elsif expertise_points.to_i >= 500 and expertise_points.to_i < 1000
+      class_name =  'belt_yellow'
+    elsif expertise_points.to_i < 500 
+      class_name =  'belt_white'                
+    end
+    class_name
+  end
+  
+  def get_belt_class(expertise_points)    
+     if expertise_points.to_i >= 4000
+      class_name =  'belt_04'
+    elsif expertise_points.to_i >= 2000 and expertise_points.to_i < 4000
+      class_name =  'belt_02'
+    elsif expertise_points.to_i >= 1000 and expertise_points.to_i < 2000
+      class_name =  'belt_01'    
+    elsif expertise_points.to_i >= 500 and expertise_points.to_i < 1000
+      class_name =  'belt_03'
+    elsif expertise_points.to_i < 500 
+      class_name =  ''                
+    end
+    class_name
+  end  
+  
+  
+  def get_discussion_post(body)
+      body = body.strip.to_s.gsub("&nbsp;","")
+      body =body.gsub( /<style\b[^>]*>(.*?)<\/style>/i, '' )
+       if body.starts_with?('<p><a href="http://www.youtube.com/watch') or body.starts_with?('<p>http://www.youtube.com/watch')
+          return  get_youtube(body)
+        else
+          return body
+        end
+  end
+  
+  def get_youtube(body) 
+    id    =  body.to_s.split('?v=').last.to_s.delete("</p>").to_s.split("\"").first
+    url = "http://www.youtube.com/v/#{id}&hl=en&fs=1"
+    video = "<object width='445' height='364'><param name='movie' value=#{url}></param><param name='allowFullScreen' value='true'></param><param name='allowscriptaccess' value='always'></param><embed src=#{url} type='application/x-shockwave-flash' allowscriptaccess='always' allowfullscreen='true' width='445' height='364'></embed></object>"   
+    return video    
+  end
+  
+  def get_expertise_level(belt_class)  
+    if belt_class == "belt_black"
+      expertise_level = "Expert"
+    elsif belt_class == "belt_green"
+      expertise_level = "Proficient"
+    elsif belt_class == "belt_blue"
+      expertise_level = "Learner"
+    elsif belt_class == "belt_yellow"
+      expertise_level = "Beginner"
+    else
+      expertise_level = ""
+    end
+    expertise_level
+  end
+  
+  
+  def get_user_name(user)
+    name = ""
+    name << user.first_name unless user.first_name.nil?
+    name <<  " " + user.last_name unless user.last_name.nil? 
+  end
+  
+  def get_title
+    title = ""
+    section = controller.controller_name.singularize.capitalize
+    section = "CSWP" if  controller.controller_name == "cswp"
+    section = "Home" if  controller.controller_name == "home"
+    unless @title.nil?
+      title << @title + " - " + section + " - SolidWorks India Community"
+    else
+      if controller.controller_name == "cswp" or controller.controller_name == "home"
+        title = section +  " -- SolidWorks India Community"
+      else
+        title = section.pluralize +  " -- SolidWorks India Community"
+      end
+    end
+  end
+  
+  def get_user_type(belt_class)
+    a= belt_class.split("_")
+    user_type = a[1].to_s+" "+a[0].to_s
+    user_type
+  end
+  
+end

@@ -1,0 +1,160 @@
+<!-- Container Start -->
+<div class="content">
+  <%= render :partial => "top_nav" %>
+  <h1>Events - Generic Report</h1>
+  <form id="form1" name="form1" method="post" action="">
+    <table border="0" cellpadding="5" cellspacing="0" id="mytable01">
+      <tr>
+        <td colspan="2">
+          <ul class="admtot">
+            <li>
+              Total Events:&nbsp;<%= @event_count %>
+            </li>
+            <li>
+              Total Participants:&nbsp;<%= @participant_count %>
+            </li>
+            <li>
+              Total Views:&nbsp;<%= @views_count %>
+            </li>
+          </ul>
+        </td>
+      </tr>
+      <!--
+      <tr>
+      <td width="6%">
+      Select
+      </td>
+      <td width="94%">
+      <select name="select2" id="select2" class="select01">
+      <option>Period of</option>
+      <option value="Today">Today</option>
+      <option value="Last 1 Day">Last 1 Day</option>
+      <option value="Last 2 Days">Last 2 Days</option>
+      <option value="Last 3 Days">Last 3 Days</option>
+      <option value="Last 4 Days">Last 4 Days</option>
+      <option value="Last 5 Days">Last 5 Days</option>
+      <option value="Last 6 Days">Last 6 Days</option>
+      <option value="1 Week">1 Week</option>
+      <option value="2 Weeks">2 Weeks</option>
+      <option value="3 Weeks">3 Weeks</option>
+      <option value="4 Weeks">4 Weeks</option>
+      <option value="1 Month">1 Month</option>
+      <option value="2 Months">2 Months</option>
+      <option value="3 Months">3 Months</option>
+      <option value="6 Months">6 Months</option>
+      <option value="9 Months">9 Months</option>
+      <option value="1 Year">1 Year</option>
+      </select>
+      Data for total no. of
+      <select name="select" id="select" class="select01">
+      <option value="Rating">Rating</option>
+      <option value="Views">Views</option>
+      <option value="Comments">Comments</option>
+      <option value="Favorites">Favorites</option>
+      <option value="Uploads">Uploads</option>
+      </select>
+      on Learning Center
+      </td>
+      </tr>
+      -->
+    </table>
+  </form>
+  <br/>
+  <p style="float:right;">
+    <%= link_to "Download Report",:controller => "admin/vars",:action => "download_all" %>
+  </p>
+  <br/>
+  <div class="clear">&nbsp;</div>
+  <div class="demo_jui">
+    <table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
+      <thead>
+        <tr class="dataTable">
+          <th width="20%">
+            Event Topic Name
+          </th>
+          <th width="20%">
+            Type
+          </th>
+          <th width="20%">
+            Product
+          </th>
+          <th width="20%">
+            Organizer
+          </th>
+          <th width="20%">
+            City (State)
+          </th>
+          <th width="8%">
+            Date
+          </th>
+          <th width="8%">
+            Time
+          </th>
+          <th width="8%">
+            Participants
+          </th>
+		   <th>
+            Edit
+          </th>
+          <th width="22%">
+            Status
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <% unless @event.length == 0 %>
+          <% @event.each do |l| %>
+            <tr class="dataTable">
+              <td>
+                <%= link_to  get_name(l.topic) ,:controller=>"admin/events", :action => :report,:id => l.id %>
+                <!--<a href="#"><%= get_name(l.topic) %></a>-->
+              </td>
+              <td>
+                <a href="#"><%= get_name(l.eventtype) %></a>
+              </td>
+              <td>
+                <a href="#"><%= get_name(l.product) %></a>
+              </td>
+              <td>
+                <a href="#"><%= get_name(l.organizer) %></a>
+              </td>
+              <td>
+                <a href="#"><%= get_name(l.city) + " ("  + get_name(l.state) + ")" %></a>
+              </td>
+              <td>
+                <%= l.date.strftime("%d %b %Y") %>
+              </td>
+              <td>
+                <%= l.start_time.strftime("%I:%M %p")  + " - " + l.end_time.strftime("%I:%M %p") %>
+              </td>
+              <td align="center">
+                (<%= l.participants.length %>)&nbsp;<%= link_to "Download",:controller => "/admin/events",:action => "download",:id => l.id if l.participants.length >= 1 %>
+              </td>
+			  <td>
+			  	<%= link_to "Edit",:controller => "/admin/vars",:action => "edit",:id => l.id %>
+			  </td>	
+              <td align="center">
+                <label>
+                  <%= radio_button_tag "eventCentral#{l.id}","enabled",l.status.to_i == 1,:onclick => remote_function(:url => {:controller => "admin/vars",:action => "update_status",:id => l.id,:status => 1}) %>Active
+                </label>
+                <label>
+                  <%= radio_button_tag "eventCentral#{l.id}","disabled",l.status.to_i == 0,:onclick => remote_function(:url => {:controller => "admin/vars",:action => "update_status",:id => l.id,:status => 0}) %>Deactive
+                </label>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div id="chartdiv" align="center">
+  </div>
+  <script type="text/javascript">
+    /*
+       var chart = new FusionCharts("Charts/FCF_MSColumn3D.swf", "ChartId", "800", "450");
+       chart.setDataURL("Data/EventCenterReport.xml");
+       chart.render("chartdiv");
+     */
+  </script>
+</div>
+<!-- Container End -->

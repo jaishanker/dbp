@@ -1,0 +1,71 @@
+/* Caution! Ensure accessibility in print and other media types... */
+@media projection, screen { /* Use class for showing/hiding tab content, so that visibility can be better controlled in different media types... */
+    .tabs-hide {
+        display: none;
+    }
+}
+
+/* Hide useless elements in print layouts... */
+@media print {
+    .tabs-nav {
+        display: none;
+    }
+}
+
+/* Skin */
+.tabs-nav {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 0px;
+}
+.tabs-nav:after { /* clearing without presentational markup, IE gets extra treatment */
+    display: block;
+    clear: both;
+    content: " ";
+}
+
+.tabs-nav ul {
+    float: left;
+    margin: 0 0 0 1px;
+	float: left;
+}
+
+
+.tabs-nav li {
+    float: left;
+    margin: 0 0 0 1px;
+	background-color:#e3e3e3;
+	padding: 5px 10px;
+	font-family: Verdana, Geneva, sans-serif;
+}
+
+.tabs-nav li a {
+    color: #000;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 1.2;
+    text-align: center;
+    text-decoration: none;
+}
+
+.tabs-nav li.tabs-selected{
+    color: #FFF !important;
+	background:#575757 url(../images/blackarrow.gif) no-repeat center 19px;
+	padding-bottom: 10px !important;
+}
+
+.tabs-nav li.tabs-selected a:hover {color: #FFF !important;}
+
+.tabs-nav .tabs-selected a {color:#FFF; padding-bottom:5px;}
+
+.tabs-container {
+    border-top: 0px solid #97a5b0;
+    padding: 1em 8px;
+    background: #fff; /* declare background color for container to avoid distorted fonts in IE while fading */
+	float:none;
+}
+
+.tabs-loading em {
+    padding: 0 0 0 20px;
+    background: url(../images/loading.gif) no-repeat 0 50%;
+}

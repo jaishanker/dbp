@@ -1,0 +1,101 @@
+<!-- Container Start -->
+<div class="content">
+    <%= render :partial => "top_nav" %>
+    <h1>Games - Generic Report</h1>
+    <form id="form1" name="form1" method="post" action="">
+        <table border="0" cellpadding="5" cellspacing="0" id="mytable01">
+            <tr>
+                <td colspan="2">
+                    <ul class="admtot">
+                        <li>
+                            Total Games:&nbsp;<%= @game_count %>
+                        </li>
+                        <li>
+                            Total Favorited:&nbsp;<%= @favorites_count %>
+                        </li>
+                        <li>
+                            Total Views:&nbsp;<%= @views_count %>
+                        </li>
+                        <li>
+                            Total Rated:&nbsp;<%= @ratings_count %>
+                        </li>
+                        <li>
+                            Total Comments:&nbsp;<%= @comments_count %>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <br/>
+    <p style="float:right;">
+        <%= link_to "Download Report",:controller => "admin/games",:action => "download" %>
+    </p>
+    <br/>
+    <div class="clear">
+        &nbsp;
+    </div>
+    <div class="demo_jui">
+        <table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
+            <thead>
+                <tr class="dataTable">
+                    <th width="20%">
+                        Game Title
+                    </th>
+                    <th width="10%">
+                        Views
+                    </th>
+                    <th width="10%">
+                        Comments
+                    </th>
+                    <th width="10%">
+                        Favorites
+                    </th>
+                    <th width="15%">
+                        Status
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <% unless @game.length == 0 %>
+                <% @game.each do |l| %>
+                <tr class="dataTable">
+                    <td>
+                       <a target = "_blank" href="/games/game/<%= l.permalink %>"><%=get_name(l.title,50)%></a>&nbsp;|&nbsp;
+						 <%= link_to  "View Stats"  ,:controller=>"admin/games", :action => :report,:id => l.id %>&nbsp;|&nbsp;
+                       <%= link_to  "Edit"  ,:controller=>"admin/games", :action => :edit,:permalink => l.permalink %>
+                    </td>
+                    <td align="center">
+                        <%= l.view_count.nil? ? 0 : l.view_count %>
+                    </td>
+                    <td align="center">
+                        <%= l.comments.length %>
+                    </td>
+                    <td align="center">
+                        <%= l.favorites.length %>
+                    </td>
+                    <td align="center">
+                        <label>
+                            <%= radio_button_tag "gameCentral#{l.id}","enabled",l.status.to_i == 1,:onclick => remote_function(:url => {:controller => "admin/games",:action => "update_status",:id => l.id,:status => 1}) %>Active
+                        </label>
+                        <label>
+                            <%= radio_button_tag "gameCentral#{l.id}","disabled",l.status.to_i == 0,:onclick => remote_function(:url => {:controller => "admin/games",:action => "update_status",:id => l.id,:status => 0}) %>Deactive
+                        </label>
+                    </td>
+                </tr>
+                <% end %>
+                <% end %>
+            </tbody>
+        </table>
+    </div>
+    <div id="chartdiv" align="center">
+    </div>
+    <script type="text/javascript">
+        /*
+         var chart = new FusionCharts("Charts/FCF_MSColumn3D.swf", "ChartId", "800", "450");
+         chart.setDataURL("Data/gameCenterReport.xml");
+         chart.render("chartdiv");
+         */
+    </script>
+</div>
+<!-- Container End -->

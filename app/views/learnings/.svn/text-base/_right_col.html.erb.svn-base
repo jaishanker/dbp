@@ -1,0 +1,136 @@
+<%= get_right_panel_banner(@right_banner,'Learning') %>
+<%=render :partial => "/home/members_search_form" %>
+<!--
+<% if logged_in? %>
+<div class="greenheadrightcol"><a href="/learnings/ask_for_material">Request Tutorials</a></div>
+<% end %>
+<p class="spacer01"></p>
+--><!-- Active Contributor Div start -->
+<div class ="<%= cycle('cBoxblue','cBoxorange','cBoxgreen') %>">
+    <div class="cBoxhead">
+        <p class="headtxt">
+            Most Active Contributors
+        </p>
+        <a href="/learnings/active_contributors" class="more">more + </a>
+    </div>
+    <div class="cBoxcontainer">
+    	<div class="activemem">
+    		<div class="snaprow">
+       
+	    <!-- Three col start --><% cache 'active_contributor_cache' do %>
+        <%unless @active_contributor.length == 0 %>
+        <% @active_contributor.each do |t| %>
+        <%user = User.find(t.user_id) %>
+        <div class="c1">
+            <p class="snap clear">
+                    <%= link_to get_image(user,'user','thumb','nobrd'),my_page_path(:user_id => user.id) %>
+            </p>
+            <p class="mname">
+            <%if user.profile.pic_present%>
+                     <%class_name = get_class(user.expertise_points||0)%>
+                      <%unless class_name == "belt_white"%>
+                            <span class="<%= class_name%>"></span>   
+                      <%end%>
+            <%end%>
+                    <%= link_to get_name(user.login.capitalize,8),my_page_path(:user_id => user.id) %>
+            </p>
+            </a>
+
+    </div>
+    <%end %>
+    <%end %>
+	<%end %>
+    <p class="spacer01">
+    </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Three col end --><!-- Active Contributor Div end -->
+<div class="clear">
+</div>
+<!-- Hot Tutorials Div start -->
+<div class ="<%= cycle('cBoxblue','cBoxorange','cBoxgreen') %>">
+    <div class="cBoxhead">
+        <p class="headtxt">
+            Top Rated Tutorials
+        </p>
+        <%= link_to "more +",learnings_path(:hot_material=>true),:class=>"more" %>
+    </div>
+    <div class="cBoxcontainer">
+        <ul class="recendesignpost">
+            <%unless @top_rated_materials.size == 0 %>
+            <%@top_rated_materials.first(5).each do |l| %>
+            <li>
+                <div class="fleft" id="star">
+                    <%= link_to get_name(l.title ,50),:controller=>:learnings, :action => :learning,:permalink => l.permalink %>
+                    <%= get_view_count(l.view_count) %>|<%= l.comments.length %>comments |<%= l.favoriting_users.size %>Favs
+                </div>
+                <div id="rated_right<%=l.id%>">
+                    <% @learning = l %>
+                    <%=render :partial=>"/learnings/star_rate" ,:locals => {:d => @learning },:inline=>true %>
+                </div>
+            </li>
+            <p class="clear">
+            </p>
+            <%end %>
+            <%else %>
+            No top rated materials found.<%end %>
+        </ul>
+        <p class="spacer01">
+        </p>
+    </div>
+</div>
+<!-- Hot Tutorials Div end -->
+<div class="clear">
+</div>
+<!-- Comments of Friends Div start -->
+<%if logged_in? %>
+      <div class ="<%= cycle('cBoxblue','cBoxorange','cBoxgreen') %>">
+          <div class="cBoxhead">
+              <p class="headtxt">
+                  Network Comments
+              </p>
+              <a href="/learnings/comment_of_friends" class="more">more + </a>
+          </div>
+          <div class="cBoxcontainer">
+              <!-- Two col start -->
+              <% cache 'comment_of_friends_cache' do %>
+              <div class="twcol">
+                  <% unless @friends_comments.length == 0 %>
+                  <% @friends_comments.each do |c| %>
+                  <%#= render :partial => "friends_comment",:collection =>  @friends_comments %>
+                  <%= render :partial => "right_col_comment",:locals => {:c=> c},:inline=>true %>
+                  <%end %>
+                  <% else %>
+                       No network comments
+                  <% end %>
+              </div>
+              <%end %>
+              <!-- Two col end -->
+              <p class="spacer01">
+              </p>
+          </div>
+      </div>
+<%end %>
+<!-- Comments of Friends Div end -->
+<div class="clear">
+</div>
+<%= get_right_panel_banner(@right_banner,'Learning','Bottom') %>
+<script type="text/JavaScript">
+    $(document).ready(function() {
+    $('input[type="text"]').focus(function() {
+    if (this.value == this.defaultValue){
+    this.value = '';
+    }
+    if(this.value != this.defaultValue){
+    this.select();
+    }
+    });
+    $('input[type="text"]').blur(function() {
+    if ($.trim(this.value) == ''){
+    this.value = (this.defaultValue ? this.defaultValue : '');
+    }
+    });
+    });
+</script>

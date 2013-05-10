@@ -1,0 +1,158 @@
+<!-- Profile File Include --><%#= javascript_include_tag "Profile" %>
+<div class="clear">
+</div>
+<!-- Container Start -->
+<div class="content">
+    <!-- Left Col Start -->
+    <div class="c1">
+        <!-- Blue Box start -->
+        <div class="Blue4pxbox">
+            <code>
+                $(this).corner();
+            </code>
+            <div class="whiteBoxContent">
+                <!-- News Start -->
+                <div class="pageheading">
+                    <div class="c1 head14">
+                        <%if @search_text %>
+                        Search results for "<%=@search_text %>"<%else %>
+                        News<%end %>
+                    </div>
+                    <div class="c5">
+                        <%@title_search="Search News" %>
+                        <%@type="news" %>
+                        <%=render :partial=>"designs/search" %>
+                    </div>
+                </div>
+                <p class="clear brdBot01">
+                </p>
+                <div class="pageheading">
+                    <p class="c1">
+                        <%=select("news1","filter", NEWS_FILTER_OPTIONS,{:prompt => "Sort by", :selected => params[:filter_by]},{:class => "selectcom", :onchange => "window.location = '/news?filter_by=' + this.value"}) %>
+                        <!--                      	<select name="" class="selectcom">
+                        <option value="All Group Types">Sort By</option>
+                        <option value="Group One">Date</option>
+                        <option value="Group Two">Heading</option>
+                        </select> -->
+                    </p>
+                    <p class="c3">
+                        <span id="news_pagination" class="pagination01"></span>
+                    </p>
+                </div>
+                <p class="clear brdBot01">
+                </p>
+                <!-- Two col news start --><%unless @news.empty? %>
+                <%@news.each do |n| %>
+                <%=render :partial=>"news" ,:locals=>{:n=>n},:inline=>true %>
+                <%end %>
+                <%else %>
+                No news found.<%end %>
+                <!-- Two col news end -->
+                <div class="pageheading">
+                    <p class="c1 total" id="disign_filter">
+                        <p class="c3">
+                            <span id="news_pagination2" class="pagination01"></span>
+                        </p>
+                    </p>
+                </div>
+                <p class="clear brdBot01">
+                </p>
+                <p class="spacer01">
+                </p>
+                <p class="clear">
+                </p>
+                <!-- News End -->
+            </div>
+        </div>
+        <!-- Blue Box end -->
+        <div class="spacer">
+        </div>
+        <!-- rss feed news -->
+        <% @news_rss.each do |f| %>
+        <div class="Blue4pxbox">
+            <code>
+                $(this).corner();
+            </code>
+            <div class="whiteBoxContent">
+                <!-- News Start -->
+                <div class="pageheading">
+                    <div class="c1 head14">
+                        <%= get_name(f.title,50) %>
+                    </div>
+                </div>
+                <p class="clear brdBot01">
+                </p>
+                <div id = "news_rss_<%= f.id %>">
+                    <p style="text-align:center;padding:10px;">
+                        <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner",:style=>"margin-top: 0px;" ) %>&nbsp;&nbsp;Loading...
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="spacer">
+        </div>
+        <% end %>
+    </div>
+	<script>
+		
+	<%= remote_function(:url => {:action => :update_news_feeds})%>
+	
+	
+	</script>	
+    <!-- Left Col End -->
+    <!-- Right Col Start -->
+    <div class="c2 rightcol">
+        <%=render :partial=>"right_col" %>
+    </div>
+    <!-- Right Col End -->
+</div>
+<!-- Container End -->
+<div class="clear">
+</div>
+<%if @no_of_pages >= 2 %>
+<script type="text/javascript" defer="defer">
+	
+                                    $(document).ready(function(){
+                                    $(function(){
+                                      $("#news_pagination").paginate({
+                                        <%if @search_text%>
+                                                href : '/news/index?search=<%=@search_text%>&page=',
+                                        <%elsif !params[:filter_by].blank?%>
+                                                href : '/news/index?filter_by=<%=params[:filter_by]%>&page=',
+                                        <%else%>
+                                                href : '/news/index?page=',
+                                        <%end%>
+                                        count: <%=@no_of_pages%>,
+                                        start: <%=params[:page] || 1%>,
+                                        display: 5,
+                                        border: false,
+                                        text_color: '',
+                                        background_color: '',
+                                        text_hover_color: '',
+                                        background_hover_color: ''
+                                      });
+                                    });
+                                    $(function(){
+                                      $("#news_pagination2").paginate({
+                                        <%if @search_text%>
+                                                href : '/news/index?search=<%=@search_text%>&page=',
+                                        <%elsif !params[:filter_by].blank?%>
+                                                href : '/news/index?filter_by=<%=params[:filter_by]%>&page=',
+                                        <%else%>
+                                                href : '/news/index?page=',
+                                        <%end%>
+                                        count: <%=@no_of_pages%>,
+                                        start: <%=params[:page] || 1%>,
+                                        display: 5,
+                                        border: false,
+                                        text_color: '',
+                                        background_color: '',
+                                        text_hover_color: '',
+                                        background_hover_color: ''
+                                      });
+                                    });
+                                     });
+    								 
+                                  
+</script>
+<%end %>

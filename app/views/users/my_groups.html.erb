@@ -1,0 +1,86 @@
+    <!-- Container Start -->
+    <div class="content">
+    	<!-- Left Col Start -->
+      <div class="c1">
+            <!-- Blue Box start -->
+            <div class="Blue4pxbox"><code>$(this).corner();</code>
+                <div class="whiteBoxContent">
+                <!-- Group Start -->
+                    <div class="pageheading">
+                      <p class="c1 head14">
+                         <%if logged_in? and  current_user.id == @user.id%>
+                          My Groups
+                          <%= link_to "Create Group", new_group_path(:my_groups => true), :class => "archive"%>
+                          <%else%>
+                           <%= @user.login.capitalize%>'s Groups
+                        <%end%>
+                      </p>
+                      <p class="c3"><span id="pagination" class="pagination01"></span></p>
+                      <!--<p class="c2 total">
+                      	<select name="">
+                        	<option value="All Group Types">All Group Types</option>
+                        	<option value="Group One">Group One</option>
+                        	<option value="Group Two">Group Two</option>
+                        </select>
+                      </p>-->
+                    </div>
+                    <p class="clear brdBot01"></p>
+                 <% if !@groups.empty?%>
+                 <%for group in @groups%>
+                      <!-- Four col comment start -->
+                      <div class="group">
+                                      <div class="fourCol">
+                              <div class="c1">
+                                 <%= get_image(group,'groups','small')%>
+                              </div>
+                              <div class="c2">
+                                <p class="cc2">Name:</p>
+                                <p class="cc2">Type:</p>
+                                <p class="cc2">Members:</p>
+                          </div>
+                              <div class="c3">
+                            <p class="cc3 head"><%=link_to group.name, permalink_url(group.permalink)%></p>
+                            <p class="cc3"><%=group.type%></p>
+                              <p class="cc3"><%= number_with_delimiter(group.users.size)%> members</p>
+                          </div>
+                              <div class="c4">
+                                <%if logged_in? and current_user.id == group.owner_id%>
+                                  <%= link_to "Edit Group", edit_group_path(group), :class => "grnbtn"%>
+                                <%end%>
+                              </div>
+                      </div>
+                      </div>
+                      <!-- Four col comment end -->                   
+                 <%end%>
+                <%else%>
+                      <div class="brd">
+                        <%if @user == current_user%>
+                               You haven't
+                        <%else%>
+                                <%=link_to @user.login.capitalize, my_page_path(:user_id => @user.id)%> hasn't
+                        <%end%>
+                         joined any group yet.
+                      </div>
+                <%end%>
+
+                <p class="clear"></p>
+                
+                <!-- Group End -->
+                
+                </div>
+            </div>
+            <!-- Blue Box end -->
+			<div class="spacer"></div>
+        </div>
+    	<!-- Left Col End -->
+    	<!-- Right Col Start -->
+        <div class="c2 rightcol">
+              <%if @user == current_user%>
+                    <%= render :partial => '/profiles/my_page_links'%>
+              <%else%>
+                   <%= render :partial => '/profiles/member_page_links'%>
+              <%end%>
+        </div>
+    	<!-- Right Col End -->
+    </div>
+    <!-- Container End -->

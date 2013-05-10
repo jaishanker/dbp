@@ -1,0 +1,812 @@
+class ProfilesController < ApplicationController
+  before_filter :get_user_and_profile, :login_required
+  after_filter :update_profile_complete, :only => [:update_basics,:update_qualifications, :update_professions, :update_cetifications_and_skills, :upload_user_pic]
+  log_activity_streams :current_user, :login, "has updated his profile",
+    :@profile, :id, :update_basics,:profile_updater, {:total => 1 }
+  log_activity_streams :current_user, :login, "has updated his profile",
+    :@profile, :id, :update_qualifications,:profile_updater, {:total => 1 }
+  log_activity_streams :current_user, :login, "has updated his profile",
+    :@profile, :id, :update_professions,:profile_updater, {:total => 1 }
+  log_activity_streams :current_user, :login, "has updated his profile",
+    :@profile, :id, :update_cetifications_and_skills,:profile_updater, {:total => 1 }  
+  log_activity_streams :current_user, :login, "is now following",
+    :@member, :login, :follow,:started_following, {:total => 1,:indirect_object => :@member,:indirect_object_name_method => :login,:indirect_object_phrase => 'himself' }
+ 
+  
+  def show    
+    @user_qualifications = get_user_qualifications    
+    @privacy_setting = @user.privacy_setting    
+    if params[:status_msg] == '1'
+      @show_edit_profile = true
+    else
+      @show_edit_profile = false
+    end
+    if params[:my_settings] == '1'
+      @show_my_settings = true
+    else
+      @show_my_settings = false
+    end    
+  end
+  
+  def get_basics    
+    if check_access(@user, 'basic_info')        
+        render :partial => "basic"
+    else
+      render :partial => "access_denied"
+#      render :text => "#{@user.login.capitalize} has disabled public viewing of this information."
+    end     
+  end
+  
+  def update_basics
+    @suppress_activity_stream = true
+    success = true
+    old_profile_completion_points = calculate_points(@profile.percent_complete.to_i)
+    success &&=@user.update_attributes!(params[:user])    
+    success &&=@profile.update_attributes(params[:profile])    
+    if success      
+      new_profile_completion_points = calculate_points(@profile.percent_complete.to_i)      
+      @user.actual_substract_points(old_profile_completion_points,"substracted_old_points",@user)
+      @user.add_points(new_profile_completion_points,"updated_profile", @user.profile,old_profile_completion_points)
+      @suppress_activity_stream = false
+      render :update do |page|
+        page.replace_html "ComContent1", :partial => "basic"
+        message = "show_notice('You have successfully updated basics!','success')"
+        page << message
+      end
+    else
+      render :update do |page|
+        @user.attribute_names.each do |n|
+          error_msg = error_message_on( 'user', n )
+          error_msg = error_msg.to_s.gsub("<div class=\"formError\">","")
+          error_msg = error_msg.to_s.gsub("</div>","")
+          page << "displayError(\"user\",\"#{n}\",\"#{error_msg}\");"  if @user.errors.on(n)
+        end
+        @profile.attribute_names.each do |n|
+          error_msg = error_message_on( 'profile', n )
+          error_msg = error_msg.to_s.gsub("<div class=\"formError\">","")
+          error_msg = error_msg.to_s.gsub("</div>","")
+          page << "displayError(\"profile\",\"#{n}\",\"#{error_msg}\");"  if @profile.errors.on(n)
+        end
+      end
+    end
+  end 
+ 
+  def get_qualifications
+    if check_access(@user, 'qualification')    
+       @user_qualifications = get_user_qualifications
+       render :partial => "qualification"
+    else
+      render :partial => "access_denied"      
+#      render :text => "#{@user.login.capitalize} has disabled public viewing of this information."
+    end
+  end 
+  
+  def edit_qualifications
+    @user_qualifications = get_user_qualifications
+    render :partial => "edit_qualifications"
+  end   
+ 
+  def update_qualifications   
+    @suppress_activity_stream = true
+    success = true
+    old_profile_completion_points = calculate_points(@profile.percent_complete.to_i)    
+    params[:profile][:graduation_year] = params[:profile]["graduation_year(1i)"]
+    reset_expertise_points_qual        
+    success &&= @profile.update_attributes(params[:profile])
+    update_expertise_points_qual(params[:profile])          
+    unless params[:user][:new_user_qualification_attributes].nil?
+      for user_qualification in params[:user][:new_user_qualification_attributes]
+        new_user_qualification = UserQualification.new(user_qualification)
+        success &&= new_user_qualification.save
+      end
+    end
+    params[:user][:existing_user_qualification_attributes] ||= {}
+    params[:user][:existing_user_qualification_attributes].each do |index, parameters|
+      user_qualification = UserQualification.find(index)
+      success &&= user_qualification.update_attributes(parameters)
+    end
+    @user_qualifications = get_user_qualifications
+    if success 
+      new_profile_completion_points = calculate_points(@profile.percent_complete.to_i)      
+      @user.actual_substract_points(old_profile_completion_points,"substracted_old_points",@user)
+      @user.add_points(new_profile_completion_points,"updated_profile", @user.profile,old_profile_completion_points)
+      @suppress_activity_stream = false
+      render :update do |page|
+        page.replace_html "ComContent1", :partial => "qualification"
+        message = "show_notice('You have successfully updated qualifications','success')"
+        page << message
+      end
+    else
+      render :update do |page|
+        page.replace_html "ComContent1", :partial => "qualification"
+        message = "show_notice('There were some errors','error')"
+        page << message
+      end
+    end
+  end
+  
+  def get_profession  
+    if check_access(@user, 'profession')    
+        @user_professions = get_user_professions        
+        render :partial => "profession"
+    else
+      render :partial => "access_denied"      
+#      render :text => "#{@user.login.capitalize} has disabled public viewing of this information."        
+    end
+  end
+  
+  def edit_profession  
+    @user_professions = get_user_professions   
+    render :partial => "edit_profession"
+  end  
+  
+  def update_professions
+    @suppress_activity_stream = true
+    success = true    
+    old_profile_completion_points = calculate_points(@profile.percent_complete.to_i)        
+    if params[:profile][:total_exp] == "-1" or params[:profile][:total_exp_months] == "-1"
+      params[:profile][:total_exp] = ""
+      success = false
+    else
+      params[:profile][:total_exp] =  params[:profile][:total_exp].to_i * 12+params[:profile][:total_exp_months].to_i   
+    end
+      success &&= @profile.update_attributes!(params[:profile])    
+    if success
+      new_profile_completion_points = calculate_points(@profile.percent_complete.to_i)      
+      @user.actual_substract_points(old_profile_completion_points,"substracted_old_points",@user)
+      @user.add_points(new_profile_completion_points,"updated_profile", @user.profile,old_profile_completion_points) 
+      @suppress_activity_stream = false
+      unless params[:user][:new_user_profession_attributes].nil?
+        for user_profession in params[:user][:new_user_profession_attributes]
+          user_profession[:duration] =  user_profession[:duration].to_i * 12+user_profession[:duration_months].to_i
+          new_user_profession = UserProfession.new(user_profession)
+          success &&= new_user_profession.save
+        end
+      end
+      params[:user][:existing_user_profession_attributes] ||= {}
+      params[:user][:existing_user_profession_attributes].each do |index, parameters|
+        user_profession = UserProfession.find(index)
+        parameters[:duration] =  parameters[:duration].to_i * 12+parameters[:duration_months].to_i
+        success &&= user_profession.update_attributes!(parameters)
+      end
+    end
+    user_professions = current_user.user_professions.all
+
+    if success
+      render :update do |page|
+     #  page << "alert('#{user_professions.inspect}')"
+        page.replace_html "ComContent1", :partial => "profession",:object => @user_professions = user_professions
+        message = "show_notice('You have successfully updated professions','success')"
+        page << message
+      end
+    else
+      render :update do |page|
+        error_msg = "Please select total experience"
+        page << "displayError(\"profile\",\"total_exp\",\"#{error_msg}\");"
+        page.select('#profile_total_exp_months').addClass('error');
+        page.delay(10) do
+          page.select('#profile_total_exp_months').removeClass('error');
+        end
+      end
+    end
+  end  
+  
+  def get_cetifications_and_skills   
+    if check_access(@user, 'profession')        
+        @user_certificates= get_user_certificates       
+        render :partial => "certifications_and_skills"
+    else
+        render :partial => "access_denied"      
+#        render :text => "#{@user.login.capitalize} has disabled public viewing of this information."        
+    end    
+  end
+  
+  def update_cetifications_and_skills
+    @suppress_activity_stream = true
+    success = true
+    old_profile_completion_points = calculate_points(@profile.percent_complete.to_i)       
+     params[:profile][:solidworks_version] = getTags(params[:solidworks_version])
+    params[:profile][:simulation_version] = getTags(params[:simulation_version])        
+    params[:profile][:epdm_version] = getTags(params[:epdm_version])
+    params[:profile][:solidworks_3d_version] = getTags(params[:solidworks_3d_version])
+     success &&= @profile.update_attributes(params[:profile])
+
+    unless params[:user][:new_user_certificate_attributes].nil?
+      for user_certificate in params[:user][:new_user_certificate_attributes]
+        new_user_certificate = UserCertificate.new(user_certificate)
+        success &&= new_user_certificate.save
+      end
+    end
+    params[:user][:existing_user_certificate_attributes] ||= {}
+    params[:user][:existing_user_certificate_attributes].each do |index, parameters|
+      user_certificate = UserCertificate.find(index)
+      success &&= user_certificate.update_attributes(parameters)
+    end
+    @user_certificates = get_user_certificates
+    if success
+      reset_expertise_points
+      update_expertise_points(params[:profile],params[:solidworks_version].to_a,params[:simulation_version].to_a,params[:epdm_version].to_a,params[:solidworks_3d_version].to_a)
+      new_profile_completion_points = calculate_points(@profile.percent_complete.to_i)      
+      @user.actual_substract_points(old_profile_completion_points,"substracted_old_points",@user)
+      @user.add_points(new_profile_completion_points,"updated_profile", @user.profile,old_profile_completion_points)       
+      @suppress_activity_stream = false      
+      render :update do |page|
+        page.replace_html "ComContent1", :partial => "certifications_and_skills"
+        message = "show_notice('You have successfully updated certifications and skills!','success')"
+        page << message
+      end
+   end
+  end   
+  
+  def reset_password
+    render :partial => "reset_password"
+  end
+ 
+  def update_password
+    if User.authenticate(current_user.login, params[:old_password].rstrip)
+      if !params[:password].blank?
+        if ((params[:password] == params[:password_confirmation]) && !params[:password_confirmation].blank?)
+          current_user.password_confirmation = params[:password_confirmation]
+          current_user.password = params[:password]
+          if current_user.save
+            render :update do |page|
+#              page.replace_html "ComContent1", :partial => "reset_password"
+#              message = "show_notice('You have successfully changed your password!','success')"
+#              page << message
+              flash[:notice] = "You have successfully changed your password!"
+              page.redirect_to my_page_path(:user_id => current_user.id)
+            end
+          else
+            render :update do |page|  #
+              if @user.errors.on('password')
+                error_msg = error_message_on( 'user', 'password' )
+                error_msg = error_msg.to_s.gsub("<div class=\"formError\">","")
+                error_msg = error_msg.to_s.gsub("</div>","")
+                page.replace_html "new_password_error","<spna><font color='red'>Password #{error_msg}</font></span>"
+                page.delay(10) do
+                  page.replace_html "new_password_error",""
+                end
+              end
+              if @user.errors.on('password_confirmation')
+                error_msg = error_message_on( 'user', 'password_confirmation' )
+                error_msg = error_msg.to_s.gsub("<div class=\"formError\">","")
+                error_msg = error_msg.to_s.gsub("</div>","")
+                page.replace_html "password_confirmation_error","<spna><font color='red'>Password confirmation does not match new password</font></span>"
+                page.delay(10) do
+                  page.replace_html "password_confirmation_error",""
+                end
+              end
+            end
+          end
+        else
+          render :update do |page|  #     
+            page.replace_html "password_confirmation_error","<spna><font color='red'>Password confirmatin does not match new password</font></span>"  
+            page.delay(10) do
+              page.replace_html "password_confirmation_error",""  
+            end
+          end      
+        end
+      else
+        render :update do |page|  #
+          page.replace_html "new_password_error","<spna><font color='red'>New password cant be blank</font></span>"
+          page.delay(10) do
+            page.replace_html "new_password_error",""
+          end
+        end
+      end
+    else
+      render :update do |page|  #     
+        page.replace_html "old_password_error","<spna><font color='red'>Incorrect old password</font></span>"  
+        page.delay(10) do
+          page.replace_html "old_password_error",""  
+        end
+      end      
+    end    
+  end    
+  
+  def get_privacy_settings    
+    @privacy_setting = @user.privacy_setting
+    render :partial => "privacy_settings"
+  end  
+  
+  def update_privacy_settings    
+     old_profile_completion_points = calculate_points(@profile.percent_complete.to_i)         
+    @privacy_setting = @user.privacy_setting
+    @privacy_setting.update_attributes(params[:privacy_setting])
+      new_profile_completion_points = calculate_points(@profile.percent_complete.to_i)      
+      @user.actual_substract_points(old_profile_completion_points,"substracted_old_points",@user)
+      @user.add_points(new_profile_completion_points,"updated_profile", @user.profile,old_profile_completion_points)
+    render :partial => "privacy_settings"
+  end  
+  
+  def my_page
+    @offset = 0
+    @activities = ActivityStream.paginate_recent_actors(@user, activity_stream_location,@offset)   
+    @followees = @user.paginate_following_by_type('User',@offset) 
+    @followers = @user.paginate_followers(@offset)
+    @user_shouts = Shout.user_shouts(@user.id,PER_PAGE,@offset)
+    @user_shouts_count = @user.shouts_got.length
+  end
+  
+  def show_more_shouts
+    @offset = params[:offset].to_i + PER_PAGE
+    if params[:id]
+      @user = User.find(params[:id])
+      @user_shouts = Shout.user_shouts(@user.id,PER_PAGE,@offset)
+      respond_to do |format|
+        format.js do
+          render :update do |page|
+            unless @user_shouts.size == 0
+              page.insert_html :bottom, 'shouts_comments', :partial => 'more_user_shouts'
+            else
+              page.insert_html :bottom, 'shouts_comments', 'No more post are there for ' + @user.first_name
+            end
+          end      
+          return
+        end
+      end
+    end
+  end
+
+  def block_user
+    follower = User.find(params[:follower_id])
+    @user.block(follower)
+    flash[:notice] = "You have successfully blocked #{follower.login.capitalize}"        
+    unless params[:skip_session]
+         session[:div_id] = "followers_list"
+    end
+    redirect_to :back,:user_id => @user.id    
+#    redirect_to my_page_path(:user_id => @user.id)
+  end
+  
+  def unfollow_user
+    unless params[:followee_id].nil?
+      followee = User.find(params[:followee_id])
+      @user.stop_following(followee)
+      followee.actual_substract_points(FOLLOWED,"unfollowed_by_#{@user.login}",@user)    
+      flash[:notice] = "You have successfully unfollowed #{followee.login.capitalize}"     
+      unless params[:skip_session]
+           session[:div_id] = "followings_list"
+      end
+      redirect_to :back 
+    else
+      follower = User.find(params[:follower_id])
+      @user.stop_following(follower)
+      follower.actual_substract_points(FOLLOWED,"unfollowed_by_#{@user.login}",@user)           
+      flash[:notice] = "You have successfully unfollowed #{follower.login.capitalize}"     
+      unless params[:skip_session]      
+          session[:div_id] = "followers_list"      
+      end
+     redirect_to :back
+    end
+  end  
+  
+  def get_more_followers  
+    @offset =  params[:offset].to_i+PER_PAGE
+    @search_text = params[:search] unless params[:search].nil? 
+    if @search_text
+       @followers = User.search_followers(@user.id,@search_text,@offset)      
+    else
+      @followers = @user.paginate_followers(@offset)
+    end
+    respond_to do |format|
+      format.html
+      format.js {
+        render :update do |page| 
+          unless @followers.size == 0
+            page.insert_html :bottom, 'followers', :partial => 'more_followers'
+          else
+            page.insert_html :bottom, 'followers', 'No more followers are there'
+          end
+        end
+      }
+    end 
+  end
+
+  def get_more_followees  
+    @offset =  params[:offset].to_i+PER_PAGE
+    @search_text = params[:search] unless params[:search].nil?     
+    if @search_text
+       @followees = User.search_followees(@user.id,@search_text,@offset)      
+    else    
+        @followees = @user.paginate_following_by_type('User',@offset) 
+    end
+    respond_to do |format|
+      format.html
+      format.js {
+        render :update do |page| 
+          unless @followees.size == 0
+            page.insert_html :bottom, 'followees', :partial => 'more_followees'
+          else
+            page.insert_html :bottom, 'followees', 'No more followees are there'
+          end
+        end
+      }
+    end 
+  end  
+    
+   def upload_user_pic
+    if params[:userfile]
+      if @user.pictures[0].blank?  
+        picture = Picture.new
+        @user.add_points(PROFILE_PIC_UPLOAD,"uploaded_profile_pic",@user)
+        @user.profile.update_attribute(:pic_present,1) 
+      else
+        picture = @user.pictures[0]
+      end  
+      
+      if request.headers['HTTP_USER_AGENT'].to_s.include?('IE')
+        picture.version = "IE"
+      else
+        picture.version = "Other"
+      end
+      
+      
+      picture.photo  = params[:userfile]
+      @user.pictures <<  picture
+    end 
+    
+    
+    
+    if request.xhr?
+      render :update do |page|
+        page.select('.profile_pic').html(get_image(@user,'user','thumb_large'))
+      end
+    else
+      logger.debug "-----------------------------------------------------"
+      responds_to_parent do
+        render :update do |page|
+          page.select('.profile_pic').html(get_image(@user,'user','thumb_large'))
+        end
+      end
+    end
+    
+  end    
+  
+  def upload_user_pic_check
+    
+     render :update do |page|
+        page.select('.profile_pic').html(get_image(@user,'user','thumb_large'))
+      end
+  
+    
+  end    
+     
+  
+  def list_followings 
+    @offset = 0
+    @search_text = params[:search] unless params[:search].nil? 
+    if @search_text
+       @followees = User.search_followees(@user.id,@search_text,@offset)      
+    else
+      @followees = @user.paginate_following_by_type('User',@offset)
+    end    
+  end
+
+  def list_followers   
+    @offset = 0
+    @search_text = params[:search] unless params[:search].nil? 
+    if @search_text
+       @followers = User.search_followers(@user.id,@search_text,@offset)      
+    else
+       @followers = @user.paginate_followers(@offset)
+    end
+  end  
+  
+  def follow
+    @member = User.find(params[:member_id])
+    profile = Profile.find(params[:id])
+    current_user.follow(@member)
+    @member.add_points(FOLLOWED,"followed_by_other",@member)
+    flash[:notice] = "You are now following #{@member.login.capitalize}"
+    if @member.subscribe == 1
+        @member.notify_follower_addtion(current_user)
+     end
+    unless params[:skip_session]
+       session[:div_id] = "followers_list"    
+    end
+    redirect_to :back,:user_id => profile.user.id
+  end
+
+  
+  def get_more_activities  
+    @offset =  params[:offset].to_i+PER_PAGE
+    @activities = ActivityStream.paginate_recent_actors(@user, activity_stream_location,@offset)       
+    respond_to do |format|
+      format.html
+      format.js {
+        render :update do |page| 
+          if @activities.size == 0
+            page.insert_html :bottom, 'activities', 'No more activities are there'
+          else
+            page.insert_html :bottom, 'activities', :partial => 'more_activities'
+          end
+        end
+      }
+    end 
+  end
+  
+  def my_requests
+    @offset = 0
+    @incoming_requests = Request.my_incoming_requests(current_user.id , @offset)
+    @outgoing_requests = Request.my_outgoing_requests(current_user.id , @offset)
+  end  
+
+  def get_more_incoming_requests 
+    unless params[:filter_by].nil?
+      @filter_by = params[:filter_by]
+    end
+    @offset =  params[:offset].to_i+PER_PAGE
+    if @filter_by.nil?
+      @incoming_requests = Request.my_incoming_requests(current_user.id , @offset)
+    else
+      @incoming_requests = Request.filter_incoming_requests(current_user.id , @filter_by , @offset)
+    end
+    respond_to do |format|
+      format.html
+      format.js {
+        render :update do |page| 
+          unless @incoming_requests.size == 0
+            page.insert_html :bottom, 'incoming_requests', :partial => 'more_incoming_requests'
+          else
+            page.insert_html :bottom, 'incoming_requests', 'No more incoming requests are there'
+          end
+        end
+      }
+    end 
+  end    
+  
+  def get_more_outgoing_requests 
+    unless params[:filter_by].nil?
+      @filter_by = params[:filter_by]
+    end    
+    @offset =  params[:offset].to_i+PER_PAGE
+    if @filter_by.nil?
+      @outgoing_requests = Request.my_outgoing_requests(current_user.id , @offset)
+    else
+      @outgoing_requests = Request.filter_outgoing_requests(current_user.id , @filter_by , @offset)
+    end
+    respond_to do |format|
+      format.html
+      format.js {
+        render :update do |page| 
+          unless @outgoing_requests.size == 0
+            page.insert_html :bottom, 'outgoing_requests', :partial => 'more_outgoing_requests'
+          else
+            page.insert_html :bottom, 'outgoing_requests', 'No more outgoing requests are there'
+          end
+        end
+      }
+    end 
+  end    
+  
+  def decline_request  
+    request = Request.find(params[:request_id])
+    request.status = "declined"
+    request.save
+    redirect_to my_requests_profile_path(current_user.profile)
+  end
+  
+  def ignore_request  
+    request = Request.find(params[:request_id])
+    request.status = "ignored"
+    request.save
+    redirect_to my_requests_profile_path(current_user.profile)
+  end  
+  
+  def filter_incoming_requests
+    @offset = 0       
+    @filter_by = params[:incoming_request][:sort_by]  
+    @incoming_requests = Request.filter_incoming_requests(current_user.id , @filter_by , @offset)    
+    render :partial => "filtered_incoming_requests"
+  end
+
+  def filter_outgoing_requests 
+    @offset = 0       
+    @filter_by = params[:outgoing_request][:sort_by]  
+    @outgoing_requests = Request.filter_outgoing_requests(current_user.id , @filter_by , @offset)          
+    render :partial => "filtered_outgoing_requests"
+  end 
+  
+  def get_states
+    @changed_country = params[:country]
+    if COUNTRIES1.include?(params[:country])
+        render :partial => "state_select" 
+    else
+        render :partial => "state_text" 
+    end
+  end  
+  protected
+ 
+  def get_user_and_profile
+    unless params[:user_id].nil?
+      @user = User.find_by_id(params[:user_id])
+      if @user.nil?
+        flash[:notice] = "This user does not exist."
+        redirect_to '/'
+        return
+      end
+    else
+      if logged_in?
+        @user = current_user
+      end
+    end  
+    unless @user.nil?
+      @profile = @user.profile
+    end
+  end
+  
+  def get_user_qualifications  
+    user_qualifications = @user.user_qualifications.all
+    if user_qualifications.empty?
+      user_qualifications =  [UserQualification.new]
+    end
+    user_qualifications
+  end
+
+  def get_user_professions  
+    user_professions = @user.user_professions(false)
+    if user_professions.empty?
+      user_professions =  [UserProfession.new]
+    end
+    user_professions
+  end  
+
+  def get_user_certificates
+    user_certificates = @user.user_certificates
+    if user_certificates.empty?
+      user_certificates =  [UserCertificate.new]
+    end
+    user_certificates
+  end    
+  
+  def calculate_points(profile_completness)
+    if profile_completness == 0
+      points = 0
+    else
+       points = 1000 * (profile_completness.to_f / 100)
+    end
+    points.to_i
+  end
+  
+  def update_expertise_points(params,solidworks_versions,simulation_versions,epdm_versions,solidworks_3d_versions)
+    if params[:cswe] == "Yes"
+      @user.expertise_points += CSWE
+    end    
+    if params[:solidworks_associate] == "Yes"
+      @user.expertise_points += CSWA
+    end
+    if params[:cswp] == "Yes"
+      @user.expertise_points += CSWP
+    end     
+    if params[:cswp_surface_prof] == "Yes"
+      @user.expertise_points += CSWP_SURFACE_PROFESSIONAL
+    end    
+    if params[:cswp_shetmetal_prof] == "Yes"
+      @user.expertise_points += CSWP_SHEET_METAL_PROFESSIONAL
+    end        
+    if params[:cswp_mold_tools] == "Yes"
+      @user.expertise_points += CSWP_MOLD_TOOLS_PROFESSIONAL
+    end      
+    if params[:cswp_weldment_prof] == "Yes"
+      @user.expertise_points += CSWP_WELDMENT_PROFESSIONAL
+    end      
+    if params[:cswsp] == "Yes"
+      @user.expertise_points += CSWSP
+    end      
+
+    if solidworks_versions.include?('2010')
+      @user.expertise_points += SOLIDWORKS_VERSION_10
+      solidworks_versions = solidworks_versions.reject{|item| item =='2010' }
+    end
+    @user.expertise_points += solidworks_versions.size*SOLIDWORKS_VERSION_non_10
+    
+    if simulation_versions.include?('2010')
+      @user.expertise_points += SOLIDWORKS_VERSION_10      
+      simulation_versions = simulation_versions.reject{|item| item =='2010' }
+    end
+    @user.expertise_points += simulation_versions.size*SOLIDWORKS_VERSION_non_10    
+    
+    if epdm_versions.include?('2010')
+      @user.expertise_points += SOLIDWORKS_VERSION_10
+      epdm_versions = epdm_versions.reject{|item| item =='2010' }
+    end
+    @user.expertise_points += epdm_versions.size*SOLIDWORKS_VERSION_non_10        
+    
+    @user.expertise_points += solidworks_3d_versions.size*SOLIDWORKS_VERSION_10            
+
+    if params[:solidwork_usege_exp] == "+2 Years"
+      @user.expertise_points += SOLIDWORKS_USAGE_EXP_2_PLUS
+    elsif params[:solidwork_usege_exp] == "+4 Years"
+      @user.expertise_points += SOLIDWORKS_USAGE_EXP_4_PLUS      
+    elsif params[:solidwork_usege_exp] == "+6 Years"
+      @user.expertise_points += SOLIDWORKS_USAGE_EXP_6_PLUS      
+    elsif params[:solidwork_usege_exp] == "+8 Years"
+      @user.expertise_points += SOLIDWORKS_USAGE_EXP_8_PLUS            
+    elsif params[:solidwork_usege_exp] == "+10 Years"
+      @user.expertise_points += SOLIDWORKS_USAGE_EXP_10_PLUS                 
+    end         
+
+    if params[:cad_usage_exp] == "+2 Years"
+      @user.expertise_points += CAD_USAGE_EXP_2_PLUS
+    elsif params[:cad_usage_exp] == "+4 Years"
+      @user.expertise_points += CAD_USAGE_EXP_4_PLUS      
+    elsif params[:cad_usage_exp] == "+6 Years"
+      @user.expertise_points += CAD_USAGE_EXP_6_PLUS      
+    elsif params[:cad_usage_exp] == "+8 Years"
+      @user.expertise_points += CAD_USAGE_EXP_8_PLUS         
+    elsif params[:cad_usage_exp] == "+10 Years"
+      @user.expertise_points += CAD_USAGE_EXP_10_PLUS                 
+    end   
+    @user.save
+  end
+  
+  def update_expertise_points_qual(params)
+    if params[:diploma] == "Yes"
+      @user.expertise_points += MECH_DIPLOMA
+     end    
+    if params[:be] == "Yes"
+      @user.expertise_points += MECH_BE
+    end        
+    if params[:masters] == "Yes"
+      @user.expertise_points += MECH_MASTERS
+    end   
+    unless params[:graduation_year].nil?
+         if params[:graduation_year].to_i < 1995
+          @user.expertise_points += GRADUATION_BEFORE_95
+        elsif params[:graduation_year].to_i >= 1995 and params[:graduation_year].to_i < 2000
+          @user.expertise_points += GRADUATION_95_00      
+        elsif params[:graduation_year].to_i >= 2000 and params[:graduation_year].to_i < 2005
+          @user.expertise_points += GRADUATION_00_05     
+        elsif params[:graduation_year].to_i >= 2005 and params[:graduation_year].to_i < 2008
+          @user.expertise_points += GRADUATION_05_08            
+        end    
+    end
+    @user.save
+  end
+  
+  def reset_expertise_points
+    expertise_points_qual = get_qual_expertise_points
+    @user.expertise_points = expertise_points_qual
+    @user.save
+  end
+  
+  def reset_expertise_points_qual
+    expertise_points_qual = get_qual_expertise_points
+    if @user.expertise_points >= expertise_points_qual
+       @user.expertise_points -= expertise_points_qual    
+       @user.save      
+    end
+  end  
+  
+  def get_qual_expertise_points
+    expertise_points_qual = 0
+    if @profile.diploma == "Yes"
+      expertise_points_qual += MECH_DIPLOMA
+    end
+    if @profile.be == "Yes"
+      expertise_points_qual += MECH_BE
+    end    
+    if @profile.masters == "Yes"
+      expertise_points_qual += MECH_MASTERS
+    end     
+          unless @profile.graduation_year.nil?
+              if @profile.graduation_year < 1995
+                expertise_points_qual += GRADUATION_BEFORE_95
+              elsif @profile.graduation_year >= 1995 and @profile.graduation_year < 2000
+                expertise_points_qual += GRADUATION_95_00      
+              elsif @profile.graduation_year >= 2000 and @profile.graduation_year < 2005
+                expertise_points_qual += GRADUATION_00_05     
+              elsif @profile.graduation_year >= 2005 and @profile.graduation_year < 2008
+                expertise_points_qual += GRADUATION_05_08            
+              elsif @profile.graduation_year >= 2008
+                expertise_points_qual += GRADUATION_AFTER_08                      
+              end        
+      end
+    expertise_points_qual
+  end
+  
+  def update_profile_complete
+    @user.set_profile_complete
+  end
+end

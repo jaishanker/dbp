@@ -1,0 +1,108 @@
+<%= javascript_include_tag "jquery.autocomplete.js" %>
+<%= stylesheet_link_tag "jquery.autocomplete.css" %>
+<!-- Profile File Include -->
+<div class="clear">
+</div>
+<div class="content">
+  <!-- Set Priority File Include -->
+  <div class="clear">
+  </div>
+  <!-- Blue Box start -->
+  <div class="Blue4pxbox">
+    <code>
+      $(this).corner();
+    </code>
+    <div class="profileForm">
+      <!-- Page Head start -->
+      <div class="pageheading">
+        <div class="c1 head14">
+          Notify Users
+        </div>
+      </div>
+      <!-- Page Head end -->
+      <div class="brdBot01">
+      </div>
+      <!-- Form Start -->
+      <p class="spacer04">
+        <% form_remote_tag :url=>{:controller=>'admin_base',:action=>'send_mail'} ,:html=>{:name=>'postcomment'} , :before => "$('#spinner').show();",:complete => "$('#spinner').hide();" do %>
+        <div class="uplooad">
+          <div class="formrow">
+            <p style="padding-top:5px;"><%= check_box "notify",:all %>&nbsp;Send To All </p>
+            <p style="padding-top:5px;"><%= check_box "notify",:news %>&nbsp;Send News Latter </p>
+            <p class="c1">
+              To:
+            </p>
+            <div class="c2">
+              <%= text_area "notify",:to, :class => "inputtxt04 ac" ,:rows=> 2 %>
+              <p class = "clear"/>
+            </div>
+          </div>
+          <div class="formrow">
+            <p class="c1">
+              Subject:
+            </p>
+            <div class="c2">
+              <%= text_field "notify",:subject, :class => "inputtxt04" %>
+              <p class = "clear"/>
+            </div>
+          </div>
+          <div class="formrow">
+            <p class="c1">
+              Reply To:
+            </p>
+            <div class="c2" style="width:519px;">
+              <%= text_field "notify",:reply_to,:value=>"lubna.markar@3ds.com", :class => "inputtxt04" %>
+              <p class = "clear"/>
+            </div>
+            <p style="padding-top:5px;"><input id="disable" type="checkbox" class="inputcheck" onclick="return select_id()"> Disable</p>
+          </div>
+
+          <div class="formrow">
+            <p class="c1">
+              Message:
+            </p>
+            <div class="c2">
+              <%= text_area "notify",:message, :class => "inputtxt04" %>
+              <p class = "clear"/>
+            </div>
+          </div>
+          <div class="formrow">
+            <p class="c1">
+              &nbsp;
+            </p>
+            <p class="c2">
+              <%= submit_tag "Send",:class => "grnbtn01" %>
+              <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner",:style=>"display:none; width: 20px; margin-top: 0px;" ) %>
+            </p>
+          </div>
+        <% end %>
+      </div>
+      <!-- Form End -->
+    </div>
+  </div>
+  <!-- Blue Box end -->
+</div>
+<script type = "text/javascript">
+ 
+  function select_id()
+  {
+    if ($('#disable').is(':checked'))
+    {
+      $("#notify_reply_to").attr("disabled","disabled");
+    }
+    else
+    {
+      $('#notify_reply_to').removeAttr('disabled');
+    }
+
+  }
+  $(document).ready(function(){
+    $('.ac').each(function(i, el){
+      $(el).autocomplete("/admin_base/auto_complete", {
+        width: 515,
+        multiple: true,
+        selectFirst: false
+      });
+    });
+  });
+</script>

@@ -1,0 +1,51 @@
+<div class="spacer01"></div>
+    <h1>Static Banner: Right Column (provision for 3 banners only)<span class="fright">Total Banner: 3</span></h1>
+    <h4>Drag your mouse to change the positions of topic</h4>
+    <div id="ComLink">
+    <form id="form1" name="form1" method="post" action="">
+    <table border="0" cellpadding="5" cellspacing="0" id="dragtbl">
+      <thead>
+      <tr>
+        <th width="8%">Positions</th>
+        <th width="36%"> Banner Name</th>
+        <th width="20%">Change Status</th>
+        <th width="36%">Action</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr class="row1">
+        <td>1</td>
+        <td>Banner 1</td>
+        <td>
+          <label><input type="radio" name="designCentral" value="enable" id="designCentral_0" />Enable</label>
+          <label><input type="radio" name="designCentral" value="disable" id="designCentral_1" />Disable</label>
+        </td>
+        <td><a href="ChangeBanner_Main.html">Change</a></td>
+      </tr>
+      <tr class="row2">
+        <td>2</td>
+        <td>Banner 2</td>
+        <td>
+          <label><input type="radio" name="Discussion" value="enable" id="Discussion_0" />Enable</label>
+          <label><input type="radio" name="Discussion" value="disable" id="Discussion_1" />Disable</label>
+        </td>
+        <td><a href="ChangeBanner_Main.html">Change</a></td>
+      </tr>
+      <tr class="row1">
+        <td>3</td>
+        <td>Banner 3</td>
+        <td>
+          <label><input type="radio" name="Learning" value="enable" id="Learning_0" />Enable</label>
+          <label><input type="radio" name="Learning" value="disable" id="Learning_1" />Disable</label>
+          </td>
+        <td><a href="ChangeBanner_Main.html">Change</a></td>
+      </tr>
+      </tbody>
+    </table>
+    <div class="buton">
+        <input type="submit" name="button" id="button" value="Save" class="grnbtn02" />
+        <input type="reset" name="button2" id="button2" value="Reset" class="grnbtn02" />
+    </div>
+
+
+    </form>

@@ -1,0 +1,240 @@
+<div class="clear">
+</div>
+<div class="content">
+    <!-- Set Priority File Include --><%#= javascript_include_tag "SetPriority" %>
+    <div class="clear">
+    </div>
+    <!-- Blue Box start -->
+    <div class="Blue4pxbox">
+        <code>
+            $(this).corner();
+        </code>
+        <div class="profileForm">
+            <!-- Page Head start -->
+            <div class="pageheading">
+                <div class="c1 head14">
+                    Welcome <%=@user.first_name.capitalize%>, please fill in details
+                </div>
+                <div class="spacer01">
+                </div>
+                <div class="mandat">
+                    *All fields are Mandatory.
+                </div>
+            </div>
+            <!-- Page Head end -->
+            <div class="brdBot01">
+            </div>
+            <!-- Form Start -->
+            <p class="spacer04"></p>
+      <%form_for @user, :url => {:controller => "users", :action => "update_details" } do |f|%>
+           <div class="uplooad">
+               <div class="formrow">        
+                    <p class="c1">
+                        Username:
+                    </p>
+                    <div class="c2">
+                        <%= f.text_field :login, :class=> "inputtxt01"%>
+                           <p class = "clear"/>
+                        <font color="red">
+                            <%= f.error_message_on :login%>
+                        </font>
+                    </div>
+                   </div>
+
+            <div class="formrow">        
+                <p class="c1">
+                    &nbsp;
+                </p>
+                <div class="c2">
+                    [Username should be Min 3 and Max 40 characters long. This will be your Display name across the SolidWorks India Community website.]
+                </div>  
+                <p class="spacer01">
+                  </p>
+              </div>
+
+               <div class="formrow">        
+                    <p class="c1">
+                        Password:
+                    </p>
+                    <div class="c2">
+                            <%= f.password_field :password, :class=> "inputtxt01" %>
+                           <p class = "clear"/>
+                        <font color="red">
+                            <%unless error_message_on( 'user', 'password' ).empty?%>
+                                   <%err = "Password "+ error_message_on( 'user', 'password' ).to_s.gsub("<div class=\"formError\">","").to_s.gsub("</div>","")%>
+                                   <%=err%>
+                            <%end%>
+                        </font>
+                    </div>
+                <p class="spacer01">
+                  </p>
+                  </div>  
+
+               <div class="formrow">        
+                    <p class="c1">
+                        Confirm Password:
+                    </p>
+                    <div class="c2">
+                            <%= f.password_field :password_confirmation, :class=> "inputtxt01" %>
+                           <p class = "clear"/>
+                        <font color="red">
+                            <%unless error_message_on( 'user', 'password_confirmation' ).empty?%>
+                                   <%err = "Password confirmation "+ error_message_on( 'user', 'password_confirmation' ).to_s.gsub("<div class=\"formError\">","").to_s.gsub("</div>","")%>
+                                   <%=err%>
+                            <%end%>
+                        </font>
+                    </div>
+                <p class="spacer01">
+                  </p>
+                  </div>    
+  
+                <div class="formrow">        
+                    <p class="c1">
+                        Email-Id:
+                    </p>
+                    <div class="c2">
+                        <%= f.text_field :email, :class=> "inputtxt01", :value => ""%>
+                           <p class = "clear"/>
+                        <font color="red">
+                            <%= f.error_message_on :email %>      
+                             <%if error_message_on('user','email').to_s == "<div class=\"formError\">Email has already been taken</div>"%>
+                              If you want to use same email to connect your facebook account then please login and connect.
+                            <%end%>
+                        </font>
+                    </div>
+                <p class="spacer01">
+                  </p>
+                  </div>
+
+               <div class="formrow">        
+                    <p class="c1">
+                        First Name:
+                    </p>
+                    <div class="c2">
+                           <%= f.text_field :first_name, :class=> "inputtxt01" %>
+                           <p class = "clear"/>
+                        <font color="red">
+                            <%= f.error_message_on :first_name %>
+                        </font>
+                    </div>
+                <p class="spacer01">
+                  </p>
+                  </div>  
+
+              <div class="formrow">        
+                    <p class="c1">
+                        Last Name:
+                    </p>
+                    <div class="c2">
+                           <%= f.text_field :last_name, :class=> "inputtxt01" %>
+                           <p class = "clear"/>
+                        <font color="red">
+                            <%= f.error_message_on :last_name %>
+                        </font>
+                    </div>
+                <p class="spacer01">
+                  </p>    
+                  </div>    
+
+              <div class="formrow">        
+                    <p class="c1">
+                        Gender:
+                    </p>
+                    <div class="c2">
+                        <%= f.radio_button :gender, "Male",:checked => true %>&nbsp;Male &nbsp; <%= f.radio_button :gender, "Female" %>&nbsp;Female
+                    </div>
+                <p class="spacer01">
+                  </p>
+                  </div>      
+
+              <div class="formrow">        
+                        <p class="c1">
+                            Status:
+                        </p>
+                        <div class="c2">
+                            <%= f.radio_button :profession, "Student",:checked => true %>&nbsp;Student &nbsp; <%= f.radio_button :profession, "Professional" %>&nbsp;Professional
+                        </div>
+                  <p class="spacer01">
+                  </p>
+                  </div>  
+
+              <div class="formrow">        
+                     <p class="c1">
+                          Country:
+                      </p>
+                      <p class="c2">
+                          <%#=country_select("user", "country") %>
+                          <%=f.country_select :country,["India"],{},{:class => "inputtxt01"} %>
+                           <p class = "clear"/>
+                        <font color="red">
+                            <%= f.error_message_on :country %>
+                        </font>
+                      </p>
+                   <p class="spacer01">
+                  </p>
+                  </div>    
+
+
+
+              <div class="formrow">        
+                     <p class="c1">
+                          Contact No:
+                      </p>
+                      <div class="c2">
+                          STD Code <%= f.text_field :std_code, :class=> "inputtxt05" %>&nbsp; No# <%= f.text_field :phone_no, :class=> "inputtxt06" %>
+                           <p class = "clear"/>
+                        <font color="red">
+                            <%= f.error_message_on :contact_no %>
+                        </font>
+                      </div>
+                   <p class="spacer01">
+                  </p>
+                  </div>        
+
+              <div class="formrow">        
+                      <p class="c1">
+                          Date of Birth:
+                      </p>
+                      <div class="c2">
+                          <%if @user.birth_date.nil?%>
+                                <%= f.text_field :birth_date, :class=> "inputtxt02 date_input_ui",:value =>'01 Jan 1980',  :onfocus => "if (this.value =='') this.value = '01 Jan 1980'" %>
+                          <%else%>
+                                <%= f.text_field :birth_date, :class=> "inputtxt02 date_input_ui", :onfocus => "if (this.value =='') this.value = '01 Jan 1980'" %>                            
+                          <%end%>
+                           <p class = "clear"/>
+                        <font color="red">
+                            <%= f.error_message_on :birth_date %>
+                        </font>
+                      </div>
+                   <p class="spacer01">
+                  </p>
+                  </div>        
+
+  
+                     <div class="formrow">
+                  <p class="c1">
+                      &nbsp;
+                  </p>
+                  <p class="c2">        
+                      <%= submit_tag 'Submit' , :class=>"grnbtn02" %>
+                    </p>
+                  </div>
+           </div>
+      <%end%>
+           </div>
+            <!-- Form End -->
+        </div>
+    </div>
+    <!-- Blue Box end -->
+
+
+  <!-- Right Col End -->
+<!-- Container End -->      
+
+<script>
+   $(document).ready(function(){
+$(function() {
+ $(".date_input_ui").datepicker();
+ });
+ });
+</script>

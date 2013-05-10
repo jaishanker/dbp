@@ -1,0 +1,71 @@
+<%= get_right_panel_banner(@right_banner,'Group') %>
+<script type="text/JavaScript">
+    $(document).ready(function() {
+    $('input[type="text"]').focus(function() {
+    if (this.value == this.defaultValue){
+    this.value = '';
+    }
+    if(this.value != this.defaultValue){
+    this.select();
+    }
+    });
+    $('input[type="text"]').blur(function() {
+    if ($.trim(this.value) == ''){
+    this.value = (this.defaultValue ? this.defaultValue : '');
+    }
+    });
+    });
+</script>
+<%=render :partial => "/home/members_search_form" %>
+<!-- Popular Groups Div start -->
+<div class ="<%= cycle('cBoxblue','cBoxorange','cBoxgreen') %>">
+    <div class="cBoxhead">
+        <p class="headtxt">
+            Most Active Groups
+        </p>
+        <%= link_to "more +",groups_path(:active => true),:class=>"more" %>
+    </div>
+    <div class="cBoxcontainer">
+    	<div class = "populargrp">
+        <!-- Two col start -->
+        <% cache 'popular_groups_cache' do %>
+        <div class="twcol">
+            <%unless @active_groups.length == 0 %>
+            <% @active_groups.each do |t| %>
+            <%=render :partial=>"popular_groups" ,:locals=>{:t=>t} ,:inline=>true%>
+            <%end %>
+            <%else %>
+            No popular groups found.<%end %>
+        </div>
+        <%end%>
+        <!-- Two col end --><p class = "spacer01"/>
+    </div>
+</div><!-- Popular Group Div end -->
+<div class="clear">
+</div>
+<!--Discussion Lounge Activity Div start -->
+<!--<div class="actstream">
+<div class="bluehead">
+<p class="headtxt">Discussion Lounge Activity</p>
+<a href="/groups/discussion_activity" class="more">more + </a>
+</div>
+<p class="bluearrow"></p>
+<div class="twcol">
+<div class="snaprow">
+<p class="c1"><a href="Members_Page.html"><img src="../images/snap01.gif" width="36" height="36" class="snap" /></a><span class="mname"><a href="My_Page.html">Kamlesh</a></span></p>
+<p class="c2"><a href="My_Page.html">Kamlesh</a> commented on <span class="commname">Power-Pro - A Mobile charger</span></p>
+</div>
+<div class="snaprow">
+<p class="c1"><a href="Members_Page.html"><img src="../images/snap04.gif" width="36" height="36" class="snap" /></a><span class="mname"><a href="Members_Page.html">User05</a></span></p>
+<p class="c2"><a href="Members_Page.html">User05</a> commented on <span class="commname">Power-Pro - A Mobile charger</span></p>
+</div>
+<div class="snaprow">
+<p class="c1"><a href="Members_Page.html"><img src="../images/snap02.gif" width="36" height="36" class="snap" /></a><span class="mname"><a href="Members_Page.html">User03</a></span></p>
+<p class="c2"><a href="#">User03</a> commented on <span class="commname">Power-Pro - A Mobile charger</span></p>
+</div>
+</div>
+</div>-->
+<!-- Discussion Lounge Activity Div end -->
+<div class="clear">
+</div>
+<%= get_right_panel_banner(@right_banner,'Group','Bottom') %>

@@ -1,0 +1,29 @@
+load 'deploy' if respond_to?(:namespace) # cap2 differentiator
+Dir['vendor/plugins/*/recipes/*.rb'].each { |plugin| load(plugin) }
+load 'config/deploy'
+
+
+# ========================
+# For Mongrel Cluster Apps
+# ========================
+
+ namespace :deploy do
+ 
+   task :start, :roles => :app do
+     run "memcached -vv -u nobody -d"
+     run "cd #{current_path} && cp config/database.example config/database.yml"
+     run "cd #{current_path}"
+     run "chmod -R 777 ./"
+     run "/etc/init.d/httpd restart"
+   end
+ 
+   task :restart, :roles => :app do
+#    run "ln -s #{deploy_to}/shared/config/mongrel_cluster.yml #{current_path}/config/mongrel_cluster.yml"
+     run "cd #{current_path} && mongrel_rails cluster::restart"
+   end
+   
+   task :stop, :roles => :app do
+     run "cd #{current_path} && mongrel_rails cluster::stop"
+   end
+ 
+ end

@@ -1,0 +1,38 @@
+<!-- Container Start -->
+<div class="content">
+  <!-- Left Col Start -->
+  <div class="c1">
+    <!-- Blue Box start -->
+    <div class="Blue4pxbox"><code>$(this).corner();</code>
+      <div class="whiteBoxContent">
+        <%=render :partial=>"follower_and_following"%>
+      </div>
+    </div>
+    <!-- Blue Box end -->
+    <div class="spacer"></div>
+  </div>
+  <!-- Left Col End -->
+  <!-- Right Col Start -->
+  <div class="c2 rightcol">
+    <%if @user == current_user%>
+      <%= render :partial => "my_page_links"%>
+    <%else%>
+      <%= render :partial => "member_page_links"%>
+    <%end%>
+    <!-- My Page Links Include
+    <script type="text/JavaScript" src="../scripts/MyPage_links.js"></script>  -->
+  </div>
+  <!-- Right Col End -->
+</div>
+<!-- Container End -->
+<div class="clear"></div>
+
+<script>
+	<%unless session[:div_id].nil? %>
+            $(document).ready(function(){
+                      var div_id = "<%=session[:div_id]%>";
+                      $.scrollTo($('#'+div_id));
+                      <%session[:div_id] = ""%> 
+            });
+       <%end%>
+</script>

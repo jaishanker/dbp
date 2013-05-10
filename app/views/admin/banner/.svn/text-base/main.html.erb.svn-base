@@ -1,0 +1,152 @@
+<%= render :partial => "top_nav" %>
+<!-- Blue Box start -->
+<div class="Blue4pxbox">
+    <code>
+        $(this).corner();
+    </code>
+    <div class="profileForm">
+        <!-- Page Head start -->
+        <div class="pageheading">
+            <div class="c1 head14">
+                Add&nbsp;<%= @page == true ? "Right Panel" : "main" %>&nbsp;Banner
+            </div>
+        </div>
+        <!-- Page Head end -->
+        <div class="brdBot01">
+        </div>
+        <!-- Form Start --><p class="spacer04"/><% form_for(@banner,:url => {:action => :create},:html => {:multipart => true}) do |f| %>
+        <%= error_messages_for :banner,:header_message => nil,:message => nil %>
+        <div class="uplooad">
+            <div class="formrow">
+                <p class="c1">
+                    Banner Name:
+                </p>
+                <div class="c2">
+                    <%= f.text_field :name, :class => "inputtxt01" %>
+                </div>
+            </div>
+            <% if @page == true %>
+			<%= f.hidden_field :page, :value => "true" %>
+			<div class="formrow">
+                <p class="c1">
+                    Banner Link:
+                </p>
+                <div class="c2">
+                    <%= f.text_field :banner_link, :class => "inputtxt01" %>
+                </div>
+            </div>
+            <div class="formrow">
+                <p class="c1">
+                    Banner Page:
+                </p>
+                <p class="c2" style ="width:600px;">
+                    <% ["Home","Design","Discussion","Learning","Contest"].each do |c| %>
+                    <%= check_box_tag "banner[banner_page][]",c,@banner.banner_page.include?(c),:class => "el01" %>
+                    <label class="lable01">
+                        <%= c %>
+                    </label>
+                    <% end %>
+                </p>
+            </div>
+            <div class="formrow">
+                <p class="c1">
+                 &nbsp;
+                </p>
+                <p class="c2" style ="width:600px;">
+                    <% ["CSWP","Group","Game","News","Event"].each do |c| %>
+                    <%= check_box_tag "banner[banner_page][]",c,@banner.banner_page.include?(c),:class => "el01" %>
+                    <label class="lable01">
+                        <%= c %>
+                    </label>
+                    <% end %>
+                </p>
+            </div>
+			 <div class="formrow">
+                <p class="c1">
+                    Banner Position:
+                </p>
+                <p class="c2">
+                    <%= f.select :banner_position,["Top","Bottom"],:class => "inputtxt01 " %>
+                </p>
+            </div>
+            <div class="formrow">
+                <p class="c1">
+                    Upload Banner Image:
+                </p>
+                <p class="c2">
+                    <%= file_field_tag :photo,:class => "inputtxt01 file" %>
+                </p>
+            </div>
+            <%= hidden_field_tag :page, "true" %>
+            <%= f.hidden_field :banner_type,:value => "Page" %>
+            <% else %>
+            <%= f.hidden_field :banner_type,:value => "Main" %>
+            <div class="formrow">
+                <p class="c1">
+                    Banner Code:
+                </p>
+                <p class="c2">
+                    <%= f.text_area :banner_code, :class => "inputtxt04",:rows => 16 %>
+                </p>
+            </div>
+            <% end %>
+            <div class="formrow">
+                <p class="c1">
+                    &nbsp;
+                </p>
+                <p class="c2">
+                    <% unless @page == true %><a href="/admin/banner/preview" type = "button" value = "Preview" id = "preview_button" class = "grnbtn01">Preview</a>&nbsp;&nbsp;<% end %><%= submit_tag "Submit",:class => "grnbtn01" %>
+                </p>
+            </div>
+            <% if @page == true %>
+            <div class="formrow">
+                <p class="c1">
+                    &nbsp;
+                </p>
+                <p class="c2" style ="width:310px">
+                    <strong>Please Note:</strong>
+                    <br/>
+                    1. The Image should be .gif, .jpg or .png format.
+                    <br/>
+                    2. The image width should not increase beyond 239px.
+                </p>
+            </div>
+            <% else %>
+            <div class="formrow">
+                <p class="c1">
+                    &nbsp;
+                </p>
+                <p class="c2" style ="width:350px">
+                    <strong>Please Note:</strong>
+                    <br/>
+                    1. The Banner code can have html tags
+                    <br/>
+                    2. The Banner width should not increase by more than 1000px.
+                </p>
+            </div>
+            <% end %>
+            <% end %>
+        </div>
+        <!-- Form End -->
+        <div id = "preview">
+        </div>
+    </div>
+</div>
+<!-- Blue Box end -->
+<script>
+  $(document).ready(function(){
+    $('select').addClass('inputtxt01');
+    $('#preview_button').click(function(){
+        var value = $('#banner_banner_code').val();
+        $('#preview_button').attr('href', '/admin/banner/preview?value=' + encodeURIComponent(value));
+        return hs.htmlExpand(this, {
+            objectType: 'ajax',
+            outlineType: 'rounded-white',
+            width: 1005,
+            height: 325,
+            preserveContent: false
+        }, 'Banner Preview')
+    });
+	$('label').css({width:'60px'})
+         });
+</script>

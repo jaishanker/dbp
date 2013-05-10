@@ -1,0 +1,110 @@
+class EventsController < ApplicationController
+  before_filter :common_objects,:only => [:index,:details,:list]
+  
+  def index
+    if session[:event_organizer]
+      redirect_to :action => "list", :id => session[:event_organizer]
+    else
+        @event = Event.find_active()
+        if @event
+          @type = @event.collect(&:eventtype).uniq
+          @topic = @event.collect(&:topic).uniq
+          @product = @event.collect(&:product).uniq
+          @organizer = @event.collect(&:organizer).uniq
+          @city = @event.collect(&:city).uniq
+          @state = INDIA_STATES
+        end
+    end
+  end
+  
+  def filter_event
+    @event = Event.search_filter(params[:type][:id],params[:topic][:id],params[:product][:id],
+    params[:organizer][:id],params[:city][:id],params[:state][:id],params[:pincode])
+    respond_to do |format|
+      format.js do
+        render :update do |page|
+          page.replace_html 'events', :partial=>'events/events'
+        end
+        return
+      end
+    end
+    
+  end
+  
+  
+  def details
+    @event = Event.find(params[:id])
+    if params[:q]
+       session[:event_organizer] = @event.user_id
+       events = Event.find_by_organizer(@event.user_id)    
+       if events.size > 1
+         redirect_to :action => "list", :id => @event.user_id
+       end
+    end
+    @participant = EventParticipant.new
+    if logged_in?
+        @already_participated = EventParticipant.find_by_user_id_and_event_id(current_user.id,params[:id])
+    end
+    @event_participants = EventParticipant.get_participants(@event.user_id)  
+  end
+  
+  
+  def participate
+    @event = Event.find(params[:event_participant][:event_id])
+    @event.update_count
+    @participant = EventParticipant.new(params[:event_participant])    
+    @participant.save
+    @event.save
+    render :update do |page|
+     if @participant.errors.empty?          
+          flash[:notice] = "You have successfully participated in this event."
+          page.reload
+     else     
+        @participant.attribute_names.each do |n|
+          error_msg = error_message_on( 'participant', n )
+          error_msg = error_msg.to_s.gsub("<div class=\"formError\">","")
+          error_msg = error_msg.to_s.gsub("</div>","")
+          page << "displayError(\"participant\",\"#{n}\",\"#{error_msg}\");"  if @participant.errors.on(n)       
+        end
+     end
+    end
+    
+  end
+  
+  
+  def ask_details
+    @participant = EventParticipant.new    
+     @event = Event.find(params[:event_id])
+   render :layout => false    
+  end
+  
+  def registration
+    
+  end
+  
+  def list    
+     session[:event_organizer] = params[:id] 
+     @event = Event.find_by_organizer(params[:id])    
+     if @event.size == 1
+      redirect_to :action => "details", :id => @event[0].id
+     end
+  end
+  
+  private  
+  
+  def common_objects
+    @recent_learnings = Learning.find_active(4)
+     when_fragment_expired 'design_cache', Time.parse(30.seconds.from_now.to_s) do
+         @design_central_activities = ActivityStream.specific_activities('Design', activity_stream_location,0,3)
+     end
+     when_fragment_expired 'discussion_cache', Time.parse(30.seconds.from_now.to_s) do
+         @discussion_lounge_activities = ActivityStream.specific_activities('Topic', activity_stream_location,0,3)
+     end
+     when_fragment_expired 'learning_cache', Time.parse(30.seconds.from_now.to_s) do
+         @learning_center_activities = ActivityStream.specific_activities('Learning', activity_stream_location,0,3)
+      end
+#    @recent_comments = DesignComment.recent_comments(4)
+    @discussion = Topic.find_three(5)
+    @recent_activities = ""
+  end    
+end

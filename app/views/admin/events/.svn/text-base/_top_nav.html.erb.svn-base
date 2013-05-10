@@ -1,0 +1,13 @@
+<ul class="admNav">
+    <li>
+        <a href="/admin/events">Report</a>
+    </li>
+    <li>
+        <a href="/admin/events/report">Chart</a>
+    </li>
+	<li>
+        <a href="/admin/events/new">Add Event</a>
+    </li>
+</ul>
+<div class="spacer01">
+</div>

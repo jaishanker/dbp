@@ -1,0 +1,16 @@
+<%if logged_in? %>          
+        <%if current_user.user_type.to_i == 7%>  
+                <%= render :partial => 'manage_activity_stream', :collection => @activities%>                                
+        <%else%>
+                <%= render :partial => "activity_streams/activity_stream", :collection => @activities%>
+        <%end%>
+<%else%>
+        <%= render :partial => "activity_streams/activity_stream", :collection => @activities%>  
+<%end%>  
+  <div id="more_activities_link">
+         <p class="spacer03">
+                <span class="grnbtn02"><%= link_to_remote "Show More",    :url => { :action => "get_more_activities", :offset => @offset }, :before => "$('#spinner_show').show()", :complete => "destroyDiv('more_activities_link')"%></span>
+                <span> <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner_show",:style=>"display:none; width: 16px; margin-top: 0px;" ) %> </span>
+         </p>
+  </div>
+

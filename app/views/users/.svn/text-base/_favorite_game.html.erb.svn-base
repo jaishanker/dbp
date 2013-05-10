@@ -1,0 +1,3 @@
+<div class="threCol">
+  <p><%=link_to favorite_game.title, :controller => "games", :action => "game", :permalink => favorite_game.permalink%></p> 
+</div>

@@ -1,0 +1,52 @@
+ <div class="spacer02"></div> 
+ 	<!-- Group Fan Div start --> 
+ 	<div class="populargrp"> 
+         <!-- Two col start --> 
+         <div class="twcol"> 
+             <div class="snaprow"> 
+               <p class="c1">
+                        <%=  get_image(@user,'user','thumb_large','snap')%>
+                        <%if @user.profile.pic_present%>                        
+                            <br/>
+                            <span class="<%= get_belt_class(@user.expertise_points||0)%>"> </span>  
+                        <%end%>
+                        <br class="pad5"> 
+                        <%if logged_in?%>
+                            <%unless current_user.following?(@user)%>
+                              <span class="grnbtn02"  id="follow"> <%= link_to "Follow",follow_profile_path(@user.profile,:member_id => @user.id, :skip_session => true),:onclick => "return disableLink(this);" %> </span>
+                            <%else%>
+                              <span class="grnbtn02"  id="follow"> <%= link_to "Unfollow",unfollow_user_profile_path(@user.profile,:followee_id => @user.id, :skip_session => true),:onclick => "return disableLink(this);"%> </span>
+                            <%end%>
+                        <%end%>
+                </p> 
+                 <p class="c2"><%= link_to @user.first_name.capitalize+" "+@user.last_name.capitalize,my_page_path(:user_id =>@user.id), :class => "orange" %><br /><%=h @user.status_message%></p> 
+             </div> 
+           
+         </div> 
+         <!-- Two col end --> 
+     </div> 
+     <div class="clear"></div> 
+ 	<!-- Group Fan Div end --> 
+ 	<ul class="mypage"> 
+     	<li class="head mp1"><%=@user.login + "'s"%> Profile Lounge</li>
+     	<li class="mp2"><%if @user.profile.pic_present%> <span class="<%= get_class(@user.expertise_points||0)%>"> </span> <%else%> <span class="belt_white"> </span> <%end%><%= link_to "Profile (#{@user.profile.percent_complete.to_i}% Complete )", profile_path(@user.profile, :user_id => @user.id) %></li> 
+        <%if check_access(@user, 'designs')%>
+            <li class="mp3"><span class="mydes"></span><%= link_to "Designs (#{@user.designs.length})", :controller => 'designs', :action => 'index', :user_id => @user.id%></li> 
+        <%end%>
+        <%if check_access(@user, 'followings')%>
+            <li class="mp6"><span class="followersIcon"></span><%= link_to "Following(#{@user.follow_count})", list_followings_profile_path(@user.profile,:user_id => @user.id)%></li> 
+        <%end%>
+        <%if check_access(@user, 'followers')%>        
+            <li class="mp7"><span class="followingIcon"></span><%= link_to "Followers(#{@user.followers_count})", list_followers_profile_path(@user.profile,:user_id => @user.id)%> </li> 
+        <%end%>
+        <%if check_access(@user, 'favourites')%>                
+            <li class="mp8"><span class="myfav"></span><%= link_to "Favorites (#{@user.all_favorites.size})", my_favorites_user_path(@user)%></li> 
+        <%end%>
+       <%if check_access(@user, 'groups')%>                        
+            <li class="mp9"><span class="mygrp"></span> <%= link_to "Groups (#{@user.active_groups.size})", my_groups_user_path(@user) %></li> 
+        <%end%>
+      <%if check_access(@user, 'contests')%>                                
+    	  	<!--<li class="mp10"><span class="mycont"></span><a href="Member_My_Page_My_Contest.html">Contests (7)</a></li> -->
+       <%end%>
+   	</ul>     
+<div class="clear"></div> 

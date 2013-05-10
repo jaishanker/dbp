@@ -1,0 +1,11 @@
+<% learning = Learning.find(friends_comment.commentable_id)%>
+<div class="threCol">
+  <div class="cc1"><%=  link_to get_image(friends_comment.user,'user','thumb'),my_page_path(:user_id => friends_comment.user.id)%></div>
+
+ 
+  <div class="cc4"><%= link_to friends_comment.user.login.capitalize,my_page_path(:user_id => friends_comment.user.id)%>
+   commented on &nbsp; <%= link_to learning.title ,{ :controller => "learnings", :action => "learning", :permalink => learning.permalink},:class=>"commname" %>
+<br> <%= time_ago(friends_comment.created_at) %>
+  <!-- <a href="PostComment.html" class="black">Comment</a> --> </div>
+</div>
+<p class="clear"></p>

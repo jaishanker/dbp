@@ -1,0 +1,151 @@
+<script type = "text/javascript">
+  $(document).ready(function(){
+    var link = $('.upload_link');
+    link.each(function( i, el){
+
+      new AjaxUpload($(el), {
+        
+        action: '/profiles/upload_user_pic',
+        name: 'userfile',
+        autoSubmit: true,
+        responseType: false,
+        onChange: function(file, extension){
+          $('#message').html('Uploading...');
+        },
+        
+        onSubmit: function(file, extension){
+          if (!(extension && /^(jpg|png|jpeg|gif)$/.test(extension))) {
+            
+            $('#message').html('<font color = red >Please upload valid<br/> image file</font>');
+            return false;
+          }
+          
+        },
+        onComplete: function(file, response){
+          
+          
+          <% if request.headers['HTTP_USER_AGENT'].to_s.include?('IE') %>
+            <%= remote_function(:url => {:controller => :profiles,:action => :upload_user_pic})%>
+          <% end %>       
+          
+        }
+      });
+      
+    });
+  });
+
+
+</script>
+
+	<!-- <form action="" method="get" class="AdvancedForm"> -->        
+        <% form_remote_tag :url => '/profiles/update_basics' , :update => "ComContent", :before => "$('#spinner').show();",:complete => "$('#spinner').hide();", :multipart => true do -%>
+        <%# form_tag"/profiles/update_basics", :multipart => true ,:html => { :class => "AdvancedForm" }  do -%>
+	<div class="proform">
+   	  <div class="proform_l">
+        	<div class="formrow">
+                <p class="c1">First Name:</p>
+                <p class="c2"> <%= text_field :user,:first_name, :class=> "proinput" %></p>
+            </div>
+           
+        	<div class="formrow">
+                <p class="c1">Last Name:</p>
+                <p class="c2"> <%= text_field :user, :last_name, :class=> "proinput" %></p>
+            </div>
+             
+            <div class="formrow">
+                <p class="c1">Email ID:</p>
+                <p class="c2"> <%= text_field :user, :email, :class=> "proinput" %></p>
+            </div>
+            
+        	<div class="formrow">
+                <p class="c1">Country:</p>
+                <p class="c2"> <%= text_field :user, :country, :class=> "proinput" %></p>
+            </div>
+        	<div class="formrow">
+                <p class="c1">State:</p>
+                <p class="c2"><%= text_field :user, :state, :class=> "proinput" %></p>
+            </div>
+            
+            <div class="formrow">
+                <p class="c1">City:</p>
+                <p class="c2"><%= text_field :user, :city, :class=> "proinput" %></p>
+            </div>
+            
+            <div class="formrow">
+                <p class="c1">Pin Code:</p>
+                <p class="c2"><%= text_field :user, :pincode, :class=> "proinput" %></p>
+            </div>			  
+	    </div>
+        
+        
+        
+    	<div class="proform_r">
+            <p class="c1 profile_pic"><%=  get_image(@user,'user','thumb_large')%><!-- <img src="../images/profile_photo/userphoto.gif" width="98" height="98" /> --></p>
+          <p class="c2"><%= text_area :user, :status_message, :size => "", :class => "proinput01"%><!--<textarea cols="" rows="" class="proinput01" id="Vstatusmess">Edit your status message</textarea> -->
+          <br />
+            <a href="#" class="upload_link">Edit Picture</a></p>
+      </div>
+    </div>
+  <div class="frm_brd"></div>
+  
+<div class="proform">
+<div class="proform_l">
+
+        
+        <div class="formrow">
+            <p class="c1">Website URL (Personal/Company):</p>
+          <p class="c2">
+            <%= text_field :profile,:website, :class=> "proinput" %>
+            <!-- <input name="fmname2" type="text" value="" class="proinput" /> -->
+          </p>
+        </div>
+        
+         <div class="formrow">
+            <p class="c1">Community Website URL 1:</p>    
+        <p class="c2"><%= text_field :profile,:comm_site_1, :class=> "proinput" %></p>
+        </div>
+        
+         <div class="formrow">
+        <p class="c1">Community Website URL 2:</p>
+        <p class="c2"><%= text_field :profile,:comm_site_2, :class=> "proinput" %></p>
+        </div>
+        
+         <div class="formrow">
+        <p class="c1">Community Website URL 3:</p>
+        <p class="c2"><%= text_field :profile,:comm_site_3, :class=> "proinput" %></p>
+        </div>
+        
+         <div class="formrow">
+            <p class="c1">Personal Blog URL 1:</p>
+        <p class="c2"><%= text_field :profile,:blog_1, :class=> "proinput" %></p>
+        </div>
+        
+         <div class="formrow">
+        <p class="c1">Personal Blog URL 2:</p>
+        <p class="c2"><%= text_field :profile,:blog_2, :class=> "proinput" %></p>
+        </div>
+        
+         <div class="formrow">
+        <p class="c1">Personal Blog URL 3:</p>
+        <p class="c2"><%= text_field :profile,:blog_3, :class=> "proinput" %></p>
+        </div>
+</div>
+</div>
+ 
+   
+	<div class="proform">
+    	<div class="proform_l">
+        	<div class="formrow">
+                <p class="c1">&nbsp;</p>
+                <p class="c2">
+                <%= submit_tag 'Save and Continue' , :class=>"grnbtn01" %>
+                   <!-- <input name="Save" type="submit" value="Save and Continue" class="grnbtn01" /> -->
+                	<input name="Save" type="reset"  value="Cancel" class="grnbtn01" onclick = "<%= remote_function :update => "ComContent",:url =>{ :action => :get_basics} , :class => "grnbtn01"%>" />
+                        <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner",:style=>"display:none; width: 20px; margin-top: 0px;" ) %>
+                </p>
+            </div>
+	    </div>
+    </div>
+    <%end%>
+  <!--  </form> -->
+    <p class="spacer01"></p>

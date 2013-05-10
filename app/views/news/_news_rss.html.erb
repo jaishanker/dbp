@@ -1,0 +1,13 @@
+<ul class = "news_rss">
+    <% unless @rss.length == 0 %>
+    <%@rss.each do |news| %>
+    <li>
+        <a style ="color:#3AC7E5;" target="_blank" href = "<%=news['link']%>"><%= news['title'] %></a>
+    </li>
+    <%end %>
+    <%else %>
+    <p style="text-align:center;padding:10px;">
+        No recent News found.
+    </p>
+    <%end %>
+</ul>

@@ -1,0 +1,31 @@
+<div style ="padding:15px">
+    <div class="box01">
+        <div class="col-1">
+            <%= get_image(@hof,"cswp","thumb_large") %>
+        </div>
+        <div class="col-2">
+            <p>
+                <strong>Name:</strong>
+                <%= get_name(@hof.name) %>
+            </p>
+       <p class="spacer06">
+        </p>
+        <p>
+            <strong>Certification:</strong>
+            <%= get_name(@hof.certification) %>
+        </p>
+        <p class="spacer06">
+        </p>
+        <p>
+            <strong>Certification No.:</strong>
+            <%= get_name(@hof.simulation_no) %>
+        </p>
+        <p class="spacer06">
+        </p>
+        <p>
+        <strong>Date:</strong>
+        <%= @hof.certification_date.strftime("%B %d, %Y") %>
+      </p>
+        </div> 
+    </div>
+</div>

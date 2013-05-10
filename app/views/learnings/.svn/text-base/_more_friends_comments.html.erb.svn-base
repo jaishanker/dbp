@@ -1,0 +1,9 @@
+<%= render :partial => "friends_comment" , :collection => @friends_comments%> 
+<div id="more_frnd_comments_link">                    
+  <p class="spacer03">
+    <span class="grnbtn02">
+      <%= link_to_remote "Show More",    :url => { :action => "get_more_friends_comments", :offset => @offset}, :before => "$('#spinner_show').show()", :complete => "destroyDiv('more_frnd_comments_link')"%>
+    </span>
+    <span> <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner_show",:style=>"display:none; width: 16px; margin-top: 0px;" ) %> </span>
+  </p>
+</div>

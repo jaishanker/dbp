@@ -1,0 +1,71 @@
+10
+
+dir
+439
+svn://208.43.176.230:3980/live_dbpsvn/dbp/vendor/plugins/activity_streams/lib
+svn://208.43.176.230:3980/live_dbpsvn
+
+
+
+2010-09-23T12:40:29.794488Z
+418
+anil
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+0a48adf1-00a9-484e-a650-1a0bf834cf54
+
+activity_streams
+dir
+
+activity_streams.rb
+file
+
+
+
+
+2011-05-10T09:55:58.000000Z
+897ae5d64d02a1652fa0a7ddc189a261
+2010-04-19T05:29:01.013151Z
+2
+girish
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+374
+
+controllers
+dir
+
+models
+dir
+

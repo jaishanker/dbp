@@ -1,0 +1,3 @@
+     <select id="redeem_user_info_state" name="redeem_user_info[state]" class = "inputtxt01">
+     <%=state_options_for_select(selected = nil, country = @changed_country)%>
+    </select>    

@@ -1,0 +1,71 @@
+<div class="box1">
+  <div class="row">
+    <div class="c1"><p><img src="../images/profile_photo/profileImage01.jpg" width="98" height="98" class="snap" /></p>
+            <% unless (controller.action_name =="active_participants" or controller.action_name =="active_contributors")%>
+       <p class="btns"><a class="grnbtn02" href="#">Remove</a></p>
+      <%end%>
+    </div>
+    <p class="c2"><a href="Members_Page.html" class="blue">User03</a><br />
+      Profile Status Message will appear here</p>
+  </div>
+</div>
+
+<div class="box1">
+  <div class="row">
+    <div class="c1"><p><img src="../images/profile_photo/profileImage02.jpg" width="98" height="98" class="snap" /></p>
+         <% unless (controller.action_name =="active_participants" or controller.action_name =="active_contributors")%>
+       <p class="btns"><a class="grnbtn02" href="#">Remove</a></p>
+      <%end%>
+    </div>
+    <p class="c2"><a href="Members_Page.html" class="blue">User04</a><br />
+      Profile Status Message will appear here</p>
+  </div>
+</div>
+
+<div class="box1">
+  <div class="row">
+    <div class="c1"><p><img src="../images/profile_photo/profileImage03.jpg" width="98" height="98" class="snap" /></p>
+          <% unless (controller.action_name =="active_participants" or controller.action_name =="active_contributors")%>
+       <p class="btns"><a class="grnbtn02" href="#">Remove</a></p>
+      <%end%>
+    </div>
+    <p class="c2"><a href="Members_Page.html" class="blue">Kamlesh</a><br />
+      Profile Status Message will appear here</p>
+  </div>
+</div>
+
+<div class="box1">
+  <div class="row">
+    <div class="c1"><p><img src="../images/profile_photo/profileImage04.jpg" width="98" height="98" class="snap" /></p>
+      <% unless (controller.action_name =="active_participants" or controller.action_name =="active_contributors")%>
+       <p class="btns"><a class="grnbtn02" href="#">Remove</a></p>
+      <%end%>
+    </div>
+    <p class="c2"><a href="Members_Page.html" class="blue">User01</a><br />
+      Profile Status Message will appear here</p>
+  </div>
+</div>
+
+<div class="box1">
+  <div class="row">
+    <div class="c1"><p><img src="../images/profile_photo/profileImage01.jpg" width="98" height="98" class="snap" /></p>
+          <% unless (controller.action_name =="active_participants" or controller.action_name =="active_contributors")%>
+       <p class="btns"><a class="grnbtn02" href="#">Remove</a></p>
+      <%end%>
+    </div>
+    <p class="c2"><a href="Members_Page.html" class="blue">User05</a><br />
+      Profile Status Message will appear here</p>
+  </div>
+</div>
+
+<div class="box1">
+  <div class="row">
+    <div class="c1"><p><img src="../images/profile_photo/profileImage02.jpg" width="98" height="98" class="snap" /></p>
+          <% unless (controller.action_name =="active_participants" or controller.action_name =="active_contributors")%>
+       <p class="btns"><a class="grnbtn02" href="#">Remove</a></p>
+      <%end%>
+    </div>
+    <p class="c2"><a href="Members_Page.html" class="blue">User02</a><br />
+      Profile Status Message will appear here</p>
+  </div>
+</div>

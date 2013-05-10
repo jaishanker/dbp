@@ -1,0 +1,103 @@
+<%= javascript_include_tag "jquery.date_input" %>
+<%= stylesheet_link_tag "date_input" %>
+<%= render :partial => "top_nav" %>
+<!-- Blue Box start -->
+<div class="Blue4pxbox">
+    <code>
+        $(this).corner();
+    </code>
+    <div class="profileForm">
+        <!-- Page Head start -->
+        <div class="pageheading">
+            <div class="c1 head14">
+                Add Product
+            </div>
+        </div>
+        <!-- Page Head end -->
+        <div class="brdBot01">
+        </div>
+        <!-- Form Start --><p class="spacer04"/><% form_for(@product,:url => {:action => :create},:html => {:multipart => true}) do |f| %>
+        <%= error_messages_for :product,:header_message => nil,:message => nil %>
+        <div class="uplooad">
+            <div class="formrow">
+                <div class="c1">
+                    Title:
+                </div>
+                <div class="c2">
+                    <%= f.text_field :title, :class => "inputtxt01" %>
+                </div>
+            </div>
+            <div class="formrow">
+                <div class="c1">
+                    Description:
+                </div>
+                <div class="c2">
+                    <%= f.text_area :description, :class => "inputtxt01",:rows => 8 %>
+                </div>
+            </div>
+            <div class="formrow">
+                <div class="c1">
+                    Expiry Date:
+                </div>
+                <div class="c2">
+                    <%= f.text_field :expiry_date, :class => "inputtxt01 date_input" %>
+                </div>
+            </div>
+			 <div class="formrow">
+                <div class="c1">
+                    Product Count:
+                </div>
+                <div class="c2">
+                    <%= f.text_field :product_count, :class => "inputtxt01" %>
+                </div>
+            </div>
+			 <div class="formrow">
+                <div class="c1">
+                    Points Required:
+                </div>
+                <div class="c2">
+                    <%= f.text_field :points_required, :class => "inputtxt01" %>
+                </div>
+            </div>
+
+			 <div class="formrow">
+                <div class="c1">
+                    Shipment Cost:
+                </div>
+                <div class="c2">
+                    <%= f.text_field :shipment_cost, :class => "inputtxt01" %>
+                </div>
+            </div>
+
+  
+            <div class="formrow">
+                <div class="c1">
+                    Upload Display Image:
+                </div>
+                <div class="c2">
+                    <%= file_field_tag :photo,:class => "inputtxt01 file" %>
+                </div>
+            </div>
+            <div class="formrow">
+                <div class="c1">
+                    &nbsp;
+                </div>
+                <div class="c2">
+                    <%= submit_tag "Submit",:class => "grnbtn01" %>
+                </div>
+            </div>
+            <% end %>
+        </div>
+        <!-- Form End -->
+    </div>
+</div>
+<!-- Blue Box end -->
+<script type = "text/javascript">
+  $(document).ready(function(){
+    $('select').addClass('inputtxt01');
+    
+    $(function(){
+        $(".date_input").date_input();
+    });
+     });
+</script>

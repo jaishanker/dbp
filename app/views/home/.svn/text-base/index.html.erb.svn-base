@@ -1,0 +1,79 @@
+<div class="content">
+    <!-- Left Col Start -->
+    <div class="c1">
+        <!-- Design Central Start -->
+        <% cache 'recent_design_cache' do %>
+          <%=render :partial=>"home/design_central.html.erb" %>
+       <%end%>
+        <!-- Design Central End -->
+        <!-- Discussion Lounge Start -->
+        <% cache 'recent_post_cache' do %>
+            <%=render :partial=>"home/descussion_lounge.html.erb" %>
+        <%end%>
+        <!-- Discussion Lounge End -->
+        <!-- Learning Central Start -->
+        <% cache 'recent_learning_cache' do %>
+           <%=render :partial=>"home/learning_central.html.erb" %>
+        <%end%>
+        <!-- Learning Central End -->
+        <!-- Blog start -->
+         <% cache 'recent_blog_cache' do %>
+            <%=render :partial=>"home/blog.html.erb" %>
+        <%end%>
+        <!-- Blog End -->
+    </div>
+    <!-- Left Col End -->
+    <!-- Right Col Start -->
+
+    <div class="c2 rightcol" id="rightcol_Index">
+        <%= get_right_panel_banner(@right_banner,'Home') %>
+        <%=render :partial => "/home/members_search_form"%>
+        <!-- Expert Div start -->
+        <% cache 'top_belts_cache' do %>
+           <%=render :partial=>"home/experts.html.erb" %>
+        <%end%>
+        <!-- Expert Div end -->
+        <div class="clear">
+        </div>
+        <!-- Active Member Div start -->
+        <!-- Active Member Div end -->
+        <div class="clear">
+        </div>
+        <!-- Activity Stream Div start -->
+        <div class='<%= cycle("cBoxblue","cBoxorange","cBoxgreen") %>'>
+            <div class="cBoxhead">
+                <p class="headtxt">
+                    Activity Stream 
+                </p>
+                <%= link_to "more +",recent_activity_path(),:class=>"more" %>
+            </div>
+          <% cache 'activity_stream_cache' do %>
+            <div class="cBoxcontainer">
+                <%#= render :partial => 'activity_streams/activity_stream', :collection => @activities %>
+                <%unless @activities.empty? %>
+                <%=render :partial=>"home/activity_stream", :collection => @activities %>
+                <%else %>
+                No Recent activity found.<%end %>
+                <p class="spacer01">
+                </p>
+            </div>
+          <%end%>
+        </div>
+        <!-- Activity Stream Div end -->
+        <div class="clear">
+        </div>
+        <!-- Recent Posts Div start -->
+        <%=render :partial=>"home/recent_posts.html.erb" %>
+        <!-- Recent Div end -->
+        <div class="clear">
+        </div>
+        <%= get_right_panel_banner(@right_banner,'Home','Bottom') %>
+    </div>
+    <!-- Right Col End -->
+</div>
+
+<script>
+$(document).ready(function(){
+	$("#username").focus();
+});
+</script>

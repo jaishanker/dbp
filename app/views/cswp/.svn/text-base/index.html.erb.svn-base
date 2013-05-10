@@ -1,0 +1,95 @@
+<div class="content">
+    <!-- Left Col Start -->
+    <div class="c1">
+        <!-- Set Priority File Include -->
+         <div class="clear">
+        </div>
+        <!-- Blue Box start -->
+        <div class="Blue4pxbox">
+            <code>
+                $(this).corner();
+            </code>
+            <div class="whiteBoxContent">
+                <!-- static content starts here -->
+                <div class="pageheading">
+                    <div class=" head14">
+                        <strong>What is CSWP/CSWE/CSWA?</strong>&nbsp;|&nbsp;<a href="/cswp/cswp_test"><strong>How to take the test?</strong></a>&nbsp;|&nbsp;<a href="/cswp/hall_of_fame"><strong>Hall of Fame</strong></a>
+                    </div>
+                    <p class="spacer05">
+                    </p>
+                    <p class="brdBot01">
+                    </p>
+                    <p class="spacer05">
+                    </p>
+                    <p>
+                        SolidWorks certifications can be used as a benchmark to measure your  knowledge and competency with SolidWorks software. Exams focus on the  fundamental skills necessary to ensure your company’s overall success  using SolidWorks.
+                        <br clear="all" />
+                    </p>
+                    <p class="spacer05">
+                    </p>
+                    <h4><a  target = "_blank"  href="http://www.solidworks.com/sw/support/797_ENU_HTML.htm">CSWP</a></h4>
+                    <p>
+                        A  Certified SolidWorks Professional is an individual that has  successfully passed our advanced skills examination. Each CSWP has  proven their ability to design and analyze parametric parts and  moveable assemblies using a variety of complex features in SolidWorks.
+                    </p>
+                    <p class="spacer05">
+                    </p>
+                    <h4><a  target = "_blank"  href="http://www.solidworks.com/sw/support/CSWE.htm">CSWE</a></h4>
+                    <p>
+                        A  Certified SolidWorks Expert is someone who easily demonstrates the  ability to utilize advanced functions and features to solve complex  modeling challenges inside SolidWorks. A CSWE will be well rounded in  their knowledge of all areas of the SolidWorks software. A CSWE is able  to solve practically any modeling problem given to them, and is  traditionally the go-to SolidWorks user among their colleagues.
+                    </p>
+                    <p class="spacer05">
+                    </p>
+                    <h4><a  target = "_blank"  href="http://www.solidworks.com/sw/support/796_ENU_HTML.htm">CSWA</a></h4>
+                    <p>
+                        As  a Certified SolidWorks Associate (CSWA), you will stand out from the  crowd in today’s competitive job market. CSWA certification is proof of  your SolidWorks® expertise – cutting-edge skills that businesses seek  out and reward. 
+                    </p>
+                    <p class="spacer05">
+                    </p>
+                    <h4><a target = "_blank"  href="http://www.solidworks.com/sw/support/809_ENU_HTML.htm">CSWP-Sheet Metal</a></h4>
+                    <p>
+                        The  completion of the Certified SolidWorks Professional Sheet Metal exam  shows that an individual has successfully passed a skills test that  demonstrates their ability to use the sheet metal tools inside of  SolidWorks. 
+                    </p>
+                    <p class="spacer05">
+                    </p>
+                    <h4><a target = "_blank"  href="http://www.solidworks.com/sw/support/8539_ENU_HTML.htm">CSWP-Weldments</a></h4>
+                    <p>
+                        The  completion of the Certified SolidWorks Professional Weldments exam  proves that you've successfully demonstrated your ability to use the  Weldment tools inside of SolidWorks. 
+                    </p>
+                    <p class="spacer05">
+                    </p>
+                    <h4><a target = "_blank"  href="http://www.solidworks.com/sw/support/4479_ENU_HTML.htm">CSWP-Surfacing</a></h4>
+                    <p>
+                        SolidWorks  software includes many advanced surfacing tools. The Certified  SolidWorks Professional Surfacing Specialist exam is used to gauge  someone’s ability to utilize these tools in the creation of complex  surfaces. 
+                    </p>
+                    <p class="spacer05">
+                    </p>
+                    <h4><a  target = "_blank" href="http://www.solidworks.com/sw/support/7322_ENU_HTML.htm">CSWP-Mold Tools</a></h4>
+                    <p>
+                        The  Advanced Mold Tools exam will test your ability to utilize the Mold  Tools found in SolidWorks. Understanding SolidWorks Mold Tools will  help to aid a user in the completion of a robust mold design in an  efficient manner. 
+                    </p>
+                    <p class="spacer05">
+                    </p>
+                    <h4><a  target = "_blank" href="http://www.solidworks.com/sw/support/810_ENU_HTML.htm">CSWSP-FEA </a></h4>
+                    <p>
+                        The  Certified SolidWorks Simulation Professional exam is designed to test  an individual’s understanding of Simulation tools inside SolidWorks and  of simulation in general. 
+                    </p>
+                </div>
+                <p class="spacer05">
+                </p>
+                <div class="clear">
+                </div>
+            </div>
+            <!-- static content ends here -->
+        </div>
+    </div>
+    <!-- Blue Box end -->
+    <!-- Left Col End -->
+    <!-- Right Col Start -->
+    <div class="c2 rightcol">
+    	
+        <%= render :partial => '/profiles/my_page_links' if logged_in? %>
+        <div class="spacer">
+        </div>
+    </div>
+    <!-- Right Col End -->
+</div>

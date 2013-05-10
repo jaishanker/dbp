@@ -1,0 +1,26 @@
+<div class="greenhead">
+    <p class="warrow">
+    </p>
+    <p class="fleft head">
+        Design Central
+    </p>
+    <p class="fleft">
+        <a href="/designs" class="white">Total Designs : <%=@design_count %></a>
+    </p>
+    <a href="/designs" class="more">more + </a>
+</div>
+<div class="flashnews">
+    <p class="desCen">
+    </p>
+    <p class="txt">
+        Share your designs and exchange comments, feedbacks from Experts and Community Users
+    </p>
+</div>
+<!-- Two col comment start -->
+<% @designs.each do |d| %>
+<% if  !d.nil? %>
+<%= render :partial => "/designs/design",:locals => {:d => d,:same_design => true,:by_user=>false},:inline => true %>
+<%else %>
+No Designs exists in system.<%end %>
+<%end %>
+<!-- Two col comment end -->

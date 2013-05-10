@@ -1,0 +1,3 @@
+     <select id="user_state" name="user[state]" class = "proselect">
+     <%=state_options_for_select(selected = nil, country = @changed_country)%>
+    </select>    

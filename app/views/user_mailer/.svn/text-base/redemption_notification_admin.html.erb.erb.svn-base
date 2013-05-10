@@ -1,0 +1,10 @@
+Hi Admin,
+<br /><br />
+    <%=@requester.login.capitalize%> has requested for "<%=@product.title%>" to redeem <%if @requester.gender == "Male"%> his <%else%> her <%end%> points.
+<br /><br />
+Thanks,<br />
+The SolidWorks India Online Community Team
+<br /><br />
+=======================================<br />
+This message was intended for <%=@user.email%>.
+<img height = "0" width = "0" src="http://fans.solidworks.in/home/campaign/<%=@user.id%>?camp=10012"></img>

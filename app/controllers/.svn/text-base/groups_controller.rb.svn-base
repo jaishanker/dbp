@@ -1,0 +1,473 @@
+class GroupsController < ApplicationController
+  # log_activity_streams :current_user, :login, "joined", 
+  # :@group, :name, :join,:joined_group, {:total => 1,:indirect_object => :@group_owner,:indirect_object_name_method => :login,:indirect_object_phrase => 'owns_this_group' }  
+  #  log_activity_streams :current_user, :login, "unjoined the",
+  #    :@group, :name, :unjoin,:unjoined_group, {:total => 1 }
+  #  log_activity_streams :current_user, :login, "created", 
+  #  :@gro, :name, :create,:created_group, {:total => 1 }      
+  
+  #-----------------Tiny MCE------------------------
+  
+  uses_tiny_mce(:options => {:theme => 'advanced',
+    :browsers => %w{msie gecko},
+    :theme_advanced_toolbar_location => "top",
+    :theme_advanced_toolbar_align => "left",
+    :theme_advanced_resizing => true,
+    :theme_advanced_resize_horizontal => true,
+    :paste_auto_cleanup_on_paste => true,
+    :theme_advanced_buttons1 => %w{separator bold italic separator link unlink separator bullist numlist separator undo redo separator},
+    :theme_advanced_buttons2 => %w{},
+    :theme_advanced_buttons3 => %w{},
+    :width => 285,
+    :plugins => %w{contextmenu paste}}
+  )
+  
+  #--------------------------------------------------
+  
+  before_filter :common_objects,:only => [:index,:new,:create, :edit, :members, :update]
+  before_filter :check_user_authority, :only => [:new,:create,:edit]
+  
+  def index
+    #      @groups = Group.find_active(10)
+    @search_text = params[:search] unless params[:search].nil?
+    @search_text = @search_text.strip() unless params[:search].nil?
+    @popular_group = params[:popular]
+    @active_group = params[:active]    
+    if @search_text and !params[:category_id].blank? and !(params[:category_id] == "All Groups")
+      @groups = Group.search_groups_for_categoy(@search_text,params[:category_id],params[:page] || 1)           
+    elsif @search_text
+      @groups = Group.search(@search_text,params[:page])
+    elsif params[:category_id]
+      @category_id = params[:category_id].gsub(' ', '_')
+      if @category_id == "All_Groups"
+        @groups = Group.search_active(params[:page] || 1)
+      else
+        @groups = Group.search_by_group_type(params[:category_id].gsub('_',' '), params[:page] || 1)
+      end
+    elsif @popular_group
+      @groups = Group.popular_groups(PER_PAGE , params[:page] || 1)         
+    elsif @active_group
+      @groups = Group.active_groups(PER_PAGE , params[:page] || 1)          
+    else
+      @groups = Group.search_active(params[:page] || 1)
+    end
+    @no_of_pages = (@groups.total_entries.to_f / PER_PAGE).ceil
+    
+    @group_activities = ActivityStream.specific_activities('Group', activity_stream_location,@offset)
+    
+  end
+  
+  def discussion_activity
+    
+  end
+  
+  def report_abuse
+    render :action=>"report_abuse" ,:layout=>false
+  end
+  
+  def show 
+    
+    @group = Group.find_by_permalink_and_status(params[:permalink],1)
+  
+    if @group.nil?
+      flash[:notice] = "This group does not exist."
+      redirect_to :action => :index and return
+   
+    end
+      members = @group.group_memberships.collect(&:user_id)
+    #    @recent_post = Design.group_member_design(5)
+    @recent_post = Design.group_member_design(members) unless members.blank?
+    @group.update_count
+    @owner = User.find(@group.owner_id)
+    @group_users = @group.users.first(9)
+    @offset = 0
+    @group_activities = ActivityStream.paginate_recent_objects(@group, activity_stream_location,@offset)       
+    @group_topic = @group.find_topic
+    @sub_category = SubCategory.find_by_name(@group.name)
+    
+    
+    @group_users_list = @group.users.collect(&:id) unless @group.nil?
+    
+    @group_discussion = "false"
+    if logged_in?
+      if params[:update] == "1"
+          @group_discussion = "false"
+      else
+          @group_discussion = "true" if @group_users_list.include?(current_user.id) and params[:discussion] = "true"        
+      end
+    end
+  end
+  
+  def new
+    if params[:my_groups] 
+      @my_groups = true
+    end
+    @gro = Group.new
+  end
+  
+  def create
+    @suppress_activity_stream = true
+    if params[:commit].eql?('Cancel')
+      if params[:my_groups]
+        redirect_to my_groups_user_path(current_user)
+      else
+        redirect_to groups_path         
+      end
+    else
+      @gro = Group.new(params[:group])
+      @gro.owner_id = current_user.id
+      @gro.status = 0
+      
+        if params[:photo]
+          if @gro.pictures[0].blank?
+            picture = Picture.new
+          else
+            picture = @gro.pictures[0]
+          end
+          if request.headers['HTTP_USER_AGENT'].to_s.include?('IE')
+            picture.version = "IE"
+          else
+            picture.version = "Other"
+          end
+          picture.photo  = params[:photo]
+          @gro.pictures <<  picture
+        end       
+      @gro.save
+      
+      
+      if @gro.errors.empty?
+        @suppress_activity_stream = false
+        session[:grp_photo_error] = nil        
+        #Make Createor to the member of that group.
+        GroupMembership.create(:user_id => current_user.id, :group_id => @gro.id)
+        # Added on 14/05/10 by anil for sending mail
+        UserMailer.deliver_group_create_notification(@gro)
+        
+        flash[:notice] = 'Your request for group creation has been sent to admin for approval.'
+        respond_to do |format|
+          #          format.html {redirect_to groups_path}
+          #          format.html { redirect_to  permalink_url(@gro.permalink) }
+          format.html { redirect_to  groups_path}
+          format.xml  { render :xml => @gro, :status => :created, :location => @gro }
+        end
+      else      
+        if  @gro.errors.on('pictures')
+          session[:grp_photo_error] = "Please upload valid image file"
+        else
+          session[:grp_photo_error] = nil
+        end        
+        respond_to do |format|
+          format.html { render :action => "new" }
+          format.xml  { render :xml => @gro.errors, :status => :unprocessable_entity }
+        end
+      end
+    end
+  end
+  
+  
+  def postadd
+    @topic = Topic.new
+    @topic.discussion_category_id = params[:discussion_category_id]
+    @topic.sub_category_id = params[:sub_category_id]
+    @a = @topic.posts.build
+    @discussion_categories = DiscussionCategory.all_active
+    render :action=>"postadd" ,:layout=>false
+  end
+  
+  
+  def create_topic
+    
+    @topic = Topic.new(params[:topic])
+    @topic.user_id = current_user.id
+    @topic.status = 1
+    @topic.save
+    
+    render :update do |page|
+      if @topic.errors.empty?
+        @topic.user.add_points(TOPIC_ADDITION,"added topic",@topic)
+        flash[:notice] = "Topic added successfully"
+        page.redirect_to topic_link_path @topic.permalink
+      else
+        page <<  "show_notice('Errors occured while adding Topic','error')"
+        @topic.attribute_names.each do |n|
+          error_msg = error_message_on( 'topic', n )
+          error_msg = error_msg.to_s.gsub("<div class=\"formError\">","")
+          error_msg = error_msg.to_s.gsub("</div>","")
+          page << "displayError(\"topic\",\"#{n}\",\"#{n.capitalize.gsub('_',' ').gsub('id','') + ' ' +error_msg}\");"  if @topic.errors.on(n)       
+        end
+        
+        page << "displayError(\"topic\",\"new_post_attributes__body\",\"Post can't be blank\")" if params["topic"]["new_post_attributes"][0]["body"].strip == ""
+        
+        
+      end
+    end
+  end
+  
+  
+  def topic
+    @group_discussion = "true"
+    begin
+      @topic = Topic.find_details(params[:permalink])
+      @topic.update_count
+      @post = @topic.posts.new
+      @title = @topic.title unless @topic.title.nil?
+      @description = ''
+      @image_src = ''
+      
+      
+      # group
+      @sub_category = @topic.sub_category
+      @group = Group.find_by_name(@sub_category.name,:include => :users)
+      members = @group.group_memberships.collect(&:user_id)
+      @owner = User.find(@group.owner_id)
+      @group_users = @group.users
+      @offset = 0
+      @group_activities = ActivityStream.paginate_recent_objects(@group, activity_stream_location,@offset)       
+      @group_topic = @topic
+      
+      @group_users_list = @group.users.collect(&:id) unless @group.nil?
+      
+      @recent_post = Design.group_member_design(members) unless @group_users_list.blank?
+    rescue
+      flash[:notice] = "This topic does not exist."
+      redirect_to :action => :index
+    end
+    
+  end
+  
+  def create_post
+    if params[:post][:status]
+      params[:post][:body] = params[:post][:status]
+      params[:post][:status] = 1
+    end
+    if params[:post][:created_at]
+      params[:post][:body] = params[:post][:created_at]
+      params[:post][:created_at] = nil
+    end           
+    @post = Post.new(params[:post])
+    @post.user_id = current_user.id
+    @post.status = 1
+    @post.save
+    
+    render :update do |page|
+      if @post.errors.empty?
+        @post.user.add_points(POSTING_REPLY, "posted_reply",@post)
+        flash[:notice] = "Post added successfully. You can edit this post for next 5 minutes."
+        page.redirect_to :action => :topic,:permalink => @post.topic.permalink
+#          page.reload
+#          page.select('.inputtxt').val('')          
+      else
+        page <<  "show_notice('Errors occured while adding Post, pleaea add post text','error')"
+      end
+    end
+  end
+  
+  
+  def edit
+    @group = Group.find(params[:id])
+     session[:grp_photo_error] = nil            
+    if logged_in?
+      if current_user != @group.owner
+        flash[:error] = "Sorry, As you dont own this group you cant edit this group."
+        redirect_to "/groups"
+      end
+    else
+      flash[:error] = "Please login first"
+      redirect_to "/"
+    end
+  end
+  
+  def update
+    if params[:commit].eql?('Cancel')    
+      redirect_to my_groups_user_path(current_user)
+    else
+      @group = Group.find(params[:id])
+      @group.update_attributes(params[:group])
+        if params[:photo].blank?
+           @group.pictures << @group.pictures.last
+        else
+           @group.pictures.build(:photo => params[:photo])
+        end      
+       @group.save      
+       respond_to do |format|
+        if @group.errors.empty?
+          flash[:notice] = 'Group has been successfully updated.'
+          format.html { redirect_to permalink_url(@group.permalink,:update => 1) }
+          format.xml  { head :ok }
+        else
+           if  @group.errors.on('pictures')
+            session[:grp_photo_error] = "Please upload valid image file"
+          else
+            session[:grp_photo_error] = nil
+          end                  
+          format.html { render :action => "edit" }
+          format.xml  { render :xml => @group.errors, :status => :unprocessable_entity }
+        end
+      end    
+    end
+  end
+  
+  def join 
+    @group = Group.find(params[:id])
+    @group_owner = @group.owner
+    exist_member = GroupMembership.find_by_user_id_and_group_id(current_user.id,@group.id)
+    if exist_member.nil?
+       GroupMembership.create(:user_id => current_user.id, :group_id => @group.id)
+    end
+    respond_to do |format|
+      format.html {
+        flash[:notice] = "Successfully joined this group."
+        #        redirect_to groups_path
+        redirect_to permalink_url(@group.permalink)
+      }
+    end
+  end
+  
+  def unjoin
+    @group = Group.find(params[:id])    
+    delete_group = GroupMembership.find_by_user_id_and_group_id(current_user.id,params[:id])
+    delete_group.destroy
+    respond_to do |format|
+      format.html {
+        flash[:notice] = "Successfully unjoined this group."
+        redirect_to groups_path
+      }
+    end
+  end
+  
+  def filter_groups   
+    if params[:group_type][:filter].empty?
+      @groups = Group.find(:all)
+    else
+      @groups = Group.find_all_by_group_type( params[:group_type][:filter]  )
+    end
+    render :partial => "filtered_groups"
+  end
+  
+  def get_more_activities  
+    @offset =  params[:offset].to_i+PER_PAGE
+    @group = Group.find(params[:group_id])    
+    @group_activities = ActivityStream.paginate_recent_objects(@group, activity_stream_location,@offset)     
+    respond_to do |format|
+      format.html
+      format.js {
+        render :update do |page| 
+          unless @group_activities.size == 0
+            page.insert_html :bottom, 'activities', :partial => 'more_activities'
+          else
+            page.insert_html :bottom, 'activities', 'No more activities are there'
+          end
+        end
+      }
+    end 
+  end  
+  
+  def members
+    @search_text = params[:search] unless params[:search].nil?     
+    @group = Group.find(params[:id])
+    if @search_text
+      @members = User.search_group_members(@search_text,@group.id, params[:page]||1)
+    else
+      @members = User.members(@group.id, params[:page]||1)
+    end
+    @no_of_pages = (@members.total_entries.to_f / USERS_PER_PAGE).ceil    
+  end
+  
+  def delete_post
+    post = Post.find_by_id(params[:id])
+    post.destroy
+    topic = Topic.find_by_id(params[:topic_id])
+    render :update do |page|
+      msg = "show_notice('Post has been successfully deleted','success')"
+      page <<  "$('#post_#{post.id}').slideUp(1000).remove();"
+      page.replace_html "post_count", "#{topic.posts.count}"
+      page.select('.user_post').html(post.user.posts.count)
+      page << msg
+    end
+  end
+  
+  def delete
+    @group = Group.find(params[:id])    
+    if logged_in?    
+      if current_user == @group.owner
+        subcat = SubCategory.find_by_name(@group.name)
+        unless subcat.nil?
+            subcat.all_topics.each{ |t| t.all_posts.each{|p| p.destroy} }     
+            subcat.all_topics.each{ |t| t.destroy}      
+            subcat.destroy
+        end        
+        @group.destroy
+        respond_to do |format|
+          format.html {
+            flash[:notice] = "You have successfully deleted group."
+            redirect_to groups_path
+          }
+        end
+      else
+        flash[:error] = "Sorry, As you dont own this group you cant delete this group."
+        redirect_to "/groups"
+      end
+    else
+      flash[:error] = "Please login first"
+      redirect_to "/"
+    end   
+  end
+  
+  def edit_post
+    @post = Post.find(params[:id])
+    @topic = Topic.find(params[:topic_id])
+    render :update do |page|
+      page.replace_html "#{@post.id}_post", :partial => 'edit_post'
+     end
+  end  
+  
+  def update_post
+#    @suppress_activity_stream = true
+    @post = Post.find(params[:id])
+    if (Time.now - @post.updated_at).to_i < 300    
+            @post.update_attributes(:body => params[:post][:body])
+            @topic = @post.topic       
+        #    @topic_owner = @topic.user    
+              if @post.errors.empty?
+        #        @suppress_activity_stream = false
+        #        @post.user.add_points(POSTING_REPLY, "posted_reply",@post)
+                flash[:notice] = "Post edited successfully. You can still edit this post for next 5 minutes."
+                render :update do |page|          
+                  page.redirect_to :action => :topic,:permalink => @topic.permalink
+#                     page.reload
+#                     page.select('.inputtxt').val('')             
+                end
+              else
+                render :update do |page|
+                  page <<  "show_notice('Errors occured while adding Post, please add post text','error')"
+               end
+            end
+    else
+         render :update do |page|
+             page <<  "show_notice('Sorry, you can edit post only for 5 minutes after posting it.','error')"
+          end            
+    end
+  end    
+  
+  private
+  
+  def check_user_authority
+    if logged_in?
+      unless current_user.expertise_points >= 4000
+        flash[:error] = "Sorry, You don't have access to this page"
+        redirect_to "/groups"
+      end
+    else
+      flash[:error] = "Please login first"
+      redirect_to "/"
+    end
+  end
+  
+  def common_objects
+    @forum_participants = User.forum_participants(6)
+    when_fragment_expired 'popular_groups_cache', Time.parse(5.minute.from_now.to_s) do
+      p "popular-------------group------------cache------------"
+      @active_groups = Group.active_groups(3)
+    end
+  end
+end

@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <body style="font-family: arial,helvetica,clean,sans-serif; background: #ececec; font-size: 14px; border: 5px solid #f02b28; width: 750px; color: #666666">
+    <table style="background: #ffffff; padding: 6px; width: 750px;">
+      <tr>
+        <td colspan="2">
+          <%if @news %>
+          <%else%>
+            Dear <b><%=@user_name%></b>,
+          <%end%>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" style="padding: 10px;">
+          <%=@message.gsub("{name}",@user_name)%>
+        </td>
+      </tr>
+      <tr>
+        <td>
+					Team, <br/>
+          <b>SolidWorks India Online Community</b>
+        </td>
+        <td style="float: right; padding-right: 5px;">
+          <img src="http://fans.solidworks.in/images/logo_solidworks.gif" alt="SolidWorks India Online Community"/>
+        </td>
+      </tr>
+    </table>
+    <table style="background: #fff0b6; padding: 0px; width: 750px; border-top: solid 1px #60bc01;">
+      <tr>
+        <td style="font-size: 12px;	font-weight: normal; background:#fff0b6; padding: 5px;">
+          If this mail came in your junk/spam folder, please add no-reply@solidworks.com
+          in to your address book to make sure future emails arrive in your inbox.
+          <%if @news %>
+            &nbsp; <a href="<%=h @unsubscribe_url %>">Click here</a>  to UnSubscribe.
+            &nbsp; To Subscribe again <a href="<%=h @subscribe_url %>">Click here</a>.
+          <%end%>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

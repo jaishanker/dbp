@@ -1,0 +1,54 @@
+    <div class="clear">
+    </div>
+    <!-- Container Start -->
+    <div class="content">
+    	<!-- Left Col Start -->
+      <div class="c1">
+        <div class="clear"></div>
+            <!-- Blue Box start -->
+            <div class="Blue4pxbox"><code>$(this).corner();</code>
+                <div class="whiteBoxContent">
+                <!-- Group Start -->
+                    <div class="pageheading">
+                      <p class="c1 head14">Discussion Lounge Activities</p>
+                      <p class="c2"></p>
+                    </div>
+                <div class="brdBot01"></div>
+                <!-- Form Start -->
+                <!-- Three col comment start -->
+            <div class="group"  id="activities">
+                <!--<div class="threCol">
+                        <div class="head">Recent Activities</div>
+                </div>-->
+                  <%unless @activities.empty?%>
+                    <%= render :partial => 'activity_streams/activity_stream', :collection => @activities%>
+                    <div id="more_activities_link">
+                          <p class="spacer03">    
+                             <span class="grnbtn02">
+                                 <%= link_to_remote "Show More",    :url => { :controller => "discussions", :action => "get_more_activities", :offset => @offset }  , :before => "$('#spinner_show').show()", :complete => "destroyDiv('more_activities_link')"%>
+                            </span>
+                            <span> <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner_show",:style=>"display:none; width: 16px; margin-top: 0px;" ) %> </span>
+                          </p>
+                     </div>
+                  <%else%>
+                    Sorry, no discussion lounge activity yet
+                  <%end%>
+            </div>
+                <!-- Form End -->
+                <div class="clear"></div>
+
+                <!-- Group End -->
+
+                </div>
+            </div>
+            <!-- Blue Box end -->
+			<div class="spacer"></div>
+        </div>
+    	<!-- Left Col End -->
+    	<!-- Right Col Start -->
+          <%=render :partial=>"home/recent_right_col"%>
+    	<!-- Right Col End -->
+    </div>
+    <!-- Container End -->
+  
+

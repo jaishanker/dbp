@@ -1,0 +1,150 @@
+<!-- Group Start --> 
+<!-- Section Head start -->
+        <div class="pageheading">
+          <div class="c1 head14">
+            <%if current_user.id == @user.id%>
+            My Profile Lounge
+            <%else%>
+            <%= h @user.login.capitalize%>'s Profile Lounge
+            <%end%>
+          </div>
+          <div class="c5 total">
+            <!-- search -->
+          </div>
+        </div>
+        <p class="clear brdBot01"></p>
+         <div class="clear">&nbsp;</div>
+        <!-- Section Head End -->
+        <!-- wvoinwvoinwio -->
+          <a name="descom"></a>
+          <!-- Heading Start -->
+          <div class="pageheading">
+              <div id = "design_comment" style ="display:block;">
+              <div id ="ComContent">
+                <%if current_user.id != @user.id%>
+                  <div class="brd">
+                    <% form_for("",:url=>{:controller=>'users',:action=>'shout',:id=>@user.id} ,:html => {:multipart => true}) do|f| %>
+                      <%= text_area_tag 'shout_text', nil, :class => 'inputtxt' %>
+                      <%= submit_tag "Add post for #{@user.first_name}" ,:class=>'grnbtn' %>
+                      <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner",:style=>"display:none; width: 20px; margin-top: 0px;" ) %>
+                    <% end %>
+                  </div>
+                <%end%>
+              </div>
+            </div>
+            <div class="clear">&nbsp;</div>
+        <p class="clear brdBot01">
+          </p>
+            <div class="clear">&nbsp;</div>
+            <p class="c1 head12">
+              <%if @user_shouts.empty?%>
+              <%message = "Post"%>
+              <%else%>
+               <%message = "Post's"%>
+              <%end%>
+
+              <%if @user == current_user%>
+                <%=message%> on My wall
+              <%else%>
+                <%=message%> on <%=@user.first_name%>'s wall
+              <%end%>
+             
+            </p>
+             
+            <p class="c3">
+              <span id="pagination" class="pagination01"></span>
+            </p>
+            <p class="c2 total" id="total_shouts">
+              Total post :<%= @user_shouts_count %>
+            </p>
+          </div>
+          <p class="clear brdBot01">
+          </p>
+          <div class="clear">&nbsp;</div>
+          <div id="shouts_comments">
+            <%unless @user_shouts.empty? %>
+              <%=render :partial=>"profiles/user_shout", :collection => @user_shouts %>
+              <div id="more_shouts_link">
+                <p class="spacer03">
+                  <span class="grnbtn02"><%= link_to_remote "Show More",    :url => { :action => "show_more_shouts",:id =>@user.id,  :offset => @offset }, :before => "$('#spinner_show2').show()", :complete => "destroyDiv('more_shouts_link')" %></span>
+                  <span><%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner_show2",:style=>"display:none; width: 16px; margin-top: 0px;" ) %></span>
+                </p>
+              </div>
+            <%else %>
+              No post on wall yet. Be the first to post! <%end %>
+          </div>
+          <p class="clear brdBot01">
+          </p>
+          
+        <div class="group" id="activities">
+          <p class="headsub">Recent Activities</p>
+          <p class="clear brdBot01"></p>
+          <%unless @activities.empty?%>
+            <%= render :partial => 'activity_streams/activity_stream', :collection => @activities%>
+            <div id="more_activities_link">
+              <p class="spacer03">
+                     <span class="grnbtn02">
+                         <%= link_to_remote "Click for more Activities",    :url => { :action => "get_more_activities", :offset => @offset, :user_id => @user.id }, :before => "$('#spinner_show').show()", :complete => "destroyDiv('more_activities_link')"%>
+                    </span>
+                    <span> <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner_show",:style=>"display:none; width: 16px; margin-top: 0px;" ) %> </span>
+               </p>
+            </div>
+          <%else%>
+            Sorry, no recent activities
+          <%end%>
+        </div>
+        <div class="clear">&nbsp;</div>
+
+        <%if check_access(@user, 'followings')%>
+            <!-- Follower Start -->
+            <div class="pageheading">
+              <p class="c1 head12"> People<%if @user == current_user%> I  follow <%else%> <%= @user.login.capitalize%> follow's<%end%></p>
+              <p class="c4"><a href="javascript:void(0)"  id="followings_list">Total : <%=@user.following_by_type('User').size %></a></p>
+            </div>
+            <div class="brdBot01"></div>
+            <!-- Two col comment start -->
+            <div class="follow" id="followees">
+              <%unless @followees.empty?%>
+                <%= render :partial => "following", :collection => @followees%>
+                <div id="more_followees_link">
+                  <p class="spacer03"><span class="grnbtn02">
+                      <%if logged_in?%>
+                        <%= link_to_remote "Click for more",    :url => { :action => "get_more_followees", :offset => @offset, :user_id => @user.id }, :before => "$('#spinner_show1').show()", :complete => "destroyDiv('more_followees_link')"%></span>
+                    <span> <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner_show1",:style=>"display:none; width: 16px; margin-top: 0px;" ) %> </span>
+                    </p>
+                    <%end%>
+                </div>
+              <%else%>
+                You are not following anybody yet
+              <%end%>
+            </div>
+        <%end%>
+        
+        <%if check_access(@user, 'followers')%>
+            <!-- Two col comment end -->
+            <div class="spacer01"><a name="2"></a></div>
+            <div class="pageheading">
+              <p class="c1 head12"><%if @user == current_user%>My <%else%> <%= @user.login.capitalize%>'s <%end%>Followers</p>
+              <p class="c4"><a href="#">Total : <%= @user.followers_count%></a><a href="javascript:void(0)" id="followers_list"></a></p>
+            </div>
+            <div class="brdBot01"></div>
+            <!-- Two col comment start -->
+            <div class="followers" id ="followers">
+              <%unless @followers.empty?%>
+                <%= render :partial => "follower", :collection => @followers%>
+                <div id="more_followers_link">
+                  <%if logged_in?%>
+                    <p class="spacer03"><span class="grnbtn02">
+                      <%= link_to_remote "Click for more",    :url => { :action => "get_more_followers", :offset => @offset, :user_id => @user.id }, :before => "$('#spinner_show2').show()", :complete => "destroyDiv('more_followers_link')"%></span>
+                    <span> <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner_show2",:style=>"display:none; width: 16px; margin-top: 0px;" ) %> </span>
+                    </p>
+                  <%end%>
+                </div>
+              <%else%>
+                You dont have any followers yet
+              <%end%>
+            </div>
+         <%end%>
+        <!-- Two col comment end -->
+        <div class="clear"></div>
+        <!-- Follower End -->

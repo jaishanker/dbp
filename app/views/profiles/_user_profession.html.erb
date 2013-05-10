@@ -1,0 +1,49 @@
+<% @user_profession = user_profession %>             
+<div class="user_profession">
+    <% fields_for_user_profession(user_profession) do |form| %> 
+                  <div class="formrow">
+                  <p class="c1">Employer :</p>
+                  <p class="c2"><%=form.text_field :employer, :class=> "proinput Employer" %></p>
+              </div>
+                  <div class="formrow">
+                  <p class="c1">Position :</p>
+                  <p class="c2"><%=form.text_field :position, :class=> "proinput Position" %></p>
+              </div>
+
+              <div class="formrow">
+                  <p class="c1">Industry :</p>
+                  <p class="c2"><%=form.text_field :industry, :class=> "proinput Industry" %></p>
+              </div>
+
+                  <div class="formrow">
+                  <p class="c1">Duration :</p>
+                  <p class="c2"> 
+                       <%unless user_profession.nil?%>
+                           <%duration_years = get_years(user_profession.duration)%>           
+                            <%if duration_years == "More than 20"%>
+                              <% duration_years = 21%>
+                            <%end%>                         
+                            <%#selected_year = get_years(user_profession.duration)%> 
+                            <%=form.select("duration", YEARS.sort{|a,b| a[1]<=>b[1]}, {:selected => duration_years} ,:class => "yearselect Duration" ) %>
+                            <%=form.select("duration_months", MONTHS.sort{|a,b| a[1]<=>b[1]},{:selected => get_months(user_profession.duration)},:class => "monthselect Duration" ) %>
+                       <%else%>
+                            <%=form.select("duration", YEARS.sort{|a,b| a[1]<=>b[1]}, {} ,:class => "yearselect Duration" ) %>
+                            <%=form.select("duration_months", MONTHS.sort{|a,b| a[1]<=>b[1]},{},:class => "monthselect Duration" ) %>                         
+                       <%end%>        
+                       <span></span> 
+                       <!--   <select name="" class="yearselect">
+                          <option>Years</option>
+                          <option>10</option>
+                          <option>09</option>
+                      </select>
+                          <select name="" class="monthselect">
+                          <option>Months</option>
+                          <option>Jan</option>
+                          <option>Feb</option>
+                      </select> -->
+                  </p>
+              </div>
+                 <%=form.hidden_field :user_id, :value => @user.id%> 
+      <div class="frm_brd"></div>
+      <%end%>
+    </div>

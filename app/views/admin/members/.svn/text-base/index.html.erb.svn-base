@@ -1,0 +1,187 @@
+<!-- Container Start -->
+<div class="content">
+	 <%= render :partial => "top_nav" %>
+    <h1>User - Dashboard</h1>
+    <form id="form1" name="form1" method="get" action="/admin/members">
+        <table border="0" cellpadding="5" cellspacing="0" id="mytable01">
+            <tr>
+                <td>
+                    Total users
+                </td>
+                <td>
+                    <%=User.count%>
+                </td>
+            </tr>
+            <tr>
+                <td width="15%">
+                    Search User
+                </td>
+                <td >
+                    <input type="text" name="alpha" id="textfield" value = "<%= h params[:alpha] if params[:commit] %>" class="inputtxt01" /> <%= submit_tag "Search",:class => "grnbtn",:style => "margin-top:0px;" %>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Search  User by
+                </td>
+                <td>
+                    <% alpha = 'A' %>
+                    <% 26.times do %>
+                    <%= link_to_unless params[:alpha] == alpha,alpha,:controller => "/admin/members",:action => "index",:alpha => alpha %>
+                    <% alpha = alpha.next %>
+                    <% end %>
+                </td>
+            </tr>
+			<!-- 
+            <tr>
+                <td>
+                    Filter Users by
+                </td>
+                <td>
+                    <select name="select" id="select" class="select01">
+                        <option value="Joining Date">Joining Date</option>
+                        <option value="Status">Status</option>
+                        <option value="Belt">Belt</option>
+                        <option value="Designs Uploaded">Designs Uploaded</option>
+                        <option value="Materails Requested">Materails Requested</option>
+                        <option value="Contest Participated / Winner">Contest Participated / Winner</option>
+                        <option value="Points Earned">Points Earned</option>
+                        <option value="Points Redeemed">Points Redeemed</option>
+                        <option value="Abuse if Any">Abuse if Any</option>
+                        <option value="Member of Groups">Member of Groups</option>
+                    </select>
+                    For the 
+                    <select name="select2" id="select2" class="select01">
+                        <option>Period of</option>
+                        <option value="Today">Today</option>
+                        <option value="Last 1 Day">Last 1 Day</option>
+                        <option value="Last 2 Days">Last 2 Days</option>
+                        <option value="Last 3 Days">Last 3 Days</option>
+                        <option value="Last 4 Days">Last 4 Days</option>
+                        <option value="Last 5 Days">Last 5 Days</option>
+                        <option value="Last 6 Days">Last 6 Days</option>
+                        <option value="1 Week">1 Week</option>
+                        <option value="2 Weeks">2 Weeks</option>
+                        <option value="3 Weeks">3 Weeks</option>
+                        <option value="4 Weeks">4 Weeks</option>
+                        <option value="1 Month">1 Month</option>
+                        <option value="2 Months">2 Months</option>
+                        <option value="3 Months">3 Months</option>
+                        <option value="6 Months">6 Months</option>
+                        <option value="9 Months">9 Months</option>
+                        <option value="1 Year">1 Year</option>
+                    </select>
+                </td>
+            </tr>
+			-->
+        </table>
+    </form>
+   
+    <p style="float:right;">
+        <%= link_to "Download Report",:controller => "admin/members",:action => "download" %>
+    </p>
+    <br/>
+    <br/>
+    <p class = "clear"/>
+    <div id="chartdiv" align="center">
+    </div>
+    <div class="demo_jui">
+        <table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
+            <thead>
+                <tr class="dataTable">
+                    <th>
+                        User Name
+                    </th>
+                    <th>
+                        Joining Date
+                    </th>
+                    <th>
+                        Status 
+                    </th>
+                    <th>
+                        Belt
+                    </th>
+                    <th>
+                        Designs Uploaded
+                    </th>
+                    <th>
+                        Materials Requested
+                    </th>
+                    <th>
+                        Points Earned
+                    </th>
+                    <th>
+                        Following 
+                    </th>
+                    <th>
+                        Followers
+                    </th>
+                    <th>
+                        Member of Groups 
+                    </th>
+                    <th>
+                        Total Posts 
+                    </th>
+                    <th>
+                        Points Redeemed
+                    </th>
+                    <th>
+                        Abuse if Any
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <% unless @user.length == 0 %>
+                <% @user.each do |l| %>
+                <tr class="dataTable">
+                    <td>
+                        <%= link_to  get_name(l.login) ,:controller=>"admin/members", :action => :report,:id => l.id %>
+                    </td>
+                    <td>
+                        <%= l.created_at.strftime("%d %b %Y") %>
+                    </td>
+                    <td>
+                        <%= get_user_status(l.status) %>
+                    </td>
+                    <td align="center">
+                        <span class ="<%= get_class(l.expertise_points) %>"></span>
+                    </td>
+                    <td align="center">
+                        <%= l.designs.length %>
+                    </td>
+                    <td>
+                        <%= l.learning_requests.length %>
+                    </td>
+                    <td>
+                        <%= l.points.nil? ? 0 : l.points %>
+                    </td>
+                    <td>
+                        <%= l.followings.length %>
+                    </td>
+                    <td>
+                        <%= l.followers.length %>
+                    </td>
+                    <td>
+                        <%= l.groups.length %>
+                    </td>
+                    <td>
+                        <%= l.posts.length %>
+                    </td>
+                    <td>
+                       <%= @redeem_points[l.id] || 0 %>
+                    </td>
+                    <td>
+                        <%= l.report_abuses.length %>
+                    </td>
+                </tr>
+                <% end %>
+                <% end %>
+            </tbody>
+        </table>
+        <br/>
+        <div style ="float:right">
+            <%= will_paginate @user %>
+        </div>
+    </div>
+</div>
+<!-- Container End -->

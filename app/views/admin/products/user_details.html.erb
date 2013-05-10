@@ -1,0 +1,75 @@
+<div class="newuser02">
+    <p class="c1">
+        Name:
+    </p>
+    <p class="c2 group_detail">
+        <%=link_to get_name(@redemption_user_info.user.first_name.to_s+" "+@redemption_user_info.user.last_name.to_s) ,my_page_path(:user_id => @redemption_user_info.user.id), :popup => true%>
+    </p>
+    <p class="spacer04">
+    </p>
+
+    <p class="c1">
+        Address:
+    </p>
+    <p class="c2">
+        <%= @redemption_user_info.address_line1 %>
+        <br/>
+        <%= @redemption_user_info.address_line2 %>
+    </p>
+    <p class="spacer04">
+    </p>
+
+    <p class="c1">
+        Country:
+    </p>
+    <p class="c2">
+        <%= @redemption_user_info.country %>
+    </p>
+    <p class="spacer04">
+    </p>
+
+    <p class="c1">
+        State:
+    </p>
+    <p class="c2">
+         <%= @redemption_user_info.state %>
+    </p>
+    <p class="spacer04">
+    </p>  
+
+    <p class="c1">
+        City:
+    </p>
+    <p class="c2">
+         <%= @redemption_user_info.city %>
+    </p>
+    <p class="spacer04">
+    </p>  
+
+    <p class="c1">
+        Pincode:
+    </p>
+    <p class="c2">
+         <%= @redemption_user_info.pincode %>
+    </p>
+    <p class="spacer04">
+    </p>  
+
+    <p class="c1">
+        Telephone No:
+    </p>
+    <p class="c2">
+         <%= @redemption_user_info.tel_no %>
+    </p>
+    <p class="spacer04">
+    </p>  
+    <p class="c1">
+        Mobile No:
+    </p>
+    <p class="c2">
+         <%= @redemption_user_info.mob_no %>
+    </p>
+    <p class="spacer04">
+    </p>  
+ 
+</div>

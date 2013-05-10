@@ -1,0 +1,49 @@
+<div class="spacer01"></div>
+    <h1>Index page Content Positions</h1>
+    <h4>Drag your mouse to change the positions of topic</h4>
+    <form id="form1" name="form1" method="post" action="">
+    <table border="0" cellpadding="5" cellspacing="0" id="dragtbl">
+      <thead>
+      <tr>
+        <th width="12%">Positions</th>
+        <th width="19%"> Topic</th>
+        <th width="69%">Change Status</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr class="row1">
+        <td>1</td>
+        <td>Design Central</td>
+        <td>
+          <label><input type="radio" name="designCentral" value="enable" id="designCentral_0" />Enable</label>
+          <label><input type="radio" name="designCentral" value="disable" id="designCentral_1" />Disable</label>
+        </td>
+      </tr>
+      <tr class="row2">
+        <td>2</td>
+        <td>Discussion Lounge</td>
+        <td>
+          <label><input type="radio" name="Discussion" value="enable" id="Discussion_0" />Enable</label>
+          <label><input type="radio" name="Discussion" value="disable" id="Discussion_1" />Disable</label>
+        </td>
+      </tr>
+      <tr class="row1">
+        <td>3</td>
+        <td>Learning Center</td>
+        <td>
+          <label><input type="radio" name="Learning" value="enable" id="Learning_0" />Enable</label>
+          <label><input type="radio" name="Learning" value="disable" id="Learning_1" />Disable</label>
+        </td>
+      </tr>
+      <tr class="row2">
+        <td>4</td>
+        <td>Blog</td>
+        <td>
+          <label><input type="radio" name="Blog" value="enable" id="Blog_0" />Enable</label>
+          <label><input type="radio" name="Blog" value="disable" id="Blog_1" />Disable</label>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <div class="buton"><input type="submit" name="button" id="button" value="Save" class="grnbtn02" /> <input type="reset" name="button2" id="button2" value="Reset" class="grnbtn02" /></div>
+    </form>

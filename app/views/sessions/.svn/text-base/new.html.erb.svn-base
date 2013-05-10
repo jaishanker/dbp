@@ -1,0 +1,20 @@
+<div style = "margin:30px">
+
+
+<% form_remote_tag :url => session_path, :before => "$('#spinner10').show();",:complete => "$('#spinner10').hide();" do -%>
+<p class = "aBlack"><%= label_tag 'login' %></p>
+<p class = "c1"><%= text_field_tag 'username', @login,:class => "inputtxt01" %></p>
+<br/>
+<p  class = "aBlack"><%= label_tag 'password' %></p>
+<p class = "c2"><%= password_field_tag 'password', nil,:class => "inputtxt01" %></p>
+<%= hidden_field_tag 'event_id', @event_id  %>
+<!-- Uncomment this if you want this functionality
+<p><%= label_tag 'remember_me', 'Remember me' %>
+<%= check_box_tag 'remember_me', '1', @remember_me %></p>
+-->
+
+<p><%= submit_tag 'Log in',:class => "grnbtn" %>
+<%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner10",:style=>"display:none; width: 20px; margin-top: 0px;" ) %>
+</p>
+<% end -%>
+</div>

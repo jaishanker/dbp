@@ -1,0 +1,32 @@
+<%if !@groups.empty?%>
+  <%for group in @groups%>
+    <!-- Four col comment start -->                   
+    <div class="group">
+      <div class="fourCol">
+        <div class="c1">
+          <!-- <img src="../images/group01.gif" width="125" height="80" alt="DWG Editor" />-->
+                                          <%= get_image(group,'groups','small')%>
+        </div>
+        <div class="c2">
+          <p class="cc2">Name:</p>
+          <p class="cc2">Type:</p>
+          <p class="cc2">Members:</p>
+        </div>
+        <div class="c3" style="width:37%">
+          <p class="cc3 head"><%=link_to group.name, permalink_url(group.permalink) %></p>
+            <p class="cc3"><%= !group.type.nil? ? group.type : "<br/>"%></p>
+            <p class="cc3"><a href="#"><%=number_with_delimiter(group.users.size)%> members</a></p>
+            </div>
+            <div class="c4" style="width:26%">
+              <%unless group.users.include?(current_user)%><%= link_to "Join Group", join_group_path(:id=>group.id), :class => "grnbtn"%>
+                <%else%>
+                  You are Member <%= link_to "Click to unjoin", unjoin_group_path(group), :class => ""%>
+                <%end%>
+              </div>
+            </div>
+          </div>                   
+          <!-- Four col comment end -->
+         <%end%>
+       <%else%>
+        No groups found.
+      <%end%>

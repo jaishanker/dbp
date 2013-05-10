@@ -1,0 +1,97 @@
+<div class="newuser">
+    <p class="c1">
+        Name:
+    </p>
+    <p class="c2 group_detail">
+        <%= link_to @group.name, permalink_url(@group.permalink), :popup => true  %>
+    </p>
+    <p class="spacer04">
+    </p>
+
+    <p class="c1">
+        Type:
+    </p>
+    <p class="c2">
+        <%= @group.group_type %>
+    </p>
+    <p class="spacer04">
+    </p>
+
+    <p class="c1">
+        Category:
+    </p>
+    <p class="c2">
+        <%category = GroupCategory.find(@group.category_id)%>
+        <%= category.name %>
+    </p>
+    <p class="spacer04">
+    </p>
+
+    <p class="c1">
+        Members:
+    </p>
+    <p class="c2 group_detail">
+            <%if @group.users.size == 0%>
+                     None
+            <%else%>
+                    <%=link_to number_with_delimiter(@group.users.size).to_s+" members",members_group_path(@group), :popup => true%>
+            <%end%>
+    </p>
+    <p class="spacer04">
+    </p>  
+
+    <p class="c1">
+        Owner:
+    </p>
+    <p class="c2 group_detail">
+        <%= link_to @group.owner.first_name.to_s+" "+@group.owner.last_name.to_s, my_page_path(:user_id => @group.owner.id), :class => "archive", :popup => true %>
+    </p>
+    <p class="spacer04">
+    </p>    
+
+
+    <p class="c1">
+        Country:
+    </p>
+    <p class="c2">
+        <%= @group.country %>
+    </p>
+    <p class="spacer04">
+    </p>       
+
+    <p class="c1">
+        City/Town:
+    </p>
+    <p class="c2">
+        <%= @group.city %>
+    </p>
+    <p class="spacer04">
+    </p>      
+
+    <p class="c1">
+        Street Address:
+    </p>
+    <p class="c2">
+        <%= @group.street_adds %>
+    </p>
+    <p class="spacer04">
+    </p>     
+
+    <p class="c1">
+        Description:
+    </p>
+    <p class="c2">
+        <%= @group.description %>
+    </p>
+    <p class="spacer04">
+    </p>    
+
+    <p class="c1">
+        Recent News:
+    </p>
+    <p class="c2">
+        <%= @group.recent_news %>
+    </p>
+    <p class="spacer04">
+    </p>      
+</div>

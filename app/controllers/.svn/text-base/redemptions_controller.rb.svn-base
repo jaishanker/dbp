@@ -1,0 +1,66 @@
+class RedemptionsController < ApplicationController
+  def list_products
+    @products = Product.available_products(params[:page]||1) 
+    @user_products =Product. get_user_products(current_user.id)
+    @no_of_pages = (@products.total_entries.to_f / PER_PAGE).ceil
+  end
+
+  def redeem
+      existing_adds = RedeemUserInfo.find_all_by_user_id(current_user.id)
+      unless existing_adds.empty?
+            @redeem_user_info = existing_adds.last
+      else
+            @redeem_user_info = RedeemUserInfo.new
+      end
+      @product  = Product.find(params[:id])
+      render :layout => false
+  end
+  
+  def redeem_points
+    product = Product.find(params[:product_id])
+    if params[:redeem_user_info][:shipment_type] == 0 and  current_user.points.to_i < product.points_required.to_i + product.shipment_cost.to_i
+      message = "show_notice('This product can not be shifted to your shiment address as you dont have enough points.','error')"
+      render :update do |page|
+        page << message
+      end      
+    else
+          redemption =  Redemption.new(:user_id => current_user.id, :product_id => product.id,:points => product.points_required, :approved => 0, :shifted => 0)
+          redemption.save
+          redeem_user_info = RedeemUserInfo.new(params[:redeem_user_info])
+          redeem_user_info.redemption_id = redemption.id
+          redeem_user_info.user_id = current_user.id
+          if redeem_user_info.save && redeem_user_info.errors.empty?
+              flash[:notice] = "Your request for redemption has been sent to admin for approval."
+              UserMailer.deliver_redemption_notification(current_user,product)
+              UserMailer.deliver_redemption_notification_admin(current_user,product)          
+    #          product.products_available -= 1
+    #          product.save
+    #          current_user.points -= product.points_required
+    #          current_user.save          
+              render :update do |page|
+                page.redirect_to :controller => "redemptions", :action => "list_products"
+              end          
+          else
+            redemption.destroy
+          render :update do |page|
+              #          page << " $('#agree_error'  ).html('');"
+              redeem_user_info.attribute_names.each do |n|
+                error_msg = error_message_on( redeem_user_info, n )
+                error_msg = error_msg.to_s.gsub("<div class=\"formError\">","")
+                error_msg = error_msg.to_s.gsub("</div>","")
+                page << "displayError(\"redeem_user_info\",\"#{n}\",\"#{error_msg}\");"  if redeem_user_info.errors.on(n)       
+              end
+           end
+          end
+    end
+  end
+  
+  def get_states
+    @changed_country = params[:country]
+    if COUNTRIES1.include?(params[:country])
+        render :partial => "state_select" 
+    else
+        render :partial => "state_text" 
+    end
+  end
+end

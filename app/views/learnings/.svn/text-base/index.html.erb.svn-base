@@ -1,0 +1,187 @@
+<!-- Profile File Include --><%#= javascript_include_tag "Profile" %>
+<div class="clear">
+</div>
+<div class="content">
+    <!-- Left Col Start -->
+    <div class="c1">
+        <!-- Set Priority File Include --><%#= javascript_include_tag "SetPriority" %>
+        <div class="clear">
+        </div>
+        <!-- Blue Box start --><!-- Blue Box start -->
+        <div class="Blue4pxbox">
+            <code>
+                $(this).corner();
+            </code>
+            <!--learning Start -->
+            <div class="whiteBoxContent">
+                <%= image_tag "banner-learning.jpg",:style => "margin:-10px;" %>
+                <div class="clear spacer05"></div>
+                    <!-- Section Head start -->
+                    <div class="pageheading">
+                        <div class="c1 head14">
+                            <%if @search_text %>
+                                   Search results for "<%=@search_text %>"
+                            <%elsif @flag %>
+                                     Top Rated Tutorials
+                            <%else %>                              
+                                    Learning Center
+                            <%end %>
+                        </div>
+                        <div class="c5 total">
+                            <%@title_search="Search Learnings" %>
+                            <%@type="learnings" %>
+                            <%=render :partial=>"designs/search" %>
+                        </div>
+                    </div>
+                    <p class="clear brdBot01">
+                    </p>
+                    <%if !@flag %>
+                    <div class="pageheading">
+                        <p class="c1 total">
+                            <select name="" class="selectcom" onchange ="filterLearnings(this.value)">
+                                <%grouped_options ={ 'Categories' => LearningCategory.all_active.map{|c| [c.name,c.id.to_s]} , 'Types' =>LEARNING_FORMAT} %>
+                                <%=grouped_options_for_select(grouped_options,params[:category_id],'Sort by') %>
+                            </select>
+                            Total Learnings : 
+                               <%= @learnings.total_entries %>
+
+                        </p>
+                        <p class="c3">
+                            <span id="learning_pagination" class="pagination01"></span>
+                        </p>
+                    </div>
+                    <%if @no_of_pages >= 2 %>
+                    <script type="text/javascript">
+                      $(document).ready(function(){
+                                            $(function(){
+                                                $("#learning_pagination").paginate({
+                                                    <%if @search_text and !params[:category_id].blank?%>
+                                                        href : '/learnings/index?category_id='+<%=params[:category_id]%>+ '&search=<%=@search_text%>&page=',
+                                                    <%elsif !params[:category_id].blank?%>
+                                                       href : '/learnings/index?category_id='+<%=params[:category_id]%>+ '&page=',
+                                                    <%elsif @search_text%>
+                                                       href : '/learnings/index?search=<%=@search_text%>&page=',
+                                                    <%else%>
+                                                      href : '/learnings/index?page=',
+                                                    <%end%>
+                                                    count: <%=@no_of_pages%>,
+                                                    start: <%=params[:page] || 1%>,
+                                                    display: 5,
+                                                    border: false,
+                                                    text_color: '',
+                                                    background_color: '',
+                                                    text_hover_color: '',
+                                                    background_hover_color: ''
+                                                });
+                                            });
+                                            $(function(){
+                                                $("#learning_pagination_bottom").paginate({
+                                                    <%if @search_text and !params[:category_id].blank?%>
+                                                        href : '/learnings/index?category_id='+<%=params[:category_id]%>+ '&search=<%=@search_text%>&page=',
+                                                    <%elsif !params[:category_id].blank?%>
+                                                       href : '/learnings/index?category_id='+<%=params[:category_id]%>+ '&page=',
+                                                    <%elsif @search_text%>
+                                                       href : '/learnings/index?search=<%=@search_text%>&page=',
+                                                    <%else%>
+                                                      href : '/learnings/index?page=',
+                                                    <%end%>
+                                                    count: <%=@no_of_pages%>,
+                                                    start: <%=params[:page] || 1%>,
+                                                    display: 5,
+                                                    border: false,
+                                                    text_color: '',
+                                                    background_color: '',
+                                                    text_hover_color: '',
+                                                    background_hover_color: ''
+                                                });
+                                            });
+                                             });
+                                        
+                    </script>
+                    <%end %>
+                    <p class="frm_brd01">
+                    </p>
+                    <%end %>
+                    <!-- Section Head End -->
+                    <p class="spacer05">
+                    </p>
+                    <!-- Section Head End --><!-- Scroll Image Start --><!-- "previous page" action --><%if !@search_text and !@flag %>
+                    <div class="participant">
+                        <p class="icolink">
+                            <%= link_to_remote("Recent Tutorials",:url => { :action => "recent_materials"}, :before => "javascript:void(0);",:complete => "hide_show('r_material');",:html => { :class=>"orange",:id=>"r_material"}) %>
+                            | <%= link_to_remote("Top Rated Tutorials",:url => { :action => "top_rated_materials"}, :before => "javascript:void(0);",:complete => "hide_show('l_material');",:html => { :class=>"",:id=>"l_material"}) %>
+                        </p>
+                    </div>
+                    <p class="spacer01">
+                    </p>
+                    <A class="prevPage browse01 left"></A>
+                    <!-- root element for scrollable -->
+                    <DIV id="wheeled01" class="scrollable01" style="height:130px;">
+                        <!-- root element for the items -->
+                        <DIV class="items01" id="learning_filter">
+                            <%=render :partial=>"learning_filter" %>
+                        </DIV>
+                    </DIV>
+                    <!-- "next page" action --><A class="nextPage browse01 right"></A>
+                    <BR clear=all>
+                    <!-- javascript coding -->
+                    <SCRIPT>
+                        // What is $(document).ready ? See: http://flowplayer.org/tools/using.html#document_ready
+                        $(document).ready(function(){
+                            // initialize scrollable together with the mousewheel plugin
+                            $("#wheeled01").scrollable().mousewheel();
+                        });
+                    </SCRIPT>
+                    <!-- Scroll Image end -->
+                    <p class="spacer01">
+                    </p>
+                    <p class="frm_brd01">
+                    </p>
+                    <%end %>
+                    <p class="spacer01">
+                    </p>
+                    <!-- Two col comment start --><% unless @learnings.length == 0 %>
+                    <% @learnings.each do |l| %>
+                    <%= render :partial => "learning_meterials",:locals => {:l => l,:same_design => true,:by_user=>false},:inline=>true %>
+                    <% end %>
+                    <% else %>
+                    No Learnings found<% end %>
+                    <% if logged_in? %>
+                    <!--<table width = "100%">
+                        <tr>
+                            <td align="center">
+                                <div class="greenheadrightcol">
+                                    <a href="/learnings/ask_for_material">Request Tutorials</a>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>-->
+                    <% end %>
+                    <!-- Two col comment end -->
+                    <p class="clear">
+                    </p>
+                    <div class="pageheading">
+                    <p class="c1 total" id="disign_filter">
+                    <p class="c3">
+                      <span id="learning_pagination_bottom" class="pagination01"></span>
+                    </p>
+                    </p>
+                    </div>
+                   <p class="clear brdBot01">
+                    </p>
+            <p class="spacer01">
+          </p>
+                </div>
+                <!--learning End -->
+            </div>
+            <!-- Blue Box end -->
+            <div class="spacer">
+            </div>
+        </div>
+        <!-- Left Col End -->
+        <!-- Right Col Start -->
+        <div class="c2 rightcol" id="rightcol">
+            <%= render :partial => "right_col" %>
+        </div>
+        <!-- Right Col End -->
+    </div>

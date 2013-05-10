@@ -1,0 +1,83 @@
+<script type="text/javascript">
+  $(document).ready(function(){
+        //var per_bar = document.getElementById('per_bar');
+       $('.hlight_per1').each(function( i, el){
+               el.style.width = "<%=  @user.profile.nil? ? 0 : @user.profile.percent_complete.to_i  %>%";        
+        });
+       <%if @show_edit_profile%>
+             $('#show_basic').hide()       
+              $('#edit_basic').show()             
+       <%end%>
+       
+       <%if @show_my_settings%>
+             $('#basicTabLink').removeClass('tabs-selected')          
+             $('#privacyTabLink').addClass('tabs-selected')  
+        <%end%>
+    });
+</script>
+
+<!-- Container Start -->
+    <div class="content">  
+   
+        <!-- Blue Box start -->
+        <div class="Blue4pxbox"><code>$(this).corner();</code>  
+            <div class="profileForm">
+            	<!-- Page Head start -->
+            	<div class="pageheading">
+                    <div class="c1 head14">
+                      <%if @user.id == current_user.id%>
+                         View/ Edit <%=link_to 'Profile',my_page_path(:user_id => @user.id), :style => "color:#000;text-decoration:underline;"%> Information
+                         <%else%>
+                         <%=link_to @user.first_name.to_s.capitalize,my_page_path(:user_id => @user.id), :style => "color:#000;text-decoration:underline;"%>'s Profile Information
+                      <%end%>
+                     
+                    </div>
+                    <div class="c2">
+                        <div class="slider">
+                        <p class="perleft">0</p>
+                        <p class="txt">Profile Completeness</p>
+                        <p class="perright">100</p>
+                        <p class="clear"></p>                        
+                        <p class="pend_per"><span class="hlight_per1"></span><!-- <span class="comp_per3"></span> --> </p>
+                        </div>
+                    </div>
+                    <div class="c3 total"></div>
+              </div>
+            	<!-- Page Head end -->
+                <div class="brdBot01"></div>
+                <!-- Form Start -->
+                    <div id="container-9">
+                        <ul class="tabs-nav">
+                            <li class = "tabs-selected" onclick = "profileTabSelect(this)" id="basicTabLink"><%= link_to_remote 'Basic',:update => "ComContent1",:url =>{ :action => :get_basics, :user_id => @user.id},:html => { :href =>"javaScript:void(0)" }%></li>    
+                            <li  onclick = "profileTabSelect(this)"><%= link_to_remote 'Qualification',:update => "ComContent1",:url =>{ :action => :get_qualifications, :user_id => @user.id},:html => { :href =>"javaScript:void(0)" }%></li>           
+                           <li  onclick = "profileTabSelect(this)"  ><%= link_to_remote 'Professional',:update => "ComContent1",:url =>{ :action => :get_profession, :user_id => @user.id},:html => { :href =>"javaScript:void(0)" }%></li>                       
+                           <li  onclick = "profileTabSelect(this)"  ><%= link_to_remote 'Certification and Skills',:update => "ComContent1",:url =>{ :action => :get_cetifications_and_skills, :user_id => @user.id},:html => { :href =>"javaScript:void(0)" }%></li>
+                           <%if @user == current_user%>
+                               <li  onclick = "profileTabSelect(this)"  id="privacyTabLink"><%= link_to_remote 'Privacy Settings',:update => "ComContent1",:url =>{ :action => :get_privacy_settings, :user_id => @user.id},:html => { :href =>"javaScript:void(0)" }%></li>
+                                <li  onclick = "profileTabSelect(this)"  ><%= link_to_remote 'Password Settings',:update => "ComContent1",:url =>{ :action => :reset_password, :user_id => @user.id},:html => { :href =>"javaScript:void(0)" }%></li>
+                           <%end%>  
+                          </ul>
+                	</div>
+						<p class="clear"></p>
+                    <div id="ComContent1">                            
+                              <%if @show_my_settings%>
+                                   <%= render :partial => "privacy_settings"%>
+                              <%else%>
+                                    <%if check_access(@user, 'basic_info')%>                                
+                                        <%= render :partial => "basic"%>
+                                    <%else%>
+                                      <%= render :partial => "access_denied"%>
+                                    <%end%>
+                              <%end%> 
+                    </div>
+                <!-- Form End -->
+                <div class="clear"></div>
+            </div>
+    
+        </div>
+
+        <!-- Blue Box end -->
+ 
+        <p class="spacer"></p>
+    </div>
+    <!-- Container End -->

@@ -1,0 +1,353 @@
+<script type = "text/javascript">
+  $(document).ready(function(){
+    var link = $('.upload_link');
+    link.each(function( i, el){
+      
+      new AjaxUpload($(el), {
+        
+        action: '/profiles/upload_user_pic',
+        name: 'userfile',
+        autoSubmit: true,
+        responseType: false,
+        onChange: function(file, extension){
+          $('#message').html('Uploading...');
+        },
+        
+        onSubmit: function(file, extension){
+          if (!(extension && /^(jpg|png|jpeg|gif)$/.test(extension))) {
+            
+            $('#message').html('<font color = red >Please upload valid<br/> image file</font>');
+            return false;
+          }
+          
+        },
+        onComplete: function(file, response){
+          
+          
+          <% if request.headers['HTTP_USER_AGENT'].to_s.include?('IE') %>
+            <%= remote_function(:url => {:controller => :profiles,:action => :upload_user_pic})%>
+          <% end %>       
+          
+        }
+      });
+      
+    });
+  });
+
+    function getStates1(selected_country)
+    {
+            <%=remote_function :url => { :controller => "profiles", :action => "get_states" },:update => "state_select", :with => "'country=' + selected_country", :before => "$('#spinner1').show();", :complete => "$('#spinner1').hide();"%>
+     }
+  </script>
+<div id="show_basic">
+  <form action="" method="get">
+    <div class="proform">
+    <div class="proform_l">
+      <div class="formrow">
+        <p class="c1">First Name:</p>
+        <p class="c2 view"><%=@user.first_name%></p>
+      </div>
+      <div class="formrow">
+        <p class="c1">Last Name:</p>
+        <p class="c2 view"><%=@user.last_name%></p>
+      </div>
+ 
+      <%if @user == current_user%>
+          <div class="formrow">
+            <p class="c1">Email ID:</p>
+            <p class="c2 view"><%=@user.email%></p>
+          </div>
+      <%end%>
+      
+      <div class="formrow">
+        <p class="c1">Country:</p>
+        <p class="c2 view"><%=@user.country%></p>
+      </div>
+      <div class="formrow">
+        <p class="c1">State:</p>
+        <p class="c2 view"><%=@user.state%></p>
+      </div>
+      <div class="formrow">
+        <p class="c1">City:</p>
+        <p class="c2 view"><%= h @user.city%></p>
+      </div>
+      <div class="formrow">
+        <p class="c1">Pin Code:</p>
+        <p class="c2 view"><%=@user.pincode%></p>
+      </div>
+      
+      
+    </div>
+    <div class="proform_r">
+      <p class="c1 profile_pic">
+            <%=  get_image(@user,'user','thumb_large','snap')%><!-- <img src="../images/profile_photo/userphoto.gif" width="96" height="96" /> -->
+           <%if @user.profile.pic_present%>            
+                <br/>
+                <span class="<%= get_belt_class(@user.expertise_points||0)%>"> </span>   
+            <%end%>
+      </p>
+      <p class="c2"><%= h @user.status_message%><br />
+<%if @user == current_user%><a href="#" class="upload_link" >Edit/ Upload Picture</a>&nbsp;( Max. Size 5 MB ) <%end%></p>
+    </div>
+    
+    <div id="photo_upload" style="display:none;"> 
+      <div class="proform_r">
+        <% form_remote_tag :url => '/profiles/upload_user_pic',:html => {:multipart => true} do -%>
+          <p class="c2">
+            <%= file_field_tag :photo,:class => "filefield" %>
+          </p>
+          <p class="c2">
+            <%= submit_tag 'Submit' , :class=>"grnbtn01" %>
+          </p>
+        <%end%>
+      </div>  
+    </div>
+    
+    
+    <div class="frm_brd"></div>
+    
+    <div class="proform">
+      <div class="proform_l">
+        
+        
+        <div class="formrow">
+          <p class="c1">Website URL (Personal/Company):</p>
+          <p class="c2">            
+            <a href="#"><%=@profile.website%></a>
+          </p>
+        </div>
+        
+        <div class="formrow">
+          <p class="c1">Community Website URL 1:</p>
+          <p class="c2"><a href="#"><%=@profile.comm_site_1%></a></p>
+        </div>
+        
+        <div class="formrow">
+          <p class="c1">Community Website URL 2:</p>
+          <p class="c2"><a href="#"><%=@profile.comm_site_2%></a></p>
+        </div>
+        
+        <div class="formrow">
+          <p class="c1">Community Website URL 3:</p>
+          <p class="c2"><a href="#"><%=@profile.comm_site_3%></a></p>
+        </div>
+        
+        <div class="formrow">
+          <p class="c1">Personal Blog URL 1:</p>
+          <p class="c2"><a href="#"><%=@profile.blog_1%></a></p>
+        </div>
+        
+        <div class="formrow">
+          <p class="c1">Personal Blog URL 2:</p>
+          <p class="c2"><a href="#"><%=@profile.blog_2%></a></p>
+        </div>
+        
+        <div class="formrow">
+          <p class="c1">Personal Blog URL 3:</p>
+          <p class="c2"><a href="#"><%=@profile.blog_3%></a></p>
+        </div>
+      </div>
+    </div>
+    
+    
+    <div class="proform">
+      <div class="proform_l">
+        <div class="formrow">
+          <p class="c1">&nbsp;</p>
+          <p class="c2">
+            
+            <!--                  <input name="Save" onclick = "<%#= remote_function :update => "ComContent",:url =>{ :action => :edit_basics} , :class => "grnbtn01"%>"  type="button" value="Edit" class="grnbtn01" />  -->
+            <%if @user == current_user%>
+            <input name="Save" onclick = "$('#show_basic').hide(); $('#edit_basic').show();"  type="button" value="Edit" class="grnbtn01" /> 
+            <%end%>            
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  </form>
+  <p class="spacer01"></p>
+</div>
+
+
+
+<div id="edit_basic" style="display:none;">
+  
+  <!-- <form action="" method="get" class="AdvancedForm"> -->        
+            <% form_remote_tag :url => '/profiles/update_basics' , :multipart => true do -%>
+              <%# form_tag"/profiles/update_basics", :multipart => true ,:html => { :class => "AdvancedForm" }  do -%>
+    <div class="proform">
+      <div class="proform_l">
+        <div class="formrow">
+          <p class="c1">First Name:</p>
+          <p class="c2"> <%= text_field :user,:first_name, :class=> "proinput" %>
+                <br>
+                <span id="first_name_error"> </span>
+          </p>
+
+        </div>
+      
+        <div class="formrow">
+          <p class="c1">Last Name:</p>
+          <p class="c2"> <%= text_field :user, :last_name, :class=> "proinput" %>
+           <br>
+           <span id="last_name_error"> </span>
+           </p>
+        </div>
+      
+        <div class="formrow">
+          <p class="c1">Email ID:</p>
+          <p class="c2 view"> <%=@user.email%><%#= text_field :user, :email, :class=> "proinput" %>
+           <br>
+           <span id="email_error"> </span>
+          </p>
+        </div>
+      
+        <div class="formrow">
+          <p class="c1">Country:</p>
+          <p class="c2">
+            <%#=country_select :user,:country, nil,{},:class => "proselect"%><%#= text_field :user, :country, :class=> "proinput" %>
+            <%if @user.country.nil? or @user.country.blank?%>
+                <%=select :user,:country, COUNTRIES,{:selected => "India"},{:class => "proselect",:onchange => "getStates1(this.value);"} %>
+            <%else%>
+                <%=select :user,:country, COUNTRIES,{:selected => @user.country},{:class => "proselect",:onchange => "getStates1(this.value);"} %>              
+            <%end%>
+            <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner1",:style=>"display:none; width: 20px; margin-top: 0px;" ) %>                        
+           <br>
+           <span id="country_error"> </span>
+          </p>
+        </div>
+        <div class="formrow">
+          <p class="c1">State:</p>
+          <p class="c2" id="state_select">
+                <%#= text_field :user, :state, :class=> "proinput" %>
+                <%if @user.country.nil? or @user.country.blank?%>
+                    <%=state_select :user,:state, country='India',  {},{:class => "proselect"} %>
+                <%else%>
+                      <%if COUNTRIES1.include?(@user.country)%>
+                            <%=state_select :user,:state, country=@user.country,  {},{:class => "proselect"} %>         
+                      <%else%>
+                            <%=text_field :user,:state, :class=> "proinput" %>                        
+                      <%end%>
+                <%end%>
+           <br>
+           <span id="state_error"> </span>
+          </p>
+        </div>
+      
+        <div class="formrow">
+          <p class="c1">City:</p>
+          <p class="c2"><%= text_field :user, :city, :class=> "proinput" %>
+           <br>
+           <span id="cityl_error"> </span>
+            </p>
+        </div>
+      
+        <div class="formrow">
+          <p class="c1">Pin Code:</p>
+          <p class="c2"><%= text_field :user, :pincode, :class=> "proinput" %>
+           <br>
+           <span id="pincode_error"> </span>
+           </p>
+        </div>			  
+      </div>
+    
+    
+    
+      <div class="proform_r">
+        <p class="c1 profile_pic">
+            <%=  get_image(@user,'user','thumb_large')%><!-- <img src="../images/profile_photo/userphoto.gif" width="98" height="98" /> -->
+           <%if @user.profile.pic_present%>            
+             <br/>
+            <span class="<%= get_belt_class(@user.expertise_points||0)%>"> </span>            
+            <%end%>
+       </p>
+        <p class="c2"><%= text_area :user, :status_message, :size => "", :class => "proinput01"%><!--<textarea cols="" rows="" class="proinput01" id="Vstatusmess">Edit your status message</textarea> -->
+          <br />
+          <a href="#" class="upload_link">Edit Picture</a>&nbsp;(Max. 5 MB)</p>
+      </div>
+    </div>
+    <div class="frm_brd"></div>
+  
+    <div class="proform">
+      <div class="proform_l">
+      
+      
+        <div class="formrow">
+          <p class="c1">Website URL (Personal/Company):</p>
+          <p class="c2">
+            <%= text_field :profile,:website, :class=> "proinput" %>
+                <br>
+                <span id="website_error"> </span>            
+            <!-- <input name="fmname2" type="text" value="" class="proinput" /> -->
+          </p>
+        </div>
+      
+        <div class="formrow">
+          <p class="c1">Community Website URL 1:</p>    
+          <p class="c2"><%= text_field :profile,:comm_site_1, :class=> "proinput" %>
+                <br>
+                <span id="comm_site_1_error"> </span>        
+         </p>
+        </div>
+      
+        <div class="formrow">
+          <p class="c1">Community Website URL 2:</p>
+          <p class="c2"><%= text_field :profile,:comm_site_2, :class=> "proinput" %>
+                <br>
+                <span id="comm_site_2_error"> </span>        
+           </p>
+        </div>
+      
+        <div class="formrow">
+          <p class="c1">Community Website URL 3:</p>
+          <p class="c2"><%= text_field :profile,:comm_site_3, :class=> "proinput" %>
+                <br>
+                <span id="comm_site_3_error"> </span>        
+           </p>
+        </div>
+      
+        <div class="formrow">
+          <p class="c1">Personal Blog URL 1:</p>
+          <p class="c2"><%= text_field :profile,:blog_1, :class=> "proinput" %>
+                <br>
+                <span id="blog_1_error"> </span>        
+           </p>
+        </div>
+      
+        <div class="formrow">
+          <p class="c1">Personal Blog URL 2:</p>
+          <p class="c2"><%= text_field :profile,:blog_2, :class=> "proinput" %>
+                <br>
+                <span id="blog_2_error"> </span>   
+           </p>
+        </div>
+      
+        <div class="formrow">
+          <p class="c1">Personal Blog URL 3:</p>
+          <p class="c2"><%= text_field :profile,:blog_3, :class=> "proinput" %>
+                <br>
+                <span id="blog_3_error"> </span>   
+          </p>
+        </div>
+      </div>
+    </div>
+  
+  
+    <div class="proform">
+      <div class="proform_l">
+        <div class="formrow">
+          <p class="c1">&nbsp;</p>
+          <p class="c2">
+            <%= submit_tag 'Save and Continue' , :class=>"grnbtn01" %>
+            <!--<input name="Save" type="submit" value="Save and Continue" class="grnbtn01" /> -->
+            <!-- <input name="Save" type="reset"  value="Cancel" class="grnbtn01" onclick = "<%#= remote_function :update => "ComContent",:url =>{ :action => :get_basics} , :class => "grnbtn01"%>" /> -->
+            <input name="Save" type="reset"  value="Cancel" class="grnbtn01" onclick = "$('#edit_basic').hide(); $('#show_basic').show(); " />
+          </p>
+        </div>
+      </div>
+    </div>
+  <%end%>
+  <!--  </form> -->
+  <p class="spacer01"></p>
+</div>

@@ -1,0 +1,74 @@
+    <!-- Container Start -->
+    <div class="content">
+    	<!-- Left Col Start -->
+      <div class="c1">
+            <!-- Blue Box start -->
+            <div class="Blue4pxbox"><code>$(this).corner();</code>
+                <div class="whiteBoxContent">
+                	<!-- Section Head start -->
+					<div class="pageheading">
+                        <div class="c1 head14">
+                          <%if current_user.id == @user.id%>
+                             People I Follow
+                          <%else%>
+                              People <%= @user.login.capitalize%> Follow's
+                          <%end%>
+                           
+                        </div>
+                  		<div class="c5 total">
+                            <div id="search_box">
+                                <form action="/profiles/list_followings?user_id=<%=@user.id%>" method="post" id="search_form">
+                                    <input type="text" class="swap_value" value="Search" id="s" name="search">
+                                    <input type="image" height="20" width="18" title="Search" alt="Search" id="go" src="/images/btn_search_box.gif">
+                                </form>
+                            </div>
+                      </div>
+                    </div>
+                    <p class="clear brdBot01"></p>
+                    <!-- Section Head End -->
+                  <div class="clear"></div>
+                <!-- Follower Start -->
+                    <div class="pageheading">
+                      <p class="c1 head12">Following</p>
+                      <p class="c2"><a href="#">Total : <%= @user.follow_count%></a><a href="#"></a></p>
+					</div>
+                <div class="brdBot01"></div>
+                <!-- Four col comment start -->
+                <div class="follow" id="followees">
+                    <%= render :partial => "following", :collection => @followees%>
+                    <%unless @followees.empty?%>
+                          <div id="more_followees_link">
+                                <p class="spacer03"><span class="grnbtn02"><%= link_to_remote "Click for more",    :url => { :action => "get_more_followees", :offset => @offset, :user_id => @user.id, :search => @search_text }, :before => "$('#spinner_show').show()", :complete => "destroyDiv('more_followees_link')"%></span>
+                                    <span> <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner_show",:style=>"display:none; width: 16px; margin-top: 0px;" ) %> </span>
+                                </p> 
+                          </div>  
+                    <%else%>
+                      <%if @search_text%>
+                        The searched member is not present in people you follow's list
+                      <%else%>                      
+                        You dont have any followee yet
+                      <%end%>
+                    <%end%>
+                </div>
+                <!-- four col comment end -->
+                <div class="clear"></div>
+                <!-- Follower End -->
+                
+              </div>
+            </div>
+            <!-- Blue Box end -->
+			<div class="spacer"></div>
+        </div>
+    	<!-- Left Col End -->
+    	<!-- Right Col Start -->
+        <div class="c2 rightcol">
+            <!-- My Page Links Include -->
+            <%if @user == current_user%>
+                    <%= render :partial => "my_page_links"%>
+            <%else%>
+                    <%= render :partial => "member_page_links"%>
+            <%end%>
+        </div>
+    	<!-- Right Col End -->
+    </div>
+    <!-- Container End -->

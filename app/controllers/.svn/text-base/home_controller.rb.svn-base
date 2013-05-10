@@ -1,0 +1,179 @@
+class HomeController < ApplicationController
+  #  before_filter :login_required, :only => [:recent_activity]
+  require 'xmlsimple'
+  def index
+    when_fragment_expired 'recent_design_cache', Time.parse(30.seconds.from_now.to_s) do
+      @design_count = Design.total_count(1)
+      #        @designs = Design.recent_design(2)
+      @designs = Design.top_rated_design_home
+    end
+    when_fragment_expired 'recent_learning_cache', Time.parse(30.seconds.from_now.to_s) do
+      @learning_count = Learning.total_count(1)
+      @learnings = Learning.find_active(2)
+      #        id = Array.new()
+      #        id = [93,86]
+      #        @learnings = Learning.find_active_by_id(id)
+    end
+    when_fragment_expired 'top_belts_cache', Time.parse(30.seconds.from_now.to_s) do
+      @top_belts = User.top_belts(6)
+    end
+    @recent_comments = DesignComment.recent_comments(4)
+    @recent_post = Topic.recent_post(5)    
+    when_fragment_expired 'recent_post_cache', Time.parse(30.seconds.from_now.to_s) do
+      @discussion_count = Topic.count_all
+      @topic = Topic.find_three(6)
+    end
+    @offset = 0
+    when_fragment_expired 'activity_stream_cache', Time.parse(30.seconds.from_now.to_s) do
+      @activities = ActivityStream.paginate_recent_activities(@offset, 3)
+    end
+    when_fragment_expired 'recent_blog_cache', Time.parse(30.seconds.from_now.to_s) do
+      @blogs = get_blog()
+    end
+    #    @user = User.find('23')
+    #    @activities = ActivityStream.recent_actors(@user, activity_stream_location)  
+    render :action => 'index.html.erb'
+  end
+  
+  def recent_activity
+    @offset = 0
+    when_fragment_expired 'recent_activity_cache', Time.parse(30.seconds.from_now.to_s) do
+      @activities = ActivityStream.paginate_recent_activities(@offset)
+    end
+    if params[:preffered_page] and logged_in?
+      current_user.preferred_page = "/home/recent_activity"
+      current_user.save
+    end
+  end
+  
+  def set_priority
+    
+  end
+  
+  def search_members
+    @search_text = params[:search]
+    @search_text = @search_text.strip()
+    @top_belts = User.top_belts(6)
+    @recent_comments = DesignComment.recent_comments(4)
+    @recent_post = Topic.recent_post(5)    
+    @members = User.search_members(@search_text,params[:page]||1)
+    @no_of_pages = (@members.total_entries.to_f / USERS_PER_PAGE).ceil    
+    @offset = 0    
+    @activities = ActivityStream.paginate_recent_activities(@offset, 3)      
+  end  
+  
+  def get_more_activities  
+    @offset =  params[:offset].to_i+PER_PAGE
+    @activities = ActivityStream.paginate_recent_activities(@offset)          
+    respond_to do |format|
+      format.html
+      format.js {
+        render :update do |page| 
+          if @activities.size == 0 or @offset >= MAX_LIMIT
+            page.insert_html :bottom, 'activities', 'No more recent activities are there'       
+          else
+            page.insert_html :bottom, 'activities', :partial => 'more_activities'
+          end
+        end
+      }
+    end 
+  end  
+  
+  def sitemap
+    
+  end
+  
+  def set_names
+    users = User.find_by_sql("select * from users where first_name = '' or last_name = ''")
+    for user in users
+      first_name = ''
+      last_name = ''
+      email = user.email
+      tmp_arr = email.split('@')
+      email = tmp_arr[0]
+      if email.include?('_')        
+        names = email.split("_")
+        first_name = names[0]
+        last_name = names[1]
+      elsif email.include?('.')
+        names = email.split(".")
+        first_name = names[0]
+        last_name = names[1]        
+      end      
+      if first_name == ''
+        first_name = user.login
+      end
+      if last_name == ''
+        last_name = user.login.to_s.slice(0,1).upcase
+      end      
+      user.update_attribute(:first_name,first_name)
+      user.update_attribute(:last_name,last_name)       
+    end
+    redirect_to "/"
+  end  
+  
+  def follow_admin
+    admin = User.find_by_login('admin')    
+    users = User.all
+    for user in users
+      unless user== admin
+        unless user.following?(admin)
+          user.follow(admin)       
+        end
+      end
+    end
+    redirect_to "/"        
+  end
+  
+  def set_pic_present
+    users = User.all
+    for user in users
+      unless user.pictures.empty?
+        user.profile.update_attribute(:pic_present,1) 
+      end
+    end
+    redirect_to "/"        
+  end
+  
+  def campaign
+    id = params[:id]
+    camp = params[:camp]
+    
+    camp = CampLog.create(:user_id => id,:camp_id => camp)
+    
+    render :nothing => true,:status => 200
+    
+  end
+  
+  def set_profile_complete
+    users = User.all
+    for user in users
+       user.set_profile_complete      
+    end
+    redirect_to "/"        
+  end  
+  
+  def delete_activity
+    activity = ActivityStream.find(params[:id])
+    activity.destroy
+    flash[:notice] = "You have successfully deleted activity."
+    redirect_to recent_activity_path
+  end
+  
+  private
+  
+  def get_blog
+    @blog = {}
+    begin
+      if RAILS_ENV == "production"
+        url =  "http://" + SITE_URL  + "/blog/feed/rss"
+        res = Net::HTTP.get_response(URI.parse(url))
+        xml = XmlSimple.xml_in(res.body)
+        @blog = xml['channel'].first['item']
+      end
+    rescue
+      @blog = {}
+    else
+    end
+  end
+end

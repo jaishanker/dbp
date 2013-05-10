@@ -1,0 +1,72 @@
+<%= get_right_panel_banner(@right_banner,'Game') %>
+<!-- Scroll Image start -->
+<div class ="<%= cycle('cBoxblue','cBoxorange','cBoxgreen') %>">
+    <div class="cBoxhead">
+        <p class="headtxt">
+            Top Rated Games
+        </p>
+    </div>
+    <div class="cBoxcontainer">
+        <!-- "previous page" action --><A class="prevPage browse left"></A>
+        <!-- root element for scrollable -->
+        <DIV id="wheeled" class="scrollable">
+            <!-- root element for the items -->
+            <% cache 'top_rated_games_cache' do %>
+            <DIV class=items>
+                <!-- 1-5 --><% @top_rated_games.each do |g| %>
+                <p class="sc_img">
+                    <%= link_to get_image(g,'game','small','nobrd','width:75px;height: 56px;'),{:controller=>"games",:action=>"game",:permalink=>g.permalink} %>
+                    <span><%= link_to get_name(g.title,15) ,{:controller=>"games",:action=>"game",:permalink=>g.permalink} %>
+                    </span>
+                </p>
+                <% end %>
+            </DIV>
+            <%end%>
+        </DIV>
+        <!-- "next page" action --><A class="nextPage browse right"></A>
+        <BR clear=all>
+        <p class ="spacer01"/>
+    </div>
+</div><!-- javascript coding -->
+<SCRIPT>
+    // What is $(document).ready ? See: http://flowplayer.org/tools/using.html#document_ready
+    $(document).ready(function(){
+        // initialize scrollable together with the mousewheel plugin
+        $("#wheeled").scrollable().mousewheel();
+    });
+</SCRIPT>
+<!-- Scroll Image end -->
+<!-- Expert Div start -->
+<!-- Expert Div end -->
+<div class="clear">
+</div>
+<!-- Comments on Design Div start -->
+<div class ="<%= cycle('cBoxblue','cBoxorange','cBoxgreen') %>">
+    <div class="cBoxhead">
+        <p class="headtxt">
+            Comments on Games 
+        </p>
+        <%= link_to "more +",comment_on_game_path(),:class=>"more" %>
+    </div>
+    <div class="cBoxcontainer">
+        <!-- Two col start -->
+        <% cache 'game_comment_cache' do %>
+        <div class="twcol">
+            <% unless @game_comments.length == 0 %>
+            <% @game_comments.each do |c| %>
+            <%= render :partial => "right_col_comment",:locals => {:c=> c},:inline=>true %>
+            <% end %>
+            <% else %>
+            No comments found<% end %>
+        </div>
+        <%end%>
+        <!-- Two col end -->
+		<p class = "spacer01"></p>
+    </div>
+	</div>
+    <!-- Comments on Design Div end -->
+    <div class="clear">
+    </div>
+    <!-- Recent Posts Div start -->
+    <!-- Activity Stream Div end -->
+    <%= get_right_panel_banner(@right_banner,'Game','Bottom') %>

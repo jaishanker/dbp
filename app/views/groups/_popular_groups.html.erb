@@ -1,0 +1,11 @@
+<div class="snaprow">
+      <p class="c1">
+        <!--<img src="/images/group04.gif" width="83" height="57" class="snap" />-->
+        <%= link_to get_image(t,'groups','thumb_large','nobrd'), permalink_url(t.permalink) %>
+      </p>
+      <p class="c2">
+        <%=link_to t.name, permalink_url(t.permalink)%>
+        <br />
+       <%= h get_name(t.description,100) %>
+      </p>
+    </div>

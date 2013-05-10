@@ -1,0 +1,94 @@
+<div class="clear">
+</div>
+<!-- Container Start -->
+<div class="content">
+  <!-- Left Col Start -->
+  <div class="c1">
+    <div class="clear"></div>
+    <!-- Blue Box start -->
+    <div class="Blue4pxbox"><code>$(this).corner();</code>
+      <div class="whiteBoxContent">
+        <%if logged_in? %>
+            
+
+                 <%if !current_user.profile.pic_present %>
+                    <div class="welcome_div" style ="background:#FFCC00;margin:0 auto;" >
+                      <p  style ="margin:5px;padding:10px;color:#000;">  
+                        <% belt_class = get_class(current_user.expertise_points) %>
+                        <%if belt_class =="belt_white"%>
+                            Welcome <strong><%=current_user.login%>!</strong> Please <%= link_to "upload", profile_path(current_user.profile, :user_id => current_user.id) ,{:style=>"color:#000000;"}%>  your profile picture...
+                            <%= link_to "Click Here!", profile_path(current_user.profile, :user_id => current_user.id) ,{:style=>"color:#000000;"}%>    
+                        <%else%>
+                            Welcome <strong><%=current_user.login%>!</strong> You are <%=get_user_type(belt_class)%> user, but to display your belt to community. Please <%= link_to "upload", profile_path(current_user.profile, :user_id => current_user.id) ,{:style=>"color:#000000;"}%>  your profile picture...
+                                <%= link_to "Click Here!", profile_path(current_user.profile, :user_id => current_user.id) ,{:style=>"color:#000000;"}%>                              
+                        <%end%>
+                       </p>
+                      </div>    
+                 <%elsif current_user.country.nil? or current_user.state.nil? or current_user.city.nil? or current_user.pincode.nil? %>
+                    <div class="welcome_div" style ="background:#FFCC00;margin:0 auto;" >
+                      <p  style ="margin:5px;padding:10px;color:#000;">                       
+                              Welcome <strong><%=current_user.login%>!</strong> Please fill your residential address information...
+                              <%= link_to "Click Here!", profile_path(current_user.profile, :user_id => current_user.id) ,{:style=>"color:#000000;"}%>
+                      </p>
+                      </div>                                  
+                 <%elsif current_user.profile.percent_complete.to_i != 100%>
+                   <div class="welcome_div" style ="background:#FFCC00;margin:0 auto;" >
+                      <p  style ="margin:5px;padding:10px;color:#000;">                      
+                         Welcome <strong><%=current_user.login%>!</strong> Update your profile and earn points...
+                          <%= link_to "Click Here!", profile_path(current_user.profile, :user_id => current_user.id) ,{:style=>"color:#000000;"}%>
+                     </p>
+                      </div>                                
+                 <%end%>
+       
+        <%end%>
+        <!-- Group Start -->
+        <div class="pageheading">
+          <p class="c1 head14">Recent Community Activities</p>
+          <p class="c2"></p>
+        </div>
+        <div class="brdBot01"></div>
+        <!-- Form Start -->
+        <!-- Three col comment start -->
+        <div class="group"  id="activities">
+          <!--<div class="threCol">
+                  <div class="head">Recent Activities</div>
+          </div>-->
+          <%unless @activities.empty?%>
+            <%if logged_in? %>            
+                    <%if current_user.user_type.to_i == 7%>
+                         <%= render :partial => 'manage_activity_stream', :collection => @activities%>                      
+                    <%else%>
+                         <%= render :partial => 'activity_streams/activity_stream', :collection => @activities%>
+                    <%end%>
+             <%else%>
+                    <%= render :partial => 'activity_streams/activity_stream', :collection => @activities%>
+             <%end%>
+            <div id="more_activities_link">
+              <p class="spacer03">
+                <span class="grnbtn02">
+                  <%= link_to_remote "Show More",    :url => { :controller => "home", :action => "get_more_activities", :offset => @offset }  , :before => "$('#spinner_show').show()", :complete => "destroyDiv('more_activities_link')"%>
+                </span>
+                <span> <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner_show",:style=>"display:none; width: 16px; margin-top: 0px;" ) %> </span>
+              </p>
+            </div>
+          <%else%>
+            Sorry, no recent activities
+          <%end%>
+        </div>
+        <!-- Form End -->
+        <div class="clear"></div>
+
+        <!-- Group End -->
+
+      </div>
+    </div>
+    <!-- Blue Box end -->
+    <div class="spacer"></div>
+  </div>
+  <!-- Left Col End -->
+  <!-- Right Col Start -->
+  <%=render :partial=>"home/recent_right_col"%>
+  <!-- Right Col End -->
+</div>
+<!-- Container End -->
+

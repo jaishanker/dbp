@@ -1,0 +1,151 @@
+<%= get_right_panel_banner(@right_banner,'Discussion') %>
+<%=render :partial => "/home/members_search_form" %>
+<!-- Actions Div start --><!--<div class="activemem">
+<div class="greenhead01">
+<p class="headtxt">Actions</p>
+</div>
+<p class="greenarrow"></p>
+<p class="pdf"></p>
+<p class="icolink"><a href="#" class="pad4">View as PDF </a> </p>
+<p class="clear"></p>
+</p>
+<p class="print"></p>
+<p class="icolink"><a href="#">View print preview </a></p>
+<p class="clear"></p>
+<p class="rss01"></p>
+<p class="icolink"><a href="#">View feeds</a></p>
+<p class="spacer04"></p>
+</div>--><!-- Actions Div end -->
+<div class="clear">
+</div>
+<!-- Active Forum Div start -->
+<div class ="<%= cycle('cBoxblue','cBoxorange','cBoxgreen') %>">
+  <div class="cBoxhead">
+    <p class="headtxt">
+      Most Active Participants
+    </p>
+    <a href="/discussions/active_forum_participants" class="more">more +</a>
+  </div>
+  <div class="cBoxcontainer">
+    <!-- Three col start -->
+    <% cache 'forum_cache' do %>
+      <div class="snaprow">
+        <%unless @forum_participants.length == 0 %>
+          <% @forum_participants.each do |t| %>
+            <%user = User.find(t.user_id) %>
+            <div class="c1">
+              <p class="snap clear">
+                <%= link_to get_image(user,'user','thumb','nobrd'),my_page_path(:user_id =>user.id) %>
+              </p>
+      <%#= get_my_page_link(get_image(t,'user','thumb','nobrd'), t.id) %>
+              <p class="mname">
+                <%if user.profile.pic_present%>
+                  <%class_name = get_class(user.expertise_points||0)%>
+                  <%unless class_name == "belt_white"%>
+                    <span class="<%= class_name%>"></span>
+                  <%end%>
+                <%end%>
+                <%= link_to get_name(user.login.capitalize,8),my_page_path(:user_id => user.id) %>
+      <%#= get_my_page_link(truncate(t.login.capitalize,10), t.id) %>
+              </p>
+            </div>
+          <%end %>
+        <%else %>
+          No forum participants found.<%end %>
+      </div>
+    <%end%>
+    <p class="spacer01">
+    </p>
+  </div>
+  <!-- Three col end -->
+</div>
+<!-- Active Forum Div end -->
+<div class="clear">
+</div>
+<!-- Hot Discussions start -->
+<div class ="<%= cycle('cBoxblue','cBoxorange','cBoxgreen') %>">
+  <div class="cBoxhead">
+    <p class="headtxt">
+      Popular Tags
+    </p>
+  </div>
+  <div class="cBoxcontainer">
+    <% cache 'popular_tag_cache' do %>
+      <p>
+        <%unless @sorted_popular_tags.blank? %>
+          <%for tag in @sorted_popular_tags %>
+            <%if tag == @sorted_popular_tags.last %>
+              <%= link_to tag.name.downcase , {:controller => tag.tagable_type.downcase.pluralize, :action => "index", :tag => tag.name}, {:style => "font-size:13px;font-weight:bold"} %>
+            <%else %>
+              <%= link_to tag.name.downcase , {:controller => tag.tagable_type.downcase.pluralize, :action => "index", :tag => tag.name}, {:style => "font-size:13px;font-weight:bold"} %>,
+            <%end %>
+          <%end %>
+        <%else %>
+          There are no popular tags defined yet
+        <%end %>
+        <!--
+        <a href="#">API</a>, <a href="#">Assemblies</a>, <a href="#" class="orange" style="font-size:14px">Bill of Materials</a>
+        <a href="#">Configurations/Design </a>, <a href="#">Drawings and Detailing</a>, <a href="#">Documentation & Training</a>
+        <a href="#">Import/Export </a>
+        -->
+      </p>
+    <%end%>
+    <div class="spacer01">
+    </div>
+  </div>
+  <!-- Hot Discussions end -->
+</div>
+<div class="clear">
+</div>
+<!-- Recent Posts Div start -->
+<%=render :partial=>"home/recent_posts.html.erb" %>
+<!-- Recent Div end -->
+<div class="clear">
+</div>
+<!-- Groups Div start -->
+<div class ="<%= cycle('cBoxblue','cBoxorange','cBoxgreen') %>">
+  <div class="cBoxhead">
+    <p class="headtxt">
+      Popular Groups
+    </p>
+    <a href="/groups?popular=true" class="more">more + </a>
+  </div>
+  <div class="cBoxcontainer">
+    <div class = "populargrp">
+      <!-- Two col start -->
+      <% cache 'popular_group_cache' do %>
+        <div class="twcol">
+          <%unless @popular_groups.length == 0 %>
+            <% @popular_groups.each do |t| %>
+              <%=render :partial=>"/groups/popular_groups" ,:locals=>{:t=>t},:inline=>true %>
+            <%end %>
+          <%else %>
+            No popular groups found.<%end %>
+        </div> </div>
+    <%end%>
+    <!-- Two col end -->
+    <div class="spacer01">
+    </div>
+  </div>
+  <!-- Group Div end -->
+</div>
+<%= get_right_panel_banner(@right_banner,'Discussion','Bottom') %>
+<script type="text/JavaScript">
+  $(document).ready(function(){
+    $(document).ready(function() {
+      $('input[type="text"]').focus(function() {
+        if (this.value == this.defaultValue){
+          this.value = '';
+        }
+        if(this.value != this.defaultValue){
+          this.select();
+        }
+      });
+      $('input[type="text"]').blur(function() {
+        if ($.trim(this.value) == ''){
+          this.value = (this.defaultValue ? this.defaultValue : '');
+        }
+      });
+    });
+  });
+</script>

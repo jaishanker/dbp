@@ -1,0 +1,92 @@
+<!-- Container Start -->
+<div class="content">
+  <%= render :partial => "top_nav" %>
+  <h1>
+    <%if @game %>
+      <%action = "/admin/games/report/#{@game_id}"%>
+      Games - <%=@game_name%> Report
+    <%else%>
+      <%action = "/admin/games/report"%>
+      Games - Generic Report
+    <%end%>
+
+  </h1>
+  <form id="form1" name="form1" method="post" action="<%=action%>">
+    <table border="0" cellpadding="5" cellspacing="0" id="mytable01">
+      <tr>
+        <td colspan="2">
+          <ul class="admtot">
+            <%if @game %>
+              <li>
+                Total Games:&nbsp;<%= @game_count %>
+              </li>
+              <li>
+                Total Favorited:&nbsp;<%= @favorites_count_for_game %>
+              </li>
+              <li>
+                Total Views:&nbsp;<%= @views_count %>
+              </li>
+              <li>
+                Total Rated:&nbsp;<%= @ratings_count %>
+              </li>
+              <li>
+                Total Comments:&nbsp;<%= @comments_count %>
+              </li>
+            <%else%>
+              <li>
+                Total Favorited:&nbsp;<%= @favorites_count %>
+              </li>
+              <li>
+                Total Views:&nbsp;<%= @views_count %>
+              </li>
+              <li>
+                Total Rated:&nbsp;<%= @ratings_count %>
+              </li>
+              <li>
+                Total Comments:&nbsp;<%= @comments_count %>
+              </li>
+            <%end%>
+
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td width="6%">
+          Select
+        </td>
+        <td width="94%">
+          <select name="duration" id="select" class="select01">
+            <%= options_for_select({"This Week" => "Week","Last Two Weeks" => "2 Weeks","This Month" => "Month",
+                "Last Two Months" => "2 Months","Last 3 Months" => "3 Months","Last 6 Months" => "6 Months","This Year" => "Year"},
+              params[:duration]) %>
+          </select>
+          Data for total no. of
+          <select name="type" id="select1" class="select01">
+            <%= options_for_select(["Rating","Favorite","View","Comment"],params[:type]) %>
+          </select>
+          <%if @game%>
+            on Game <%=@game_name%>
+          <%else%>
+            on Game
+          <%end%>
+
+        </td>
+      </tr>
+    </table>
+  </form>
+  <br/>
+  <div id="chartdiv" align="center">
+  </div>
+  <script type="text/javascript">
+     $(document).ready(function(){
+    var chart = new FusionCharts("/Charts/FCF_MSColumn3D.swf", "ChartId", "800", "450");
+    chart.setDataURL("/admin/games/get_xml");
+    chart.render("chartdiv");
+		
+    $('select').change(function(){
+      $('#form1').submit();
+    })
+	 });
+  </script>
+</div>
+<!-- Container End -->

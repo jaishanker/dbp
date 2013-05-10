@@ -1,0 +1,79 @@
+<div class="spacer01"></div>
+        <h1>Site Statistic</h1>
+         <table width="100%" border="0" align="center" cellpadding="5" cellspacing="0" id="mytable">
+	    <tr>
+	      <th>Topics</th>
+	      <th>Counts</th>
+        </tr>
+	    <tr>
+	      <td width="66%"> No. of Users</td>
+	      <td width="34%"><%= User.count %></td>
+        </tr>
+	    <tr>
+	      <td>No. of Users Blocked</td>
+	      <td><%= @blocked_users %></td>
+        </tr>
+	    <tr>
+	      <td>Black Belt Users</td>
+	      <td><%= @black_belt_users %></td>
+        </tr>
+	    <tr>
+	      <td>Green Belt Users</td>
+	      <td><%= @green_belt_users %></td>
+        </tr>
+	    <tr>
+	      <td>Blue Belt Users</td>
+	      <td><%= @blue_belt_users %></td>
+        </tr>
+
+	    <tr>
+	      <td>Yellow Belt Users</td>
+	      <td><%= @yellow_belt_users %></td>
+        </tr>
+
+	    <tr>
+	      <td>Designs in Design Central</td>
+	      <td><%= @total_designs %></td>
+        </tr>
+	    <tr>
+	      <td>Discussions</td>
+	      <td><%= @total_discussions %></td>
+        </tr>
+	    <tr>
+	      <td>Materials in Learning Center</td>
+	      <td><%= @total_learnings %></td>
+        </tr>
+<!--	    <tr>
+	      <td>Contest running</td>
+	      <td>2</td>
+        </tr>
+-->
+	    <tr>
+	      <td>Groups</td>
+	      <td><%=@admin_groups%> / <%=@user_groups%> (by Admin / by Members)</td>
+        </tr>
+	    <tr>
+	      <td>Games</td>
+	      <td><%= @total_games %></td>
+        </tr>
+	    <tr>
+	      <td>News</td>
+	      <td><%=@active_news%> / <%=@total_news%> (Active / Total)</td>
+        </tr>
+	    <tr>
+	      <td>Events</td>
+	      <td><%=@admin_events%> / <%=@user_events%> (Admin / Reseller)</td>
+        </tr>
+	    <tr>
+	      <td>Main Banner</td>
+	      <td><%=@active_main_banners%> / <%=@main_banners%> (Active / Total)</td>
+        </tr>
+	    <tr>
+	      <td>Top Right Banner</td>
+	      <td><%=@active_top_right_banners%> / <%=@all_top_right_banners%> (Active / Total)</td>
+        </tr>
+	    <tr>
+	      <td>Right Column Banner</td>
+	      <td><%=@active_right_col_banners%> / <%=@all_right_col_banners%> (Active / Total)</td>
+        </tr>
+      </table>

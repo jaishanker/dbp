@@ -1,0 +1,194 @@
+<%= javascript_include_tiny_mce_if_used %>
+<%= tiny_mce if using_tiny_mce? %>
+<!-- Profile File Include --><%#= javascript_include_tag "Profile" %>
+<div class="clear">
+</div>
+<div class="content">
+    <!-- Left Col Start -->
+    <div class="c1">
+        <!-- Set Priority File Include --><%#= javascript_include_tag "SetPriority" %>
+        <div class="clear">
+        </div>
+        <!-- Blue Box start -->
+        <div class="Blue4pxbox">
+            <code>
+                $(this).corner();
+            </code>
+            <div class="whiteBoxContent">
+                <%= image_tag "banner-discussion.jpg",:style => "margin:-10px;" %>
+                <div class="clear spacer05">
+                </div>
+                <!-- Discussion List Start --><!-- Section Head start -->
+                <div class="pageheading">
+                    <div class="c7 head14">
+                        <%if @r_post %>
+                        Recent Post<%else %>
+                        Discussion Lounge<%end %>
+                    </div>
+                    <div class="c5">
+                        <%@title_search="Search Discussions" %>
+                        <%@type="discussions/search" %>
+                        <%=render :partial=>"/designs/search" %>
+                    </div>
+                </div>
+                <p class="clear brdBot01">
+                </p>
+                <div class="pageheading">
+                    <p class="c1 total">
+                        Posts :&nbsp;<%=@posts %>
+                        | Topics :&nbsp;<%=@topics %>
+                        | Members :&nbsp;<%=@members %>
+                        | Views :&nbsp;<%=@views %>
+                    </p>
+                </div>
+                <p class="clear brdBot01">
+                </p>
+
+
+
+                <div class="group" id="activities">
+                  <p class="headsub">Recent Activities</p>
+                  <p class="clear brdBot01"></p>
+                  <%unless @activities.empty?%>
+                    <%= render :partial => 'activity_streams/activity_stream', :collection => @activities%>
+                    <div id="more_activities_link">
+                      <p class="spacer03">
+                             <span class="grnbtn02">
+                                 <%= link_to_remote "Show More",    :url => { :action => "get_more_discussion_activities", :offset => @offset}, :before => "$('#spinner_show').show()", :complete => "destroyDiv('more_activities_link')"%>
+                            </span>
+                            <span> <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner_show",:style=>"display:none; width: 16px; margin-top: 0px;" ) %> </span>
+                       </p>
+                    </div>
+                  <%else%>
+                    Sorry, no recent activities
+                  <%end%>
+                </div>
+               <p class="clear brdBot01">
+                </p>
+                <div class="clear">&nbsp;</div>
+
+                <!-- Section Head End --><!-- List start -->
+                <div class="discussion">
+                    <p class="head">
+                        Category List
+                    </p>
+                    <% if logged_in? %>
+                    <p class="grnbtn">
+                        <a href="/discussions/postadd" onclick="postTopic();return hs.htmlExpand(this, { objectType:'ajax',outlineType:'rounded-white',width:480,height:500  },'Post New Forum Topic' );" id="href_2012748673">Add Post</a>
+                    </p>
+                    <% end %>
+                    <!-- Main Category start --><% unless @categories.length == 0 %>
+                    <div class="categoryList">
+                        <% @categories.in_groups_of(6).each do |cat| %>
+                        <ul class="catList">
+                            <% cat.each do |c| %>
+                            <% unless c.nil? %>
+                            <% unless c.name == "Groups" %>
+                            <li>
+                                <%= link_to get_name(c.name),:action => :category,:id => c.id %>
+                                <span>(<%= c.sub_categories.length %>)</span>
+                            </li>
+                            <% end %>
+                            <% end %>
+                            <% end %>
+                        </ul>
+                        <% end %>
+                    </div>
+                    <% end %>
+                    <!-- Main Category end -->
+                    <p class="spacer">
+                        <a name="1"></a>
+                        <a name="2"></a>
+                        <a name="3"></a>
+                    </p>
+                    <!-- sub Category start --><% unless @categories.length == 0 %>
+                    <p class="head">
+                        Sub Category List
+                    </p>
+                    <% @categories.in_groups_of(3).each do |cat| %>
+                    <div class="subCatList">
+                        <!-- added for group -->
+                        <div class="row">
+                            <% cat.each_with_index do |c,i| %>
+                            <% unless c.nil? %>
+                            <% unless c.name == "Groups" %>
+                            <p class="c<%= i + 1 %>">
+                                <%= link_to get_name(c.name),:action => :category,:id => c.id %>
+                            </p>
+                            <% end %>
+                            <% end %>
+                            <% end %>
+                        </div>
+                        <% cat.each_with_index do |c,i| %>
+                        <% unless c.nil? %>
+                        <% unless c.name == "Groups" %>
+                        <ul class="sucatList">
+                            <% c.sub_categories.each do |sc| %>
+                            <li>
+                                <%= link_to get_name(sc.name),:action => :sub_category,:id => sc.id %>
+                                <span>(<%= sc.topics.length %>)</span>
+                            </li>
+                            <% end %>
+                        </ul>
+                        <% end %>
+                        <% end %>
+                        <% end %>
+                    </div>
+                    <% end %>
+                    <% end %>
+                    <!-- Sub Category end --><!-- group category start --><% unless @group_sub_categories.length == 0 %>
+                    <p class="head">
+                        Category List
+                    </p>
+                    <div class="subCatList">
+                        <div class="row">
+                            <p class="c1">
+                                Groups
+                            </p>
+                        </div>
+                        <ul class="sucatList01">
+                            <% @group_sub_categories.each do |sc| %>
+                            <li>
+                                <%= link_to get_name(sc.name),permalink_path(@group_link[sc.name],:discussion => "true") %>
+                                <span>(<%= sc.topics.length %>)</span>
+                            </li>
+                            <% end %>
+                        </ul>
+                    </div>
+                    <% end %>
+                    <!-- group category end -->
+                </div>
+                <!-- List end -->
+                <p class="clear">
+                </p>
+                <!-- Discussion List End -->
+            </div>
+        </div>
+        <!-- Blue Box end -->
+        <div class="spacer">
+        </div>
+    </div>
+    <!-- Left Col End -->
+    <!-- Right Col Start -->
+    <div class="c2 rightcol" id="rightcol">
+        <%= render :partial => "right_col" %>
+    </div>
+    <!-- Right Col End -->
+</div>
+<script type = "text/javascript">
+                function postTopic(){
+    				unsetTextareaToTinyMCE('textarea_editor');
+    				setTextareaToTinyMCE('textarea_editor');
+                  $('select').addClass('inputtxt01');
+                                         
+                  $('#topic_discussion_category_id').change(function(){
+            <%= remote_function(:url => {:controller => '/admin/discussions',:action => "update_sub_category"},:submit => "category_dropdown",:before => "$('#spinner').show();",:complete => "$('#spinner').hide();") %>
+                  });
+                }
+        		
+        		
+   
+        		
+        		
+
+</script>

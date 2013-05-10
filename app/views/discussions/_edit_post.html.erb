@@ -1,0 +1,15 @@
+            <div id = "topic_reply_1" style ="display:block;">
+              <div id ="ComContent">
+                <div class="brd">
+                  <% remote_form_for @post, :url=>{:action=>'update_post', :id => @post.id}, :before => fckeditor_before_js('post', 'body') ,:complete => "$('#spinner2').hide();" do|f| %>
+                    <%= fckeditor_textarea("post", "body", :toolbarSet => 'Easy', :width => '528px;', :height => '120px',:ajax => true) %>                            
+                    <%#= f.text_area :body, :class => 'inputtxt',:rows => 8 %>
+                    <%= f.hidden_field :topic_id, :value => @topic.id %>
+                    <%= f.submit 'Edit' ,:class=>'grnbtn',:onclick => "$('#spinner2').show();" %>
+                    <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner2",:style=>"display:none; width: 20px; margin-top: 0px;" ) %>
+                  <% end %>
+
+                </div>
+              </div>
+            </div>
+        

@@ -1,0 +1,46 @@
+<!-- Profile File Include --><%#= javascript_include_tag "Profile" %>
+    <div class="clear"></div>
+
+    <!-- Container Start -->
+    <div class="content">
+    	<!-- Left Col Start -->
+      <div class="c1">
+        <!-- Set Priority File Include -->
+        <%#= javascript_include_tag "SetPriority"%>
+        <div class="clear"></div>
+          <!-- Blue Box start -->
+            <div class="Blue4pxbox"><code>$(this).corner();</code>
+                <div class="whiteBoxContent">
+                <!-- Forum Start -->
+                    <div class="pageheading">
+                      <p class="c1 head14">Discussion Lounge Activity</p>
+                      <p class="c3"><span id="pagination" class="pagination01"></span></p>
+                    </div>
+                    <p class="clear brdBot01"></p>
+                    <div class="pageheading">
+                      <p class="c1">Threads <a href="#" class="orange">Previous</a> | <a href="#" class="orange">Next</a></p>
+                        <p class="c4">Last Post: Nov 30, 2009 2:24 PM <a href="#" class="black">Last Post</a> By: <a href="#">Yair Gat</a></p>
+                    </div>
+                    <p class="clear brdBot01"></p>
+
+                <!-- Two col comment start -->
+                  <%=render :partial=>"two_col_discussion"%>
+                <!-- Two col comment end -->
+                
+                <!-- Forum End -->
+				<p class="clear"></p>
+
+                </div>
+            </div>
+            <!-- Blue Box end -->
+			<div class="spacer"></div>
+        </div>
+    	<!-- Left Col End -->
+    	<!-- Right Col Start -->
+        <div class="c2 rightcol" id="rightcol_group">
+          <%=render :partial=>"groups/right_col"%>
+        </div>
+    	<!-- Right Col End -->
+    </div>
+    <!-- Container End -->
+    <div class="clear"></div>

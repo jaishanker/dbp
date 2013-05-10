@@ -1,0 +1,15 @@
+<% @user_certificate = user_certificate %>
+      <div class="user_certificate">
+             <% fields_for_user_certificate(user_certificate) do |form| %> 
+                  <div class="formrow">
+                    <p class="c3">Certification:</p>
+                    <p class="c4"><%=form.text_field :certificate, :class=> "proinput" %></p>
+                  </div>
+                  <div class="formrow">
+                    <p class="c3">Certification Description:</p>
+                    <p class="c4"><%=form.text_area :description, :class=> "proinput03" %><!-- <textarea name="" cols="" rows="" class="proinput03"></textarea> --></p>
+                  </div>
+                  <div class="frm_brd"></div>
+                  <%=form.hidden_field :user_id, :value => @user.id%> 
+              <%end%>
+      </div>

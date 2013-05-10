@@ -1,0 +1,19 @@
+<% if session[:type] == "Registration" or session[:type] == "Activation" or session[:type] == "Login"  %>
+<graph xaxisname='Period' yaxisname='Users' hovercapbg='DEDEBE' hovercapborder='889E6D' rotateNames='0' yAxisMaxValue='100' numdivlines='9' divLineColor='CCCCCC' divLineAlpha='80' decimalPrecision='0' showAlternateHGridColor='1' AlternateHGridAlpha='30' AlternateHGridColor='CCCCCC' caption='<%= session[:title]%>' subcaption='Members Statistic for <%= session[:duration] %>'>
+    <categories font='Arial' fontSize='11' fontColor='000000'>
+        <% session[:output].each do |k| %>
+        <category name='<%= k[0] %>' hoverText='<%= k[0] %>'/><% end %>
+    </categories>
+    <dataset seriesname='<%= session[:type] + "s"%>' color='52bbfe'>
+        <% session[:output].each do |v| %>
+        <set value='<%= v[1][1] %>' /><% end %>
+    </dataset><% if session[:type2] %>
+    <dataset seriesname='<%= session[:type2] + "s"%>' color='F6BD0F'>
+        <% session[:output2].each do |v| %>
+        <set value='<%= v[1][1] %>' /><% end %>
+    </dataset><% end %>
+</graph><% else %>
+<graph caption="<%= session[:title] %>" animation="1" formatNumberScale="0" numberPrefix="" pieSliceDepth="30" decimalPrecision="0" shownames="1">
+    <% session[:output].each do |v| %>
+    <set name="<%= v.splitter %>" color="<%=cycle('F6BD0F','008E8E','D64646','8E468E','588526','B3AA00')%>" value='<%= v.count %>' /><% end %>
+</graph><% end %>

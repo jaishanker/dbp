@@ -1,0 +1,32 @@
+<%= stylesheet_link_tag "styles"%>
+<%= javascript_include_tag "jquery.js" %>
+
+<div class="postadd">
+	<div class="txt">Select The main Category in which you wish to add new forum topic</div>
+    <p class="spacer04"></p>
+    	<p class="c1">Category:</p>
+        <p class="c2">
+            <select name="aa">
+                <option>General Abuse</option>
+                <option>Profanity</option>
+                <option>Explicit Content</option>
+                <option>Impersonation</option>
+                <option>Harassment</option>
+                <option>Slander</option>
+                <option>Racial Abuse</option>
+                <option>Religious Abuse</option>
+                <option>Spam</option>
+                <option>Private Information</option>
+            </select>
+        </p>
+	    <p class="spacer04"></p>
+		<p class="c1">Note:</p>
+        <p class="c2"><textarea name="" cols="" rows="" class="txtarea"></textarea></p>
+
+	    <p class="spacer04"></p>
+		<p class="c1">&nbsp;</p>
+        <p class="c2">
+            <input type="button" class="grnbtn02" value="Report Abuse" />
+            <input type="button" class="grnbtn02" value="Cancel" />
+        </p>
+</div>

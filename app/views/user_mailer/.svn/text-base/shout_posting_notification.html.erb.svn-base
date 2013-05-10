@@ -1,0 +1,12 @@
+Hi <%=h @user.login.capitalize %>,
+<br /><br />
+<%=h @shouted_user.login.capitalize%> has wrote a message on your wall. Please login to <%=h @url %> to see the <a href="<%=h @url%>">message</a>
+<br /><br />
+Thanks,<br />
+The SolidWorks India Online Community Team
+<br /><br />
+=======================================<br />
+This message was intended for <%=@user.email%>.
+If you do not wish to receive this type of email from SolidWorks India Online Community in the future, please click on the link below to unsubscribe.
+<%=h @unsubscribe_url %>
+<img height = "0" width = "0" src="http://fans.solidworks.in/home/campaign/<%=@user.id%>?camp=10011"></img>

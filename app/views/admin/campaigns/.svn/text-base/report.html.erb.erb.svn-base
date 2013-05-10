@@ -1,0 +1,50 @@
+<!-- Container Start -->
+<div class="content">
+    <%#= render :partial => "top_nav" %>
+    <h1>
+        Campaigns - Generic Report
+      
+    </h1>
+    <form id="form1" name="form1" method="post" action="/admin/campaigns/report">
+        <table border="0" cellpadding="5" cellspacing="0" id="mytable01">
+            <tr>
+                <td colspan="2">
+                    <ul class="admtot">
+                      <li>
+                            Total Campaigns:&nbsp;<%= @campaign_count %>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+			   <tr>
+                <td width="6%">
+                    Select
+                </td>
+                <td width="94%">
+                    <select name="duration" id="select" class="select01">
+                    	<%= options_for_select({"This Week" => "Week","Last Two Weeks" => "2 Weeks","This Month" => "Month","Last Two Months" => "2 Months","Last 3 Months" => "3 Months","Last 6 Months" => "6 Months","This Year" => "Year"},params[:duration]) %>
+                    </select>
+                    Data for  campaign
+                    <select name="campaign_id" id="select1" class="select01">
+                    	<%= options_for_select(Campaign.all.collect {|c| [ c.title, c.camp_id ] },:selected => @campaign.camp_id) %>
+                    </select>                    
+                </td>
+            </tr>
+	    </table>
+    </form>
+    <br/>
+    <div id="chartdiv" align="center">
+    </div>
+    <script type="text/javascript">
+       $(document).ready(function(){
+        var chart = new FusionCharts("/Charts/FCF_MSColumn3D.swf", "ChartId", "800", "450");
+        chart.setDataURL("/admin/campaigns/get_xml");
+        chart.render("chartdiv");
+		
+		$('select').change(function(){
+			$('#form1').submit();
+		})
+	});
+    </script>
+</div>
+<!-- Container End -->

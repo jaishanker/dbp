@@ -1,0 +1,101 @@
+<%= javascript_include_tag "jquery.date_input" %>
+<%= stylesheet_link_tag "date_input" %>
+<%= render :partial => "top_nav" %>
+<!-- Blue Box start -->
+<div class="Blue4pxbox">
+    <code>
+        $(this).corner();
+    </code>
+    <div class="profileForm">
+        <!-- Page Head start -->
+        <div class="pageheading">
+            <div class="c1 head14">
+                Add News
+            </div>
+        </div>
+        <!-- Page Head end -->
+        <div class="brdBot01">
+        </div>
+        <!-- Form Start --><p class="spacer04"/><% form_for(@news,:url => {:action => :create},:html => {:multipart => true}) do |f| %>
+        <%= error_messages_for :news,:header_message => nil,:message => nil %>
+        <div class="uplooad">
+            <div class="formrow">
+                <p class="c1">
+                    Category:
+                </p>
+                <p class="c2">
+                    <%= f.select :category_id, NewsCategory.all_active.map{|c| [c.name,c.id]} %>
+                </p>
+            </div>
+            <div class="formrow">
+                <p class="c1">
+                    Start date:
+                </p>
+                <p class="c2">
+                    <%= f.text_field :start_date, :class => "inputtxt04 date_input" %>
+                </p>
+            </div>
+            <div class="formrow">
+                <p class="c1">
+                    End Date:
+                </p>
+                <p class="c2">
+                    <%= f.text_field :end_date, :class => "inputtxt04 date_input" %>
+                </p>
+            </div>
+            <div class="formrow">
+                <p class="c1">
+                    Title:
+                </p>
+                <p class="c2">
+                    <%= f.text_field :title, :class => "inputtxt04" %>
+                </p>
+            </div>
+            <div class="formrow">
+                <p class="c1">
+                    Description:
+                </p>
+                <p class="c2">
+                    <%= f.text_area :description, :class => "inputtxt04",:rows => 8 %>
+                </p>
+            </div>
+            <div class="formrow">
+                <p class="c1">
+                    Embed code:
+                </p>
+                <p class="c2">
+                    <%= f.text_area :embed_code, :class => "inputtxt04",:rows => 8 %>
+                </p>
+            </div>
+            <div class="formrow">
+                <p class="c1">
+                    Upload Display Image:
+                </p>
+                <p class="c2">
+                    <%= file_field_tag :photo,:class => "inputtxt01 file" %>
+                </p>
+            </div>
+            <div class="formrow">
+                <p class="c1">
+                    &nbsp;
+                </p>
+                <p class="c2">
+                    <%= submit_tag "Submit",:class => "grnbtn01" %>
+                </p>
+            </div>
+            <% end %>
+        </div>
+        <!-- Form End -->
+    </div>
+</div>
+<!-- Blue Box end -->
+<script type = "text/javascript">
+    $(document).ready(function(){
+    $('select').addClass('inputtxt01');
+    
+    $(function(){
+        $(".date_input").date_input();
+    });
+  });
+    
+</script>

@@ -1,0 +1,186 @@
+class GamesController < ApplicationController
+
+  before_filter :game_objects,:only => [:index,:game ,:favorites,:comment_on_game]
+  log_activity_streams :current_user, :login, "rated",
+    :@game, :user_id, :rate1,:rated_game, {:total => 1 }
+  
+  def index
+    @search_text = params[:search] unless params[:search].nil?
+    @search_text = @search_text.strip() unless params[:search].nil?
+    @tag = params[:tag] unless params[:tag].nil?             
+    if @search_text
+      @games = Game.search_games(@search_text,params[:page])
+    elsif @tag
+      tag_record = Tag.find_by_name(params[:tag])
+      if tag_record.nil?
+        Tag.create(:name => params[:tag], :no_of_clicks => 1, :tagable_type => "Game", :status => 1)
+      else
+        tag_record.no_of_clicks = tag_record.no_of_clicks.to_i + 1
+        tag_record.save
+      end
+      @games = Game.search_by_tag(@tag , params[:page] || 1)
+    else
+      @games = Game.paginate_top_rated_games(1, params[:page] || 1)      
+#      @games = Game.paginate_by_status '1', :page => params[:page] || 1, :order => 'created_at DESC'
+      #       @games = Game.find_active(10)
+    end
+    @no_of_pages = (@games.total_entries.to_f / PER_PAGE).ceil    
+  end
+
+  def game
+    unless params[:request_id].nil?
+          request = Request.find(params[:request_id])
+          request.status = "viewed"
+          request.save
+     end        
+    @offset = 0
+    @game = Game.find_by_permalink_and_status(params[:permalink],1)
+    if @game.nil?
+      flash[:notice] = "This game does not exist."
+      redirect_to :action => :index
+      return
+    end
+    @game_comments = GameComment.game_comment(@game.id, PER_PAGE,@offset)
+    if !session[:flag]
+      @game.update_count
+    else
+      session[:flag] = false
+    end
+     
+
+    @title = @game.title unless @game.title.nil?
+    @description = @game.description unless @game.description.nil?
+    @image_src = @game.pictures[0].photo(:medium) unless @game.pictures[0].nil?
+
+  end
+
+  def rate1
+    @suppress_activity_stream = true
+     if enough_points?(params[:rating].to_i * PER_RATING)    
+          @game = Game.find(params[:id], :include=>'ratings')
+          if @game
+            @game_owner = @game.user
+            if(@game.rated_by_user?(current_user))
+              old_rating = Rating.get_old_rating(current_user,@game)  
+              points_to_remove = old_rating.rating.to_i * PER_RATING
+              @game_owner.actual_substract_points(points_to_remove,"substracted_old_points",@game_owner)                
+              @game.rating_by_user(current_user).update_attribute('rating', params[:rating])
+              @game_owner.add_points(params[:rating].to_i * PER_RATING,"received_rating",@game,points_to_remove)        
+            else       
+              @game.add_rating Rating.new(:rating => params[:rating],:user_id => current_user.id)
+              @game_owner.add_points(params[:rating].to_i * PER_RATING,"received_rating",@game)        
+            end
+               current_user.add_points(RATING_GIVEN,"given_rating",@game)
+               current_user.substract_points(params[:rating].to_i * PER_RATING,"given_rating_points_substraced",@game)                     
+          end
+          @suppress_activity_stream = false
+          message = "show_notice('Thanks for rating.','success')"
+          render :update do |page|
+            page.replace_html "rated_#{@game.id}", :partial => 'games/star_rate',:local=>{:d => @game}
+            page << message
+          end
+    else
+        message = "show_notice('You dont have enough points to do this action','error')"
+        render :update do |page|
+          page << message
+        end      
+    end        
+  end
+
+  def comment_on_game
+    @offset = 0
+    @comment_on_games = GameComment.recent_comments(PER_PAGE,@offset)
+  end
+
+  def show_more_comments
+    @offset = params[:offset].to_i + PER_PAGE
+    p "show more------------------>"
+    if params[:id]
+      #    @game = Game.find(params[:id])
+      @game_comments = GameComment.game_comment(params[:id],PER_PAGE,@offset)
+      p "commetns------------------------->"
+      p @game_comments
+      respond_to do |format|
+        format.js do
+          render :update do |page|
+            unless @game_comments.size == 0
+              page.insert_html :bottom, 'game_comments', :partial => 'more_game_comments'
+            else
+              page.insert_html :bottom, 'game_comments', 'No more comments are there for this game'
+            end
+          end
+          return
+        end
+      end
+    else
+      @comment_on_games = GameComment.recent_comments(PER_PAGE,@offset)
+      respond_to do |format|
+        format.js do
+          render :update do |page|
+            unless @comment_on_games.size == 0
+              page.insert_html :bottom, 'game_comments', :partial => 'more_comment_on_game'
+            else
+              page.insert_html :bottom, 'game_comments', 'No more comments are there'
+            end
+          end
+          return
+        end
+      end
+    end
+  end
+
+  def favorites
+    #    @games  = current_user.favorite_games(params[:page] || 1)
+    @games = Favorite.my_favorites(current_user.id , 'Game', params[:page] || 1)
+#    @games_active = []
+#        @games.each do |l|
+#           if l.status == 1
+#            @games_active << l
+#           end
+#        end
+    @no_of_pages = (@games.total_entries.to_f / PER_PAGE).ceil            
+  end    
+  
+  def delete_comment
+    comment = GameComment.find(params[:id])    
+    comment.destroy
+    game = Game.find_by_id(params[:obj_id])
+    render :update do |page|
+      msg = "show_notice('Comment has been successfully deleted','success')"
+      page.remove "comment_#{params[:id]}"
+      page.replace_html "total_comment_top", "#{game.comments.length}"
+      page.replace_html "total_comment", "Total Comments : #{game.comments.length}"
+      page << msg      
+      end
+  end
+
+  def delete_reply
+    comment = GameComment.find(params[:id])
+    comment.destroy
+     game = Game.find_by_id(params[:obj_id])
+    render :update do |page|
+      msg = "show_notice('Comment has been successfully deleted','success')"
+      page.remove "comment_reply_#{params[:id]}"
+      page.replace_html "total_comment_top", "#{game.comments.length}"
+      page.replace_html "total_comment", "Total Comments : #{game.comments.length}"
+      page << msg
+      end
+  end
+  
+  private
+  
+  def game_objects
+    @offset = 0
+    @game_count = Game.total_count(1)
+  when_fragment_expired 'game_comment_cache', Time.parse(30.seconds.from_now.to_s) do
+    p "game-------------comment----------cache------------"
+    @game_comments = GameComment.recent_comments(4,@offset)
+  end
+#    @recent_games = Game.recent_games
+  when_fragment_expired 'top_rated_games_cache', Time.parse(30.seconds.from_now.to_s) do
+     p "top-------------rated-------games--------cache------------"
+    @top_rated_games = Game.top_rated_games
+  end
+  end
+  
+end

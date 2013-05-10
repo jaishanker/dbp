@@ -1,0 +1,10 @@
+<div style ="margin:50px; 0px 0px 20px;">
+    <div id = "cat_update_error_<%= @category.id %>" style ="padding:5px;" >
+    </div>
+    <% remote_form_for(@category, :url => {:controller => "admin_base",:action => "update_category",:id => @category.id,:cat_type => @category.class.to_s }, :before => "$('#spinner5').show();", :complete => "$('#spinner5').hide();") do |f| %>
+    Edit Category&nbsp;<%= f.text_field :name,:class => "inputtxt01" %>
+	<br/><br/>
+	<%= f.submit "Update",:class => "grnbtn02" %>
+    <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner5",:style=>"display:none; width: 20px;height:20px; margin-top: 0px;" ) %>
+    <% end %>
+</div>

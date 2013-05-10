@@ -1,0 +1,19 @@
+<div class="threCol">
+  <div class="cc1"><%=  get_image(outgoing_request.recipient,'user','thumb')%></div>
+  <div class="cc2"><%= link_to outgoing_request.recipient.login.capitalize,my_page_path(:user_id => outgoing_request.recipient_id), :class => "blue"%><br />
+   <%= time_ago(outgoing_request.created_at) %></div>
+
+  <%obj = outgoing_request.requestable_type.constantize.find(outgoing_request.requestable_id)%>
+    
+  <%if outgoing_request.requestable_type =="Design"%>
+      <div class="cc3">to  view Design <%= link_to obj.name, {:controller => "designs", :action => "design", :permalink => obj.permalink}%></div>
+  <%elsif outgoing_request.requestable_type =="Learning"%>
+      <div class="cc3">to  view Learning Material <%= link_to obj.title, {:controller => "learnings", :action => "learning", :permalink => obj.permalink}%></div>    
+ <%elsif outgoing_request.requestable_type =="Topic"%>
+      <div class="cc3">to  view Forum Topic <%= link_to obj.title, {:controller => "discussions", :action => "topic", :permalink => obj.permalink}%></div>      
+  <%else%>
+      <div class="cc3">to  view <%=h outgoing_request.requestable_type %> <%= link_to obj.title, {:controller => outgoing_request.requestable_type.downcase.pluralize, :action => outgoing_request.requestable_type.downcase, :permalink => obj.permalink}%></div>          
+  <%end%>
+
+      <div class="cc5"><%=outgoing_request.status.capitalize%></div>
+</div>

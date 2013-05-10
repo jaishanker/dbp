@@ -1,0 +1,214 @@
+<script type="text/javascript">
+          function toggleCommentDiv(){
+            $('#news_share').hide();
+            $('#news_comment').slideToggle();
+          }
+          function toggleShareDiv(divid){
+            $('#news_comment').hide();
+            $('#news_share').slideToggle();
+          }
+        function checkFollowings(){
+          <%if logged_in?%>
+              <%if current_user.following_by_type('User').empty?%>
+                show_notice('You are not following anybody yet','error')
+                return false;
+              <%end%>
+          <%end%>
+        }
+        function checkFollowers(){
+          <%if logged_in?%>
+              <%if current_user.followers.empty?%>
+                show_notice('You dont have any followers yet','error')
+                return false;
+              <%end%>
+          <%end%>
+        }
+</script>
+<div class="clear">
+</div>
+<div class="content">
+    <!-- Left Col Start -->
+    <div class="c1">
+        <!-- Blue Box start -->
+        <div class="Blue4pxbox">
+            <code>
+                $(this).corner();
+            </code>
+            <div class="whiteBoxContent">
+                <!-- News Start -->
+                <div class="pageheading">
+                    <p class="c1 head14">
+                        News
+                    </p>
+                </div>
+                <p class="clear brdBot01">
+                </p>
+                <!-- Two col news start -->
+                <div class="newspg">
+                    <div class="twoCol">
+                        <div class="c1">
+                            <%=link_to get_image(@news,'news','small','nobrd'),{:controller=>:news, :action => :news,:permalink => @news.permalink} %>
+                        </div>
+                        <div class="c2">
+                            <p class="head">
+                                <%= link_to get_name(@news.title,65),{:controller=>:news, :action => :news,:permalink => @news.permalink} ,:style=>"color:black;" %>
+                            </p>
+                            <p class="date">
+                                <%= (@news.start_date).strftime("%A %d %b, %Y") %>
+                            </p>
+                        </div>
+                        <p class="spacer01">
+                        </p>
+                        <p class="txt">
+                            <%= h @news.description %>
+                        </p>
+                        <p class="spacer01">
+                        </p>
+                        <p class="txt" style="text-align:center;">
+                            <%= @news.embed_code %>
+                        </p>
+                    </div>
+                    <div class="pageheading">
+                        <p class="clear brdBot01">
+                        </p>&nbsp;
+                        <p class="c1 head12">
+                            Comments
+                        </p>
+                        <p class="c3">
+                            <span id="pagination" class="pagination01"></span>
+                        </p>
+                        <p class="c2 total" id="total_comment">
+                            Total Comments :<%= @news.comments.length %>
+                        </p>
+                    </div>
+                    <p class="clear brdBot01">
+                    </p>
+                    <div id="news_comments">
+                        <%unless @news_comments.empty? %>
+                        <%=render :partial=>"news/news_comment", :collection => @news_comments %>
+                        <div id="more_news_comments_link">
+                            <p class="spacer03">
+                                <span class="grnbtn02"><%= link_to_remote "Show More",    :url => { :action => "show_more_comments",:id =>@news.id,  :offset => @offset }, :before => "$('#spinner_show').show()", :complete => "destroyDiv('more_news_comments_link')" %></span>
+                                <span><%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner_show",:style=>"display:none; width: 16px; margin-top: 0px;" ) %></span>
+                            </p>
+                        </div>
+                        <%else %>
+                        No comment for this news yet. Be the first to comment! <%end %>
+                    </div>
+                    <div class="iconComment brdBot01" id="ComLink">
+                        <div>
+                            <p class="postcom">
+                            </p>
+                            <p class="icolink">
+                                <a href="javascript:void(0);" class="blacklink" onclick="toggleCommentDiv()">Post Comment</a>
+                            </p>
+                            <p class="share">
+                            </p>
+                            <p class="icolink">
+                                <a href="javascript:void(0);" class="blacklink" onclick="toggleShareDiv()">Share</a>
+                            </p>
+                        </div>
+                    </div>
+                    <p class="clear">
+                    </p>
+                    <!-- Comment form starts -->
+                    <div id = "news_comment" style ="display:block;">
+                        <div id="ComContent">
+                            <%if logged_in? %>
+                            <div class="brd">
+                                <%@type="News" %>
+                                <% form_remote_tag :url=>{:controller=>'comment',:action=>'post_comment',:id=>@news.id,:type=>@type} ,:html=>{:name=>'postcomment'} , :before => "$('#spinner').show();",:complete => "$('#spinner').hide();" do %>
+                                <%= text_area_tag 'comment_text', nil, :class => 'inputtxt' %>
+                                <%= submit_tag 'Post' ,:class=>'grnbtn' %>
+                                <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner",:style=>"display:none; width: 20px; margin-top: 0px;" ) %>
+                                <%end %>
+                            </div>
+                            <%else %>
+                            <div class="brd">
+                                Please login to post comment.
+                            </div>
+                            <%end %>
+                        </div>
+                    </div>
+                    <!-- comment form ends --><!-- sharing form -->
+                    <div id = "news_share" style ="display:none;">
+                        <div id="ComContent">
+                        <%if logged_in?%>
+                        <%height = "height:153px;"%>
+                        <%else%>
+                        <%height = "height:51px;"%>
+                        <%end%>
+                           
+                            <div class="brd" style="<%=height%>">
+                                <div class="group iconComment">
+                                   <%if logged_in? %>
+                                    <div class="fourCol">
+                                        <p class="c7">
+                                            <span class="followingIcon"></span>
+                                            <span class="black">Share with People You Follow</span>
+                                        </p>
+                                        <% form_remote_tag :url => {:controller=> "share",:action => 'share_with_followings'} do -%>
+                                        <p class="c8">
+                                            <%=hidden_field_tag 'id', @news.id %>
+                                            <%=hidden_field_tag 'type', @type %>
+                                            <!-- <%=check_box_tag 'all_following', '1', false, :class => 'inputcheck'%>All Followings --><span><%= submit_tag 'Share' , :class=>"grnbtn01" %></span>
+                                        </p>
+                                        <%end %>
+                                        <p class="frm_brd01">
+                                        </p>
+                                    </div>
+                                    <div class="fourCol">
+                                        <p class="c7">
+                                            <span class="followersIcon"></span>
+                                            <span class="black">Share with Followers</span>
+                                        </p>
+                                        <% form_remote_tag :url => "/share/share_with_followers" do -%>
+                                        <p class="c8">
+                                            <%=hidden_field_tag 'id', @news.id %>
+                                            <%=hidden_field_tag 'type', @type %>
+                                            <!-- <%=check_box_tag 'all_followers', '1', false, :class => 'inputcheck'%>All Followers --><span><%= submit_tag 'Share' , :class=>"grnbtn01" %></span>
+                                        </p>
+                                        <%end %>
+                                        <p class="frm_brd01">
+                                        </p>
+                                    </div>
+                                  <%end%>
+                                    <%=render :partial=>"designs/share_with_other" ,:locals=>{:d=>@news,:flag=>true},:inline=>true %>
+                                    <!--<div class="fourCol">
+                                    <p class="c7">
+                                    <span class="othernetwork"></span>
+                                    <span class="black">Share with Other Network</span>
+                                    </p>
+                                    <ul class="shareIcons">
+                                    <li><a class="shareFacebook" target = "_blank" href="http://www.facebook.com/sharer.php?u=http://<%=request.host_with_port%>/news/news/<%=@news.id%>"></a></li>
+                                    <li><a class="shareOrkut" target = "_blank" href="http://promote.orkut.com/preview?nt=orkut.com&du=http://<%=request.host_with_port%>/news/news/<%=@news.id%>&tt=<%=@news.title%>&cn=<%= h get_name(@news.description,250) %>&tn=<%= @news.pictures[0].nil? ? "" : @news.pictures[0].photo.url(:medium) %>"></a></li>
+                                    <li><a class="shareTwitter" target = "_blank" href="http://twitter.com/home?status=<%=@news.title%> http://<%=request.host_with_port%>/news/news/<%=@news.id%>" title=""></a></li>
+                                    </ul>
+                                    <p class="clear10"></p>
+                                    </div>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- sharing form end -->
+                </div>
+                <!-- Two col news end -->
+                <p class="clear">
+                </p>
+                <!-- News End -->
+            </div>
+        </div>
+        <!-- Blue Box end -->
+        <div class="spacer">
+        </div>
+    </div>
+    <!-- Left Col End -->
+    <!-- Right Col Start -->
+    <div class="c2 rightcol">
+        <%=render :partial=>"right_col" %>
+    </div>
+    <!-- Right Col End -->
+</div>
+<!-- Container End -->
+<div class="clear">
+</div>

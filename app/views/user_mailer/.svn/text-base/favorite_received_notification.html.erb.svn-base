@@ -1,0 +1,13 @@
+Hi <%=h @user.login.capitalize %>,
+<br /><br />
+  <%=h @favorited_by.login.capitalize%> has favorited your design <%= link_to @design.name, @design_url%>
+<br /><br />
+Thanks,<br />
+The SolidWorks India Online Community Team
+
+<br /><br />
+=======================================<br />
+This message was intended for <%=@user.email%>.
+If you do not wish to receive this type of email from SolidWorks India Online Commutnity in the future, please click on the link below to unsubscribe.
+<%=h @unsubscribe_url %>
+<img height = "0" width = "0" src="http://fans.solidworks.in/home/campaign/<%=@user.id%>?camp=10004"></img>

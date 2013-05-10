@@ -1,0 +1,21 @@
+<div class="myActivity" id="myActivity" style="display:none;">
+  <div class="rightcol">
+    <!-- Activity Stream Div start -->
+    <div class="actstream">
+      <div class="myActivityhead" onclick="toggleActivityContent()">
+        <p class="headtxt"><span class="act_flash"><embed src="/images/activity.swf" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" width="45" height="35" wmode="transparent"></embed></span>
+        Activity Stream</p>
+        <!-- <a href="javascript:void(0)" class="more" onclick="hideActivityWidget()">-</a> -->
+        <a href="javascript:void(0)" class="more" onclick="hideActivityWidget()">close</a>
+      </div>
+      <div class="myActivitypadd">
+        <!-- Two col start -->
+        <div class="twcol" id="twcol" style="display:none;">
+          <%= render :partial => "/layouts/activity_stream", :collection => @activitity_streams%>        
+        </div>
+      </div>
+      <!-- Two col end -->
+    </div>
+    <!-- Activity Stream Div end -->
+  </div>
+</div>

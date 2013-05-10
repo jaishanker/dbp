@@ -1,0 +1,193 @@
+# Filters added to this controller apply to all controllers in the application.
+# Likewise, all the methods added will be available for all controllers.
+
+class ApplicationController < ActionController::Base
+  helper :all # include all helpers, all the time
+  
+  include AuthenticatedSystem  
+  before_filter :set_facebook_session
+  helper_method :facebook_session  
+  
+  # protect_from_forgery # See ActionController::RequestForgeryProtection for details
+  before_filter :check_new_activity, :if => :admin_required
+  before_filter :get_banner , :profile_data
+  before_filter :set_cache_buster  
+rescue_from Facebooker::Session::SessionExpired, :with => :facebook_session_expired  
+
+  
+  
+  
+  include LogActivityStreams
+  include ApplicationHelper
+  require 'will_paginate'
+  
+
+  # Scrub sensitive parameters from your log
+  # filter_parameter_logging :password
+  
+  def profile_data
+    if logged_in?
+#      when_fragment_expired "profile_data_cache_" + current_user.id.to_s, Time.parse(5.minute.from_now.to_s) do
+        p "profile_---------------------data_------------------cache"
+        @followings =  current_user.following_by_type('User').first(10)
+        @followers = current_user.followers.first(10)
+        @fovorite_types = Favorite.find_by_sql("select distinct favorable_type from favorites group by favorable_type,user_id")
+        @current_users_groups = current_user.active_groups.size
+        @current_users_request = current_user.active_received_requests.size
+        @current_users_designs = current_user.designs.size
+        @products_count = Product.count
+#      end
+      end
+    end
+  
+  # Added on 5/03/10 by anil
+  def admin_required
+#    if logged_in?
+#      #     if (current_user.role == 'system') || (current_user.role == 'designer')
+#      return true  
+#      #     else
+#      #        redirect_to root_path
+#      #      end
+#    end
+  end
+  
+  def getTags(tags)
+    tag = ""  
+    unless tags.nil?
+      tags.each do |t|
+        tag << t + ','
+      end
+    end
+    return tag.chop
+  end
+  
+  def admin_login_required
+    if logged_in?
+      unless current_user.user_type.to_i == 0 or current_user.user_type.to_i == 5 
+        flash[:error] = "You don't have access to this page"
+        redirect_to "/"
+      end
+    else
+      flash[:error] = "Please login first"
+      redirect_to "/"
+    end
+  end
+  
+  def check_new_activity
+    #    object_str = "("
+    #    if logged_in? and !request.xhr?
+    #      current_user.designs.each do |d|
+    #        if object_str == "("
+    #          object_str = object_str + "(object_id = #{d.id} and object_type = '#{d.class.name}')"
+    #        else
+    #          object_str = object_str + "or (object_id = #{d.id} and object_type = '#{d.class.name}')"          
+    #        end
+    #      end
+    #      if object_str == "("
+    #        object_str = object_str + "(object_id = #{current_user.id} and object_type = '#{current_user.class.name}')"
+    #      else
+    #        object_str = object_str + "or (object_id = #{current_user.id} and object_type = '#{current_user.class.name}')"          
+    #      end       
+    #      groups = Group.find_all_by_owner_id(current_user.id)
+    #      for group in groups
+    #        if object_str == "("
+    #          object_str = object_str + "(object_id = #{group.id} and object_type = '#{group.class.name}')"
+    #        else
+    #          object_str = object_str + "or (object_id = #{group.id} and object_type = '#{group.class.name}')"          
+    #        end        
+    #      end
+    #      unless object_str == "("
+    #        object_str = object_str + ")"  
+    #        condition_string = object_str + " and status = 0 and p.id IS NULL and actor_id != #{current_user.id}"
+    #        @activitity_streams = ActivityStream.latest_activity(condition_string, activity_stream_location)  
+    #      end
+    #    end
+    if logged_in? and !request.xhr?
+      @activitity_streams = CACHE.get(current_user.id.to_s + '_activity')
+      if @activitity_streams.nil?
+        @activitity_streams = ActivityStream.latest_activity(current_user.id, activity_stream_location)
+        CACHE.add(current_user.id.to_s + '_activity',@activitity_streams,300,false)
+      end
+    end
+  end
+  
+  def get_banner
+    
+    @top_banner = CACHE.get("top_banner")
+    @right_banner = CACHE.get("right_banner")
+    @total_user_count = CACHE.get("total_users")
+    if @top_banner.nil?
+      logger.debug "============================================================================================="
+      @top_banner = Banner.top_banner
+      CACHE.add("top_banner",@top_banner,2628000,false) # 1 month
+    end
+    if @right_banner.nil?
+      @right_banner = Banner.right_banner
+      CACHE.add("top_banner",@right_banner,2628000,false) # 1 month
+    end
+    if @total_user_count.nil?
+      @total_user_count = User.count
+      CACHE.add("total_users",@total_user_count,2628000,false) # 1 month      
+    end
+  end
+  
+  
+  def enough_points?(points_to_spend)
+    points_spent_today = Activity.points_spent_today(current_user)     
+    if (points_spent_today+points_to_spend) > (current_user.points*50)
+      return false
+    else
+      return true
+    end
+  end  
+  
+  def check_var
+    unless current_user.user_type.to_i == 5
+      flash[:error] = "You don't have permission to access this page"
+      redirect_to "/admin"
+    end
+  end
+  
+#  def rescue_action_in_public(exception)
+#    respond_to do |want|
+#      want.html {
+#        redirect_to :controller => "error" 
+#      }
+#      want.js {
+#        #        render :update do |page|
+#        #          page.redirect_to :controller => "error" 
+#        #        end
+#      }
+#    end
+#  end
+#  
+#  def rescue_action_locally(exception)
+#    respond_to do |want|
+#      want.html {
+#        redirect_to :controller => "error" 
+#      }
+#      want.js {
+#        #        render :update do |page|
+#        #          page.redirect_to :controller => "error" 
+#        #        end
+#      }
+#    end
+#  end
+  
+  def set_cache_buster
+    if request.env['HTTP_USER_AGENT'] =~ /MSIE/
+        response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
+        response.headers["Pragma"] = "no-cache"
+        response.headers["Expires"] = "#{1.year.ago}"
+    end
+  end
+  
+  def facebook_session_expired
+    clear_fb_cookies!
+    clear_facebook_session_information
+    reset_session # remove your cookies!
+    flash[:error] = "Your facebook session has expired."
+    redirect_to "/"
+  end  
+  
+end

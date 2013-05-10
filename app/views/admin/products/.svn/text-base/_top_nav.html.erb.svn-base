@@ -1,0 +1,13 @@
+<ul class="admNav">
+    <li>
+        <a href="/admin/products">Report</a>
+    </li>
+    <li>
+        <a href="/admin/products/new">Add Product</a>
+    </li>
+    <li>
+        <a href="/admin/products/all_redemptions">Redemptions</a>
+    </li> 
+</ul>
+<div class="spacer01">
+</div>

@@ -1,0 +1,321 @@
+<script type="text/javascript">
+      function toggleCommentDiv(divid){
+        $('#game_share_'+divid).hide();
+        $('#game_favorite_'+divid).hide();
+        $('#game_comment_'+divid).slideToggle();
+      }
+      function toggleShareDiv(divid){
+        $('#game_comment_'+divid).hide();
+        $('#game_favorite_'+divid).hide();
+        $('#game_share_'+divid).slideToggle();
+      }
+      function toggleFavoriteDiv(divid){
+        $('#game_comment_'+divid).hide();
+        $('#game_share_'+divid).hide();
+        $('#game_favorite_'+divid).slideToggle();
+      }
+      function checkFollowings(){
+    <%if logged_in?%>
+      <%if current_user.following_by_type('User').empty?%>
+            show_notice('You are not following anybody yet','error')
+            return false;
+      <%end%>
+    <%end%>
+      }
+      function checkFollowers(){
+    <%if logged_in?%>
+      <%if current_user.followers.empty?%>
+            show_notice('You dont have any followers yet','error')
+            return false;
+      <%end%>
+    <%end%>
+      }
+</script>
+<!-- Container Start -->
+<div class="content">
+    <!-- Left Col Start -->
+    <div class="c1">
+        <!-- Blue Box start -->
+        <div class="Blue4pxbox">
+            <code>
+                $(this).corner();
+            </code>
+            <div class="whiteBoxContent">
+                <!-- Design Central Start --><!-- Section Head start -->
+                <div class="pageheading">
+                    <div class="c1 head14">
+                        Games
+                    </div>
+                    <div class="c5 total">
+                        <%@title_search="Search in Games" %>
+                        <%@type="games" %>
+                        <%=render :partial=>"designs/search" %>
+                    </div>
+                </div>
+                <p class="clear brdBot01"/>
+                <div class="pageheading">
+                    <p class="c1 total">
+                        Total Games : <%=@game_count %>
+                    </p>
+                    <p class="c3">
+                        <span id="pagination" class="pagination01"></span>
+                    </p>
+                </div>
+                <!--
+                <script type="text/javascript">
+                $(function(){
+                $("#pagination").paginate({
+                count: 500,
+                start: 100,
+                display: 5,
+                border: false,
+                text_color: '',
+                background_color: '',
+                text_hover_color: '',
+                background_hover_color: ''
+                });
+                });
+                </script>
+                --><%g=@game %>
+                <p class="clear brdBot01">
+                </p>
+                <!-- Section Head End --><!-- Two col comment start -->
+                <div class="twocol">
+                    <div class="c3">
+                        <p class="head01">
+                            <%= link_to get_name(@game.title,75),:controller=>:games, :action => :game,:permalink => @game.permalink %>
+                        </p>
+                        <div class="rating" id="rated_<%=@game.id%>" style="">
+                            <%=render :partial=>"/games/star_rate" ,:locals => {:d => @game },:inline=>true %>
+                        </div>
+                        <div class="viewcomm01">
+                            <p class="views">
+                            </p>
+                            <p class="icolink">
+                                <%= get_view_count(@game.view_count) %>
+                            </p>
+                            <p class="comments">
+                            </p>
+                            <p class="icolink">
+                                <a href="javascript:void(0)"><%length =  @game.comments.length %>
+                                    <%if length == 1 %>
+                                    <%c_name = "comment" %>
+                                    <%else %>
+                                    <%c_name = "comments" %>
+                                    <%end %>
+                                    <span id="total_comment_top"><%=length %></span>&nbsp;<%=c_name %>
+                                </a>
+                            </p>
+                            <p class="favorites">
+                            </p>
+                            <p class="icolink">
+                                <%fav = @game.favoriting_users.size %>
+                                <%if fav == 1 %>
+                                <%f_name = "favorite" %>
+                                <%else %>
+                                <%f_name = "favorites" %>
+                                <%end %>
+                                <%=fav %>&nbsp;<%=f_name %>
+                            </p>
+                            <p class="clear">
+                            </p>
+                        </div>
+                    </div>
+                    <p class="clear">
+                    </p>
+                    <p class="txt" style="text-align:center">
+                        &nbsp;
+                    </p>
+                    <p class="clear">
+                    </p>
+                    <p class="text" style="text-align:center;">
+                        <%=@game.embed_code %>
+                    </p>
+                    <!-- Heading Start --><% unless @game.tags.nil? %>
+                    <% unless @game.tags.length == 0 %>
+                    <p class="tags">
+                        <% @game.tags.split(',').each do |tag| %>
+                        <%= link_to h(tag) , :controller => "games", :action => "index" , :tag => tag, :tagable_id => @game.id %><%= "," unless tag == @game.tags.split(',').last %>
+                        <% end %>
+                    </p>
+                    <% end %>
+                    <% end %>
+                    <p class="spacer01"/><p class="spacer01 brdBot01"/>
+                    <div class="pageheading">
+                        <p class="c1 head12">
+                            Comments<a name="gmcom"></a>
+                        </p>
+                        <p class="c3">
+                            <span id="pagination" class="pagination01"></span>
+                        </p>
+                        <p class="c2 total" id="total_comment">
+                            Total Comments : <%= @game.comments.length %>
+                        </p>
+                    </div>
+                    <p class="clear brdBot01">
+                    </p>
+                    <!-- Heading end --><!-- Three col comment start -->
+                    <div id="game_comments">
+                        <%unless @game_comments.empty? %>
+                        <%=render :partial=>"game_comment", :collection => @game_comments %>
+                        <div id="more_game_comments_link">
+                            <p class="spacer03">
+                                <span class="grnbtn02"><%= link_to_remote "Show More",    :url => { :action => "show_more_comments",:id =>@game.id,  :offset => @offset }, :before => "$('#spinner_show').show()", :complete => "destroyDiv('more_game_comments_link')" %></span>
+                                <span><%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner_show",:style=>"display:none; width: 16px; margin-top: 0px;" ) %></span>
+                            </p>
+                        </div>
+                        <%else %>
+                        No comment for this game yet. Be the first to comment!<%end %>
+                    </div>
+                    <!-- Three col comment end -->
+                    <div class="iconComment brdBotDot01">
+                        <div>
+                            <div class = "fleft">
+                                <p class="postcom">
+                                </p>
+                                <p class="icolink">
+                                    <a href="javascript:void(0);" class="blacklink" onclick="toggleCommentDiv(<%=@game.id%>)">Comment</a>
+                                </p>
+                                <p class="share">
+                                </p>
+                                <p class="icolink">
+                                    <a href="javascript:void(0);" class="blacklink" onclick="toggleShareDiv(<%=@game.id%>)">Share</a>
+                                </p>
+                                <p class="favorites">
+                                </p>
+                                <p class="icolink">
+                                    <a href="javascript:void(0);" class="blacklink" onclick="toggleFavoriteDiv(<%=@game.id%>)">Add to Favorites</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Comment form starts --><%@type="Game" %>
+                <div id = "game_comment_<%=g.id%>" style ="display:block;">
+                    <div id="ComContent">
+                        <%if logged_in? %>
+                        <div class="brd">
+                            <% form_remote_tag :url=>{:controller=>'comment',:action=>'post_comment',:id=>g.id,:type=>@type} ,:html=>{:name=>'postcomment'} , :before => "$('#spinner').show();",:complete => "$('#spinner').hide();" do %>
+                            <%= text_area_tag 'comment_text', nil, :class => 'inputtxt' %>
+                            <%= submit_tag 'Post' ,:class=>'grnbtn' %>
+                            <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner",:style=>"display:none; width: 20px; margin-top: 0px;" ) %>
+                            <%end %>
+                        </div>
+                        <%else %>
+                        <div class="brd">
+                            Please login to post comment.
+                        </div>
+                        <%end %>
+                    </div>
+                </div>
+                <!-- comment form ends --><!-- sharing form -->
+                <div id = "game_share_<%=g.id%>" style ="display:none;">
+                    <div id="ComContent">
+                       <%if logged_in?%>
+                        <%height = "height:153px;"%>
+                        <%else%>
+                        <%height = "height:51px;"%>
+                        <%end%>
+                        
+                        <div class="brd" style="<%=height%>">
+                            <div class="group iconComment">
+                              <%if logged_in? %>
+                                <div class="fourCol">
+                                    <p class="c7">
+                                        <span class="followingIcon"></span>
+                                        <span class="black">Share with People You Follow</span>
+                                    </p>
+                                    <% form_remote_tag :url => {:controller=> "share",:action => 'share_with_followings'} do -%>
+                                    <p class="c8">
+                                        <%=hidden_field_tag 'id', g.id %>
+                                        <%=hidden_field_tag 'type', @type %>
+                                        <!-- <%=check_box_tag 'all_following', '1', false, :class => 'inputcheck'%>All Followings --><span><%= submit_tag 'Share' , :class=>"grnbtn01" %></span>
+                                    </p>
+                                    <%end %>
+                                    <p class="frm_brd01">
+                                    </p>
+                                </div>
+                                <div class="fourCol">
+                                    <p class="c7">
+                                        <span class="followersIcon"></span>
+                                        <span class="black">Share with Followers</span>
+                                    </p>
+                                    <% form_remote_tag :url => "/share/share_with_followers" do -%>
+                                    <p class="c8">
+                                        <%=hidden_field_tag 'id', g.id %>
+                                        <%=hidden_field_tag 'type', @type %>
+                                        <!-- <%=check_box_tag 'all_followers', '1', false, :class => 'inputcheck'%>All Followers --><span><%= submit_tag 'Share' , :class=>"grnbtn01" %></span>
+                                    </p>
+                                    <%end %>
+                                    <p class="frm_brd01">
+                                    </p>
+                                </div>
+                              <%end%>
+                                <%=render :partial=>"designs/share_with_other" ,:locals=>{:d=>g,:flag=>true},:inline=>true %>
+                                <!--<div class="fourCol">
+                                <p class="c7">
+                                <span class="othernetwork"></span>
+                                <span class="black">Share with Other Network</span>
+                                </p>
+                                <ul class="shareIcons">
+                                <li><a class="shareFacebook" target = "_blank" href="http://www.facebook.com/sharer.php?u=http://<%=request.host_with_port%>/games/game/<%=g.id%>"></a></li>
+                                <li><a class="shareOrkut" target = "_blank" href="http://promote.orkut.com/preview?nt=orkut.com&du=http://<%=request.host_with_port%>/games/game/<%=g.id%>&tt=<%=@game.title%>&cn=<%= h get_name(@game.description,250) %>&tn=<%= @game.pictures[0].nil? ? "" : @game.pictures[0].photo.url(:medium) %>"></a></li>
+                                <li><a class="shareTwitter" target = "_blank" href="http://twitter.com/home?status=<%=@game.title%> http://<%=request.host_with_port%>/games/game/<%=g.id%>" title=""></a></li>
+                                </ul>
+                                <p class="clear10"></p>
+                                </div>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- sharing form end -->
+                <div id = "game_favorite_<%=g.id%>" style ="display:none;">
+                    <div id="ComContent">
+                        <% if logged_in? %>
+                        <%if current_user.has_favorite?(g) %>
+                        <div class="brd">
+                            You have already favorited this game.
+                        </div>
+                        <%else %>
+                        <div class="brd">
+                            <form action="postcomment.jsp" method="get" name="postcomment">
+                                <p style="float:left;">
+                                    Do you want to Add this Game to your Favorites?
+                                </p>
+                                <p style="float:left;">
+                                    <label>
+                                        <input type="radio" name="RadioGroup1" value="yes" id="RadioGroup1_0"<% if logged_in? %><%unless current_user.has_favorite?(g) %>onclick="<%= remote_function :url =>{:controller => :share, :action => :add_to_favorite, :id => g.id,:type=>@type} %>"<%end %><%if current_user.has_favorite?(g) %>checked="checked" <%end %><%end %>/>Yes
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="RadioGroup1" value="yes" id="RadioGroup1_1"<% if logged_in? %><%if current_user.has_favorite?(g) %>onclick="<%= remote_function :url =>{:controller => :share, :action => :remove_from_favorite, :id => g.id,:type=>@type} %>"<%end %><%unless current_user.has_favorite?(g) %>checked="checked" <%end %><%end %> />No
+                                    </label>
+                                </p>
+                            </form>
+                        </div><%end %>
+                        <%else %>
+                        <div class="brd">
+                            Please login to add as Favorites.
+                        </div>
+                        <%end %>
+                    </div>
+                </div>
+                <!-- Two col comment end -->
+                <p class="clear">
+                </p>
+                <!-- Design Central End -->
+            </div>
+        </div>
+        <!-- Blue Box end -->
+        <div class="spacer">
+        </div>
+    </div>
+    <!-- Left Col End -->
+    <!-- Right Col Start -->
+    <div class="c2 rightcol" id="rightcol_games">
+        <%=render :partial=>"games/right_col" %>
+    </div>
+    <!-- Right Col End -->
+</div>
+<!-- Container End -->
+<div class="clear">
+</div>

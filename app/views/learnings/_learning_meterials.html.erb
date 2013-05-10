@@ -1,0 +1,260 @@
+<script>
+              function toggleLearningCommentDiv(divid){  
+                $('#learning_share_'+divid).hide();
+                $('#learning_favorite_'+divid).hide();
+                $('#learning_comment_'+divid).slideToggle();
+              }
+              function toggleLearningShareDiv(divid){
+                $('#learning_comment_'+divid).hide();
+                $('#learning_favorite_'+divid).hide();
+                $('#learning_share_'+divid).slideToggle();
+              }
+              function toggleLearningFavoriteDiv(divid){  
+                $('#learning_comment_'+divid).hide();
+                $('#learning_share_'+divid).hide(); 
+                $('#learning_favorite_'+divid).slideToggle();
+              }
+              function checkFollowings(){
+            <%if logged_in?%>
+              <%if current_user.following_by_type('User').empty?%>
+                    show_notice('You are not following anybody yet','error')
+                    return false;
+              <%end%>
+            <%end%>
+              }
+              function checkFollowers(){
+            <%if logged_in?%>
+              <%if current_user.followers.empty?%>
+                    show_notice('You dont have any followers yet','error')
+                    return false;
+              <%end%>
+            <%end%>
+              }
+</script>
+<div class="twocol">
+    <div class="viewcomm">
+        <p class="views">
+        </p>
+        <p class="icolink">
+            <%= get_view_count(l.view_count) %>
+        </p>
+        <p class="comments">
+        </p>
+        <p class="icolink">
+            <%length = l.comments.all.length %>
+            <%if length == 1 %>
+            <%c_name = "comment" %>
+            <%else %>
+            <%c_name = "comments" %>
+            <%end %>
+            <%= link_to  "#{length}&nbsp;#{c_name}" ,:controller=>:learnings, :action => :learning,:permalink => l.permalink %>
+        </p>
+        <p class="favorites">
+        </p>
+        <p class="icolink">
+            <%fav = l.favoriting_users.size %>
+            <%if fav == 1 %>
+            <%f_name = "favorite" %>
+            <%else %>
+            <%f_name = "favorites" %>
+            <%end %>
+            <%=fav %>&nbsp;<%=f_name %>
+        </p>
+        <p class="clear">
+        </p>
+    </div>
+    <div class="c1">
+        <p class="boximg">
+            <%=link_to get_image(l,'learning','medium','nobrd'),{:controller=>:learnings, :action => :learning,:permalink => l.permalink} %>
+        </p>
+    </div>
+    <div class="c2">
+        <p class="head01">
+            <%= link_to get_name(l.title,60),:controller=>:learnings, :action => :learning,:permalink => l.permalink %>
+        </p>
+        <!--<p class="txt01 fleft">-&nbsp; by&nbsp;
+        </p>
+        <p class="txtblue fleft">
+        <%#= link_to truncate(l.user.login,8),my_page_path(:user_id => l.user.id)%>
+        </p>-->
+        <p class="txt01 fleft">
+            <%= time_ago(l.created_at) %>&nbsp; 
+        </p>
+        <div class="rating" id="rated_<%=l.id%>" style="">
+            <% @learning = l %>
+            <%=render :partial=>"/learnings/star_rate" ,:locals => {:d => @learning},:inline=>true %>
+        </div>
+        <p class="clear">
+        </p>
+        <%if logged_in? %>
+        <% l.assets.each do |a| %>
+        <% format = get_single_format(a) %>
+        <%if format == "DOC" %>
+        <p class="">
+            <%= link_to "",assets_path(:id =>a.id), :class => "word",:title=>"click to download" %>
+        </p>
+        <%elsif format == "XLS" %>
+        <p class="">
+            <%= link_to "excel",assets_path(:id =>a.id), :class => "",:title=>"click to download" %>
+        </p>
+        <%elsif format == "PDF" %>
+        <p class="">
+            <%= link_to "",assets_path(:id =>a.id), :class => "pdf",:title=>"click to download" %>
+        </p>
+        <%else %>
+        <%#= link_to "Play" ,{:controller=>"learnings",:action=>"learning",:permalink=>l.permalink},:title=>"click to play" %>
+        <%end %>
+        <%end %>
+        <%end %>
+        <p class="clear">
+        </p>
+        <p class="txt">
+            <%=h get_name(l.description,250) %>
+        </p>
+        <% unless l.tags.nil? %>
+        <% unless l.tags.length == 0 %>
+        <p class="tags">
+            <% l.tags.split(',').each do |tag| %>
+            <%= link_to h(tag) , :controller => "learnings", :action => "index" , :tag => tag, :tagable_id => l.id %><%= "," unless tag == l.tags.split(',').last %>
+            <% end %>
+        </p>
+        <% end %>
+        <% end %>
+        <%url = request.host_with_port %>
+         <iframe src="http://www.facebook.com/plugins/like.php?href=http://fans.solidworks.in/<%=l.class.to_s.downcase.pluralize%>/<%=l.class.to_s.downcase%>/<%=l.permalink%>&amp;layout=standard&amp;show_faces=true&amp;width=450&amp;action=like&amp;colorscheme=light&amp;height=80" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:80px;" allowTransparency="true"></iframe>
+    </div>
+    <p class="clear">
+    </p>
+    <div class="iconComment brdBotDot01">
+        <div class = "comlinkpadd">
+            <div class = "fleft">
+                <p class="postcom">
+                </p>
+                <p class="icolink">
+                    <a href="javascript:void(0);" class="blacklink" onclick="toggleLearningCommentDiv(<%=l.id%>)">Comment</a>
+                </p>
+                <p class="share">
+                </p>
+                <p class="icolink">
+                    <a href="javascript:void(0);" class="blacklink" onclick="toggleLearningShareDiv(<%=l.id%>)">Share</a>
+                </p>
+                <!--
+                <p class="sameuser"></p>
+                <p class="icolink">
+                <a href="DesignBy.html" class="blacklink">Show Similar Content</a>
+                </p>
+                -->
+                <p class="favorites">
+                </p>
+                <p class="icolink">
+                <a href="javascript:void(0);" class="blacklink" onclick="toggleLearningFavoriteDiv(<%=l.id%>)">Add to Favorites</a>
+            </div>
+        </div>
+        <p class="clear">
+        </p>
+        <div id="ComContent<%=l.id%>">
+        </div>
+    </div>
+</div>
+<p class="clear">
+        </p>
+<!-- Comment form starts -->
+<div id = "learning_comment_<%=l.id%>" style ="display:none;">
+    <div id="ComContent">
+        <%if logged_in? %>
+        <div class="brd">
+            <%@type="Learning" %>
+            <% form_remote_tag :url=>{:controller=>'comment',:action=>'post_comment',:id=>l.id,:type=>@type} ,:html=>{:name=>'postcomment'} , :before => "$('#spinner_#{l.id}').show();",:complete => "$('#spinner_#{l.id}').hide();" do %>
+            <%= text_area_tag 'comment_text', nil, :class => 'inputtxt' %>
+            <%= submit_tag 'Post' ,:class=>'grnbtn' %>
+            <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner_#{l.id}",:style=>"display:none; width: 20px; margin-top: 0px;" ) %>
+            <%end %>
+        </div>
+        <%else %>
+        <div class="brd">
+            Please login to post comment.
+        </div>
+        <%end %>
+    </div>
+</div>
+<!-- comment form ends --><!-- sharing form -->
+<div id = "learning_share_<%=l.id%>" style ="display:none;">
+    <div id="ComContent">
+      <%if logged_in?%>
+      <%height = "height:153px;"%>
+      <%else%>
+      <%height = "height:51px;"%>
+      <%end%>
+        <div class="brd" style="<%=height%>">
+            <div class="group iconComment">
+              <%if logged_in? %>
+                <div class="fourCol">
+                    <p class="c7">
+                        <span class="followingIcon"></span>
+                        <span class="black">Share with People You Follow</span>
+                    </p>
+                    <% form_remote_tag :url => {:controller=> "share",:action => 'share_with_followings'} do -%>
+                    <p class="c8">
+                        <%=hidden_field_tag 'id', l.id %>
+                        <%=hidden_field_tag 'type', @type %>
+                        <!-- <%=check_box_tag 'all_following', '1', false, :class => 'inputcheck'%>All Followings --><span><%= submit_tag 'Share' , :class=>"grnbtn01" %></span>
+                    </p>
+                    <%end %>
+                    <p class="frm_brd01">
+                    </p>
+                </div>
+                <div class="fourCol">
+                    <p class="c7">
+                        <span class="followersIcon"></span>
+                        <span class="black">Share with Followers</span>
+                    </p>
+                    <% form_remote_tag :url => "/share/share_with_followers" do -%>
+                    <p class="c8">
+                        <%=hidden_field_tag 'id', l.id %>
+                        <%=hidden_field_tag 'type', @type %>
+                        <!-- <%=check_box_tag 'all_followers', '1', false, :class => 'inputcheck'%>All Followers --><span><%= submit_tag 'Share' , :class=>"grnbtn01" %></span>
+                    </p>
+                    <%end %>
+                    <p class="frm_brd01">
+                    </p>
+                </div>
+              <%end%>
+                <%=render :partial=>"designs/share_with_other" ,:locals=>{:d=>l,:flag=>true},:inline=>true %>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- sharing form end -->
+<div id = "learning_favorite_<%=l.id%>" style ="display:none;">
+    <div id="ComContent">
+        <% if logged_in? %>
+        <%if current_user.has_favorite?(l) %>
+        <div class="brd">
+            You have already favorited this learning material.
+        </div>
+        <%else %>
+        <div class="brd">
+            <form action="postcomment.jsp" method="get" name="postcomment">
+                <p style="float:left;">
+                    Do you want to Add this Learning to your Favorites?
+                </p>
+                <p style="float:left;">
+                    <label>
+                        <input type="radio" name="RadioGroup1" value="yes" id="RadioGroup1_0"<% if logged_in? %><%unless current_user.has_favorite?(l) %>onclick="<%= remote_function :url =>{:controller => "share", :action => :add_to_favorite, :id => l.id ,:type=>@type} %>" <%end %><%if current_user.has_favorite?(l) %>checked="checked" <%end %><%end %>/>Yes
+                    </label>
+                    <label>
+                        <input type="radio" name="RadioGroup1" value="yes" id="RadioGroup1_1"<% if logged_in? %><%if current_user.has_favorite?(l) %>onclick="<%= remote_function :url =>{:controller => "share", :action => :remove_from_favorite, :id => l.id ,:type=>@type} %>" <%end %><%unless current_user.has_favorite?(l) %>checked="checked" <%end %><%end %>/>No
+                    </label>
+                </p>
+            </form>
+            <div id ="success_msg_<%=l.id%>">
+            </div>
+        </div>
+        <%end %>
+        <%else %>
+        <div class="brd">          
+                Please login to add as Favorites.
+        </div>
+    <%end %>
+    </div>
+</div>

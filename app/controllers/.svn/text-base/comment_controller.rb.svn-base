@@ -1,0 +1,97 @@
+class CommentController < ApplicationController
+    log_activity_streams :current_user, :login, "commented on", 
+            :@learning, :user_id, :post_comment,:posted_comment, {:total => 1 ,:indirect_object => :@learning_owner,:indirect_object_name_method => :login,:indirect_object_phrase => :@comment}
+ 
+   log_activity_streams :current_user, :login, "replied to", 
+        :@parent_comment, :user_id, :reply_comment,:replied_comment, {:total => 1,:indirect_object => :@comment_owner,:indirect_object_name_method => :login,:indirect_object_phrase => :@reply } 
+  
+    def post_comment
+      @suppress_activity_stream = true
+         if enough_points?(COMMENTS_GIVEN_SPEND)
+           @learning = params[:type].constantize.find(params[:id] )
+    #      @learning = Learning.find(params[:id] )#, :include=>'comments')
+          @learning_owner = @learning .user
+          if @learning
+    #        if(@learning.commented_by_user?(current_user))
+    #             @learning.commenting_by_user(current_user).update_attribute('comment', params[:comment_text])
+    #        else
+               @comment = Comment.new(:comment => params[:comment_text],:user_id => current_user.id,:status=>1)  
+               @learning.add_comment   @comment
+               unless @learning.user == current_user
+                   @learning.user.add_points(COMMENTS_RECEIVED,"received_comment",@learning)
+                   current_user.add_points(COMMENTS_GIVEN_EARNED,"posted_comment",@learning)
+                   current_user.substract_points(COMMENTS_GIVEN_SPEND,"posted_comment",@learning)         
+               end
+    #        end
+          end
+          if !params[:comment_text].empty?
+            @suppress_activity_stream = false
+              flash[:notice] = "Comment has been added."
+            render :update do |page|
+              session[:flag] = true
+#               page.redirect_to "/designs"
+#              page.redirect_to(:back)
+                page.reload
+                page.select('.inputtxt').val('')                
+            end
+          else
+            message = "show_notice('Comment Can not be blank','error');"
+            render :update do |page|
+              page << message
+            end
+          end
+      else
+        message = "show_notice('You dont have enough points to do this action','error');"
+        render :update do |page|
+           page << message
+        end        
+      end
+  end
+    
+    def reply_comment
+      @suppress_activity_stream = true
+      if enough_points?(COMMENTS_GIVEN_SPEND)      
+          @comment = params[:type].constantize.find(params[:obj][:obj_id] )#, :include=>'comments')
+          @parent_comment = Comment.find(params[:id])
+    #      learning_id = params[:learning][:learning_id]
+          if @comment
+    #        if(@comment.commented_by_user?(current_user))
+    #            @comment.commenting_by_user(current_user).update_attribute('comment', params[:comment_text])
+    #        else
+              @reply = Comment.new(:comment => params[:comment_text],:user_id => current_user.id,:commentable_type =>params[:type] ,:parent_id=>params[:id],:status=>1)
+              @comment.add_comment(@reply)      
+               @comment_owner = @comment.user
+               unless @comment_owner == current_user
+                   @comment_owner.add_points(COMMENTS_RECEIVED,"received_comment",@comment) 
+                   current_user.add_points(COMMENTS_GIVEN_EARNED,"replied_to_comment",@comment)
+                   current_user.substract_points(COMMENTS_GIVEN_SPEND,"replied_to_comment",@comment)         
+               end
+    #        end
+          end
+          if !params[:comment_text].empty?
+            @suppress_activity_stream = false
+            flash[:notice] = "Reply to comment has been added."
+            render :update do |page|
+              session[:flag] = true
+#              page.redirect_to(:back)
+                page.reload
+            end
+          else
+            message = "show_notice('Reply Can not be blank.','error')"
+            render :update do |page|
+              page << message
+            end
+          end
+    #         flash[:notice]="Reply to comment has been added"
+    #         render :update do|page|
+    #            url = "/learnings/learning/#{learning_id}"
+    #            page.redirect_to(url)
+    #         end
+    else
+            message = "show_notice('You dont have enough points to this action','error')"
+            render :update do |page|
+              page << message
+            end      
+    end
+   end
+end

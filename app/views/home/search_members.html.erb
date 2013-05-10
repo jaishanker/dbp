@@ -1,0 +1,117 @@
+<!-- Container Start -->
+<div class="content">
+  <!-- Left Col Start -->
+  <div class="c1">
+    <!-- Blue Box start -->
+    <div class="Blue4pxbox">
+      <code>
+        $(this).corner();
+      </code>
+      <div class="whiteBoxContent">
+        <!-- Section Head start -->
+        <div class="pageheading">
+          <div class="c1 head14">
+            <%if @search_text %>
+              Search Result For "<%=@search_text %>"<%else %>
+              Members<%end %>
+          </div>
+          <div class="c5 total">
+            <!--
+            <div id="search_box">
+            <form action="/" method="post" id="search_form">
+            <input type="text" class="swap_value" value="Search" id="s">
+            <input type="image" height="20" width="18" title="Search" alt="Search" id="go" src="../images/btn_search_box.gif">
+            </form>
+            </div>
+            -->
+          </div>
+        </div>
+        <p class="clear brdBot01">
+        </p>
+        <div class="pageheading">
+          <p class="c1 total">
+            Members Found : <%=@members.total_entries %>
+          </p>
+          <p class="c3">
+            <span id="pagination" class="pagination01"></span>
+          </p>
+        </div>
+        <%if @no_of_pages >= 2 %>
+          <script type="text/javascript">
+            $(document).ready(function(){
+              $(function(){
+                $("#pagination").paginate({
+                  href : '/home/search_members?search=<%=@search_text.to_s%>&page=',
+                  count: <%=@no_of_pages%>,
+                  start: <%=params[:page] || 1%>,
+                  display: 5,
+                  border: false,
+                  text_color: '',
+                  background_color: '',
+                  text_hover_color: '',
+                  background_hover_color: ''
+                });
+              });
+                                                            
+            });
+          </script>
+        <%end %>
+        <p class="clear brdBot01">
+        </p>
+        <!-- Section Head End -->
+        <!-- Two col comment start -->
+        <%unless @members.empty? %>
+          <%=render :partial => "/home/member" , :collection => @members %>
+        <%else %>
+          No such member.<%end %>
+        <p class="clear">
+        </p>
+      </div>
+    </div>
+    <!-- Blue Box end -->
+    <div class="spacer">
+    </div>
+  </div>
+  <!-- Left Col End -->
+  <!-- Right Col Start -->
+  <div class="c2 rightcol" id="rightcol_Index">
+    <%=render :partial => "/home/members_search_form" %>
+    <!-- Expert Div start -->
+    <%=render :partial=>"home/experts.html.erb" %>
+    <!-- Expert Div end -->
+    <div class="clear">
+    </div>
+    <!-- Active Member Div start -->
+    <!-- Active Member Div end -->
+    <div class="clear">
+    </div>
+    <div class='<%= cycle("cBoxblue","cBoxorange","cBoxgreen") %>'>
+      <div class="cBoxhead">
+        <p class="headtxt">
+          Activity Stream
+        </p>
+        <%= link_to "more +",recent_activity_path(),:class=>"more" %>
+      </div>
+      <div class="cBoxcontainer">
+        <!-- Activity Stream Div start -->
+<%#= render :partial => 'activity_streams/activity_stream', :collection => @activities %>
+        <%unless @activities.empty? %>
+          <%=render :partial=>"home/activity_stream.html.erb", :collection => @activities %>
+        <%else %>
+          No Recent activity found.<%end %>
+        <p class="spacer01">
+        </p>
+      </div>
+    </div>
+    <!-- Activity Stream Div end -->
+    <div class="clear">
+    </div>
+    <!-- Recent Posts Div start -->
+    <%=render :partial=>"home/recent_posts.html.erb" %>
+    <!-- Recent Div end -->
+  </div>
+  <!-- Right Col End -->
+</div>
+<!-- Container End -->
+<div class="clear">
+</div>

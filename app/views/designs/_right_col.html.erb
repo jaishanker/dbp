@@ -1,0 +1,145 @@
+<%= get_right_panel_banner(@right_banner,'Design') %>
+<%=render :partial => "/home/members_search_form" %>
+<% if logged_in? %>
+<% if current_user.designs.length >= 1 %>
+<div class="greenheadrightcol01">
+    <a href="/designs/index?user_id=<%=current_user.id%>">My Designs</a>
+</div>
+<% end %>
+<div class="greenheadrightcol">
+    <a href="/designs/new">Upload your Design Now!</a>
+</div>
+<% end %>
+<!-- Expert Div start -->
+<div class="expert">
+    <div class ="<%= cycle('cBoxblue','cBoxorange','cBoxgreen') %>">
+        <div class="cBoxhead">
+            <p class="headtxt">
+                Top Rated Designers
+            </p>
+            <%= link_to "more +",top_designers_path(),:class=>"more" %>
+        </div>
+        <!-- Three col start -->
+        
+        <div class = "cBoxcontainer">
+          <% cache 'top_rated_designers_cache' do %>
+            <div class="snaprow">
+                <% unless @top_rated_designers.length == 0 %>
+                <% @top_rated_designers.each do |t| %>
+                <div class="c1">
+                    <p class="snap clear">
+                        <%= link_to get_image(t,'user','thumb','nobrd'),my_page_path(:user_id => t.id) %>
+                        <%#= get_my_page_link(get_image(t,'user','thumb','nobrd'),t.id) %>
+                        <!-- <a href="My_Page.html"><img src="/images/snap01.gif" width="36" height="36" class="nobrd" /></a> -->
+                    </p>
+                    <p class="mname">
+                 <%if t.profile.pic_present%>
+                     <%class_name = get_class(t.expertise_points||0)%>
+                      <%unless class_name == "belt_white"%>
+                            <span class="<%= class_name%>"></span>   
+                      <%end%>
+                  <%end%>
+                        <%= link_to get_name(t.login.capitalize,8),my_page_path(:user_id => t.id) %>
+                        <%#= get_my_page_link(truncate(t.login.capitalize,10),t.id) %>
+                    </p>
+                </div>
+                <%end %>
+                <% else %>
+                No top rated designers found<% end %>
+            </div>
+           <%end%>
+            <p class="spacer01">
+            </p>
+        </div>
+       
+    </div>
+    <!-- Three col end -->
+</div>
+<!-- Expert Div end -->
+<div class="clear">
+</div>
+<!-- Comments on Design Div start -->
+<div class ="<%= cycle('cBoxblue','cBoxorange','cBoxgreen') %>">
+  <% cache 'comment_on_design_cache' do %>
+    <div class="cBoxhead">
+        <p class="headtxt">
+            Comments on  Designs
+        </p>
+        <%= link_to "more +",comment_on_design_path(),:class=>"more" %>
+    </div>
+    <div class = "cBoxcontainer">
+        <!-- Two col start --><% unless @recent_comments.length == 0 %>
+        <% @recent_comments.each do |c| %>
+        <%= render :partial => "right_col_comment",:locals => {:c=> c} ,:inline=>true%>
+        <% end %>
+        <% else %>
+        No comments found<% end %>
+        <!-- Two col end -->
+        <p class="spacer01">
+        </p>
+    </div>
+  <%end%>
+</div>
+<!-- Comments on Design Div end -->
+<div class="clear">
+</div>
+<!-- Recent Posts Div start --><!--<div class="recentpost">
+<div class="orangehead">
+<p class="headtxt">Recent Design Posts</p>
+<a href="Design_Central.html" class="more">more + </a>
+</div>
+<p class="orgarrow"></p>
+<ul class="recendesignpost">
+<li><a href="Design_Central_Details.html">My Best Car</a>10 mins ago by User10</li>
+<li><a href="Design_Central_Details.html">G0-Green</a>25 mins ago by User10</li>
+<li><a href="Design_Central_Details.html">Beetle Car</a>45 mins ago by User10</li>
+<li><a href="Design_Central_Details.html">The Hi-Tech Swiss Knif</a>1 hour 25 mins ago by Administrator</li>
+<li><a href="Design_Central_Details.html">Factory Plant Layout</a>1 hour 45 mins ago by Administrator</li>
+</ul>
+</div>-->
+<div class ="<%= cycle('cBoxblue','cBoxorange','cBoxgreen') %>">
+    <div class="cBoxhead">
+        <p class="headtxt">
+            Recent Design Posts
+        </p>
+        <a href="/designs?recent=true" class="more">more + </a>
+    </div>
+  <% cache 'recent_design_right_cache' do %>
+    <div class = "cBoxcontainer">
+        <ul class="recendesignpost">
+            <% unless @recent_designs_right.length == 0 %>
+            <% @recent_designs_right.each do |recent| %>
+            <li>
+                <%=link_to recent.name ,{:controller=>:designs, :action => :design,:permalink => recent.permalink} %>
+                <%= time_ago(recent.created_at) %>
+            </li>
+            <% end %>
+            <% else %>
+            No design found<% end %>
+        </ul>
+        <p class="spacer01">
+        </p>
+    </div>
+  <%end%>
+</div>
+<div class="clear">
+</div>
+<%= get_right_panel_banner(@right_banner,'Design','Bottom') %>
+<!-- Activity Stream Div end -->
+<script type="text/JavaScript">
+    $(document).ready(function() { 
+    $('input[type="text"]').focus(function() { 
+    if (this.value == this.defaultValue){
+    this.value = '';
+    }
+    if(this.value != this.defaultValue){
+    this.select();
+    }
+    });
+    $('input[type="text"]').blur(function() {
+    if ($.trim(this.value) == ''){
+    this.value = (this.defaultValue ? this.defaultValue : '');
+    }
+    });
+    });
+</script>

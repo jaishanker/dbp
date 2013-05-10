@@ -1,0 +1,62 @@
+    <!-- Four col comment start -->
+    <div class="group">
+        <div class="fourCol">
+            <div class="c1">
+             <%= get_image(@group,'groups','small')%>
+            </div>
+            <div class="c2">
+                <p class="cc2">Name:</p>
+                <p class="cc2">Type:</p>
+                <p class="cc2">Members:</p>
+                <p class="cc2">Created on:</p>
+            </div>
+            <div class="c3">
+                <p class="cc3"><%= @group.name%></p>
+                <p class="cc3"><%= @group.type%></p>
+                <p class="cc3">
+                    <%if @group.users.size == 0%>
+                        None
+                   <%else%>
+                        <%=link_to number_with_delimiter(@group.users.size).to_s+" members",members_group_path(@group),:class => "orange"%>                     
+                   <%end%>
+                </p>
+                <p class="cc3"><%=h (@group.created_at.strftime '%d %b %Y') %><!--10 Aug 2009 --></p>
+            </div>
+            <div class="c4">
+                <%if logged_in?%>
+                   <%if @group.owner_id == current_user.id%>
+                              <%= link_to "Edit", edit_group_path(@group), :class => "grnbtn" %> 
+                              <%= link_to "Delete", delete_group_path(@group), :class => "grnbtn",:confirm=>"Are you sure you want to delete this group?" %>                                       
+                    <%else%>                      
+                          <%unless @group.users.include?(current_user)%>
+                              <%= link_to "Join Group", join_group_path(@group), :class => "grnbtn"%>
+                          <%else%>
+                              <%= link_to "Unjoin", unjoin_group_path(@group), :class => "grnbtn",:confirm=>"Are you sure you want to unjoin this group?"%>
+                          <%end%>
+                    <%end%>
+                <%else%>
+                    <a href="javascript:void(0);" class="ask_login"> Login  </a>to join this group                     
+                <%end%>
+             </div>
+        </div>
+        <div class="clear"></div>
+        <div class="fourCol">
+            <div class="c5">
+                <p class="cc2">Description:</p>
+            </div>
+            <div class="c6">
+                <p class="cc3"><%=h @group.description %></p>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div class="fourCol">
+            <div class="c5">
+                <p class="cc2">Recent News:</p>
+            </div>
+            <div class="c6">
+                <p class="cc3"><%=h @group.recent_news %></p>
+            </div>
+        </div>
+    </div>
+	<div class="clear brdDot01"></div>
+    <!-- Four col comment end -->

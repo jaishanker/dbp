@@ -1,0 +1,157 @@
+<!-- Container Start -->
+<div class="content">
+    <%= render :partial => "top_nav" %>
+    <table border="0" cellpadding="5" cellspacing="0" id="mytable01">
+        <tr>
+            <td>
+                <div class="Blue4pxbox">
+                    <code>
+                        $(this).corner();
+                    </code>
+                    <div class="profileForm">
+                        <!-- Page Head start -->
+                        <div class="pageheading">
+                            <div class="c1 head14">
+                                Add Topic
+                            </div>
+                        </div>
+                        <!-- Page Head end -->
+                        <div class="brdBot01">
+                        </div>
+                        <!-- Form Start --><p class="spacer04"/><% form_for(@topic,:url => {:action => :create}, :before => "$('#spinner').show();", :complete => "$('#spinner').hide();") do |f| %>
+                        <%= error_messages_for :topic,:header_message => nil,:message => nil %>
+                        <div class="uplooad">
+                            <div class="formrow" id = "category_dropdown">
+                                <p class="c1">
+                                    Category:
+                                </p>
+                                <div class="c2">
+                                    <table cellspacing = "0" cellpadding = "0">
+                                        <tr>
+                                            <td>
+                                                <%= f.select :discussion_category_id, @discussion_categories.map{|c| [c.name,c.id]} %>
+                                            </td>
+                                            <td>
+                                                <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner",:style=>"display:none;padding-left:3px;" ) %>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="formrow">
+                                <p class="c1">
+                                    Sub Category:
+                                </p>
+                                <div class="c2" id = "sub_category_dropdown">
+                                    <%
+									sub_categories = []
+                                    sub_categories =  @discussion_categories.first.sub_categories unless @discussion_categories.first.nil? 
+                                    unless @topic.discussion_category_id.blank?
+                                    begin
+                                    sub_categories = DiscussionCategory.find(@topic.discussion_category_id).sub_categories
+                                    rescue
+                                    else
+                                    end
+                                    end %>
+                                    <%= f.select :sub_category_id, sub_categories.map{|s| [s.name,s.id]} %>
+                                </div>
+                            </div>
+                            <div class="formrow">
+                                <p class="c1">
+                                    Name:
+                                </p>
+                                <p class="c2">
+                                    <%= f.text_field :title, :class => "inputtxt04" %>
+                                </p>
+                            </div>
+                            <%= render :partial => 'post', :collection => @topic.posts %>
+                            <div class="formrow">
+                                <p class="c1">
+                                    &nbsp;
+                                </p>
+                                <p class="c2">
+                                    <%= submit_tag "Create",:class => "grnbtn01" %>
+                                </p>
+                            </div>
+                            <% end %>
+                        </div>
+                        <!-- Form End -->
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <br/>
+	<!--
+    <form id="form1" name="form1" method="post" action="">
+        <div class="demo_jui">
+            <table cellpadding="0" cellspacing="0" border="0" class="display" id="example1">
+                <thead>
+                    <tr class="dataTable">
+                        <th width="15%">
+                            Sub Category Name
+                        </th>
+                        <th width="15%">
+                            Category Name
+                        </th>
+                        <th width="15%">
+                            Date
+                        </th>
+                        <th width="15%">
+                            Action
+                        </th>
+                        <th width="20%">
+                            Status
+                            <br/>
+                            Active / Inactive
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%# unless @topics.length == 0 %>
+                    <%# @sub_categories.each do |c| %>
+                    <tr class="dataTable">
+                        <td align="center">
+                            <a href="#"><%#= get_name(c.name) %></a>
+                        </td>
+                        <td align="center">
+                            <a href="#"><%#= get_name(c.category.name) %></a>
+                        </td>
+                        <td align="center">
+                            <%#= c.created_at.strftime("%d %b %Y") %>
+                        </td>
+                        <td align="center">
+                            <label>
+                                <%#= link_to "Edit",:controller => "admin/discussions",:action => "edit_sub_category",:id => c.id %>
+                            </label>
+                            &nbsp;/&nbsp;
+                            <label>
+                                <%#= link_to "Delete",{:controller => "admin/discussions",:action => "delete_sub_category",:id => c.id} ,{:confirm => "are you sure you whnt to delete this category ?"} %>
+                            </label>
+                        </td>
+                        <td align="center">
+                            <label>
+                                <%#= radio_button_tag "discussion#{c.id}","enabled",c.status.to_i == 1,:onclick => remote_function(:url => {:controller => "admin/discussions",:action => "update_sub_cat_status",:id => c.id,:status => 1}) %>Active
+                            </label>
+                            <label>
+                                <%#= radio_button_tag "discussion#{c.id}","disabled",c.status.to_i == 0,:onclick => remote_function(:url => {:controller => "admin/discussions",:action => "update_sub_cat_status",:id => c.id,:status => 0}) %>Deactive
+                            </label>
+                        </td>
+                    </tr>
+                    <%# end %>
+                    <%# end %>
+                </tbody>
+            </table>
+        </div>
+    </form>
+	-->
+</div>
+<!-- Container End -->
+<script type="text/javascript">
+   $(document).ready(function(){
+        $('select').addClass('inputtxt01');
+    	$('#topic_discussion_category_id').change(function(){
+    		<%= remote_function(:url => {:controller => '/admin/discussions',:action => "update_sub_category"},:submit => "category_dropdown",:before => "$('#spinner').show();",:complete => "$('#spinner').hide();") %>
+    	});
+        });
+</script>

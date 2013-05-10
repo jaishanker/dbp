@@ -1,0 +1,57 @@
+<% @user_qualification = user_qualification %>
+<div class="user_qualfication">
+    <% fields_for_user_qualification(user_qualification) do |form| %>
+                      <div class="proform_l">
+                    <div class="formrow">
+                      <p class="c1">Qualification:</p>
+                      <p class="c2">
+                              <%=form.select("qualification", QUALIFICATIONS.sort,{:prompt => "Select Qualification"},:class => "proselect qualification") %>
+                              <span></span> 
+                      <!--	<select name="" class="proselect">
+                              <option>Qualification One</option>
+                              <option>Qualification Two</option>
+                          </select> -->
+                      </p>
+                  </div>
+
+                      <div class="formrow">
+                      <p class="c1">Specialization / Major:</p>
+                      <p class="c2">
+                             <%if user_qualification.specification.nil?%>
+                                        <%=form.select("specification", grouped_options_for_select(SPECIALIZATIONS,user_qualification.specification.to_s),{:prompt => "Select Specialization"},:class => "proselect specialization", :onchange => "checkIfOther(this)" )%>
+                             <%else%>
+                               <%success = false%>
+                               <%SPECIALIZATIONS.each_value{|val| success = true if val.has_value?(user_qualification.specification.to_s) }%>
+                               <%if success%>                               
+                                    <%=form.select("specification", grouped_options_for_select(SPECIALIZATIONS,user_qualification.specification.to_s),{:prompt => "Select Specialization"},:class => "proselect specialization", :onchange => "checkIfOther(this)" )%>                               
+                               <%else%>
+                                    <%=form.text_field :specification,:class => "proinput specialization"%>                                                                
+                               <%end%>                                
+                             <%end%>                             
+                            <span></span> 
+                              <!-- <select name="" class="proselect">
+                              <option>Qualification One</option>
+                              <option>Qualification Two</option>
+                          </select> -->
+                      </p>
+                  </div>
+                      <div class="formrow">
+                      <p class="c1">Year of Passing:</p>                
+                      <p class="c2">
+                            <%=form.select("year_of_passing", GRADUATION_YEARS,{:prompt => "Select Year", :selected => user_qualification.year_of_passing.to_s},:class => "proselect01 graduation_year" ) %>
+                            <span></span> 
+                            <%#=select_year(Date.today, :field_name => 'user_qualification_year_of_passing')%>
+                            <%#=form.date_select( "year_of_passing", {:start_year => 1990, :end_year => Time.now.year,:order => [:year], :default => { :year => 2000 }}, {:class => "proselect01"})%>
+                            <%#=form.text_field :year_of_passing, :class=> "proinput02 passing_year" %><!-- <span></span> --><!-- <input name="fmname" type="text" value="YYYY" class="proinput02" /> --> </p>
+                  </div>
+  
+                 <%=form.hidden_field :user_id, :value => @user.id%> 
+                 <%#=form.hidden_field :id, :value => user_qualification.id%>                  
+                 
+    
+                  </div>       
+
+          <div class="frm_brd"></div>      
+    <%end%>
+</div>
+

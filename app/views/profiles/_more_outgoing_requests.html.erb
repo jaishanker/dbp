@@ -1,0 +1,6 @@
+ <%= render :partial => "outgoing_request", :collection => @outgoing_requests%>
+  <div id="more_outgoing_requests_link">
+            <p class="spacer03"><span class="grnbtn02"><%= link_to_remote "Click for more Requests",    :url => { :action => "get_more_outgoing_requests", :offset => @offset, :user_id => @user.id }, :before => "$('#spinner_show').show()", :complete => "destroyDiv('more_outgoing_requests_link')",:html => { :href =>"javaScript:void(0)" }%></span>
+                <span> <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner_show",:style=>"display:none; width: 16px; margin-top: 0px;" ) %> </span> 
+            </p> 
+  </div>

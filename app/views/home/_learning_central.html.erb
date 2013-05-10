@@ -1,0 +1,28 @@
+
+<div class="greenhead">
+    <p class="warrow">
+    </p>
+    <p class="fleft head">
+        Learning Center
+    </p>
+    <p class="fleft">
+        <a href="/learnings" class="white">Total Tutorials : <%=@learning_count%></a>
+    </p>
+    <a href="/learnings" class="more">more + </a>
+</div>
+<div class="flashnews">
+    <p class="LeaCen">
+    </p>
+    <p class="txt">
+        Find the Tutorials, Learning Materials. You can also request a Materials or Tutorials here.
+    </p>
+</div>
+<%@learnings.each do |l| %>
+<% unless l.nil?%>
+<!-- Two col comment start -->
+<%= render :partial => "/learnings/learning_meterials",:locals => {:l => l,:same_design => true,:by_user=>false},:inline => true %>
+<!-- Two col comment end -->
+<%else%>
+No Learning exists in system.
+<% end %>
+<%end%>

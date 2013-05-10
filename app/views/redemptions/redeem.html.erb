@@ -1,0 +1,136 @@
+<div class="newuser">
+  <%#= error_messages_for :redeem_user_info %>
+  <% remote_form_for(@redeem_user_info, :url => {:controller => "redemptions", :action => "redeem_points", :product_id => @product.id}, :before => "$('#spinner').show();", :complete => "$('#spinner').hide();") do |f| %>
+
+    <p class="c1">
+      Shipment Mode:
+    </p>
+    <p class="c2">
+        <%=f.radio_button :shipment_type, 0, :checked => true, :onclick => "$('#shipment_adds').show();"%> Ship it to below address    
+        <br/>
+       <%=f.radio_button :shipment_type, 1, :onclick => "$('#shipment_adds').hide();"%> I will collect it from your autherised centers             
+    </p>
+    <p class="spacer04">
+    </p>    
+    <div id="shipment_adds" <%if @redeem_user_info.shipment_type == 1%> style="display:none;" <%end%>>
+            <p class="spacer04">
+            </p>
+            <p class="c1">
+              Address Line 1:
+            </p>
+            <p class="c2">
+              <%= f.text_field :address_line1, :class=> "inputtxt01" %>
+             <br>
+              <span id="address_line1_error"></span>
+             </p>
+            <p class="spacer04">
+            </p>
+            <p class="c1">
+              Address Line 2:
+            </p>
+            <p class="c2">
+              <%= f.text_field :address_line2, :class=> "inputtxt01" %>   
+            </p>
+            <p class="spacer04">
+            </p>
+            <p class="c1">
+              Country:
+            </p>
+            <p class="c2">
+              <%#=f.country_select :country,["India"],{},{:class => "inputtxt01",:onchange => "getStates(this.value);"} %>
+              <%#=country_select(@redeem_user_info,'country',["India"],{},{:class => "inputtxt01",:onchange => "getStates(this.value);"} )%>
+                    <%if @redeem_user_info.country.nil? or @redeem_user_info.country.blank?%>
+                            <%=f.select :country, COUNTRIES,{:selected => "India"},{:class => "inputtxt01",:onchange => "getStates(this.value);"} %>
+                    <%else%>
+                            <%=f.select :country, COUNTRIES,{:selected => @redeem_user_info.country},{:class => "inputtxt01",:onchange => "getStates(this.value);"} %>              
+                    <%end%>
+                    <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner1",:style=>"display:none; width: 20px; margin-top: 0px;" ) %>            
+            </p>
+
+            <p class="spacer04">
+            </p>
+            <p class="c1">
+              State:
+            </p>
+            <p class="c2">
+                 <span id="state_select">
+                    <%if @redeem_user_info.country.nil? or @redeem_user_info.country.blank?%>
+                            <%=f.state_select :state, country='India',  {},{:class => "inputtxt01"} %>
+                    <%else%>
+                              <%if COUNTRIES1.include?(@redeem_user_info.country)%>              
+                                    <%=f.state_select :state, country=@redeem_user_info.country,  {},{:class => "inputtxt01"} %>       
+                              <%else%>
+                                    <%=f.text_field :state, :class=> "inputtxt01" %>                        
+                              <%end%>
+                    <%end%>
+                </span>
+           <!-- <select id="order_state" name="order[state]">
+             <%#=state_options_for_select(selected = nil, country = 'INDIA')%>
+            </select>    -->
+              <%#= f.text_field  :state, :class=> "inputtxt01" %>
+             <br>
+              <span id="state_error"></span>
+            </p>
+
+            <p class="spacer04">
+            </p>
+            <p class="c1">
+              City:
+            </p>
+            <p class="c2">
+              <%= f.text_field  :city, :class=> "inputtxt01" %>
+             <br>
+              <span id="city_error"></span>
+            </p>
+            <p class="spacer04">
+            </p>
+            <p class="c1">
+              Pin Code:
+            </p>
+            <p class="c2">
+              <%= f.text_field :pincode, :class=> "inputtxt01" %>
+             <br>
+              <span id="pincode_error"></span>
+            </p>
+            <p class="spacer04">
+            </p>
+
+          </div>
+
+            <p class="c1">
+              Telephone No:
+            </p>
+            <p class="c2">
+              <%= f.text_field :tel_no, :class=> "inputtxt01" %>
+             <br>
+              <span id="tel_no_error"></span>
+            </p>
+            <p class="spacer04">
+            </p>
+
+            <p class="c1">
+              Mobile No:
+            </p>
+            <p class="c2">
+              <%= f.text_field :mob_no, :class=> "inputtxt01" %>
+             <br>
+              <span id="mob_no_error"></span>
+            </p>
+            <p class="spacer04">
+            </p>    
+    
+
+
+                                          
+    <p class="c1">
+      &nbsp;
+    </p>
+    <p class="c2">
+      <%= submit_tag 'Redeem Now!' , :class=>"grnbtn02",:id => "user_reg_submit" %>&nbsp;
+      <input type="button" class="grnbtn02" value="Cancel" onclick="return hs.close(this)"/>
+      <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner",:style=>"display:none; width: 20px; margin-top: 0px;" ) %>
+    </p><% end -%>
+</div>
+
+
+

@@ -1,0 +1,106 @@
+<%= tiny_mce if using_tiny_mce? %>
+<div id = "error">
+</div>	
+<div class="postadd">
+    <% remote_form_for(@topic,:url => {:action => :create_topic}, :before => "tinyMCE.triggerSave(true, true);$('#spinner1').show();", :complete => "$('#spinner1').hide();") do |f| %>
+    <div class="txt">
+        Add Topic in Group Discussion
+    </div>
+	
+    <p class="spacer04">
+    </p>
+	<!--
+    <p class="c1">
+        Category:
+    </p>
+    <div class="c2">
+        <table cellspacing = "0" cellpadding = "0" id = "category_dropdown" >
+            <tr>
+                <td>
+                    <%= f.select :discussion_category_id, @discussion_categories.map{|c| [c.name,c.id]},{:class => "inputtxt01"} %>
+					<span id = "discussion_category_id_error"></span>
+                </td>
+                <td>
+                    <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner",:style=>"display:none;padding-left:3px;" ) %>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <p class="spacer04">
+    </p>
+    <p class="c1">
+        Sub Category:
+    </p>
+    <div class="c2" id = "sub_category_dropdown"  >
+        <%
+        sub_categories = []
+        sub_categories =  @discussion_categories.first.sub_categories unless @discussion_categories.first.nil?
+        unless @topic.discussion_category_id.blank?
+        begin
+        sub_categories = DiscussionCategory.find(@topic.discussion_category_id).sub_categories
+        rescue
+        else
+        end
+        end %>
+        <%= f.select :sub_category_id, sub_categories.map{|s| [s.name,s.id]},{:html => {:class => "inputtxt01"}} %>
+		<span id = "sub_category_id_error"></span>
+    </div>
+
+    <p class="spacer04">
+    </p>
+	 -->
+    <p class="c1">
+        Topic:
+    </p>
+    <p class="c2">
+        <%= f.text_field :title, :class => "inputtxt01" %>	<span id = "title_error"></span>
+		<%= f.hidden_field :discussion_category_id, :value => @topic.discussion_category_id  %>
+		<%= f.hidden_field :sub_category_id, :value => @topic.sub_category_id %>
+    </p>
+
+    <p class="spacer04">
+    </p>
+    <% fields_for "topic[new_post_attributes][]",@topic.posts.build do |p| %>
+    <%= p.hidden_field :user_id, :value => current_user.id %>
+    <%= p.hidden_field :status, :value => 1 %>
+    <p class="c1">
+        Post:
+    </p>
+    <p class="c2">
+        <%= p.text_area :body, :class => "inputtxt01",:id => "textarea_editor",:rows => 12 %>
+		<span id = "new_post_attributes__body_error"></span>
+    </p>
+	
+    <% end %>
+    <!--
+    <p class="c1">
+    Post:
+    </p>
+    <p class="c2">
+    <%#= render :partial => 'body', :collection => @topic.posts %>
+    </p>
+    -->
+    <p class="spacer04">
+    </p>
+    <p class="c1">
+        &nbsp;
+    </p>
+    <p class="c2">
+        <%= f.submit "Submit",:class => "grnbtn02" %>
+        <input type="button" onclick ="return hs.close(this);" class="grnbtn02" value="Cancel" />
+		<%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner1",:style=>"display:none;padding-left:3px;" ) %>
+    </p><% end %>
+    <p class="spacer04">
+    </p>
+	<!--
+    <p class="c1">
+        <ul>
+            <li>
+                <input type="checkbox" name="attach_sig" id="attach_sig" checked="checked" />Attach a signature (signatures can be altered via the UCP)
+            </li>
+            <li>
+                <input type="checkbox" name="notify" id="notify" />Notify me when a reply is posted
+            </li>
+        </ul>
+    </p>-->
+</div>

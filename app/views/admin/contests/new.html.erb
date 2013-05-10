@@ -1,0 +1,124 @@
+<%= javascript_include_tag "jquery-ui.js","ui.dropslide.js","jquery.date_input","jquery.anchorHandler","jquery.utils","jquery.strings","ui.timepickr.js","jquery.autocomplete.js" %>
+<%= stylesheet_link_tag "date_input","jquery.autocomplete.css" %>
+<%= render :partial => "top_nav" %>
+<!-- Blue Box start -->
+<div class="Blue4pxbox">
+    <code>
+        $(this).corner();
+    </code>
+    <div class="profileForm">
+        <!-- Page Head start -->
+        <div class="pageheading">
+            <div class="c1 head14">
+                Add Contest
+            </div>
+        </div>
+        <!-- Page Head end -->
+        <div class="brdBot01">
+        </div>
+        <!-- Form Start --><p class="spacer04"/><% form_for(@contest,:url => {:action => :create},:html => {:multipart => true}) do |f| %>
+        <%= error_messages_for :contest,:header_message => nil,:message => nil %>
+        <div class="uplooad">
+            <div class="formrow">
+                <div class="c1">
+                    Title:
+                </div>
+                <div class="c2">
+                    <%= f.text_field :name, :class => "inputtxt01" %>
+                </div>
+            </div>
+            <div class="formrow">
+                <div class="c1">
+                    Description:
+                </div>
+                <div class="c2">
+                    <%= f.text_area :description, :class => "inputtxt01",:rows => 8 %>
+                </div>
+            </div>
+            <div class="formrow">
+                <div class="c1">
+                    Start Date:
+                </div>
+                <div class="c2">
+                    <%= f.text_field :start_date, :class => "inputtxt01 date_input" %>
+                </div>
+            </div>
+            <div class="formrow">
+                <div class="c1">
+                    End Date:
+                </div>
+                <div class="c2">
+                    <%= f.text_field :end_date, :class => "inputtxt01 date_input" %>
+                </div>
+            </div>
+	  <div class="formrow">
+                <div class="c1">
+                    Result Date:
+                </div>
+                <div class="c2">
+                    <%= f.text_field :result_date, :class => "inputtxt01 date_input" %>
+                </div>
+            </div>
+
+  
+	  <div class="formrow">
+                <div class="c1">
+                    Contest Tag:
+                </div>
+                <div class="c2">
+                    <%= f.text_field :contest_tag, :class => "inputtxt01" %>
+                </div>
+            </div>  
+
+	  <div class="formrow">
+                <div class="c1">
+                    &nbsp;
+                </div>
+                <div class="c2">
+                    [This is the tag to be specify by user to his design to participate in this contest.]
+                </div>
+            </div>    
+  
+            <div class="formrow">
+                <p class="c1">
+                    Tags:
+                </p>
+                <p class="c2">
+                    <%= f.text_area :tags, :class => "tagbox inputtxt04 ",:autocomplete => "off" %>
+                </p>
+            </div>
+
+	  <div class="formrow">
+                <div class="c1">
+                    &nbsp;
+                </div>
+                <div class="c2">
+                    [These are the tags to describe contest.]
+                </div>
+            </div>      
+
+            <div class="formrow">
+                <div class="c1">
+                    &nbsp;
+                </div>
+                <div class="c2">
+                    <%= submit_tag "Submit",:class => "grnbtn01" %>
+                </div>
+            </div>
+            <% end %>
+        </div>
+        <!-- Form End -->
+    </div>
+</div>
+<!-- Blue Box end -->
+<script>
+    $(function(){
+        $(".date_input").date_input();
+        
+        
+        $('.tagbox').tagbox({
+        
+            separator: /[,.;]/
+        });
+    });
+</script>

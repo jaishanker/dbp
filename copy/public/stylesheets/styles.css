@@ -1,0 +1,1360 @@
+html { background:#fff url(../images/bg_main_repeat.jpg) repeat-y center top}
+body {background: url(../images/bg_main.jpg) no-repeat center top; font-family:Arial, Helvetica, sans-serif; font-size:11px; color:#666; margin:0px auto; text-decoration:none; height:100%;}
+a { outline:none}
+.wrapper {width:976px; margin:0px auto; padding:0 10px; background:#fff}
+.clear {clear:both; margin:0px; padding:0px;}
+.spacer {clear:both; height:5px;}
+.spacer01 {clear:both; height:10px;}
+.spacer02 {clear:both; height:40px;}
+.spacer03 {clear:both; height:35px; margin:0px 0px; padding-top:10px;}
+.spacer04 {clear:both; height:10px; margin:0px 0px; padding:0px 0px 5px;}
+.spacer05 {clear:both; height:15px;}
+/* Added on 8/06/10 by anil for fixing cswp ui issue */
+.spacer06 {height:12px;}
+.pad2 {padding-top:2px;}
+.pad3 {padding-top:3px;}
+.pad4 {padding-top:4px;}
+.pad5 {padding-top:5px;}
+.padbot5 {padding-bottom:5px;}
+.fleft {float:left;}
+.fright {float:right;}
+p {padding:0px; margin:0px;}
+h1 {font-size:13px; color:#000; margin:0px; padding:0px}
+h2 {font-size:12px; color:#000; margin:0px; padding:0px}
+h3{color:#656869; font-size:18px; font-family:Georgia, "Times New Roman", Times, serif; font-style:italic; font-weight:normal; margin:0 0 3px 0; }
+h4 {font-size:11px; color:#000; margin:0px; padding:0px}
+#example-password-clear {display: none;}
+
+ul {margin:0px; padding:0px; list-style:none;}
+ul li {margin:0px; padding:0px 0px;}
+
+.normButtons {font-family:Verdana, Arial, Helvetica, sans-serif; font-size:12px; background:#99bf48; color:#FFF !important; padding:2px 3px !important; border:none; margin-bottom:5px;}
+.selectcom {font-family:Verdana, Arial, Helvetica, sans-serif; font-size:11px; color:#666; padding:0px; border:1px solid #98b0c7;}
+
+/* Different Links */
+a {color:#3AC7E5; text-decoration:none;}
+a:hover {color:#000 !important; text-decoration:underline;}
+a.white {font-size:11px !important; font-weight:normal; color:#fff !important; text-decoration:underline; margin:0px 1px;}
+a.orange {font-size:11px; font-weight:normal; color:#FF6600 !important; text-decoration:underline; margin:0px 1px;}
+a.orange01 {font-size:12px !important; font-weight:bold; color:#FF6600 !important; text-decoration:underline; margin:0px;}
+a.blue {font-size:11px; font-weight:normal; color:#3AC7E5; text-decoration:underline; margin:0px 1px;}
+a.black {font-size:11px; font-weight:normal; color:#666 !important; text-decoration:underline; margin:0px 1px;}
+a.black01 {font-size:11px; font-weight:normal; color:#000 !important; text-decoration:none; margin:0px;}
+a.black02 {font-size:12px !important; font-weight:bold; color:#000 !important; text-decoration:none; margin:0px;}
+a.black03 {font-size:11px !important; font-weight:bold; color:#000 !important; text-decoration:none; margin:0px;}
+a.blacklink {font-size:11px !important; font-weight:bold; color:#2e2e2e !important; text-decoration:none; margin:0px 10px 0px 0px; padding:0px;}
+
+/* Borders */
+.brdBot {width:727px; height:0px; border-bottom:1px solid #000; margin-bottom:7px; #margin-bottom:0px;}
+.brdBot01 {width:100%; height:1px; border-bottom:1px solid #ccc !important; clear:both;}
+.brdDot {width:727px; height:1px; border-top:1px dotted #ccc; border-bottom:1px dotted #ccc; margin-bottom:7px; #margin-bottom:0px; clear:both;}
+.brdDot01 {width:100%; height:1px; border-bottom:1px dotted #ccc; margin-bottom:7px; #margin-bottom:0px; clear:both;}
+.brdDot02 {border-bottom:1px dotted #ccc;}
+
+.brdBotDot01 {width:100%; height:1px; border-bottom:1px dotted #ccc !important; border-top:1px dotted #ccc; margin-top:10px !important;}
+.brdBotDot02 {width:72%; float:left; height:1px; border-bottom:1px dotted #ccc;}
+.brdless {border:none; !important}
+.imgbrd {border:1px solid #ccc;}
+.nobrd {border:0px !important;}
+
+.grybg {background:#f4f4f4;}
+.dateBg {background-color:#acacac; font-size:11px; color:#FFFFFF; padding:1px 2px;}
+
+/* Form Elements */
+form{margin:0px; padding:0px;}
+.inputtxt {width: 100px; border:1px solid #dde8ef; font-size:11px; color:#666}
+.inputtxt01 {width: 285px; border:1px solid #7e99b7; font-size:12px; color:#666;}
+.inputtxt02 {width: 285px; border:1px solid #7e99b7; font-size:12px; color:#666; float:left;}
+.inputtxt03 {width: 194px; border:1px solid #7e99b7; font-size:12px; color:#666; float:left;}
+.inputtxt04 {width: 515px; border:1px solid #7e99b7; font-size:12px; color:#666; float:left;}
+.inputtxt05 {width: 50px; border:1px solid #7e99b7; font-size:12px; color:#666;}
+.inputtxt06 {width: 134px; border:1px solid #7e99b7; font-size:12px; color:#666;}
+/* Added on 1/06/10 by anil for fixing reply box issue on ie */
+.inputtxt07 { border:1px solid #dde8ef; font-size:11px; color:#666}
+
+.inputtxt08 {width: 231px; border:1px solid #7e99b7; font-size:12px; color:#666;}
+
+.txtarea {width: 285px; height:80px; border:1px solid #7e99b7; font-size:12px; color:#666;}
+.txtarea01 {width: 515px; height:300px; border:1px solid #7e99b7; font-size:12px; color:#666;}
+.inputcheck {width: 12px; height:12px; border:0px solid #7e99b7; font-size:12px; color:#666; margin:0px 7px 0px 0px;}
+.select01 {width:150px; border:1px solid #7e99b7; font-size:11px; color:#666;}
+/* Added by anil for drop down for cswp filter */
+.select02 {width:250px; border:1px solid #7e99b7; font-size:11px; color:#666;}
+.grnbtn {border:0px; background:#99bf48;background-color:#99bf48; font-size:11px; color:#FFF !important; padding: 2px 5px; margin: 20px 0px 1px 5px;}
+.content .grnbtn01 {border:0px; background:#99bf48; font-size:11px; color:#FFF !important; padding: 5px 5px; margin: 0px; height:25px;}
+.content .grnbtn01 a {font-size:11px !important; font-weight:bold; color:#FFF !important; padding: 5px 5px; margin: 0px;}
+.grnbtn02 {border:0px; background:#99bf48; font-size:11px; color:#FFF !important; padding: 2px 5px; margin: 0px 0px; text-decoration:none!important}
+.grnbtn02 a {font-size:11px !important; color:#FFF !important;}
+.grnbtn03 {border:0px; background:#99bf48; font-size:11px; color:#FFF !important; padding: 2px 5px; margin: 5px 0px; text-decoration:none!important}
+/*Added on 1/06/10 by anil for fixing issue of btn not showing on ie */
+.grnbtn04 {border:0px; background:#99bf48;background-color:#99bf48; font-size:11px; color:#FFF !important; padding: 2px 5px; margin: 20px 0px 1px 5px;}
+/*Added on 14/06/10 by anil for fixing issue of btn on hall of fame filtering */
+.content .grnbtn05 {border:0px; background:#99bf48; font-size:11px; color:#FFF !important; margin: 0px; height:22px;}
+.btns .grnbtn05 { float:left; margin-right:5px; display:block; }
+/*Added on 03/08/10 for adding styles to buttons on asking fconnect to existing users */
+.grnbtn06 {border:0px; background:#5F78AB; font-size:11px; color:#FFF !important; padding: 4px 5px; margin: 0px 0px; text-decoration:none!important}
+.grnbtn06 a {font-size:11px !important; color:#FFF !important;}
+.el01 {margin:0px 0px 0px 0px; float:left; width:12px; height:15px;}
+.lable01 {float:left; padding:0px 20px 0px 5px;}
+.lable02 {float:left; padding:0px 0px 0px 5px;}
+html > body .lable01 {padding:0px 20px 0px 5px; *padding:0px 20px 0px 5px;}
+html > body .lable02 {padding:0px 0px 0px 5px; *padding:0px 0px 0px 5px;}
+
+/* header div from logo to Banner Start*/
+.header {width:100%; float:left; margin-bottom:5px;}
+.logo {width:261px; height:64px; background:url(../images/logo.jpg) no-repeat left center; margin:5px 15px 0px 0px; float:left;}
+.logo a {width:261px; height:64px; display:block;}
+/*Modified on 19/07/10 by anil, changed height from 37px to 50px */
+.joinnow {width:123px; height:47px; background:#ff6600 url(../images/org_curv.jpg) no-repeat left bottom; padding:15px 0px 0px 0px; float:left; font-family:Verdana, Geneva, sans-serif; font-size:18px; color:#FFF; text-align:center;}
+.joinnow a {font-size:18px; color:#FFF; text-decoration:none;}
+
+
+
+/*Login start*/
+/*Modified on 19/07/10 by anil, changed height from 37px to 50px and font size from 12px to 11px */
+.login {width:557px; height:47px; background:#000 url(../images/black_curv.jpg) no-repeat right bottom; padding:15px 10px 0px 10px; float:left; color:#fff; font-size:11px}
+.login .txt14 {float:left; font-family:Verdana, Geneva, sans-serif; font-size:14px; color:#FFF; margin-left:5px;}
+.login .userinput {float:left; width:84px; height:14px; border:0px; font-size:11px; color:#000; padding:2px 4px; margin:0px 10px}
+.login .passinput {float:left; width:84px; height:14px; border:0px; font-size:11px; color:#000; padding:2px 4px; margin:0px 4px}
+.login .loginbtn {width:60px; height:19px; margin:0px 5px; float:left;}
+.login a.forgot {float:left; font-family:Verdana, Geneva, sans-serif; font-size:11px; color:#FFF; padding:6px 0px 6px 10px;}
+.login a:hover {color:#FFF !important; text-decoration:underline;}
+.login .line {width:1px; height:19px; background:#FFF; margin:0px 7px 0px 7px; float:left; padding:3px 0px;}
+
+.logout {float: left; background:#000; width:680px; padding:17px 10px 17px 10px; margin:0px auto; font-family:Verdana, Geneva, sans-serif;}
+.logout .txt14 {float:left; font-size:14px; color:#FFF; margin-left:50px;}
+.logout .txt11 {float:left; font-size:11px; color:#FFF; padding:2px 15px 0px 3px;}
+.logout .txt11 a {font-size:11px; color:#FFF; text-decoration:underline;}
+.logout a:hover {color:#FFF !important;}
+
+/*Login end*/
+
+#search_box {width:176px; height:24px; background:url(../images/bg_search_box.gif) no-repeat left top; float:left;}
+#search_box #s {float:left; padding:0; margin:5px 0 0 6px; border:0; width:135px; background:none; font-size:1.1em;}
+#search_box #go {float:right; margin:2px 5px 0px 0px;}
+
+#search_box01 {width:225px; height:24px; background:url(../images/bg_search_box01.gif) no-repeat left top; float:left;}
+#search_box01 #s {float:left; padding:0; margin:5px 0 0 6px; border:0; width:135px; background:none; font-size:1.1em;}
+#search_box01 #go {float:right; margin:2px 5px 0px 0px;}
+
+/*Main Nav Link start*/
+.headlink {width:1000px; margin-bottom:10px; height:40px;}
+.headlink .c1 {width:570px; float:left; margin-right:10px;}
+.headlink .c2 {width:237px; float:left;}
+.navLink01 {width:560px; border:0px solid #FFF; padding:0px; height:30px; background-color:#3ac7e5; font-size:11px; font-family:Verdana, Geneva, sans-serif;}
+.navLink01 ul {margin:0px; padding:0px; list-style:none;}
+.navLink01 ul li {margin:0px; display:inline; float:left; border-right:1px solid #FFF;}
+.navLink01 ul li a {color:#fff; text-decoration:none; padding:8px 9px 9px 9px; display:block;}
+.navLink01 .hvr:hover {padding:8px 9px 14px 9px; display:inline; float:left; border-right:0px solid #FFF; background:#9be9ff url(../images/linkarrow.gif) no-repeat center bottom; color:#FFF}
+.navLink01 .hvr01:hover {padding:8px 9px 14px 9px; display:inline; float:left; border-right:0px solid #FFF; background:url(../images/linkarrow.gif) no-repeat center bottom; color:#FFF; }
+.navLink01 .first {background:#3ac7e5 url(../images/linkcurveleft.gif) no-repeat left top; float:left; z-index:1000;}
+.navLink01 .first:hover {background:#9be9ff url(../images/linkcurveleftH.gif) no-repeat left top; float:left; z-index:1000;}
+.navLink01 .last {background:#3ac7e5 url(../images/linkcurveright.gif) no-repeat right top; z-index:1000;}
+.navLink01 .last:hover {background:#9be9ff url(../images/linkcurverightH.gif) no-repeat right top; z-index:1000;}
+#P2 #L2 {padding:8px 9px 14px 9px; display:inline; float:left; border-right:0px solid #FFF; background:url(../images/linkarrow.gif) no-repeat center bottom; color:#000;}
+#P2 .L2 {background:#9be9ff url(../images/linkcurveleftH.gif) no-repeat left top; float:left; z-index:1000;}
+#P6 #L6 {padding:8px 9px 14px 9px; display:inline; float:left; border-right:0px solid #FFF; background:url(../images/linkarrow.gif) no-repeat center bottom; color:#000;}
+#P6 .L6 {background:#9BE9FF url(../images/linkcurverightH.gif) no-repeat right top; float:left; z-index:1000;}
+#P1 #L1, #P3 #L3, #P4 #L4, #P5 #L5 {padding:8px 9px 14px 9px; display:inline; float:left; border-right:0px solid #FFF; background:#9be9ff url(../images/linkarrow.gif) no-repeat center bottom; color:#000}
+/*Main Nav Link end*/
+
+/*Icons start */
+.iconlink {width:407px; height:8px; margin:0px 0px; padding:0px 0px; border:0px solid #666; height:31px; float:left; font-family:Verdana, Geneva, sans-serif; font-size:10px; color:#000; text-align:center;}
+.brdleft {width:1px; height:20px; border-right:1px solid #dedede; padding:0px; margin:0px; float:left;}
+.groups {width:56px; height:1px; margin:0px 0px 0px 4px; padding:22px 0px 0px 0px; background:url(../images/iconsH.gif) no-repeat; float:left;}
+.groups:hover {width:56px; height:1px; margin:0px 0px 0px 4px; padding:22px 0px 0px 0px; background:url(../images/iconsH.gif) no-repeat; float:left; cursor:pointer;}
+.G1 .GP1 {width:56px; height:1px; margin:0px 0px 0px 4px; padding:22px 0px 0px 0px; background:url(../images/iconsH.gif) no-repeat; float:left;}
+.games {width:56px; height:1px; margin:0px 0px; padding:22px 0px 0px 0px; background:url(../images/iconsH.gif) no-repeat -56px 0px; float:left;}
+.games:hover {width:56px; height:1px; margin:0px 0px; padding:22px 0px 0px 0px; background:url(../images/iconsH.gif) no-repeat -56px 0px; float:left; cursor:pointer;}
+.G2 .GP2 {width:56px; height:1px; margin:0px 0px; padding:22px 0px 0px 0px; background:url(../images/iconsH.gif) no-repeat -56px 0px; float:left;}
+.news {width:56px; height:1px; margin:0px 0px; padding:22px 0px 0px 0px; background:url(../images/iconsH.gif) no-repeat -112px 0px; float:left;}
+.news:hover {width:56px; height:1px; margin:0px 0px; padding:22px 0px 0px 0px; background:url(../images/iconsH.gif) no-repeat -112px 0px; float:left; cursor:pointer;}
+.G3 .GP3 {width:56px; height:1px; margin:0px 0px; padding:22px 0px 0px 0px; background:url(../images/iconsH.gif) no-repeat -112px 0px; float:left;}
+.rss {width:56px; height:1px; margin:0px 0px; padding:22px 0px 0px 0px; background:url(../images/iconsH.gif) no-repeat -168px 0px; float:left;}
+.rss:hover {width:56px; height:1px; margin:0px 0px; padding:22px 0px 0px 0px; background:url(../images/iconsH.gif) no-repeat -168px 0px; float:left; cursor:pointer;}
+.G4 .GP4 {width:56px; height:1px; margin:0px 0px; padding:22px 0px 0px 0px; background:url(../images/iconsH.gif) no-repeat -168px 0px; float:left;}
+.blogs {width:56px; height:1px; margin:0px 0px; padding:22px 0px 0px 0px; background:url(../images/iconsH.gif) no-repeat -224px 0px; float:left;}
+.blogs:hover {width:56px; height:1px; margin:0px 0px; padding:22px 0px 0px 0px; background:url(../images/iconsH.gif) no-repeat -224px 0px; float:left; cursor:pointer;}
+.G5 .GP5 {width:56px; height:1px; margin:0px 0px; padding:22px 0px 0px 0px; background:url(../images/iconsH.gif) no-repeat -224px 0px; float:left;}
+.events {width:56px; height:1px; margin:0px 0px; padding:22px 0px 0px 0px; background:url(../images/iconsH.gif) no-repeat -280px 0px; float:left;}
+.events:hover {width:56px; height:1px; margin:0px 0px; padding:22px 0px 0px 0px; background:url(../images/iconsH.gif) no-repeat -280px 0px; float:left; cursor:pointer;}
+.G6 .GP6 {width:56px; height:1px; margin:0px 0px; padding:22px 0px 0px 0px; background:url(../images/iconsH.gif) no-repeat -280px 0px; float:left;}
+.sitemap {width:56px; #width:54px; height:1px; margin:0px 0px; padding:22px 0px 0px 0px; background:url(../images/iconsH.gif) no-repeat -336px 5px; float:left;}
+.sitemap:hover {width:56px; #width:54px; height:1px; margin:0px 0px; padding:22px 0px 0px 0px; background:url(../images/iconsH.gif) no-repeat -336px 5px; float:left; cursor:pointer;}
+.G7 .GP7 {width:56px; height:1px; margin:0px 0px; padding:22px 0px 0px 0px; background:url(../images/iconsH.gif) no-repeat -336px 5px; float:left;}
+.iconlink a{text-decoration:none; color:#000; cursor:pointer;}
+
+
+/* icon set start 
+.belt_black {width:18px; height:20px; margin:0px; padding:0px; background:url(../images/iconsH.gif) no-repeat  -155px -40px; float:left;}
+.belt_white {width:18px; height:20px; margin:0px; padding:0px; background:url(../images/iconsH.gif) no-repeat  -182px -40px; float:left;}
+.belt_green {width:18px; height:20px; margin:0px; padding:0px; background:url(../images/iconsH.gif) no-repeat  -182px -40px; float:left;}
+.belt_blue {width:18px; height:20px; margin:0px; padding:0px; background:url(../images/iconsH.gif) no-repeat  -260px -40px; float:left;}
+.belt_yellow {width:18px; height:20px; margin:0px; padding:0px; background:url(../images/iconsH.gif) no-repeat  -182px -40px; float:left;}
+*/
+
+.views {width:17px; height:20px; margin:7px 0px 0px 0px; padding:0px; background:transparent url(../images/views.png) no-repeat scroll 0px 0px; float:left;}
+.comments {width:24px; height:20px; margin:5px 0px 0px 0px; padding:0px; background:url(../images/iconsH.gif) no-repeat  -98px -39px; float:left;}
+.partici {width:17px; height:20px; margin:5px 0px 0px 0px; padding:0px; background:url(../images/iconsH.gif) no-repeat  -236px -41px; float:left;}
+.postcom {width:24px; height:20px; margin:5px 0px 0px 0px; padding:0px; background:url(../images/iconsH.gif) no-repeat  0px -41px; float:left;}
+.share {width:20px; height:20px; margin:5px 0px 0px 0px; padding:0px; background:url(../images/iconsH.gif) no-repeat  -23px -41px; float:left;}
+.rate {width:24px; height:20px; margin:5px 0px 0px 0px; padding:0px; background:url(../images/iconsH.gif) no-repeat  -52px -41px; float:left;}
+.sameuser {width:20px; height:20px; margin:5px 0px 0px 0px; padding:0px; background:url(../images/iconsH.gif) no-repeat  -75px -40px; float:left;}
+.favorites {width:20px; height:20px; margin:5px 0px 0px 0px; padding:0px; background:url(../images/iconsH.gif) no-repeat  -205px -40px; float:left;}
+.member {width:18px; height:20px; margin:0px; padding:0px; background:url(../images/iconsH.gif) no-repeat  -155px -40px; float:left;}
+.member_orange {width:18px; height:20px; margin:0px; padding:0px; background:url(../images/iconsH.gif) no-repeat  -182px -40px; float:left;}
+/* added to have different belt image */
+.nonmem {width:18px; height:20px; margin:0px; padding:0px; background:url(../images/iconsH.gif) no-repeat  -182px -40px; float:left;}
+.word {width:18px; height:18px; margin:5px 0px 0px 3px; padding:0px; background:url(../images/iconsH.gif) no-repeat  -3px -71px; float:left;}
+.ppt {width:18px; height:18px; margin:5px 0px 0px 3px; padding:0px; background:url(../images/iconsH.gif) no-repeat  -26px -71px; float:left;}
+.pdf {width:18px; height:18px; margin:5px 0px 0px 3px; padding:0px; background:url(../images/iconsH.gif) no-repeat  -50px -71px; float:left;}
+.mypro {width:18px; height:18px; margin:1px 0px 0px 0px; padding:0px; background:url(../images/iconsH.gif) no-repeat  -261px -40px; float:left;}
+.mydes {width:18px; height:18px; margin:1px 0px 0px 0px; padding:0px; background:url(../images/iconsH.gif) no-repeat  -285px -40px; float:left;}
+.myfri {width:18px; height:18px; margin:1px 0px 0px 0px; padding:0px; background:url(../images/iconsH.gif) no-repeat  -307px -40px; float:left;}
+.myreq {width:18px; height:18px; margin:1px 0px 0px 0px; padding:0px; background:url(../images/iconsH.gif) no-repeat  -329px -40px; float:left;}
+.myrec {width:18px; height:18px; margin:1px 0px 0px 0px; padding:0px; background:url(../images/iconsH.gif) no-repeat  -351px -40px; float:left;}
+.myfav {width:18px; height:18px; margin:1px 0px 0px 0px; padding:0px; background:url(../images/iconsH.gif) no-repeat  -72px -71px; float:left;}
+.mygrp {width:18px; height:18px; margin:1px 0px 0px 0px; padding:0px; background:url(../images/iconsH.gif) no-repeat  -92px -71px; float:left;}
+.mycont {width:18px; height:22px; margin:-2px 0px 0px 0px; padding:0px; background:url(../images/iconsH.gif) no-repeat  -119px -67px; float:left;}
+.myjob {width:18px; height:20px; margin:-4px 0px 0px 0px; padding:0px; background:url(../images/iconsH.gif) no-repeat  -148px -66px; float:left;}
+.mysetting {width:18px; height:20px; margin:-4px 0px 0px 0px; padding:0px; background:url(../images/settingsIcon.gif) no-repeat  0px 0px; float:left;}
+.reply {width:18px; height:20px; margin:-4px 0px 0px 0px; padding:0px; background:url(../images/iconsH.gif) no-repeat  -148px -66px; float:left;}
+.abuse {width:22px; height:20px; margin:-2px 0px 0px 0px; padding:0px; background:url(../images/iconsH.gif) no-repeat  -171px -67px; float:left;}
+.calendar {width:20px; height:20px; margin:-2px 0px 0px 0px; padding:0px; background:url(../images/iconsH.gif) no-repeat  -192px -67px; float:left;}
+.followingIcon {width:20px; height:24px; margin:-4px 0px 0px 0px; padding:0px; background:url(../images/following.gif) no-repeat  0px 0px; float:left;}
+.followersIcon {width:20px; height:24px; margin:-4px 0px 0px 0px; padding:0px; background:url(../images/follow.gif) no-repeat  0px 0px; float:left;}
+.othernetwork {width:20px; height:25px; margin:-4px 0px 0px -5px; padding:0px 3px; background:url(../images/othernetwork.jpg) no-repeat  0px 0px; float:left;}
+.myredemptions {width:18px; height:20px; margin:-4px 0px 0px 0px; padding:0px; background:url(../images/redemptionIcon.gif) no-repeat  0 0; float:left;}
+.print { background:url(../images/icon_print.gif) no-repeat 5px center; width:18px; height:18px; float:left; padding:0 0 0 3px}
+.rss01 { background:url(../images/icon_rss.jpg) no-repeat 5px center; width:18px; height:18px; float:left; padding:0 0 0 3px}
+/*Icons end */
+
+/*Banner start*/
+.banner {width:1000px;}
+.banner .c1 {width:727px; float:left; margin-right:10px; #margin-right:8px;}
+.banner .c2 {width:239px; float:left;}
+.bannerdiv01 {width:724px; border:1px solid #ededed; -moz-border-radius:5px; -webkit-border-radius:5px; height:142px; padding:20px 0px 20px 0px; background:url(../images/banner-01.jpg) no-repeat 0px 0px;}
+.bannerdiv02 {width:237px; border:1px solid #ededed; -moz-border-radius:5px; -webkit-border-radius:5px; height:142px; padding:20px 0px 20px 0px; background:url(../images/banner-02.jpg) no-repeat 0px 0px;}
+/*Banner end*/
+/* header div from logo to Banner End*/
+
+/* Container start */
+.content {width:976px; margin-top:10px;}
+.content .c1 {width:727px; float:left; margin-right:10px; #margin-right:8px;}
+.content .c2 {width:239px; float:left;}
+.content .head00 {clear:both; font-family:Verdana, Geneva, sans-serif; font-size:16px; font-weight:bold; color:#000; margin:0px 7px 4px 0px; padding:0px 10px 0px 0px; border-right:2px solid #dedede;}
+.content .title00 {float:left; font-family:Verdana, Geneva, sans-serif; font-size:16px; font-weight:bold; color:#000; margin:0px 7px 4px 0px; padding:0px 10px 0px 0px; border-right:2px solid #dedede;}
+
+.content .icolink {float:left; margin:0px; padding:5px 4px 0px 4px; font-family:Verdana, Geneva, sans-serif; font-size:11px; color:#3ac7e5;} 
+/*.content a {font-family:Verdana, Geneva, sans-serif; font-size:11px; color:#3ac7e5;}*/
+.content hr {width:100%; background-color:#dedede; clear:both; height:4px; border:0px; margin:0px; color:#dedede;}
+.content a.more {background:url(../images/more_white.png) no-repeat; width:35px; height:14px; color:#000; font-size:9px; font-weight:normal !important;  padding:1px 6px; margin:0px 5px 0px 15px; float:left; text-decoration: none;}
+.content a.more:hover {background:url(../images/more_hover.png) no-repeat; width:35px; height:14px; color:#000;}
+
+/*.content a.more {background: url(../images/more_white.png) no-repeat; width:35px; height:14px; color:#666; font-size:9px; padding:1px 6px; margin:0px 5px 0px 15px; float:left;}
+.content a.more:hover {background: url(../images/more_gray_hover.png) no-repeat; width:35px; height:14px; color:#000; font-size:9px; text-decoration:none;}
+*/.content .iconComment {margin-bottom:0px; height:27px; clear: both;}
+.content .tags {width:94%; margin:10px 0px; padding:3px 0 7px 42px; border:0px solid #dedede; color:#000; font-size:11px; background:url(../images/tagsIcon.gif) no-repeat 0px 0px;}
+.content .tags a {font-size:11px; color:#FF6600;}
+
+
+.flashnews {height:73px; width:100%; border-top:1px solid #FFF; margin:0px 0px 5px 0px; padding:0px; color:#000;}
+.flashnews .disLon {background: url(../images/flashnews01.png) no-repeat 10px 8px;width:90px; height:62px; float:left;}
+.flashnews:hover .disLon {background: url(../images/flashnews01_hover.png) no-repeat 10px 8px;width:90px; height:62px; float:left;}
+.flashnews .desCen {background: url(../images/flashnews02.png) no-repeat 10px 8px;width:90px; height:62px; float:left;}
+.flashnews:hover .desCen {background: url(../images/flashnews02_hover.png) no-repeat 10px 8px;width:90px; height:62px; float:left;}
+.flashnews .LeaCen {background: url(../images/flashnews03.png) no-repeat 10px 8px;width:90px; height:64px; float:left;}
+.flashnews:hover .LeaCen {background: url(../images/flashnews03_hover.png) no-repeat 10px 8px;width:90px; height:64px; float:left;}
+.flashnews .Blog {background: url(../images/flashnews04.png) no-repeat 10px 8px;width:90px; height:64px; float:left;}
+.flashnews:hover .Blog {background: url(../images/flashnews04_hover.png) no-repeat 10px 8px;width:90px; height:64px; float:left;}
+.flashnews .imge {width:90px; height:53px; float:left; padding:10px 8px;}
+.flashnews .txt {font-family:Verdana, Geneva, sans-serif; font-size:14px; color:#000; margin:18px 5px 0px 0px;}
+
+.threecol {width:100%; margin:0px 0px 10px 0px; float:left; font-family:Verdana, Geneva, sans-serif;}
+.threecol .c1 {width:32.5%; float:left; margin:0px 9px 0px 0px;}
+.threecol .c2 {width:32.5%; float:left; margin:0px 9px 0px 0px;}
+.threecol .c3 {width:32.5%; float:left; margin:0px;}
+.threecol h2 {font-size:13px; color:#000; background-color:#eee; margin:0px; padding:2px 5px;}
+.threecol .txtgry {font-size:12px; color:#919191; margin:0px; padding:2px 5px;}
+.threecol .txtorg {font-size:11px; color:#ff6600; margin:0px; padding:2px 5px;}
+.threecol a {padding:0px; margin:7px 0px 0px 0px;}
+
+.twocol {width:100%; margin:0px 0px 5px 0px; float:left; font-family:Verdana, Geneva, sans-serif;}
+.twocol .viewcomm {width:100%;}
+.twocol .c1 {width:28%; float:left; margin:0px; padding:0px;}
+.twocol .c2 {width:71.8%; float:left; margin:0px; padding:0px;}
+.twocol .c3 {width:100%; float:left; margin:10px 0px; padding:0px;}
+.viewcomm01{float:left; margin:-5px 0px 0px 10px; padding:0px;}
+/*
+.twocol .boximg {width:180px; height:135px; border:1px solid #d9d9d9; margin-top: 5px;}
+*/
+
+/* girish 3 May */
+.twocol .boximg {
+border:1px solid #D9D9D9;
+height:135px;
+margin-top:5px;
+padding-top:2px;
+text-align:center;
+vertical-align:middle;
+width:181px;}
+
+.twocol .head01 {font-size:12px; font-weight:bold; color:#000; margin:0px; padding:2px 0px;}
+.twocol .head01 a {font-size:12px; font-weight:bold; color:#000; margin:0px; padding:2px 0px;}
+.twocol .head01 a:hover {text-decoration:underline;}
+.twocol .txt {font-size:12px; color:#666; margin:0px; padding:2px 0px; line-height:18px;}
+.twocol .txt a {font-size:11px; color:#000; margin:0px; padding:2px 0px; line-height:18px; text-decoration:underline;}
+.twocol .txt01 {font-size:11px; color:#666; margin:2px 2px; padding:0px 0px;}
+.twocol .txtblue a{font-size:11px !important; color:#3ac7e5; margin:0px; padding:2px 0px; text-decoration:underline;}
+.twocol .txtorg a{font-size:12px; color:#FF6600; margin:0px; padding:0px 0px; text-decoration:underline;}
+.twocol .dateBg {background-color:#acacac; font-size:11px; color:#FFFFFF; padding:1px 2px;}
+
+.twocol .fleft {float:left;}
+.twocol a.more {background: url(../images/more_white.png) no-repeat; width:35px; height:14px; color:#FFF; font-size:9px; font-weight:normal; padding:1px 6px; margin:0px;}
+.twocol a {padding:0px; margin:7px 0px 0px 0px;}
+.twocol ul {list-style:none; width:49%; margin:10px 2px; padding:0px; float:left;}
+.twocol ul li{list-style:none; margin:0px; padding:2px 0px; font-family:Verdana, Geneva, sans-serif; font-size:12px;}
+.twocol ul li a {list-style:none; margin:0px; padding:0px; font-family:Verdana, Geneva, sans-serif; font-size:12px; color:#000; text-decoration:underline;}
+.twocol .topmargin {margin-top:8px;}
+.blanPara {width:28%; float:left; height:1px;}
+
+.twocol01 {width:99%; margin:10px 0px 5px 0px; padding:5px 3px 3px 5px; border-bottom:1px solid #ccc !important; float:left; font-family:Verdana, Geneva, sans-serif;}
+
+.twocol01 .c1 {width:20%; float:left; margin:0px; padding:0px;}
+.twocol01 .c2 {width:79%; float:left; margin:0px; padding:0px 0px 0px 5px; border-left:1px solid #e6ece6;}
+/* Added on 12/06/10 by anil to show bullets for post added by text editor */
+.twocol01 .c2 ul {list-style-type:disc; padding-left:35px;}
+.twocol01 .c3 {width:78%; float:left; margin:0px; padding:0px 0px 0px 10px; border-left:1px solid #e6ece6;}
+.twocol01 .txt {font-size:12px; color:#666; margin:0px; padding:2px 0 2px 10px; line-height:18px;}
+.twocol01 .head01 {font-size:12px; font-weight:bold; color:#000; margin:0px; padding:2px 10px; width:100%; float:left;}
+.twocol01 .head02 {font-size:11px; font-weight:normal; color:#666; margin:0px; padding:2px 0px;}
+.twocol01 .combox {font-size:11px; font-weight:normal; color:#666; margin:5px 5px 0px; padding:2px 0px; float:right;}
+.twocol01 .combox a {font-size:11px; font-weight:normal; margin:0px 3px 0px; padding:2px 0px; float:left;}
+.twocol01 .cc1 {width:95%; float:left; margin:0px; padding:0px;}
+.twocol01 .mname {font-family:Verdana, Geneva, sans-serif; font-size:9px; padding-top:9px; float:left;}
+
+.twocol02 {width:99%; margin:1px; padding:5px; float:left; font-family:Verdana, Geneva, sans-serif;}
+.twocol02 .c1 {width:20%; float:left; margin:0px; padding:0px;}
+.twocol02 .c2 {width:79%; float:left; margin:0px; padding:0px;}
+
+.greenhead {width:722px; height:16px; background:#9FC54E  url(../images/bg_green_head.gif) no-repeat right top; clear:both; margin:0px 0px 5px 0px; padding:10px 0px 13px 5px; font-size:14px; font-family:Verdana, Geneva, sans-serif; color:#FFF; border:1px solid #9FC54E}
+.greenhead .head {font-size:14px; font-weight:bold; color:#FFF; padding:0px 10px 0px 5px; margin-right:10px; border-right:1px solid #fff;}
+*html .greenhead {width:701px; height:13px; background:#9fc54e url(../images/bg_green_head.gif) no-repeat right top; clear:both; margin:10px 0px 17px 0px; padding:10px 0px 10px 13px; font-size:14px; font-family:Verdana, Geneva, sans-serif; color:#FFF;}
+.greenhead .warrow {background:#9FC54E  url(../images/arrow_white.gif) no-repeat right 2px; width:17px; height:19px; float:left; margin:0px 5px;}
+.greenhead .fleft {float:left;} 
+
+.greenheadrightcol {width:227px; height:15px; background:#9fc54e url(../images/bg_green_head.gif) no-repeat right top; clear:both; margin:3px 0px 7px 0px; padding:11px 0px 13px 13px;}
+.greenheadrightcol a, .greenheadrightcol input {cursor:point;font-size:14px; font-weight:bold; color:#FFF;}
+.greenheadrightcol01 {width:227px; height:15px; background:#9fc54e url(../images/myDesignBg.jpg) no-repeat right top; clear:both; margin:3px 0px 7px 0px; padding:11px 0px 13px 13px;}
+.greenheadrightcol01 a {font-size:14px; font-weight:bold; color:#FFF;}
+
+
+#load {display: none; position: absolute; right: 10px; top: 10px; background: url(../images/loading.gif); width: 43px; height: 11px; text-indent: -9999em;}
+#ComContent {margin:1px 0px; color:#666; width:100%; font-size:11px;}
+#ComContent .brd {border: 5px solid #e6ece6; width:97.5%; padding: 5px; float:left;}
+/* Added on 12/06/10 by anil for displaying proper gray box for textarea of group discussion */
+#ComContent .brd1 {border: 5px solid #e6ece6; width:95%; padding: 5px; float:left;}
+#ComContent .inputtxt {width:69%; height:32px; border: 1px solid #dde8ef; padding:2px; float:left; color:#666; font-family:Verdana, Geneva, sans-serif;}
+#ComContent .inputtxt01 {width:250px; height:32px; border: 1px solid #dde8ef; padding:2px; float:left; color:#666; font-family:Verdana, Geneva, sans-serif;}
+#ComContent h2{padding:0px; font-size:13px;}
+
+/*For TopicDiscussion_Details.html*/
+#ComContent01 {margin:1px 0px; color:#666; width:100%; font-size:11px;}
+#ComContent01 .brd {border: 5px solid #e6ece6; width:97.5%; padding: 5px; float:left;}
+#ComContent01 .inputtxt {width:80%; height:32px; border: 1px solid #dde8ef; padding:2px; float:left; color:#666; font-family:Verdana, Geneva, sans-serif;}
+#ComContent01 .inputtxt01 {width:250px; height:32px; border: 1px solid #dde8ef; padding:2px; float:left; color:#666; font-family:Verdana, Geneva, sans-serif;}
+#ComContent01 h2{padding:0px; font-size:13px;}
+
+/* Container end */
+
+/* Right Col start */
+.rightcol {font-family:Verdana, Geneva, sans-serif; font-size:11px; color:#000;}
+.rightcol a.more {background:url(../images/more_white.png) no-repeat; width:35px; height:14px; color:#000; font-size:9px; font-weight:normal !important; padding:1px 6px; margin:-2px 0px; float:right; text-decoration: none;}
+.rightcol a.more:hover {background:url(../images/more_hover.png) no-repeat; width:35px; height:14px; color:#000; float:right;}
+.rightcol .greenhead01 {background:#9fc54e; padding:5px 8px 8px 8px; width:223px; height:10px;}
+.rightcol .greenarrow {background:url(../images/gr_down_arro.jpg) no-repeat 21px 0px; height:6px; margin:0px 0px 10px 0px;}
+.rightcol .orangehead {background:#f68b1f; padding:5px 8px 8px 8px; width:223px; height:10px;}
+.rightcol .orgarrow {background:url(../images/or_down_arro.jpg) no-repeat 21px 0px; height:6px; margin:0px 0px 10px 0px;}
+.rightcol .bluehead {background:#3ac7e5; padding:5px 8px 8px 8px; width:223px; height:10px;  }
+.rightcol .bluearrow {background:url(../images/bl_down_arro.jpg) no-repeat 21px 0px; height:6px; margin:0px 0px 10px 0px;}
+.rightcol .headtxt {font-family:Verdana, Geneva, sans-serif; font-size:11px; font-weight:300; color:#FFF; float:left;}
+
+.rightcol .maroonhead {background:#a85c4e; padding:5px 8px 8px 8px; width:223px; height:10px;}
+.rightcol .maroonarrow {background:url(../images/mr_down_arro.jpg) no-repeat 21px 0px; height:6px; margin:0px 0px 10px 0px;}
+
+
+.rightcol a.orange {font-family:Verdana, Geneva, sans-serif; font-size:11px; text-decoration:underline; color:#FF6600;}
+.rightcol a.blue {font-family:Verdana, Geneva, sans-serif; font-size:11px; text-decoration:underline; color:#3AC7E5; }
+
+
+.expert {width:237px; margin:0px; #margin-bottom:10px; padding:0px;}
+.expert .snap {width:36px; height:36px; border:1px solid #cbcbcb;}
+.expert .mname {font-family:Verdana, Geneva, sans-serif; font-size:9px; padding-top:6px; float:left;}
+.expert .snaprow, .cBoxcontainer .snaprow {width:100%; clear:both; margin-top:10px;}
+.expert .snaprow .c1, .cBoxcontainer .snaprow .c1 {width:33.3%; min-height:61px; float:left; margin:0px 0px 10px 0px; padding:0px;}
+
+.activemem {width:237px; margin:0px; #margin-bottom:10px; padding:0px;}
+.activemem .snap {width:36px; height:36px; border:1px solid #cbcbcb;}
+.activemem .mname {font-family:Verdana, Geneva, sans-serif; font-size:9px; padding-top:3px; float:left;}
+.activemem .snaprow {width:100%; clear:both; margin-top:10px;}
+.activemem .snaprow .c1 {width:33.3%; float:left; margin:0px 0px 20px 0px; padding:0px;}
+
+.actstream {width:237px; margin:15px 0px; padding:0px;}
+.actstream .snap, .cBoxcontainer .snap {width:36px; height:36px; border:1px solid #cbcbcb;}
+.actstream .mname, .cBoxcontainer .mname {font-family:Verdana, Geneva, sans-serif; font-size:9px; padding-top:3px; float:left;}
+.actstream .twcol, .cBoxcontainer .twcol {width:100%; float:left; margin:0px 0px 0 0px; padding:0px; }
+.actstream .twcol .snaprow, .cBoxcontainer .twcol .snaprow {width:100%; clear:both; margin-bottom:10px;} 
+.actstream .twcol .commname, .cBoxcontainer .twcol .commname {font-size:11px; font-weight:bold; color:#666;}
+.actstream .twcol .c1, .cBoxcontainer .twcol .c1 {width:21%; float:left; margin:0px 0px 12px 0px; padding:0px;}
+.actstream .twcol .c2, .cBoxcontainer .twcol .c2 {width:79%; float:left; margin:0px 0px 12px 0px; padding:0px;}
+
+.recentpost {width:237px; margin:0px; padding:0px;}
+.recentpost ul. .cBoxcontainer ul {list-style:none; width:100%; margin:0 2px 10px 2px; padding:0px; float:left}
+.recentpost ul li, .cBoxcontainer ul li {list-style:none; margin:0px 0 9px 0px; padding:2px 0px; font-family:Verdana, Geneva, sans-serif; font-size:11px; color:#3AC7E5;}
+.recentpost ul li a, .cBoxcontainer ul li a {list-style:none; margin:0px; padding:0px; font-family:Verdana, Geneva, sans-serif; font-size:11px; color:#666; text-decoration:none; display:block;}
+
+.recentpost .txt {margin:0px 0px 15px; padding:0px; font-family:Verdana, Geneva, sans-serif; font-size:11px; color:#666;}
+
+.recentpost a {margin:0px; padding:0px; font-family:Verdana, Geneva, sans-serif; font-size:11px; font-weight:bold; color:#666; text-decoration:none;}
+.recentpost a.bluelink {margin:0px; padding:0px; font-weight:normal; font-size:11px; color:#3AC7E5; text-decoration:none;}
+.recentpost a.greylink {margin:0px; padding:0px; font-weight:normal; font-size:11px; color:#666; text-decoration:underline;}
+
+ul.recendesignpost {list-style:none; width:100%; margin:0px 2px; padding:0px;}
+ul.recendesignpost li{list-style:none; margin:7px 0px; padding:2px 0px; font-family:Verdana, Geneva, sans-serif; font-size:11px; color:#666;}
+ul.recendesignpost li a {font-family:Verdana, Geneva, sans-serif; font-size:11px; font-weight:bold; color:#666; text-decoration:none; display:block;}
+
+.populargrp {width:237px; margin:0px; padding:0px; font-family:Verdana, Geneva, sans-serif; font-size:11px; color:#666; line-height:15px;}
+.populargrp .snap {width:98px; height:98px; border:1px solid #cbcbcb; margin-right:5px;}
+.populargrp .mname {font-family:Verdana, Geneva, sans-serif; font-size:9px; padding-top:3px; float:left;}
+.populargrp .twcol {width:100%; float:left; margin:0px 0px 10px 0px; padding:0px;}
+.populargrp .twcol .snaprow {width:100%; clear:both; margin-bottom:10px;} 
+.populargrp .twcol .commname {font-size:11px; font-weight:bold; color:#666;}
+.populargrp .twcol .c1 {width:47%; float:left; margin:0px 0px 12px 0px; padding:0px;}
+.populargrp .twcol .c2 {width:50%; float:left; margin:0px 0px 12px 0px; padding:0px 0px 0px 4px;}
+
+/* Right Col end */
+
+/*Footer Start*/
+.footer {width:100%; height:166px; background:#FFFFFF url(../images/footer.jpg) no-repeat scroll center top; margin:0 0px 5px 0px; float: left;}
+.footerin {width:976px; margin:17px auto 0px auto; color:#FFF;}
+.footerin ul {list-style:none; width:470px; margin:0px 0px 0px 0px; padding:0px; float:left;}
+.footerin ul li{list-style:none; margin:2px 3px; padding:2px 0px; width:134px; font-size:11px; color:#000; float:left; display:inline;}
+.footerin ul li a {list-style:none; margin:0px; padding:0px 3px 0px 10px; color:#ff6600; font-size:12px; text-decoration:none; font-weight:700; background:url(../images/icon_star.png) no-repeat left center}
+.footerin ul li a:hover {color:#e84006 !important; text-decoration:none;}
+
+/*Footer End*/
+
+/* Bottom Pannel start */
+.botLink {width:100%; height:60px; float:left; margin-left:100px}
+.botLink ul {list-style:none; width:247px; margin:25px 0px 0px 0px; padding:0px; float:left;}
+.botLink ul li{list-style:none; margin:0px 0px; padding:0px 6px; border-right:1px solid #000; float:left;}
+.botLink ul li a {margin:0px; padding:0px; font-family:Verdana, Geneva, sans-serif; font-size:11px; color:#000; text-decoration:underline;}
+
+.botBanner {background:url(../images/botBanner.jpg) no-repeat 0px 0px; width:498px; height:60px; float:left;}
+.botTxt { margin:25px 0px 0px 5px; padding:0px; font-family:Verdana, Geneva, sans-serif; font-size:11px; color:#000; float:left;}
+/* Bottom Pannel end */
+
+/* Profile Box Start */
+.Blue4pxbox {margin: 5px 0px 0px 0px; float: left; background: #eee; width:100%;}
+code {display:none;}
+.profilehead {background:#FFF; width:115px; height:18px; float:left; padding:6px 6px; margin:6px 0px 0px 5px;}
+.profilehead .memberbelt {width:18px; height:20px; margin:2px 5px 0px 5px; padding:0px; background:#fff url(../images/iconsH.gif) no-repeat  -155px -40px; float:left;}
+.profilehead .head {background:#FFF; margin:0px;  padding:0px; float:left; font-family:Verdana, Geneva, sans-serif; font-size:14px; font-weight:bold; color:#000;}
+.pusher {cursor:pointer; background:#FFF; margin:6px 6px 6px 6px; padding:7px 0px 3px 0px; font-size: 11px; color:#000; text-decoration: underline; height:20px;}
+/* Modified on 2/07/10 by anil for fixing profile box issue on chrome made padding-bottom from 3px to 10px */
+.profilebox {width:944px; display:block; background:#FFF; margin:-6px 6px 6px 6px; padding: 10px 10px 10px 10px; font-family:Verdana, Geneva, sans-serif;}
+.profilebox .c1 {width:30%; float:left; margin:0px;}
+/* Modified on 28/05/10 by anil for showing borders of proper height made min-height from 125 to 140 */
+.profilebox .c2 {width:17%; float:left; margin:0px; border-right:1px solid #e7e7e7; padding:0px 7px; min-height:140px;}
+.profilebox .c3 {width:17%; float:left; margin:0px; border-right:1px solid #e7e7e7; padding:0px 5px; min-height:140px;}
+.profilebox .c4 {width:17%; float:left; margin:0px; border-right:1px solid #e7e7e7; padding:0px 5px; min-height:140px;}
+.profilebox .c5 {width:14%; float:left; margin:0px; padding:0px 3px 0px 7px;}
+.profilebox .txt11b {font-family: Verdana, Geneva, sans-serif; font-size:11px; font-weight:bold; color:#000; text-decoration:none;} 
+/* Modified on 1/06/10 by anil for fixing issue of edit/upload profile link on profile box for ie increased height from 100 to 140*/
+.profilephoto {width:260px; height:140px; background:#f3f3f3; margin:0; padding: 5px; font-family:Verdana, Geneva, sans-serif; font-size:11px;}
+.profilephoto .cc1 {width:98px; float:left; margin:0px 4px 0px 0px;}
+.profilephoto .cc2 {width:155px; float:left; margin:0px; border:0px solid #000; line-height:16px; height:98px;}
+/* Modified on 2/06/10 by anil for edit button to show properly on profile box, changed height from 3px to 18px */
+.profilephoto .editbtn {width:26px; height:18px; background:#99bf48; color:#FFF; padding:1px 5px;}
+.editbtn a {color:#FFF; text-decoration:none;}
+
+.profilephoto .cc2 .profiletxt {height:74px;}
+.profilephoto .cc2 .slider {width:100%; height:25px; bottom:0px; position:relative;} 
+.slider .perleft{background:#2798cd url(../images/slider_arro.gif) no-repeat bottom center; color:#FFF; float:left; padding:0px 2px 2px 2px;}
+.slider .txt{color:#000; font-size:9px; text-align:center; float:left; padding:0px 3px;}
+.slider .perright{background:#2798cd url(../images/slider_arro.gif) no-repeat bottom center; color:#FFF; float:right; padding:0px 2px 2px 2px;}
+
+.slider .comp_per0 {background:#093; width:20%; height:5px; float:left; margin-top:1px; margin-bottom:1px; }
+.slider .comp_per1 {background:#093; width:40%; height:5px; float:left; margin-top:1px; margin-bottom:1px; }
+.slider .comp_per2 {background:#093; width:60%; height:5px; float:left; margin-top:1px; margin-bottom:1px; }
+.slider .comp_per3 {background:#093; width:80%; height:5px; float:left; margin-top:1px; margin-bottom:1px; }
+.slider .comp_per4 {background:#093; width:100%; height:5px; float:left; margin-top:1px; margin-bottom:1px; }
+
+.slider .pend_per {background:#FFF; width:100%; height:7px; float:left; margin-top:1px; border:1px solid #dbdbdb;}
+/* Added on 8/03/10 by anil */
+.slider .hlight_per {background:#2798CD; width:50%; height:7px; float:left; margin-top:-1px; border:1px solid #2798CD;}
+/* Added on 12/05/10 by anil */
+.slider .hlight_per1 {background:#2798CD; width:50%; height:7px; float:left; margin-top:-1px; border:1px solid #2798CD;}
+
+.showhide {width:85px; float:left; padding-top: 5px;}
+.profile_expand {width:960px; float:left; border-bottom:5px solid #e2f4ff; border-left:5px solid #e2f4ff; border-right:5px solid #e2f4ff; display:none;}
+
+ul.profilelist {margin:0px; padding:0px; list-style:none;}
+ul.profilelist li {margin:0px; padding:3px 0px 4px 0px; list-style:none; border-bottom:1px dotted #dbdbdb; display:block; width:100%;}
+ul.profilelist li a{font-family: Verdana, Geneva, sans-serif; font-size:11px; color:#000; text-decoration:none;}
+
+ul.followers {margin:0px; padding:0px; list-style:none;}
+ul.followers li {margin:0px; padding:3px 4px 3px 0px; list-style:none; display:inline; float:left;}
+ul.followers li a{font-family: Verdana, Geneva, sans-serif; font-size:11px; color:#3AC7E5; text-decoration:underline;}
+
+.pusher01 {cursor:pointer; background:#FFF; margin:0px 6px 0px 0px; padding:2px 0px 3px 0px; font-size: 11px; color:#000;}
+.edituploadpic {width:948px; display:block; background:#FFF; margin:0px 0px; padding: 0px; font-family:Verdana, Geneva, sans-serif;}
+.edituploadpic01 {width:948px; display:block; background:#FFF; margin:0px 0px; padding: 0px; font-family:Verdana, Geneva, sans-serif;}
+/* Profile Box End */
+
+/* Profile Form start */
+.profileForm {width:96.8%; display:block; background:#FFF; margin:6px; padding: 10px; font-family:Verdana, Geneva, sans-serif; float:left;}
+.profileForm .pageheading {width:100%; float:left; padding: 5px 0px 7px 0px;}
+.profileForm .pageheading .head14{font-size:14px; font-weight:bold; color:#000;}
+.profileForm .pageheading .total {font-size:11px; color:#3AC7E5; padding:0px 2px;}
+.profileForm .pageheading .total a {font-size:11px; color:#3AC7E5; text-decoration:none;}
+.profileForm .pageheading .archive a {font-size:11px; font-weight:normal; color:#FF6600; text-decoration:underline; margin:0px 3px;}
+.activeContest {font-size:14px; font-weight:bold; color:#78b775;}
+.inActiveContest {font-size:14px; font-weight:bold; color:#FF0000;}
+
+
+.profileForm .pageheading .c1 {float:left; width:30%;}
+.profileForm .pageheading .c2 {float:left; width:17%;}
+.profileForm .pageheading .c3 {float:right; width:43%; padding-right:5px; text-align:right;}
+
+ul.profiletab {margin:0px; padding:0px; list-style:none;}
+ul.profiletab li {margin:0px; padding:3px 4px 3px 0px; list-style:none; display:inline; float:left;}
+ul.profiletab li a{font-family: Verdana, Geneva, sans-serif; font-size:11px; color:#666; text-decoration:underline;}
+
+.proform {width:100%; margin:0px; padding: 0px; font-family:Verdana, Geneva, sans-serif; float:left;}
+.proform_l {width:70%; border:0px solid #666; float:left;}
+.proform_l .formrow {width:100%; float:left;}
+.proform_l .c1 {width:35%; float:left; margin:4px 0px; font-size:11px; font-weight:bold; color:#000; padding:3px 10px 0px 0px; text-align:right;}
+.proform_l .c2 {width:62%; float:left; margin:4px 0px; font-size:11px; color:#666; padding:4px 0px 0px 0px; text-align:left;}
+.formrow .c3 {width:55%; float:left; margin:4px 0px; font-size:11px; font-weight:bold; color:#000; padding:1px 10px 0px 0px; text-align:right;}
+.formrow .c4 {width:38%; float:left; margin:4px 0px; font-size:11px; color:#666; padding:0px; text-align:left;}
+.formrow .c5 {width:25%; float:left; margin:5px 0px; font-size:11px; font-weight:bold; color:#000; padding:0px 5px; text-align:right;}
+.formrow .c6 {width:30%; float:left; margin:5px 0px; font-size:11px; font-weight:bold; color:#000;  padding:0px 5px;}
+/* Modified on 17/03/10 by anil for increasing width to have proper alignment for save and cancel button*/
+.formrow .c7 {width:22%; float:left; margin:5px 0px; color:#000; padding:0px 5px; text-align:center;}
+.formrow .c8 {width:20%; float:left; margin:5px 0px; color:#000; padding:0px 5px; text-align:center;}
+.formrow .c9 {width:20%; float:left; margin:5px 0px; color:#000; padding:0px 5px; text-align:center;}
+.formrow .c10 {width:20%; float:left; margin:5px 0px; color:#000; padding:0px 5px;}
+.formrow .c7 span, .formrow .c8 span, .formrow .c9 span {text-align:center; padding:0px 30px;}
+.formrow .c2pad {padding-top:14px !important;}
+.formrow .c2pad01 {padding-top:20px !important;}
+.formrow .head {font-size:12px; color:#000; font-weight:bold;}
+
+.proform_l .c2pad {padding-top:14px !important;}
+.proform_l .c2pad01 {padding-top:20px !important;}
+.proform_l .c2padv {padding-top:15px !important;}
+.proform_l .view {color:#666; padding-top:4px !important; text-align:left;}
+
+.proform_r {width:27%; background:#eef9ff; float:left; padding:5px;}
+.proform_r .c1 {width:38.5%; float:left; margin:0px;}
+.proform_r .c2 {width:56%; float:left; margin:0px; padding:0px 0px 0px 4px;}
+.proform_r .c2 a {margin:0px; text-decoration:underline; font-size:11px; color:#666;}
+
+
+.frm_brd {width:100%; height:25px; background:url(../images/frm_brd.gif) repeat-x; clear:both;}
+.frm_brd01 {width:100%; height:6px; background:url(../images/frm_brd.gif) repeat-x 0px -6px; clear:both;}
+.proform .proinput {width:200px; height:16px; font-size:11px; padding:1px; border:1px solid #7f9db9;}
+.proform .proinput01 {width:138px; height:83px; font-size:11px; font-family:Verdana, Geneva, sans-serif; padding:1px; border:1px solid #7f9db9;}
+.proform .proinput02 {width:30px; height:16px; font-size:11px; padding:1px;}
+.proform .proinput03 {width:200px; height:83px; font-size:11px; font-family:Verdana, Geneva, sans-serif; padding:1px; border:1px solid #7f9db9;}
+/* Modified on 25/05/10 by anil to have border for dropdown */
+.proform .proselect {width:205px; height:24px; font-size:11px; padding:1px; border:1px solid #7E99B7;}
+/* Added on 19/03/10 by anil to have small select box */
+.proform .proselect01 {width:100px; height:24px; font-size:11px; padding:1px; border:1px solid #7E99B7;}
+.proselect02 {width:50px; height:19px; font-size:11px; padding:1px; border:1px solid #7E99B7;}
+.proselect03 {width:120px; height:19px; font-size:11px; padding:1px; border:1px solid #7E99B7;}
+.proform .yearselect {width:125px; height:24px; font-size:11px; padding:1px;}
+.proform .monthselect {width:75px; height:24px; font-size:11px; padding:1px;}
+.proform .grnbtn01 {padding:3px 5px; border:none; background:#9fc54e; font-size:11px; font-weight:bold; color:#FFF;}
+.proform .grnbtn01 a {text-decoration:none; font-size:11px; font-weight:bold; color:#FFF;}
+.proform a {font-size:11px; text-decoration:underline;} 
+.proform .ErrorField {border:1px dotted #d00; height:24px; font-size:11px; padding:1px; width:204px;}
+.proform .ErrorTxt {color:#d00 !important; font-size:11px; font-weight:bold;}
+input.error { border: 1px dotted #ff6f0e; }
+.proform input.error { border: 1px dotted red; }
+div.error { display: none; }
+form.cmxform label.error, label.error {color:#d00 !important; font-size:11px; font-weight:bold;}/* remove the next line when you have trouble in IE6 with labels in list */
+
+/* Profile Form end */
+
+/* setpriority start */
+.setprio {width:99%; margin:0px 0px 20px 0px; #margin:0px 0px 5px 0px; padding:1px 0px; display:block; clear:both;}
+.setpriority {background:url(../images/setpriority.gif) no-repeat 0px 0px; width:69px; height:17px; float:left; padding:8px; margin:0px 5px 0px 0px;}
+.setpriority a {font-size:11px; text-decoration:underline;}
+ul.setprioLink {margin:0px 0px; padding:8px 0px; list-style:none;}
+ul.setprioLink li{margin:0px 0px; padding:0px 0px; display:inline; float:left; list-style:none;}
+ul.setprioLink li a {margin:0px 0px; padding:0px 4px; font-size:12px; color:#000;}
+ul.setprioLink li a:hover {background:#000; color:#FFF !important; text-decoration:none;}
+ul.setprioLink li a.setlink {background:#000; color:#FFF !important;}
+.P1 #SP1, .P2 #SP2, .P3 #SP3, .P4 #SP4, .P5 #SP5 {background:#000; color:#FFF !important;}
+/* setpriority end */
+
+/*whiteBoxContent start*/
+.whiteBoxContent {width:695px; display:block; background:#FFF; margin:6px; padding: 10px; font-family:Verdana, Geneva, sans-serif; font-size:11px;}
+.whiteBoxContent .pageheading {width:695px; float:left; padding: 5px 0px 8px 0px;}
+.whiteBoxContent .pageheading .head14{font-size:14px; font-weight:bold; color:#000;}
+.whiteBoxContent .pageheading .head12{font-size:12px; font-weight:bold; color:#000;}
+.whiteBoxContent .pageheading .total {font-size:11px; color:#3AC7E5; padding:0px 2px;}
+.whiteBoxContent .pageheading a.total  {font-size:11px; color:#3AC7E5; text-decoration:none;}
+.whiteBoxContent .pageheading  a.archive {font-size:11px; color:#FF6600; text-decoration:underline; margin:0px 3px;}
+.activeContest {font-size:14px; font-weight:bold; color:#78b775;}
+.inActiveContest {font-size:14px; font-weight:bold; color:#FF0000;}
+.whiteBoxContent .black {font-size:12px; font-weight:bold; color:#000;}
+.whiteBoxContent a.black {font-size:12px; font-weight:normal; color:#000;}
+
+
+.whiteBoxContent .pageheading .c1 {float:left; width:70%;}
+.whiteBoxContent .pageheading .c2 {float:right; width:34%; padding-right:5px; text-align:right;}
+/* Modified on 19/07/10 by anil, changed widht from 21% to 25% */
+.whiteBoxContent .pageheading .c3 {float:right; width:25%; padding-right:0px; margin:0px;}
+.whiteBoxContent .pageheading .c4 {float:right; width:60%; padding-right:0px; text-align:right;}
+.whiteBoxContent .pageheading .c4 span {float:right; padding-right:20px; text-align:right;}
+.whiteBoxContent .pageheading .c5 {float:right; width:25%; padding-right:5px; text-align:right;}
+.whiteBoxContent .pageheading .c6 {float:right; width:15%; padding-right:5px; text-align:right;}
+/* Modified on 3/05/10 by anil for increasing width of heading from 30% to 74% */
+.whiteBoxContent .pageheading .c7 {float:left; width:74%;}
+.whiteBoxContent .pageheading .c8 {float:right; width:19%; padding-right:5px; text-align:right;}
+.whiteBoxContent .pageheading .c9 {float:right; width:12%; padding-right:5px; text-align:right;}
+/* Modified on 14/06/10 by anil for removing width of heading % */
+.whiteBoxContent .pageheading .c10 {float:left;}
+/* Added on 2/07/10 by anil for fixing issue of pagination links on ie */
+.whiteBoxContent .pageheading .c11 {float:right; width:30%; padding-right:0px; margin:0px;}
+/* Pagination start */
+.whiteBoxContent .pagination01 {float:left;}
+.jPaginate {height:13px; position:relative; color:#a5a5a5; font-size:small; width:100%;}
+.jPaginate a {cursor:pointer; margin:0px 3px; float:left; font-size:11px;}
+.jPag-control-back {position:absolute; left:0px; background: url(../images/pagination.gif) no-repeat 1px 1px !important; color:#FFF !important;}
+.jPag-control-front {position:absolute; top:0px; background: url(../images/pagination.gif) no-repeat 12px 1px !important; color:#FFF !important;}
+.jPaginate span {cursor:pointer;} 
+ul.jPag-pages {float:left; list-style-type:none; margin:0px; padding:0px;}
+ul.jPag-pages li {display:inline; float:left; padding:0px; margin:0px; background: url(../images/pagination_brd.gif) no-repeat right bottom;}
+ul.jPag-pages li a {float:left; padding:0px 2px; font-size: 11px; color:#3AC7E5;}
+.jPag-first {color:#FFF !important;} 
+.jPag-last {color:#FFF !important;} 
+span.jPag-current {cursor:default; font-weight:normal; padding:0px 2px; margin:0px 1px; float:left; font-size:11px; font-weight: bold; color:#3AC7E5;}
+ul.jPag-pages li span.jPag-previous, ul.jPag-pages li span.jPag-next, span.jPag-sprevious, span.jPag-snext, ul.jPag-pages li span.jPag-previous-img, ul.jPag-pages li span.jPag-next-img, span.jPag-sprevious-img, span.jPag-snext-img {height:10px; #height:13px; margin:0px; float:left;}
+span.jPag-sprevious, span.jPag-sprevious-img {margin:2px 0px 2px 2px; width:10px; text-align:right;}
+span.jPag-snext, span.jPag-snext-img {margin:2px 2px 2px 0px; width:10px; text-align:right;}
+span.jPag-sprevious-img {background:transparent url(../images/pagearrow_left.gif) no-repeat center right;}
+span.jPag-snext-img {background:transparent url(../images/pagearrow_right.gif) no-repeat center left;} 
+/* Pagination end */
+
+.whiteBoxContent01 {width:719px; background:#FFF; margin:6px 0px 6px 4px; padding: 0px;}
+.whiteBoxContent01 .banner {width:717px; height:159px; background:#FFF url(../images/ContestBanner01.jpg) no-repeat 0 0; margin:0px; padding: 0px;}
+.whiteBoxContent01 .WhBxContent {width:687px; display:block; background:#FFF; margin:0px 4px 6px 2px; padding: 15px; font-family:Verdana, Geneva, sans-serif; font-size:11px; float:left;}
+
+.whiteBoxContent01 .pageheading {float:left; width:100%;}
+.whiteBoxContent01 .pageheading .c1 {float:left; width:67%; margin-bottom:10px;}
+.whiteBoxContent01 .pageheading .c2 {float:right; width:30%; text-align:right;}
+.whiteBoxContent01 .pageheading .c3 {float:right; width:26%; padding-right:0px; margin:0px;}
+.whiteBoxContent01 .pageheading .c4 {float:right; width:60%; padding-right:0px; text-align:right;}
+.whiteBoxContent01 .pageheading .head14{font-size:14px; font-weight:bold; color:#000; float:left; margin:0px 3px;}
+.whiteBoxContent01 .pageheading .head13{font-size:13px; font-weight:bold; color:#000; float:left; margin:0px 3px;}
+.whiteBoxContent01 .pageheading .head13 a {font-size:13px; font-weight:bold; color:#000;}
+.whiteBoxContent01 .pageheading .head12 {font-size:12px; font-weight:bold; color:#000;}
+.whiteBoxContent01 .pageheading .grnbtn01 {border:0px; background:#99bf48; font-size:11px; color:#FFF !important; padding: 5px 5px; margin: 0px; width:115px; height:15px; float:right;}
+
+.whiteBoxContent01 .txt01 {font-size:12px; line-height:18px;}
+.WhBxContent .participant {margin-left:35px;}
+.WhBxContent .partibtn {margin:0px auto; background:url(../images/participateNow.gif) no-repeat 0 0; width:186px; height:54px;}
+.WhBxContent .partibtn a {width:186px; height:54px; display:block;}
+.WhBxContent .resultbtn {margin:0px auto; background:url(../images/view-Results.gif) no-repeat 0 0; width:186px; height:54px;}
+.WhBxContent .resultbtn a {width:186px; height:54px; display:block;}
+/*whiteBoxContent end*/
+
+
+/* Groups Start */
+.group {width:100%; float:left;}
+.group .headsub {color:#000; font-weight:bold; font-size:12px; margin:10px 0px 0px 0px; padding:10px 0px; width:50%; float:left;}
+.group .headsub01 {color:#000; font-weight:bold; font-size:12px; margin:0px; padding:0px;}
+.group .twCol {width:100%; font-family:Verdana, Geneva, sans-serif; font-size:11px; color:#666; float:left; padding:10px 0px;}
+.group .twCol .c1 {width:60%; float:left;}
+.group .twCol .c2 {width:20%; float:right;margin-right:20px;}
+
+
+
+.group .fourCol {width:100%; font-family:Verdana, Geneva, sans-serif; font-size:11px; color:#666; float:left; padding:10px 0px;}
+.group .fourCol .c1 {width:20%; float:left;}
+.group .fourCol .c2 {width:12%; float:left;}
+.group .fourCol .c3 {width:40%; float:left;}
+.group .fourCol .c4 {width:25%; float:left; text-align:right;}
+.group .fourCol .c5 {width:20%; float:left;}
+.group .fourCol .c6 {width:75%; float:left; padding-left:15px;}
+.group .fourCol .c7 {width:41%; float:left; padding-left:15px;}
+.group .fourCol .c8 {width:55%; float:right; padding-right:5px; font-size:12px;}
+.group .fourCol .c8 span {float:right; margin:0px 10px;}
+
+.group .fourCol .c1 img{width:125px; height:80px; border:1px solid #bebebe; float:left;}
+.group .fourCol .c2 .cc2 {padding:3px;}
+.group .fourCol .c3 .cc3 {padding:3px;}
+.group .fourCol .c3 .cc3 a.orange {font-size:11px; color:#FF6600; text-decoration:underline;}
+.group .fourCol .c3 .head {font-size:12px; font-weight:bold; color:#000;}
+.group .fourCol .c3 .head a {font-size:12px; font-weight:bold; color:#000;}
+.group .fourCol .c4 .grnbtn {padding:2px 5px; color:#FFF; font-size:11px;}
+.group .fourCol .c4 .cc4 { padding:3px;}
+
+.group .threCol {width:100%; border-bottom: 1px dotted #bebebe; font-family:Verdana, Geneva, sans-serif; font-size:11px; color:#666; float:left; padding:5px 0px;}
+.group .threCol .cc1 {width:7%; float:left;}
+.group .threCol .cc2 {width:15%; float:left;}
+.group .threCol .cc3 {width:50%; float:left;}
+.group .threCol .cc4 {width:75%; float:left; padding-left:5px;}
+.group .threCol .cc5 {width:27%; float:right; margin-left:5px;}
+.group .threCol .cc1 img {width:36px; height:36px; border:1px solid #bebebe; float:left;}
+.group .threCol .head {font-size:12px; font-weight:bold; color:#000; margin:15px 0px 3px 0px;}
+.group .threCol a {font-size:11px; text-decoration:underline;}
+.group .threCol a.black {color:#666 !important; font-size:11px; text-decoration:underline;}
+
+.grpform {width:100%; margin:0px; padding: 0px; font-family:Verdana, Geneva, sans-serif; float:left;}
+.grpform_l {width:100%; border:0px solid #666; float:left;}
+.grpform_l .formrow {width:100%; float:left;}
+.grpform_l .c1 {width:26%; float:left; margin:4px 0px; font-size:11px; font-weight:bold; color:#000; padding:3px 10px 0px 0px; text-align:right;}
+.grpform_l .c2 {width:72.5%; float:left; margin:4px 0px; font-size:11px; color:#666; padding:0px; text-align:left;}
+/* Added on 14/05/10 by anil */
+.grpform_l .c3 {width:72.5%; float:left; margin:7px 0px; font-size:11px; color:#666; padding:0px; text-align:left;font-weight:normal;}
+.grpform_l .c2pad {padding-top:10px !important;}
+.grpform_l .c2padv {padding-top:15px !important;}
+.grpform_l .view {color:#666; padding-top:4px !important; text-align:left;}
+
+.grpform_r {width:27%; background:#eef9ff; float:left; padding:5px;}
+.grpform_r .c1 {width:38.5%; float:left; margin:0px; border:1px solid #171717;}
+.grpform_r .c2 {width:56%; float:left; margin:0px; padding:0px 0px 0px 4px;}
+.grpform_r .c2 a {margin:0px; text-decoration:underline; font-size:11px; color:#666;}
+
+.frm_brd {width:100%; height:25px; background:url(../images/frm_brd.gif) repeat-x; clear:both;}
+.grpform .proinput {width:250px; height:16px; font-size:11px; padding:1px;}
+.grpform .proinput01 {width:138px; height:83px; font-size:11px; font-family:Verdana, Geneva, sans-serif; padding:1px; border:1px solid #7f9db9;}
+.grpform .proinput02 {width:30px; height:16px; font-size:11px; padding:1px;}
+.grpform .proinput03 {width:250px; height:83px; font-size:11px; font-family:Verdana, Geneva, sans-serif; padding:1px; border:1px solid #7f9db9;}
+.grpform .proselect {width:205px; height:24px; font-size:11px; padding:1px;}
+.grpform .select01 {width:142px; height:24px; font-size:11px; padding:1px;}
+.grpform .select02 {width:124px; height:24px; font-size:11px; padding:1px;}
+.grpform .grnbtn01 {padding:3px 5px; border:none; background:#9fc54e; font-size:11px; font-weight:bold; color:#FFF;}
+.grpform .grnbtn01 a {text-decoration:none; font-size:11px; font-weight:bold; color:#FFF;}
+.grpform a {font-size:11px; text-decoration:underline;} 
+/* Groups End */
+
+/* News Start */
+.newspg {width:100%; float:left;}
+.newspg .twoCol {width:100%; font-family:Verdana, Geneva, sans-serif; font-size:11px; color:#666; float:left; padding:10px 0px;;}
+.newspg .twoCol .c1 {width:20%; float:left;}
+.newspg .twoCol .c1 .brd {border:1px solid #dbdbdb;}
+
+.newspg .twoCol .c2 {width:78.5%; float:left;}
+.newspg .twoCol .c2 .head {font-size:12px; font-weight:bold; color:#000;}
+.newspg .twoCol .c2 .date {padding:5px 0px;}
+.newspg .twoCol .c2 .txt {font-size:11px; font-weight:normal; color:#666;}
+.newspg .twoCol .c2 .txtb {font-size:11px; font-weight:bold; color:#666;}
+.newspg .twoCol .c2 a.readmore {font-size:11px; font-weight:normal; color:#FF6600; text-decoration:underline;}
+
+/* News End */
+
+/*Discussion start*/
+.discussion {width:100%; float:left;}
+.discussion .head {color:#000; font-weight:bold; padding:10px 0px; width:50%; float:left; font-size:12px;}
+.discussion .grnbtn {color:#000; background:#99bf48;padding: 2px 5px; margin: 5px 2px; float:right;}
+.discussion .grnbtn a{font-size:11px; color:#FFF; text-decoration:none;}
+
+.discussion .categoryList {width:100%; float:left; background:#fafafa; border:1px solid #e4e4e4; margin-bottom:20px;}
+
+ul.catList {list-style:none; width:31%; margin:2px 5px; padding:0px 0px; float:left;}
+ul.catList li{list-style:none; margin:7px 0px; padding:2px 8px; display:block;}
+ul.catList li a {font-family:Verdana, Geneva, sans-serif; font-size:11px; font-weight:bold; color:#000; text-decoration:none;}
+ul.catList li{font-family:Verdana, Geneva, sans-serif; font-size:11px; font-weight:normal; color:#666;} 
+
+.discussion .subCatList {width:100%; float:left; border:1px solid #e4e4e4; margin-bottom:20px;}
+.discussion .subCatList .row {width:100%; float:left; background:#f2faff; font-family:Verdana, Geneva, sans-serif; font-size:11px; font-weight:bold; color:#000; text-decoration:none;}
+.discussion .subCatList .row a {font-family:Verdana, Geneva, sans-serif; font-size:11px; font-weight:bold; color:#000; text-decoration:none;}
+
+.discussion .subCatList .row .c1 {width:31%; margin:0px; padding:5px 0px 5px 12px; float:left;}
+.discussion .subCatList .row .c2 {width:31%; margin:0px; padding:5px 0px 5px 12px; float:left;}
+.discussion .subCatList .row .c3 {width:31%; margin:0px; padding:5px 0px 5px 10px; float:left;}
+
+ul.sucatList {list-style:none; width:31%; margin:2px 5px; padding:0px 0px; float:left;}
+ul.sucatList li{list-style:none; margin:7px 0px; padding:2px 0px 2px 20px; display:block; background:url(../images/listarrow.gif) no-repeat 7px 6px;}
+ul.sucatList li a {font-family:Verdana, Geneva, sans-serif; font-size:11px; font-weight:bold; color:#666; text-decoration:none;}
+ul.sucatList li{font-family:Verdana, Geneva, sans-serif; font-size:11px; font-weight:normal; color:#666;} 
+
+ul.cswplist {list-style:none; width:95%; margin:10px 5px; padding:0px 0px; float:left;}
+ul.cswplist li{list-style:none; margin:3px 0px; padding:2px 0px 2px 20px; display:block; background:url(../images/listarrow.gif) no-repeat 7px 6px;}
+ul.cswplist li a {font-family:Verdana, Geneva, sans-serif; font-size:11px; font-weight:bold; color:#666; text-decoration:none;}
+
+ul.sucatList01 {list-style:none; width:100%; margin:2px 5px; padding:0px 0px; float:left;}
+ul.sucatList01 li{list-style:none; margin:7px 0px; padding:2px 0px 2px 20px; display:block; background:url(../images/listarrow.gif) no-repeat 7px 6px; font-family:Verdana, Geneva, sans-serif; font-size:11px; font-weight:normal; color:#666; float:left; width:30%}
+ul.sucatList01 li a {font-family:Verdana, Geneva, sans-serif; font-size:11px; font-weight:bold; color:#666; text-decoration:none;}
+ 
+
+.tbl { border:1px solid #e0e0e0; border-bottom:none; float:left; width:100%;}
+.tbl .tblRow { padding:8px 0; clear:both; float:left; width:100%;} 
+.tbl .tblHead {background:#e2f4ff; color:#000; border-bottom:1px solid #e0e0e0; font:bold 12px Verdana, Arial, Helvetica, sans-serif }
+.tbl .trOdd { background:#f3f3f3}
+.tbl .tblRow  strong ,  .tbl .tblRow strong a {font:bold 12px Verdana, Arial, Helvetica, sans-serif ; color:#000}
+.tbl .col1 { float:left; width:62%; margin-left:10px;}
+.tbl .col2 { float:left; width:10%; color:#000; text-align:center;}
+.tbl .col3 { float:left; width:10%; color:#000; text-align:center;}
+.tbl .col4 { float:left; width:18%;}
+.tbl .col5 { float:left; width:58%; margin-left:21px; padding:1px 0px 0px 17px; background:url(../images/forumTopic.gif) no-repeat 0px 0px;}
+.tbl .col6 { float:left; width:5%; color:#000; text-align:center;}
+.tbl .col2 span , .tbl .col3 span , .tbl .col6 span { padding:15px 0; display:block}
+
+.thinline { border-bottom:1px solid #dedede;  margin:9px 0; clear:both; padding:0}
+.catelist { float:left; margin:0 30px 0 0;}
+.catelist li { list-style-type:none;}
+.liHead li a { color:#000; font-size:11px; font-weight:700; margin:9px 0; display:block}
+.liHead li a span { font-weight:300}
+/*Discussion end*/
+
+/* Hot Discussion start */
+.hotdis {width:100%; float:left;}
+.hotdis .threCol {width:100%; border-bottom: 1px dotted #bebebe; font-family:Verdana, Geneva, sans-serif; font-size:11px; color:#666; float:left; padding:10px 0px;;}
+.hotdis .threCol .c1 {width:60%; float:left;}
+.hotdis .threCol .c1 a {font-size:12px; color:#000; font-weight:bold; text-decoration:none;}
+.hotdis .threCol .c2 {width:17%; float:right; padding:0px 5px;}
+.hotdis .threCol .c3 {width:18%; float:right; padding:0px 5px;}
+/* Hot Discussion end */
+
+/* Followers start */
+.follow {width:100%; float:left;}
+.follow .fourCol {width:100%; border-bottom: 1px dotted #bebebe; color:#666; float:left; padding:10px 0px;;}
+.follow .fourCol .c1 {width:7%; float:left;}
+.follow .fourCol .c2 {width:24%; float:left;}
+.follow .fourCol .c3 {width:62%; float:left;}
+.follow .fourCol .c4 {width:5%; float:left;}
+
+.followers {width:100%; float:left;}
+.followers .fourCol {width:100%; border-bottom: 1px dotted #bebebe; color:#666; float:left; padding:10px 0px;;}
+.followers .fourCol .c1 {width:7%; float:left;}
+.followers .fourCol .c2 {width:22%; float:left;}
+.followers .fourCol .c3 {width:46%; float:left;}
+.followers .fourCol .c4 {width:17%; float:left; padding-left:5px;}
+.followers .fourCol .c5 {width:3%; float:left;}
+.followers .fourCol .c5 {width:3%; float:left;}
+
+/* Followers end */
+
+/* Jobs & events start */
+.jobsList {width:100%; font-family:Verdana, Geneva, sans-serif; font-size:11px; color:#666; border-bottom:1px dotted #666; margin-bottom:20px; float:left;}
+.jobsList .head {font-family:Verdana, Geneva, sans-serif; font-size:12px; font-weight:bold; color:#000;}
+.jobsList .txt { line-height:16px; margin: 5px 0px;}
+.jobsList .grnbtn {border:0px; background:#99bf48; font-size:11px; color:#FFF; padding: 2px 5px; margin: 5px 2px;}
+
+.jobsright {width:100%; font-family:Verdana, Geneva, sans-serif; font-size:11px; color:#666; border-bottom:1px dotted #666; margin-bottom:15px; padding-bottom:10px; float:left;}
+.jobsright a.headlink {font-size:11px; color:#666; text-decoration:underline;}
+/* Jobs & events end */
+
+/* jQuery.Rating Plugin CSS */
+.ratingstar {width:65px; height:13px; background:url(../images/ratingstar.gif) no-repeat left center; margin-top:-5px;}
+.rating {float:left; padding: 0px;}
+div.rating-cancel{float:left;width:6px;height:20px;text-indent:-999em;cursor:pointer;display:block;background:transparent;overflow:hidden; margin-top: -5px; margin-left: 0px;}
+div.star-rating{float:left;width:16px;height:20px;text-indent:-999em;cursor:pointer;display:block;background:transparent;overflow:hidden; margin-top: -5px; margin-left: 0px;}
+div.rating-cancel,div.rating-cancel a{background:url(../images/delete.gif) no-repeat 0 -16px}
+div.star-rating,div.star-rating a{background:url(../images/star.gif) no-repeat 0 0px}
+div.rating-cancel a,div.star-rating a{display:block;width:17px;height:100%;background-position:0 0px;border:0}
+div.star-rating-on a{background-position:0px -13px!important}
+div.star-rating-hover a{background-position:0px -26px}
+/* Read Only CSS */
+div.star-rating-readonly a{cursor:default !important}
+/* Partial Star CSS */
+div.star-rating{background:transparent!important;overflow:hidden!important}
+/* END jQuery.Rating Plugin CSS */
+
+/*Scrolling Images start */
+.scrollable {POSITION: relative; WIDTH:160px; HEIGHT:100Px; OVERFLOW: hidden; FLOAT: left}
+.scrollable .items {POSITION: absolute; WIDTH: 20000em; CLEAR: both}
+.scrollable .active {Z-INDEX: 9999; BORDER-BOTTOM: #000 2px solid; POSITION: relative; BORDER-LEFT: #000 2px solid; BORDER-TOP: #000 2px solid; BORDER-RIGHT: #000 2px solid;}
+
+.sc_img {width:75px; margin:0px 2px; padding:0px; list-style:none; float:left; display:block;}
+.sc_img img {margin:0px; padding:0px;}
+.sc_img span {margin:0px 0px; padding:0px; display:block; font-family:Verdana, Geneva, sans-serif; font-size:11px;}
+
+
+.scrollable01 {POSITION: relative; WIDTH:615px; HEIGHT:160Px; OVERFLOW: hidden; FLOAT: left;}
+.scrollable01 .items01 {POSITION: absolute; WIDTH: 20000em; CLEAR: both}
+.scrollable01 .active01 {Z-INDEX: 9999; BORDER-BOTTOM: #000 2px solid; POSITION: relative; BORDER-LEFT: #000 2px solid; BORDER-TOP: #000 2px solid; BORDER-RIGHT: #000 2px solid;}
+
+.scrollable02 {POSITION: relative; WIDTH:615px; HEIGHT:160Px; OVERFLOW: hidden; FLOAT: left}
+.scrollable02 .items02 {POSITION: absolute; WIDTH: 20000em; CLEAR: both}
+.scrollable02 .active02 {Z-INDEX: 9999; BORDER-BOTTOM: #000 2px solid; POSITION: relative; BORDER-LEFT: #000 2px solid; BORDER-TOP: #000 2px solid; BORDER-RIGHT: #000 2px solid;}
+
+.contest_img {width:153px; margin:0px 2px; padding:0px; list-style:none; float:left; display:block;}
+.contest_img .imgbrd {margin:0px; padding:0px; width:140px; height:95px; border:1px solid #e7e7e7;}
+.contest_img .imgbrd01 {margin:0px; padding:0px; border:1px solid #e7e7e7;}
+.contest_img p {margin:10px 0px; padding:0px; display:block; font-family:Verdana, Geneva, sans-serif; font-size:11px;}
+.contest_img .memimg {margin:0px 10px 0px 0px; padding:0px; float:left;}
+.contest_img .meminfo {margin:7px 0px 0px 0px; padding:0px; float:left;}
+
+A.browse01 {MARGIN: 40px 10px; WIDTH: 21px; DISPLAY: block; BACKGROUND:url(../images/slideArrows.gif) no-repeat; FLOAT: left; HEIGHT: 21px; FONT-SIZE: 1px; CURSOR: pointer;}
+A.browse02 {MARGIN: 40px 10px; WIDTH: 21px; DISPLAY: block; BACKGROUND:url(../images/slideArrows.gif) no-repeat; FLOAT: left; HEIGHT: 21px; FONT-SIZE: 1px; CURSOR: pointer;}
+/* Added on 10/08/10 by anil for fixing issue of zooming on chrome */
+A.browse03 {MARGIN: 155px 10px; WIDTH: 21px; DISPLAY: block; BACKGROUND:url(../images/slideArrows.gif) no-repeat; FLOAT: left; HEIGHT: 21px; FONT-SIZE: 1px; CURSOR: pointer;}
+A.browse {MARGIN: 21px 10px; WIDTH: 21px; DISPLAY: block; BACKGROUND:url(../images/slideArrows.gif) no-repeat; FLOAT: left; HEIGHT: 21px; FONT-SIZE: 1px; CURSOR: pointer;}
+A.right {BACKGROUND-POSITION: 0px -22px; CLEAR: right; MARGIN-RIGHT: 0px;}
+A.right:hover {BACKGROUND-POSITION: -22px -22px}
+A.right:active {BACKGROUND-POSITION: -44px -22px}
+A.left {MARGIN-LEFT: 0px}
+A.left:hover {BACKGROUND-POSITION: -21px 0px}
+A.left:active {BACKGROUND-POSITION: -44px 0px}
+A.disabled {VISIBILITY:visible !important;}
+/*Scrolling Images end */
+
+
+/*Contest winner start */
+.winner {width:100%; margin:0px 0px 10px 0px; float:left; font-family:Verdana, Geneva, sans-serif;}
+.winner .winnerrow {width:100%; margin:10px 0px 10px 0px; float:left; font-family:Verdana, Geneva, sans-serif;}
+.winnerrow .c1 {width:10%; float:left; margin:0px 9px 0px 0px;}
+.winnerrow .c2 {width:25%; float:left; margin:0px 9px 0px 0px;}
+.winnerrow .c3 {width:62.2%; float:left; margin:0px;}
+.winner h1 {font-size:13px; color:#000; background-color:#eee; margin:0px 0px 10px 0px; padding:2px 5px;}
+.winner h2 {font-size:11px; color:#000; background-color:#F5F5F5; margin:0px 0px 5px 0px; padding:2px 5px;}
+.winnerrow a {padding:0px; margin:0px;}
+/*Contest winner end */
+/*My page start */
+ul.mypage {margin:0px; padding:0px; list-style:none;}
+
+ul.mypage li {margin:0px; padding:10px; list-style:none; border-bottom:1px solid #e9e9e9;}
+ul.mypage li.head {margin:0px; padding:10px 5px; list-style:none; font-size:12px; font-weight:bold; color:#000; border-top:1px solid #e9e9e9;}
+ul.mypage li a {margin:0px; padding:0px 10px; list-style:none; font-size:11px; color:#000;}
+ul.mypage li:hover {background:#e2f4ff;}
+.mpa1 .mp1, .mpa2 .mp2, .mpa3 .mp3, .mpa4 .mp4, .mpa5 .mp5, .mpa6 .mp6, .mpa7 .mp7, .mpa8 .mp8, .mpa9 .mp9, .mpa10 .mp10, .mpa11 .mp11 , .mpa12 .mp12 , .mpa13 .mp13 {background:#e2f4ff;}
+/*My Page end*/
+
+/*.topnavbg {margin: 5px 0px 0px 10px; float: left; background: #ff0000; width:581px;}
+ 
+ul.topnav {margin:0px; padding:0px; list-style:none; height:30px; font-size:11px; font-family:Verdana, Geneva, sans-serif;}
+ul.topnav li {list-style:none; margin:0px; display:inline; float:left; border-right:1px solid #FFF;}
+ul.topnav li a {color:#000; text-decoration:none; padding:8px 6px 9px 6px; display:block;}
+
+ul.topnav li a.firtnav {color:#000; text-decoration:none; margin-left:10px; padding:8px 6px 9px 6px; display:block; background:none;}
+ul.topnav li a.firtnav:hover {color:#FFF !important; text-decoration:none; display:block; background:#3AC7E5 url(../images/linkcurveleftH.gif) no-repeat; margin-left:0px;}
+*/
+
+
+/* Post Add start */
+.postadd {width:420px; padding:10px; font-family:Verdana, Geneva, sans-serif; font-size:12px; color:#000;}
+.postadd .txt {width:400px; padding:10px; background:#ebebeb;}
+.postadd h1 {font-size:14px; color:#FF6600;}
+.postadd .c1 {width:28%; float:left; margin:0px; padding:0px 5px; text-align:right; font-weight:bold;}
+.postadd .c2 {width:68.8%; float:left; margin:0px; padding:0px;}
+/* Post Add end */
+
+/* Participate Now start */
+.partnow {width:750px; padding:10px; font-family:Verdana, Geneva, sans-serif; font-size:12px; color:#000;}
+.partnow .txt {width:750px; padding:10px; background:#ebebeb;}
+.partnow h1 {font-size:14px; color:#FF6600;}
+.partnow .head {font-weight:bold;}
+.partnow .c1 {width:28%; float:left; margin:0px; padding:0px 5px; text-align:right;}
+.partnow .c2 {width:60%; float:left; margin:0px; padding:0px;}
+.partnow .c3 {width:8%; float:left; margin:0px; padding:0px;}
+.partnow .grnbtn {border:0px; background:#99bf48; font-size:12px; color:#FFF !important; padding: 5px 8px; margin: 5px 0px 1px 5px;}
+
+/* Participate Now end */
+
+/* New User start */
+.newuser {width:480px; padding:10px; font-family:Verdana, Geneva, sans-serif; font-size:12px; color:#000;}
+.newuser .txt {width:450px; padding:10px; background:#ebebeb; font-size:11px;}
+.newuser .txt01 {font-size:11px; color:#000;}
+.newuser .txt01 a {font-size:11px; color:#000; text-decoration:underline;}
+.newuser h1 {font-size:14px; color:#FF6600;}
+.newuser .c1 {width:28%; float:left; margin:0px; padding:0px 5px; text-align:right; font-weight:bold;}
+.newuser .c2 {width:68.8%; float:left; margin:0px; padding:0px;}
+/* New User end */
+
+/* event user start */
+.newuser01 {width:100%; padding:10px; font-family:Verdana, Geneva, sans-serif; font-size:12px; color:#000;}
+.newuser01 .txt {width:90%; padding:10px; background:#ebebeb; font-size:14px;}
+.newuser01 .txt strong {margin-left:35px;}
+.newuser01 .txt01 {font-size:11px; color:#000;}
+.newuser01 .txt01 a {font-size:11px; color:#000; text-decoration:underline;}
+.newuser01 h1 {font-size:14px; color:#FF6600;}
+.newuser01 .c1 {width:20%; float:left; margin:0px; padding:0px 5px; text-align:right; font-weight:bold;}
+.newuser01 .c2 {width:68.8%; float:left; margin:0px; padding:0px;}
+/* event user end */
+
+/* New User start */
+/* Added on 15/06/10 by anil for style of redemption user info on popup */
+.newuser02 {padding:10px; font-family:Verdana, Geneva, sans-serif; font-size:12px; color:#000;}
+.newuser02 .txt {width:450px; padding:10px; background:#ebebeb; font-size:11px;}
+.newuser02 .txt01 {font-size:11px; color:#000;}
+.newuser02 .txt01 a {font-size:11px; color:#000; text-decoration:underline;}
+.newuser02 h1 {font-size:14px; color:#FF6600;}
+.newuser02 .c1 {width:28%; float:left; margin:0px; padding:0px 5px; text-align:right; font-weight:bold;}
+.newuser02 .c2 {width:68.8%; float:left; margin:0px; padding:0px;}
+/* New User end */
+
+
+/* Popup start */
+.popup {width:650px; padding:10px; font-family:Verdana, Geneva, sans-serif; font-size:12px; color:#000;}
+.popup .txt {width:630px; padding:10px; background:#ebebeb; font-size:11px;}
+.popup .txt01 {font-size:11px; color:#000;}
+.popup .txt01 a {font-size:11px; color:#000; text-decoration:underline;}
+.popup h1 {font-size:14px; color:#FF6600;}
+.popup .c1 {width:28%; float:left; margin:0px; padding:0px 5px; text-align:right; font-weight:bold;}
+.popup .c2 {width:68.8%; float:left; margin:0px; padding:0px;}
+
+.popup  .group .fourCol .c2 {float:left;width:20%;}
+/* Popup end */
+
+.uplooad {width:99%; float:left;}
+.uplooad .formrow {width:100%; float:left;}
+.uplooad .c1 {width:23%; float:left; margin:4px 0px; font-size:11px; font-weight:bold; color:#000; padding:3px 10px 0px 0px; text-align:right;}
+/* Modified on 24/03/10 by anil to increase width from 65% to 75% */
+.uplooad .c2 {width:75%; float:left; margin:4px 0px; font-size:11px; color:#666; padding:0px; text-align:left;}
+
+a.ovalbutton {background: transparent url('../images/oval-orange-left.gif') no-repeat top left !important; display: block; float: left; font: normal 12px Arial; line-height: 16px; height: 18px; padding-left: 11px; text-decoration: none;}
+a:link.ovalbutton, a:visited.ovalbutton, a:active.ovalbutton{color: #000; font-size:11px; font-weight:bold;}
+a.ovalbutton span{background: transparent url('../images/oval-orange-right.gif') no-repeat top right; display: block; padding: 0px 11px 2px 0;}
+a.ovalbutton:hover{background-position: left -18px; color:#3c5605; font-size:11px; text-decoration:none !important;}
+a.ovalbutton:hover span{background-position:  right -18px; color:#3c5605; font-size:11px; text-decoration:none !important;}
+a.ovalbutton:active{background-position: bottom left;}
+a.ovalbutton:active span{background-position: bottom right;}
+.buttonwrapper{overflow: hidden; /*See: http://www.quirksmode.org/css/clearing.html */width: 100%;}
+
+/* Added by sandeep */
+/* Modified on 29/04/10 by anil */
+.box1 { float:left; width:230px; margin:10px 0;min-height:110;}
+.box1 .c1 { float:left; width:105px; margin-right:5px;}
+.box1 .c1 p { margin-bottom:5px;}
+.box1 .c2 { float:left; width:110px}
+
+
+.myshare {
+-moz-background-clip:border;
+-moz-background-inline-policy:continuous;
+-moz-background-origin:padding;
+background:transparent url(../images/iconsH.gif) no-repeat scroll -22px -40px;
+float:left;
+height:18px;
+margin:1px 0 0;
+padding:0;
+width:18px;}
+
+
+#rules-box {
+	width:570px;
+	text-align:left;
+	border:1px solid #cccccc;
+	margin:20px auto;
+	padding-left:40px;
+	padding-right:10px;
+	color:#666;
+}
+
+
+/*Css for the star rating. 10-03-2010 by-jai*/
+
+.leftfloat {
+    float:left;
+  }
+  /* Star Rating Start */
+  .starrating {
+    background:url(../images/star_empty.gif) repeat-x left top;
+    height:15px;
+    list-style-image:none;
+    list-style-position:outside;
+    list-style-type:none;
+    margin:0;
+    padding:0;
+    position:relative;
+    width:100px;
+  }
+
+  /*  changes*/
+  .starrating li a{
+    display:block;
+    width:20px;
+    height: 15px;
+    text-decoration: none;
+    text-indent: -9000px;
+    z-index: 20;
+    position: absolute;
+    padding: 0px;
+  }
+  .starrating li a:hover{
+  background: url(/images/star_full.gif) left center;
+  z-index: 2;
+  left: 0px;
+  border:none;
+}
+.starrating a.one-star{
+  left: 0px;
+}
+.starrating a.one-star:hover{
+  width:20px;
+}
+.starrating a.two-stars{
+  left:20px;
+}
+.starrating a.two-stars:hover{
+  width: 40px;
+}
+.starrating a.three-stars{
+  left: 40px;
+}
+.starrating a.three-stars:hover{
+  width: 60px;
+}
+.starrating a.four-stars{
+  left: 60px;
+}
+.starrating a.four-stars:hover{
+  width: 80px;
+}
+.starrating a.five-stars{
+  left: 80px;
+}
+.starrating a.five-stars:hover{
+  width: 100px;
+}
+
+/*  changes end*/
+
+
+.starrating li.currentrating {
+  background:url(../images/star_full.gif) repeat-x left top;
+  display:block;
+  height:15px;
+  position:absolute;
+  text-indent:-9000px;
+  z-index:1;
+}
+.starrating li {
+  float:left;
+  margin:0;
+  padding:0 !important;
+}
+/* Star Rating End */
+/* Star Rating Start */
+
+.starratingpopup {
+  background:url(../images/star_empty.gif) repeat-x right top;
+  height:15px;
+  list-style-image:none;
+  list-style-position:outside;
+  list-style-type:none;
+  margin:0 0 1px 0;
+  padding:0;
+  position:relative;
+  width:100px;
+  float:right;
+}
+
+.starratingpopup li.currentrating {
+  background:url(../images/star_full.gif) repeat-x right top;
+  display:block;
+  height:15px;
+  position:absolute;
+  text-indent:-9000px;
+  z-index:1;
+}
+.starratingpopup li {
+  float:right;
+  margin:0;
+  padding:0;
+}
+/* Star Rating End */
+.review{
+  float:left;
+  width:110px;
+}
+.review .starrating{
+  float:left;
+}
+.reviewbar{
+  float:left;
+  padding:0 0 0 10px;
+  width:120px;
+}
+.reviewbar .bar{
+  float:left;
+  width:100px;
+  padding:2px 5px 0 0;
+}
+.reviewbar .barnumber{
+  font-size:11px;
+  float:left;
+}
+.reviewrating{
+  width:50px;
+  float:left;
+  padding:0 0 0 10px;
+}
+/* Star Rating End */
+
+
+/* css for share icons */
+.shareIcons li { list-style-type:none; float:left}
+.shareIcons li a { float:left; background-image:url(../images/share.gif); width:32px; margin:0 2px; height:35px; }
+.shareFacebook  { background-position:0 0}
+.shareIn { background-position:-32px 0 }
+.shareTwitter { background-position:-64px 0 }
+.share4 { background-position:-96px 0 }
+.shareOrkut  { background-position:-126px 0 }
+.share6 { background-position:-155px 0 }
+.shareHi5 { background-position:-187px 0 }
+.shareIcons li a span { display:none}
+/* Added on 1/06/10 by anil for fixing share icons on ie */
+html>body .shareIcons {margin-top:-15px}
+
+.point_tbl { border:1px solid #e4e4e4; border-bottom:none; width:690px;}
+.point_tbl .row { float:left; width:690px; border-bottom:1px solid #e4e4e4  }
+.point_tbl .row.head { background:#e2f4ff; font-weight:700; color:#000}
+.point_tbl .row .col-1 { float:left; width:300px; border-right:1px solid #e4e4e4; padding:4px;}
+.point_tbl .row .col-2 { float:left; width:200px; border-right:1px solid #e4e4e4; padding:4px;}
+.point_tbl .row .col-3 { float:left; width:163px; border-right:none; padding:4px;}
+
+.error { color:#f00}
+
+.actstream1 {width:237px;  padding:0px;}
+.actstream1 .snap {width:36px; height:36px; border:1px solid #cbcbcb;}
+.actstream1 .mname {font-family:Verdana, Geneva, sans-serif; font-size:9px; padding-top:3px; float:left;}
+.actstream1 .twcol {width:100%; float:left; margin:0px 0px 10px 0px; padding:0px;}
+.actstream1 .twcol .snaprow {width:100%; clear:both; margin-bottom:10px;} 
+.actstream1 .twcol .commname {font-size:11px; font-weight:bold; color:#666;}
+.actstream1 .twcol .c1 {width:21%; float:left; margin:0px 0px 12px 0px; padding:0px;}
+.actstream1 .twcol .c2 {width:79%; float:left; margin:0px 0px 12px 0px; padding:0px;}
+
+.myActivity {  width:240px; position:fixed; right:0; bottom:0; background: url(../images/bg_myActivity.png) no-repeat left top}
+.act_flash { width:55px; float:left; margin-top:-10px; }
+.myActivityhead { padding:8px 0; height:15px; cursor:pointer;}
+
+.myActivity .actstream { margin:0!important}
+/* Modified on 2/07/10 by anil changed height from 140 to 160 */
+.myActivity .actstream .twcol { height:160px; overflow-y:auto; overflow-x:hidden;}
+/* Modified on 2/07/10 by anil for showing activity stream popup properly */
+.myActivitypadd { padding:5px;  background:#fff;  width:234px; overflow-y:hidden;float:left;  border-left:1px solid #f60; border-right:1px solid #f60; border-bottom:1px solid #FF6600; }
+
+ 
+.mainhead_blog { background:#A85c4E  url(../images/blogHeadBg.gif) no-repeat right top; }
+.mainhead_design { background:#A85c4E  url(../images/designCentralHeadBg.gif) no-repeat right top; }
+.mainhead_discussion { background:#A85c4E  url(../images/discLoungHeadBg.gif) no-repeat right top; }
+.mainhead_learning { background:#A85c4E  url(../images/learningHeadBg.gif) no-repeat right top; }
+
+.mainhead {width:722px; height:16px; clear:both; margin:0px 0px 5px 0px; padding:10px 0px 13px 5px; font-size:14px; font-family:Verdana, Geneva, sans-serif; color:#FFF;}
+.mainhead .head {font-size:14px; font-weight:bold; color:#FFF; padding:0px 10px 0px 5px; margin-right:10px; border-right:1px solid #fff;}
+*html .mainhead {width:701px; height:13px; background:#9fc54e url(../images/bg_green_head.gif) no-repeat right top; clear:both; margin:10px 0px 17px 0px; padding:10px 0px 10px 13px; font-size:14px; font-family:Verdana, Geneva, sans-serif; color:#FFF;}
+.mainhead .warrow {background:#A85c4E  url(../images/arrow_white.gif) no-repeat right 2px; width:17px; height:19px; float:left; margin:0px 5px;}
+.mainhead .fleft {float:left;} 
+
+.ht70 { min-height:70px;}
+ 
+/* added on 20100424 */
+.comlinkpadd {
+padding-left:195px;
+}
+
+
+.cBoxhead {width:228px; height:12px; padding:7px 5px; font:normal 11px Verdana, Arial, Helvetica, sans-serif; color:#fff;  margin-top:10px; -moz-border-top-radius: 5px; -webkit-border-top-radius: 5px; text-align:left;  }
+.cBoxcontainer {width:226px; padding:8px 5px 0 5px; margin-bottom:10px; border:1px solid #EDEDED;  border-top:0px!important; -moz-border-bottom-radius: 5px; -webkit-border-bottom-radius: 5px; text-align:left;  font:normal 11px Verdana, Arial, Helvetica, sans-serif; }
+
+.cBoxgreen .cBoxhead{background:#9FC54E;}
+.cBoxgreen .cBoxcontainer { background:url(../images/gr_down_arro.jpg) no-repeat 10px 0;  }
+
+.cBoxblue .cBoxhead{background:#3AC7E5;}
+.cBoxblue .cBoxcontainer { background:url(../images/bl_down_arro.jpg) no-repeat 10px 0}
+
+.cBoxorange .cBoxhead{background:#F68B1F;}
+.cBoxorange .cBoxcontainer { background:url(../images/or_down_arro.jpg) no-repeat 10px 0}
+
+.linkhead { color:#666; font-weight:700}
+.inner-banner { margin:-10px -10px 10px -10px;}
+ 
+ /* Added on 28/04/10 by anil for style for multiselect dropdown for certification and skills form */
+.proform .multiple_select {
+  border: 1px solid #aaa;
+  height: 80px;
+  width: 150px;
+  padding: 2px;
+  margin: 1em;
+  overflow: auto;
+  float: left;
+}
+
+.proform .multiple_select, .multiple_select ul {
+  list-style-type: none;
+}ns
+
+.proform .multiple_select_checkbox {
+  background: #fff;
+}
+
+.proform .alt {
+  background: #eef;
+} 
+
+/* girish 3 May */
+
+/* Modified on 8/06/10 by anil to fix cswp ui issue, made min-height from 250 to 115 */
+.box01 { border:1px solid #e3e3e3; -moz-border-radius: 5px; -webkit-border-radius: 5px; padding:5px; width:325px; min-height:115px; float:left; margin:0 10px 10px 0; z-index:0}
+.box01 .col-1 { float:left; width:110px; min-height:96px;}
+
+
+ 
+ 
+ /* icon set start */
+.belt_black {width:18px; height:20px; margin:0px; padding:0px; background:url(../images/iconsH.gif) no-repeat  -266px -71px; float:left;}
+.belt_white {width:18px; height:20px; margin:0px; padding:0px; background:url(../images/iconsH.gif) no-repeat -282px -71px; float:left;}
+.belt_green {width:18px; height:20px; margin:0px; padding:0px; background:url(../images/iconsH.gif) no-repeat  -231px -71px; float:left;}
+.belt_blue {width:18px; height:20px; margin:0px; padding:0px; background:url(../images/iconsH.gif) no-repeat  -214px -71px; float:left;}
+.belt_yellow {width:18px; height:20px; margin:0px; padding:0px; background:url(../images/iconsH.gif) no-repeat  -249px -71px; float:left;}
+
+
+.sitemap_list li { float:left; width:220px;}
+.sitemap_list li a { background:url(../images/arrow_sitemap.gif) no-repeat left center; font-size:13px; padding:0 0 0 35px; margin:10px 0; display:block; float:left; }
+
+/*
+#notifications {
+left:0;
+overflow:visible;
+position:fixed;
+top:0;
+width:100%;
+z-index:10000;
+margin:0;
+padding:0;
+}
+
+notification-bar-container {
+display:block;
+overflow:visible;
+position:relative;
+width:100%;
+margin:0;
+padding:0;
+} */
+#browser_notice {display:none;}
+#browser_notice p.error-notice, #lightview-notice p.error-notice {background-color: #8b0000; color: #fff; cursor: pointer; font-size: 1.2em; margin: auto; padding: 8px 15px; text-align: center; width: 100%;}
+
+#browser_notice1 {display:none;}
+#browser_notice1 p.error-notice, #lightview-notice p.error-notice {background-color: #8b0000; color: #fff; cursor: pointer; font-size: 1.2em; margin: auto; padding: 8px 15px; text-align: center; width: 100%;}
+.group_detail a{color:#000000; text-decoration:none;}
+
+.belt_01, .belt_02, .belt_03, .belt_04 {background:url(../images/belt_big.jpg) no-repeat; width:96px; height:28px;display:block; margin-top:3px;}
+.belt_01 { background-position:0 0;  }
+.belt_02 { background-position:0 -27px} 
+.belt_03 { background-position:0 -55px}
+.belt_04 { background-position:0 -82px}
+.loginbutton { background:url(../images/bg_btn_login.png) no-repeat left top; color:#000; font-weight:700; border:none; width:50px; height:18px; font-size:12px; padding:0 0 3px 0 }
+.usrcnt {widht:200px;font-size:12px;color:#3AC7E5;font-weight:700; background:url(../images/icon_star_blue.png) no-repeat left center; padding:0px 3px 0px 10px;margin-left:3px;}
+.facebookicon img {height:18px;margin-left:10px;}
+.third_div
+{
+display:inline-block; /* The text will appear red only in Safari and Google Chrome */
+}
+
+
+@media screen and (-webkit-min-device-pixel-ratio:0)
+{
+.third_div
+{
+display:inline; /* The text will appear red only in Safari and Google Chrome */
+}
+}

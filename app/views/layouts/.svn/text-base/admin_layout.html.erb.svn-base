@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html dir="ltr" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7">
+      <title>Solidworks India - Admin panel</title>
+      <%= stylesheet_link_tag  "styles.css","admin_styles.css","overlay.css",'demo_page','demo_table_jui','jquery-ui-1.7.2.custom','notification' -%>
+      <%= javascript_include_tag "jquery.js","jquery.tools.min.js","jquery.MetaData.js","jquery.rating.js","overlay.js","jquery.corner.js","jquery.paginate.js","FusionCharts.js","notice","tag","jquery.dataTables","application.js","rc.js" %>
+<%#= javascript_include_tag "bsn.AutoSuggest_2.1.3_comp.js" ,"bsn.AutoSuggest_c_2.0.js","rc.js" %>
+  </head>
+  <body id = "<%=get_id(controller.controller_name)%>">
+    <div class="wrapper">
+      <!-- Header File Include -->
+      <script type = "text/javascript">
+      $(document).ready(function(){
+<% if flash[:notice] %>
+    show_notice('<%= flash[:notice] %>','success');
+<% end %>
+<% if flash[:error] %>show_notice('<%= flash[:error] %>','error');
+<% end %>
+  });
+                                                                                                                                                      
+                                                                                                                                            
+                                                                                                                            
+                                                                                                            
+                                                                                            
+                                                                            
+                                                            
+                                            
+                            
+      </script>
+      <!-- Logo Header Start -->
+      <% if logged_in? %>
+        <%=render :partial=>"layouts/admin_header.html.erb" %>
+      <%else %>
+        <%=render :partial=>"layouts/admin_header_login" %>
+      <%end %>
+      <!-- Head Link End -->
+      <div class="clear">
+      </div>
+      <div class="clear">
+      </div>
+      <!-- Container Start -->
+      <div class="content">
+        <%=yield %>
+      </div>
+      <!-- Container End -->
+      <div class="spacer02">
+      </div>
+    </div>
+    <!-- Wrapper End -->
+    <div class="clear">
+    </div>
+    <!-- Footer File Include -->
+<%#=render :partial=>"layouts/footer.html.erb" %>        
+    <script type="text/javascript">
+        try {
+          var pageTracker = _gat._getTracker("UA-16187960-1");
+          pageTracker._trackPageview();
+        }
+        catch (err) {
+        }
+    </script>
+  </body>
+</html>

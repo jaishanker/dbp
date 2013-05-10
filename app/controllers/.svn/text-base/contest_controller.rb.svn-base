@@ -1,0 +1,80 @@
+class ContestController < ApplicationController
+  
+  before_filter :login_required, :except => [:index, :active_participants, :hot_contests]
+  before_filter :contest_objects
+  def index
+    if params[:tag]
+      @contest = Contest.find_active_with_tag(params[:tag])
+    else
+#    @contest = Contest.all #find_active
+    @contest = Contest.find_activated    
+    end
+  end
+  
+  def terms
+    render :action => "terms.html.erb",:layout => false
+  end
+  
+  def active_participants
+  end
+  
+  def particapate_now
+    @contest = Contest.find(params[:id])
+    @participation = ContestParticipant.new
+    render :action=>"particapate_now" ,:layout=>false
+  end
+  
+  def create_participation
+    @participation = ContestParticipant.new(params[:participation])
+    @participation.user_id = current_user.id
+    @participation.save
+    if @participation.errors.empty?
+      @participation.contest.total_participants = @participation.contest.total_participants.to_i + 1
+      @participation.contest.save
+    #  @participation.user.add_points(CONTEST_PARTICIPATION)
+      render :update do |page|
+        page << "show_notice('You have successfully participated for contest','success')"
+        page.redirect_to :action => "index"
+      end
+    else
+      render :update do |page|
+        page << "show_notice('Sorry please correct errors first','error')"
+        page.replace_html :error,:partial => "/layouts/errors"
+      end
+    end
+  end  
+  
+  def recent_contests
+    current_user.preferred_page = "/contest/recent_contests"
+    current_user.save
+  end
+  
+  def hot_contests
+    @contest = Contest.hot_contests(10)
+    render :action => "index"
+  end
+  
+  def active_participants
+    @active_c_participants = User.contest_participants(params[:page]||1)
+    @no_of_pages = (@active_c_participants.total_entries.to_f / USERS_PER_PAGE).ceil            
+  end
+  
+  def withdraw_participation
+     contest = Contest.find(params[:contest_id])
+     contest.total_participants -= 1
+     contest.save
+     participation  = ContestParticipant.find(params[:id])
+      participation.design.tags = participation.design.tags.to_s.gsub(contest.contest_tag.to_s+',','').to_s.gsub(','+contest.contest_tag.to_s,'').to_s.gsub(contest.contest_tag.to_s,'')
+      participation.design.save
+     participation.destroy     
+     flash[:notice] = "You have successfully withdrawn your participation."
+     redirect_to :action => "index", :id => params[:contest_id]
+  end
+  
+  private
+  
+  def contest_objects
+    @hot_contests = Contest.hot_contests(5)
+    @active_participants = User.top_contest_participants(6)    
+  end
+end

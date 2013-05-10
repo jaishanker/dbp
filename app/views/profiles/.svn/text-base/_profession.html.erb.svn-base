@@ -1,0 +1,52 @@
+<div id="profession">
+            <form action="" method="get">
+            <div class="proform"> 
+            <div class="proform_l">
+                    <div class="formrow">
+                    <p class="c1">Total Years of Experience:</p>
+                     <%exp_months = get_months(@profile.total_exp)%>
+                    <p class="c2 view"><%if @profile.total_exp%> <%=get_years(@profile.total_exp)%> years <%unless exp_months == 0%> and <%=exp_months%> months <%end%> <%end%></p>
+                </div>
+               <%@user_professions.each do|user_profession|%>
+                    <div class="formrow">
+                    <p class="c1">Employer:</p>
+                    <p class="c2 view"><%=h user_profession.employer%></p>
+                </div>
+                    <div class="formrow">
+                    <p class="c1">Position:</p>
+                    <p class="c2 view"><%=h user_profession.position%></p>
+                </div>
+
+                <div class="formrow">
+                    <p class="c1">Industry:</p>
+                    <p class="c2 view"><%=h user_profession.industry%></p>
+                </div>
+
+                    <div class="formrow">
+                    <p class="c1">Duration:</p>
+                     <%months = get_months(user_profession.duration)%>
+                    <p class="c2 view"><%unless user_profession.duration.nil? %> <%=get_years(user_profession.duration)%> years <%unless months == 0%> and <%=months%> months <%end%> <%end%></p>
+                </div>
+                <div class="frm_brd"></div>
+           <%end%>
+                </div>
+        </div> 
+            <div class="proform">
+            <div class="proform_l">
+                    <div class="formrow">
+                    <p class="c1">&nbsp;</p>
+                    <p class="c2">
+                        <%if @user == current_user%>
+                            <input name="Save" onclick = "<%= remote_function :update => "ComContent1",:url =>{ :action => :edit_profession}, :before => "$('#spinner').show();",:complete => "$('#spinner').hide();" , :class => "grnbtn01"%>"  type="button" value="Edit" class="grnbtn01" />                	
+                              <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner",:style=>"display:none; width: 20px; margin-top: 0px;" ) %>
+                       <%end%>
+                    </p>
+                </div>
+                </div>
+        </div>
+        </form>
+        <p class="spacer01"></p>
+  </div>
+
+
+

@@ -1,0 +1,3 @@
+<div class="threCol">
+  <p><%=link_to favorite_design.name, :controller => "designs", :action => "design", :permalink => favorite_design.permalink%></p> 
+</div>

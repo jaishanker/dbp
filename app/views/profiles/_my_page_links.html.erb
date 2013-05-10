@@ -1,0 +1,36 @@
+<!-- <div class="spacer02"></div> -->
+	<!-- Group Fan Div start -->
+	<div class="populargrp">
+        <!-- Two col start -->
+        <div class="twcol">
+            <div class="snaprow">
+                <p class="c1">
+                    <%=  get_image(current_user,'user','thumb_large','snap')%>
+                        <%if current_user.profile.pic_present%>                    
+                            <br/>
+                            <span class="<%= get_belt_class(current_user.expertise_points||0)%>"> </span>           
+                        <%end%>
+                 </p>
+                <p class="c2"><%= link_to current_user.first_name.capitalize+" "+current_user.last_name.capitalize,my_page_path(:user_id =>current_user.id), :class => "orange" %><br /><%=h current_user.status_message%></p>
+            </div>
+         
+        </div>
+        <!-- Two col end -->
+    </div>
+    <div class="clear"></div>
+	<!-- Group Fan Div end -->
+	<ul class="mypage">
+    	<li class="head mp1">My Profile Lounge</li>
+    	<li class="mp2"><%if current_user.profile.pic_present%><span class="<%= get_class(current_user.expertise_points||0)%>"></span> <%else%> <span class="belt_white"></span> <%end%> <%= link_to "My Profile (#{current_user.profile.percent_complete.to_i}% Complete )", profile_path(current_user.profile, :user_id => current_user.id) %></li>
+    	<li class="mp3"><span class="mydes"></span><%= link_to "My Designs (#{current_user.designs.length})", :controller => 'designs', :action => 'index', :user_id => current_user.id%></li>
+    	<li class="mp5"><span class="myreq"></span> <%= link_to "Network Requests (#{current_user.active_received_requests.size})", my_requests_profile_path(current_user.profile)%></li>
+      <li class="mp6"><span class="followersIcon"></span><%= link_to "People I Follow(#{current_user.follow_count})", list_followings_profile_path(current_user.profile,:user_id => current_user.id)%></li>
+   	<li class="mp7"><span class="followingIcon"></span><%= link_to "My Followers(#{current_user.followers_count})", list_followers_profile_path(current_user.profile,:user_id => current_user.id)%> </li>
+    	<li class="mp8"><span class="myfav"></span><%= link_to "My Favorites (#{current_user.all_favorites.size})", my_favorites_user_path(current_user)%></li>
+    	<li class="mp9"><span class="mygrp"></span><%= link_to "My Groups (#{current_user.active_groups.size})", my_groups_user_path(current_user)%></li>
+   	<!--<li class="mp10"><span class="mycont"></span><a href="My_Page_My_Contest.html">My Contests (7)</a></li>-->
+   	<li class="mp12"><span class="mysetting"></span><%= link_to "My Settings", profile_path(current_user.profile, :my_settings => '1')%></li>
+   	<li class="mp13"><span class="myredemptions"></span><%= link_to "My Redemptions", redemptions_user_path(current_user)%></li>
+  </ul>    
+<div class="clear"></div>
+

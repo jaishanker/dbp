@@ -1,0 +1,14 @@
+
+    <div class="threCol">
+      <div class="cc1">
+        <%= link_to get_image(comment_on_game.user,'user','thumb','nobrd'),my_page_path(:user_id =>comment_on_game.user.id) %>
+      </div>
+      <div class="cc4" id="ComLink">
+        <%= link_to get_name(comment_on_game.user.login,40),my_page_path(:user_id => comment_on_game.user.id)%>
+        has commented on
+        <%= link_to get_name(comment_on_game.game.title),{:controller=>:games, :action => :game,:permalink => comment_on_game.game.permalink} ,:class=>"commname"%>
+       <br />
+      <%= time_ago(comment_on_game.created_at) %>        
+      </div>
+    </div>
+<p class="clear"></p>

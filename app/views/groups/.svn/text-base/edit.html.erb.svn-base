@@ -1,0 +1,139 @@
+    <!-- Container Start -->
+    <div class="content">
+    	<!-- Left Col Start -->
+      <div class="c1">
+            <!-- Blue Box start -->
+            <div class="Blue4pxbox"><code>$(this).corner();</code>
+                <div class="whiteBoxContent">
+                <!--Create Group Start -->
+                    <div class="pageheading">
+                      <p class="c1 head14">Edit Group</p>
+                    </div>
+                    <p class="clear brdBot01"></p>    
+                        <%#= error_messages_for :group%>
+                        <% form_for(@group,:url => {:action => :update},:html => {:multipart => true}) do |f|%>	   
+
+                        <div class="grpform">
+                            <div class="grpform_l">
+                                <div class="formrow">
+                                    <p class="c1">Group Name:</p>
+                                    <div class="c3"><%=@group.name %>
+                                    </div>
+                                </div>
+                                <div class="formrow">
+                                    <p class="c1">Description:</p>
+                                    <div class="c2"><%= f.text_area :description, :class => "inputtxt01", :rows => 4%>
+                                    </div>
+                                </div>
+                                <div class="formrow">
+                                    <p class="c1">Group Type:</p>
+                                    <div class="c2">    
+                                        <%= f.select :category_id,GroupCategory.all_active.map{|c| [c.name,c.id]}, {}, {:class => "select01"}%>
+                                         <font color="red"><%= f.error_message_on :category_id %></font>                                                                                
+                                        <%= f.select :group_type, GROUP_TYPES,{}, {:class => "select01"}%>
+                                         <font color="red"><%= f.error_message_on :group_type %></font>                                                                                
+                                        <!-- <select name="" class="select01">
+                                            <option>Select Category</option>
+                                            <option>Category One</option>
+                                            <option>Category Two</option>
+                                        </select> -->
+                                        <!-- <select name="" class="select02">
+                                            <option>Select Type</option>
+                                            <option>Type One</option>
+                                            <option>Type Two</option>
+                                        </select> -->
+                                    </div>
+                                </div>
+    
+                               <div class="formrow">
+                                  <p class="c1">Upload Image:</p>
+                                  <p class="c2">
+                                    <%= file_field_tag :photo,:class => "inputtxt01 file" %>
+                                    <br/>
+                                    <font color="red"> <%= session[:grp_photo_error] %></font>                                       
+                                  </p>
+                                </div>
+    
+                            </div>
+                        </div>
+					    <div class="frm_brd"></div>
+                        <div class="grpform">
+                            <div class="grpform_l">
+                                <div class="formrow">
+                                    <p class="c1">Recent News:</p>
+                                    <div class="c2"><%= f.text_area :recent_news, :class => "inputtxt01", :rows => 4%>
+                                           <font color="red"><%= f.error_message_on :recent_news %></font>     
+                                    </div>
+                                </div>
+                                <div class="formrow">
+                                    <p class="c1">Office:</p>
+                                    <div class="c2"><%= f.text_field :office, :class => "inputtxt01"%>
+                                            <font color="red"><%= f.error_message_on :office %></font> 
+                                     </div>
+                                </div>
+                                <div class="formrow">
+                                    <p class="c1">Email:</p>
+                                    <div class="c2"><%= f.text_field :email, :class => "inputtxt01"%>
+                                        <font color="red"><%= f.error_message_on :email %></font>    
+                                    </div>
+                                </div>
+                                <div class="formrow">
+                                    <p class="c1">Website:</p>
+                                    <div class="c2"><%= f.text_field :website, :class => "inputtxt01"%>
+                                     <font color="red"><%= f.error_message_on :website %></font>    
+                                     </div>
+                                </div>
+                                <div class="formrow">
+                                    <p class="c1">Country:</p>
+                                    <div class="c2"><%= f.text_field :country, :class => "inputtxt01"%>
+                                      <font color="red"><%= f.error_message_on :country %></font>     
+                                    </div>
+                                </div>
+                                <div class="formrow">
+                                    <p class="c1">Street:</p>
+                                    <div class="c2"><%= f.text_field :street_adds, :class => "inputtxt01"%>
+                                       <font color="red"><%= f.error_message_on :street_adds %></font>     
+                                    </div>
+                                </div>
+                                <div class="formrow">
+                                    <p class="c1">City/Town:</p>
+                                    <div class="c2"><%= f.text_field :city, :class => "inputtxt01"%>
+                                        <font color="red"><%= f.error_message_on :city %></font>     
+                                    </div>
+                                </div>
+                                <div class="formrow">
+                                    <p class="c1">&nbsp;</p>
+                                    <p class="c2"><b>Note:</b> groups that points a specific person or group of people (e.g. ..... or other hate groups) will not be accepted. <br />Creating such a group will result in the immediate termination of your account.</p>
+                                </div>
+                            </div>
+                        </div>
+					    <div class="frm_brd"></div>
+                        <div class="grpform">
+                            <div class="grpform_l">
+                                <div class="formrow">
+                                    <p class="c1">&nbsp;</p>
+                                    <p class="c2">
+                                         <%= submit_tag "Update",:class => "grnbtn01" %>
+                                         <%= submit_tag "Cancel",:class => "grnbtn01" %>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                       <%end%>
+
+	                <p class="clear"></p>
+                <!--Create Group End -->
+                
+                </div>
+            </div>
+            <!-- Blue Box end -->
+			<div class="spacer"></div>
+        </div>
+    	<!-- Left Col End -->
+    	<!-- Right Col Start -->
+        <div class="c2 rightcol" id="rightcol_group">
+          <%=render :partial=>"groups/right_col"%>    
+        </div>
+    	<!-- Right Col End -->
+    </div>
+    <!-- Container End -->

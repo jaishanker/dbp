@@ -1,0 +1,35 @@
+<div class="box1">
+  <div class="row">
+    <%user = User.find(active_participant.user_id)%>
+    <div class="c1"><p> <%= get_image(user,'user','thumb_large','snap')%> </p>
+     <!--   <p class="btns"><a class="grnbtn02" href="#">Remove</a></p> -->
+     </div>
+    <p class="c2">
+            <%if user.first_name.nil? and user.last_name.nil?%>
+                     <%= link_to user.login,my_page_path(:user_id => user.id), :class => "blue"%>
+            <%else%>
+                    <%= link_to user.first_name.to_s + " " + user.last_name.to_s ,my_page_path(:user_id => user.id), :class => "blue"%>              
+            <%end%>            
+        <br />
+      <%=h get_name(user.status_message,15)%></p><br/><br/>&nbsp;
+        <%if user.profile.pic_present%>      
+            <%belt_class = get_class(user.expertise_points||0)%>
+            <p class="c2">
+              <%unless belt_class == "belt_white"%>
+                    <span class="<%=belt_class%>"></span>
+                    <%= get_expertise_level(belt_class)%>
+              <%end%>
+        </p>
+        <%end%>
+       <p class="c2">
+        <%=user.followers_count%> Followers
+
+      </p>
+        <p class="c2">
+        <%=user.follow_count%> Following
+      </p>
+        <p class="c2">
+        <%=user.designs.size%> Designs
+      </p>
+  </div>
+</div>

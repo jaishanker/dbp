@@ -1,0 +1,55 @@
+<style>
+  .starrating li.currentrating {margin:0px !important;}
+  .starrating li {margin:0px !important;}
+</style>
+<p class="rating">
+<% id = @learning.id %>
+<ul class="starrating" style="width:100px; margin:0 10px 0 0;float:left">
+  <li id="curr_<%=id%>" style='width:<%= (@learning.rating * 20).to_i -%>px;' class="currentrating" title="click to rate"></li>
+                <% if !logged_in? %>
+                <%else%>
+                 <li>
+                <%= link_to_remote( "1", {:url => { :controller => "learnings",
+                      :action => "rate1", :id => @learning.id, :rating => 1},
+                      :before => "", :complete => ""},
+                      :onMouseout => "javascript: $('#curr_#{id}').css('display','block'); ",:onMouseover => "javascript: $('#curr_#{id}').css('display','none');",
+                      :class => 'one-stars',:title=>"click to rate", :name => '1 star out of 5' )%>
+                </li>
+                <li>
+                <%= link_to_remote( "2", {:url => { :controller => "learnings",
+                      :action => "rate1", :id => @learning.id, :rating => 2},
+                      :before => "", :complete => ""},
+                      :onMouseout => "javascript: $('#curr_#{id}').css('display','block'); ",:onMouseover => "javascript: $('#curr_#{id}').css('display','none');",
+                      :class => 'two-stars',:title=>"click to rate", :name => '2 stars out of 5' )%>
+                </li>
+                <li>
+                <%= link_to_remote( "3", {:url => { :controller => "learnings",
+                      :action => "rate1", :id => @learning.id, :rating => 3},
+                      :before => "", :complete => ""},
+                      :onMouseout => "javascript: $('#curr_#{id}').css('display','block'); ",:onMouseover => "javascript: $('#curr_#{id}').css('display','none');",
+                      :class => 'three-stars',:title=>"click to rate", :name => '3 stars out of 5' ) %>
+                </li>
+                <li>
+                <%= link_to_remote( "4", {:url => { :controller => "learnings",
+                      :action => "rate1", :id => @learning.id, :rating => 4},
+                      :before => "", :complete => ""},
+                      :onMouseout => "javascript: $('#curr_#{id}').css('display','block'); ",:onMouseover => "javascript: $('#curr_#{id}').css('display','none');",
+                      :class => 'four-stars',:title=>"click to rate", :name => '4 stars out of 5' ) %>
+                </li>
+                <li>
+                <%= link_to_remote( "5", {:url => { :controller => "learnings",
+                      :action => "rate1", :id => @learning.id, :rating => 5},
+                      :before => "", :complete => "" },
+                      :onMouseout => "javascript: $('#curr_#{id}').css('display','block'); ",:onMouseover => "javascript: $('#curr_#{id}').css('display','none');",
+                      :class => 'five-stars',:title=>"click to rate", :name => '5 stars out of 5' )%>
+
+                </li>
+                <%end%>
+            </ul>
+<div id="status_<%=@learning.id%>" class="leftfloat" style="">
+    <%if !logged_in?%>
+        <a href="javascript:void(0);" class="ask_login"> Sign in </a>to rate.
+     <%end%>
+</div>
+<div id="status1_<%=@learning.id%>" class="leftfloat" style="margin:19px 0 0 -115px;"></div>
+</p>

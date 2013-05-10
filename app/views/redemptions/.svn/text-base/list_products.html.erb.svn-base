@@ -1,0 +1,111 @@
+<!-- Profile File Include --><%#= javascript_include_tag "Profile" %>
+<div class="clear">
+</div>
+<!-- Container Start -->
+<div class="content">
+  <!-- Left Col Start -->
+  <div class="c1">
+    <!-- Blue Box start -->
+    <div class="Blue4pxbox">
+      <code>
+        $(this).corner();
+      </code>
+      <div class="whiteBoxContent">
+<%#= image_tag "banner-groups.jpg",:style => "margin:-10px;" %>
+        <!--<div class="clear spacer05">
+        </div>-->
+        <!-- Group Start -->
+        <div class="pageheading">
+          <p class="c1 head14">
+            Redeem Your Points
+          </p>
+        </div>
+        <p class="clear brdBot01">
+        </p>
+        <div class="pageheading">
+          <p class="c3">
+            <span id="redemption_pagination" class="pagination01"></span>
+          </p>
+        </div>
+        <%if @no_of_pages >= 2 %>
+          <script type="text/javascript">
+            $(document).ready(function(){
+              $(function(){
+                $("#redemption_pagination").paginate({
+                  href : '/redemptions/list_products?page=',
+                  count: <%=@no_of_pages%>,
+                  start: <%=params[:page] || 1%>,
+                  display: 5,
+                  border: false,
+                  text_color: '',
+                  background_color: '',
+                  text_hover_color: '',
+                  background_hover_color: ''
+                });
+              });
+              $(function(){
+                $("#redemption_pagination_bottom").paginate({
+                  href : '/redemptions/list_products?page=',
+                  count: <%=@no_of_pages%>,
+                  start: <%=params[:page] || 1%>,
+                  display: 5,
+                  border: false,
+                  text_color: '',
+                  background_color: '',
+                  text_hover_color: '',
+                  background_hover_color: ''
+                });
+              });
+                                                                                                    
+                                                                                
+                                                        
+            });
+          </script>
+        <%end %>
+        <p class="clear brdBot01">
+        </p>
+        <div id="group_results">
+          <%unless @products.empty? %>
+            <%= render :partial => "product", :collection => @products%>
+          <%else %>
+            Oops, no products to redeem your points.
+          <%end %>
+          <p class="clear">
+          </p><p class="clear brdBot01">  </p>
+          <div class="pageheading">
+            <p class="c1 total" id="disign_filter">
+            <p class="c3">
+              <span id="redemption_pagination_bottom" class="pagination01"></span>
+            </p>
+            </p>
+          </div><p class="clear brdBot01">  </p>
+          <p class="spacer01">
+          </p>
+          <p class="clear"/>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Blue Box end -->
+    <div class="spacer">
+    </div>
+  </div>
+  <!-- Left Col End -->
+  <!-- Right Col Start -->
+  <div class="c2 rightcol" id="rightcol_group">
+    <%=render :partial=>"home/recent_right_col"%>
+<%#=render :partial=>"groups/right_col" %>
+  </div>
+  <!-- Right Col End -->
+</div>
+<!-- Container End -->
+<div class="clear">
+</div>
+
+<script type="text/javascript">
+  function getStates(selected_country)
+  {
+<%=remote_function :url => { :controller => "redemptions", :action => "get_states" },:update => "state_select", :with => "'country=' + selected_country", :before => "$('#spinner1').show();", :complete => "$('#spinner1').hide();"%>
+  }
+</script>

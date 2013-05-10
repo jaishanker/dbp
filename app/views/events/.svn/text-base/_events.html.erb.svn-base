@@ -1,0 +1,56 @@
+<table cellpadding="0" cellspacing="0" border="0" class="display" id="example_event">
+  <thead>
+    <tr class="dataTable">
+      <th>Type</th>
+      <th>Topic/Description</th>
+      <th>Date </th>
+      <th>Time </th>
+      <th>Location</th>
+      <th>Organizer</th>
+      <th style="width:75px !important;">Agenda</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% unless @event.length == 0 %>
+      <% @event.each do |l| %>
+        <tr class="dataTable">
+          <td>
+            <%= get_name(l.eventtype) %></td>
+          <td>
+            <strong>
+              <a href="/events/details/<%=l.id%>" > <%= get_name(l.topic) %> </a>
+            </strong> <br/>
+            <%= get_name(l.description) %>
+          </td>
+          <td>
+            <%= l.date.strftime("%d %b %Y") %>
+          </td>
+          <td>
+            <%= l.start_time.strftime("%I:%M %p")  + " - " + l.end_time.strftime("%I:%M %p") %>
+          </td>
+          <td>
+            <%= get_name(l.location) %>
+          </td>
+          <td>
+            <%= get_name(l.organizer) %>
+          </td>
+          <td align="center">
+            <%= get_name(l.agenda) %>
+            <!--<img src="/images/ticked01.gif" width="12" height="12" />-->
+          </td>
+        </tr>
+      <%end%>
+    <%end%>
+
+  </tbody>
+</table>
+
+
+<script>
+  $(document).ready(function(){
+  oTable = $('#example_event').dataTable({
+    "bJQueryUI": true,
+    "sPaginationType": "full_numbers"
+  });
+  });
+</script>

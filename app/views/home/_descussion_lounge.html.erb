@@ -1,0 +1,93 @@
+<div class="greenhead">
+    <p class="warrow">
+    </p>
+    <p class="fleft head">
+        Discussion Lounge
+    </p>
+    <p class="fleft">
+        <a href="/discussions" class="white">Total Discussions: <%=@discussion_count %></a>
+    </p>
+    <a href="/discussions" class="more">more + </a>
+</div>
+<div class="flashnews">
+    <p class="disLon">
+    </p>
+    <p class="txt">
+        It is a new way for you to connect with members at the convention for more networking and learning some new ideas to improve your skills.
+    </p>
+</div>
+<!-- Three colmn start -->
+<div class="threecol">
+    <% unless @topic.length == 0 %>
+    <%i=0 %>
+    <% @topic.each do |t| %>
+    <%i = i % 3%>
+    <div class="c<%= i + 1 %>">
+        <h2><%= link_to get_name(t.title),{:controller=>"discussions",:action => :topic,:permalink => t.permalink},:class => "black02" %>
+        </h2>
+        <%unless t.posts.blank? %>
+<!--          
+        <div class="txtgry abc">
+            <%#=get_name(t.posts[0].body,120).to_s.gsub(/<style [^.]*\/style>/,"") %>
+        </div>
+-->
+        <p class="txtorg">
+            Created on <%=t.posts[0].created_at.strftime("%d %B %Y") %>
+            <br>
+            Last Updated <%=t.posts[0].updated_at.strftime("%d %B %Y") %>
+        </p>
+        <p class="views">
+        </p>
+        <p class="icolink">
+            <%count = get_post_in_topic(t) %>
+            <%if count == 1 %>
+            <%name ="Post" %>
+            <%else %>
+            <%name ="Posts" %>
+            <%end %>
+            <%= link_to "#{get_post_in_topic(t)} #{name}",{:controller=>"discussions",:action => :topic,:permalink => t.permalink},:class => "" %>
+        </p>
+        <%else %>
+        No post found in this topic<%end %>
+    </div>
+    <%i=i+1 %>
+    <%end %>
+    <%else %>
+    No discussion lounge found<%end %>
+    <!--<div class="c1">
+    <h2>Design Discussions</h2>
+    <p class="txtgry">The Place to acquaint ourselves with each other and get to know each other better</p>
+    <p class="txtorg">Created on 22 Nov 2009<br>Last Updated on 27 Nov 2009</p>
+    <p class="views"></p>
+    <p class="icolink"><a href="TopicDiscussion_Details.html">Posts 100</a></p>
+    </div>
+    <div class="c2">
+    <h2>Interesting Stuff</h2>
+    <p class="txtgry">A random collection of interesting articles, news and posts that you would like the community to read.</p>
+    <p class="txtorg">Created on 20 Nov 2009<br>Last Updated on 30 Nov 2009</p>
+    <p class="views"></p>
+    <p class="icolink"><a href="TopicDiscussion_Details.html">Posts 130</a></p>
+    </div>
+    <div class="c3">
+    <h2>News and Events</h2>
+    <p class="txtgry">Share and get updated on the latest News & Events around SolidWorks Innovations.</p>
+    <p class="txtorg">Created on 16 Nov 2009<br>Last Updated on 29 Nov 2009</p>
+    <p class="views"></p>
+    <p class="icolink"><a href="TopicDiscussion_Details.html">Posts 39</a></p>
+    </div>-->
+</div>
+<!-- Three colmn end -->
+<div class="clear">
+</div>
+<script>
+   $(document).ready(function(){
+	var height = 0; 
+	$('.abc').each(function(){
+		el = $(this)
+		if (el.height() > height){
+			height = el.height();
+		}
+	})
+	$('.abc').css({'height': height + 'px'})
+});
+</script>	

@@ -1,0 +1,92 @@
+<!-- Container Start -->
+<div class="content">
+  <!-- Left Col Start -->
+  <div class="c1">
+    <!-- Blue Box start -->
+    <div class="Blue4pxbox"><code>$(this).corner();</code>
+      <div class="whiteBoxContent">
+        <!-- Group Start -->
+        <div class="pageheading">
+          <p class="c1 head14">Hot Discussions</p>
+          <p class="c4">
+            <a>Posts :&nbsp;<%=@posts%></a> |
+            <a>Topics :&nbsp;<%=@topics%></a> |
+            <a>Members :&nbsp;<%=@members%></a>
+          </p>
+        </div>
+        <div class="brdBot01"></div>
+        <!-- Table Start -->
+        <div class="tbl">
+          <div class="tblRow tblHead">
+            <p class="col1">Forum Discussions</p>
+            <!--<p class="col2">Topics</p>-->
+            <p class="col3">Posts</p>
+            <p class="col4">Last Post</p>
+            <!--<p class="col6">
+              Views
+            </p>-->
+          </div>
+          <!-- Topic div start -->
+          <%unless @hot_topics.length == 0%>
+            <% @hot_topics.each do |c|%>
+              <%# c.sub_categories.each do |sc| %>
+                <%#unless sc.topics.count == 0%>
+                  <!--<div class="tblRow trOdd">
+                    <p class="col1">
+                      <strong>
+                        <%#= link_to "#{get_name(sc.name) + " (Total Topics - #{sc.topics.count})"}",:action => :sub_category,:id => sc.id %>
+                      </strong><br />
+                      <%#= sc.description %>
+                    </p>
+                    <p class="col2"><span><%#= sc.topics.count %></span></p>
+                    <p class="col3">
+                      <span>
+                        <%#= get_post_in_topic(c) %>
+                      </span>
+                    </p>
+                    <p class="col4">&nbsp;</p>
+                    <p class="col6">
+                      <span>
+                        <%#= get_view_count_sc(sc) %>
+                      </span>
+                    </p>
+                  </div>-->
+                  <%# sc.topics.each do |topic| %>
+                    <div class="tblRow">
+                      <p class="col5">
+                        <%= link_to get_name(c.title,120),{:action => :topic,:permalink => c.permalink},:class => "black03"  %>
+                      </p>
+                      <p class="col3"><%= c.posts.length %></p>
+                      <p class="col4">
+                        by&nbsp;
+                        <%= link_to get_name(c.posts.last.user.login),my_page_path(:user_id => c.posts.last.user.id) unless c.posts.last.nil? %><br/>
+                        <%= time_ago(c.posts.last.created_at) unless c.posts.last.nil? %>
+                      </p>
+                    </div>
+                  <%#end%>
+                <%#end%>
+              <%#end%>
+            <%end%>
+          <%end%>
+          <p class="clear brdBot01">  </p>
+          <!-- Topic div end -->
+        </div>
+        <!-- Table end -->
+        <div class="clear"></div>
+        <p class="clear"></p>
+
+        <!-- Group End -->
+
+      </div>
+    </div>
+    <!-- Blue Box end -->
+    <div class="spacer"></div>
+  </div>
+  <!-- Left Col End -->
+  <!-- Right Col Start -->
+  <div class="c2 rightcol" id="discussionRight">
+    <%= render :partial => "right_col" %>
+  </div>
+  <!-- Right Col End -->
+</div>
+<!-- Container End -->

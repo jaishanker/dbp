@@ -1,0 +1,146 @@
+<script>
+  function filterIncomingRequests(val){
+    if(val == "")
+      {
+            show_notice('Please select proper filtering option','error')
+      }
+    else
+      {
+          <%= remote_function(:url => {:controller => 'profiles',:action => "filter_incoming_requests"},:submit => "sort_by_dropdown1",:update=> "incoming_requests",:before => "$('#spinner').show();",:complete => "$('#spinner').hide();") %>
+      }
+  }
+
+ function filterOutgoingRequests(val){
+    if(val == "")
+      {
+         show_notice('Please select proper filtering option','error')
+      }
+    else
+      {
+            <%= remote_function(:url => {:controller => 'profiles',:action => "filter_outgoing_requests"},:submit => "sort_by_dropdown2",:update=> "outgoing_requests",:before => "$('#spinner1').show();",:complete => "$('#spinner1').hide();") %>
+      }
+  }
+</script>
+    <!-- Container Start -->
+    <div class="content">
+    	<!-- Left Col Start -->
+      <div class="c1">
+            <!-- Blue Box start -->
+            <div class="Blue4pxbox"><code>$(this).corner();</code>
+                <div class="whiteBoxContent">
+                <!-- Group Start -->
+                	<!-- Section Head start -->
+		    <div class="pageheading">
+                        <div class="c1 head14">Requests</div>  	 
+                    </div>
+                    <p class="clear brdBot01"></p>
+                	<!-- Section Head End -->
+                <!-- Three col comment start -->
+                <div class="group">
+                	<div class="twCol">
+						<p class="c1 headsub01">Requests From My Network</p>
+                          <p class="c2" id = "sort_by_dropdown1">
+                              <%=select("incoming_request","sort_by", REQUEST_FILTER_OPTIONS,{:prompt => "Sort by"},{:class => "select01", :onchange => "filterIncomingRequests(this.value)"}) %> 
+                             <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner",:style=>"display:none;padding-left:3px;" ) %>                              
+                              <%#= observe_field "request_sort_by", :url => { :action => :filter_requests }, :update => "incoming_requests"%>
+                              
+ <!--                           <select class="select01">
+                                <option value="Select Category">Sort by</option>
+                                <option value="requestSort01">Design Central</option>
+                                <option value="requestSort02">Discussion Lounge</option>
+                                <option value="requestSort03">Learning Center</option>
+                                <option value="requestSort04">Contest</option>
+                                <option value="requestSort05">Groups</option>
+                                <option value="requestSort06">Games</option>
+                                <option value="requestSort06">Viewed</option>
+                                <option value="requestSort06">Declined</option>
+                                <option value="requestSort06">Ignored</option>
+                                <option value="requestSort06">Participated</option>
+                                <option value="requestSort06">Joined</option>
+                            </select> -->
+                          </p>
+                    </div>
+                    <p class="clear brdBot01"></p>
+    
+                    <div id ="incoming_requests"> 
+                          <%unless @incoming_requests.empty?%>
+                               <%= render :partial => "incoming_request", :collection => @incoming_requests%>                        
+                              <div id="more_incoming_request_link">
+                                <%if logged_in?%>
+                                <p class="spacer03"><span class="grnbtn02">
+                                    <%= link_to_remote "Click for more Requests",    :url => { :action => "get_more_incoming_requests", :offset => @offset, :user_id => @user.id }, :before => "$('#spinner_show1').show()", :complete => "destroyDiv('more_incoming_request_link')"%></span>
+                                   <span> <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner_show1",:style=>"display:none; width: 16px; margin-top: 0px;" ) %> </span>                                   
+                                </p>
+                                <%end%>
+                              </div>
+                          <%else%>
+                               You dont have any network requests
+                          <%end%>      
+                    </div>
+    
+    
+
+                <div class="clear"></div>
+                
+                
+                <div class="group">
+                	<div class="twCol">
+						<p class="c1 headsub01">You Requested</p>
+                          <p class="c2" id = "sort_by_dropdown2">
+                              <%=select("outgoing_request","sort_by", REQUEST_FILTER_OPTIONS,{:prompt => "Sort by"},{:class => "select01", :onchange => "filterOutgoingRequests(this.value)"}) %>        
+                             <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner1",:style=>"display:none;padding-left:3px;" ) %>                                                            
+ <!--                           <select class="select01">
+                                <option value="Select Category">Sort by</option>
+                                <option value="requestSort01">Design Central</option>
+                                <option value="requestSort02">Discussion Lounge</option>
+                                <option value="requestSort03">Learning Center</option>
+                                <option value="requestSort04">Contest</option>
+                                <option value="requestSort05">Groups</option>
+                                <option value="requestSort06">Games</option>
+                                <option value="requestSort06">Viewed</option>
+                                <option value="requestSort06">Declined</option>
+                                <option value="requestSort06">Ignored</option>
+                                <option value="requestSort06">Participated</option>
+                                <option value="requestSort06">Joined</option>
+                            </select> -->
+                          </p>
+                    </div>
+                    <p class="clear brdBot01"></p>
+
+                    <div id ="outgoing_requests"> 
+                          <%unless @outgoing_requests.empty?%>
+                               <%= render :partial => "outgoing_request", :collection => @outgoing_requests%>                        
+                              <div id="more_outgoing_request_link">
+                                <%if logged_in?%>
+                                <p class="spacer03"><span class="grnbtn02">
+                                  <%= link_to_remote "Click for more Requests",    :url => { :action => "get_more_outgoing_requests", :offset => @offset, :user_id => @user.id }, :before => "$('#spinner_show2').show()", :complete => "destroyDiv('more_outgoing_request_link')"%></span>
+                                   <span> <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner_show2",:style=>"display:none; width: 16px; margin-top: 0px;" ) %> </span>                                   
+                                   </p>
+                                <%end%>
+                              </div>
+                          <%else%>
+                               You dont have any outgoing requests
+                          <%end%>      
+                    </div>
+                  
+                  </div>
+                </div>
+
+                <!-- Three col comment end -->
+                <!-- Group End -->
+                <!-- Follower Start -->
+                     
+				 <div class="clear"></div>
+              </div>
+            </div>
+            <!-- Blue Box end -->
+			<div class="spacer"></div>
+        </div>
+    	<!-- Left Col End -->
+    	<!-- Right Col Start -->
+        <div class="c2 rightcol">
+              <%= render :partial => "my_page_links"%>
+        </div>
+    	<!-- Right Col End -->
+    </div>
+    <!-- Container End -->

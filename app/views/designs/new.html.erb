@@ -1,0 +1,133 @@
+<!-- Profile File Include --><%#= javascript_include_tag "Profile" %>
+<div class="clear">
+</div>
+<div class="content">
+    <!-- Set Priority File Include --><%#= javascript_include_tag "SetPriority" %>
+    <div class="clear">
+    </div>
+    <!-- Blue Box start -->
+    <div class="Blue4pxbox">
+        <code>
+            $(this).corner();
+        </code>
+        <div class="profileForm">
+            <!-- Page Head start -->
+            <div class="pageheading">
+                <div class="c1 head14">
+                    Upload Design
+                </div>
+            </div>
+            <!-- Page Head end -->
+            <div class="brdBot01">
+            </div>
+            <!-- Form Start -->
+            <p class="spacer04">
+            <% form_for(@des,:url => {:action => :create},:html => {:multipart => true}) do |f| %>
+            <%#= error_messages_for :des,:header_message => nil %>
+            <div class="uplooad">
+                <div class="formrow">
+                    <p class="c1">
+                        Title:
+                    </p>
+                    <div class="c2">
+                        <%= f.text_field :name, :class => "inputtxt04" %>
+                        <p class = "clear"/>
+                        <font color="red">
+                            <%= f.error_message_on :name %>
+                        </font>
+                    </div>
+                </div>
+                <div class="formrow">
+                    <p class="c1">
+                        Description:
+                    </p>
+                    <div class="c2">
+                        <%= f.text_area :description, :class => "inputtxt04" %>
+                        <p class = "clear"/>
+                        <font color="red">
+                            <%= f.error_message_on :description %>
+                        </font>
+                    </div>
+                </div>
+                <div class="formrow">
+                    <p class="c1">
+                        Category:
+                    </p>
+                    <div class="c2">
+                        <%= f.select :category_id, DesignCategory.all_active.map{|c| [c.name,c.id]} %>
+                        <p class = "clear"/>
+                        <font color="red">
+                            <%= f.error_message_on :category_id %>
+                        </font>
+                    </div>
+                </div>
+                <div class="formrow">
+                    <p class="c1">
+                        Upload Design:
+                    </p>
+                    <p class="c2">
+                        <%= file_field_tag :photo,:class => "inputtxt01 file" %>
+                        <br/>
+                        <font color="red">
+                            <%= session[:photo_error] %>
+                        </font>
+                    </p>
+                </div>
+                <div class="formrow">
+                    <p class="c1">
+                        Tags:
+                    </p>
+                    <p class="c2">
+                        <%= f.text_area :tags,:class => "inputtxt04 tagbox",:rows => 6 %>
+                    </p>
+                </div>
+                <div class = "formrow">
+                    <p class="c1">
+                        &nbsp;
+                    </p>
+                    <div class="c2">
+                    	<%= f.hidden_field :certify,:value => "1" %>
+                        <%= f.check_box :terms_of_service %>&nbsp; I certify that this design rights are owned by me.
+                        <span id="terms_of_service_error"></span>
+                        <p class = "clear"/>
+                        <font color="red">
+                            <%= f.error_message_on :terms_of_service %>
+                        </font>
+                    </div>
+                </div>
+                <div class="formrow">
+                    <p class="c1">
+                        &nbsp;
+                    </p>
+                    <p class="c2">
+                        <%= submit_tag "Submit",:class => "grnbtn01" %>
+                    </p>
+                </div>
+                <% end %>
+                <div class="formrow">
+                    <p class="c1">
+                        &nbsp;
+                    </p>
+                    <p class="c2">
+                        <strong>Please Note:</strong>
+                        <br/>
+                        1. The design should be .gif, .jpg, .png or .tiff format.<!--  <br/>
+                        2. The image width should not increase beyond 400px, height by 300px and 300KB.
+                        -->
+                    </p>
+                </div>
+            </div>
+            <!-- Form End -->
+        </div>
+    </div>
+    <!-- Blue Box end -->
+</div>
+<script type = "text/javascript">
+  $(document).ready(function(){
+    $('select').addClass('inputtxt01');
+    $('.tagbox').tagbox({
+        //    autocomplete: "Alfa,Alpha,Bravo,Charlie,Delta,Echo,Foxtrot,Golf,Hotel,India,Juliett,Juliet,Kilo,Lima,Mike,November,Oscar,Papa,Quebec,Romeo,Sierra,Tango,Uniform,Victor,Whiskey,X-ray,Xray,Yankee,Zulu",
+        separator: /[,.;]/
+    });
+  });
+</script>

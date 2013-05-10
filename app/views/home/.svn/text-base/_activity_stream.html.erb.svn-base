@@ -1,0 +1,113 @@
+                    <!-- Two col start -->
+                    <div class="twcol">
+                        <div class="snaprow">
+                             <p class="c1">
+                              <%= link_to get_image(activity_stream.actor,'user','thumb','snap'),my_page_path(:user_id =>activity_stream.actor.id) %>
+                              <%#= link_to activity_stream.actor.login.capitalize, my_page_path(:user_id => activity_stream.actor.id), :class => "blue"%>
+                            </p>
+                          <p class="c2">
+                              <%if logged_in?%>
+                                    <%if activity_stream.actor == current_user%>
+                                            You <%unless activity_stream.activity == "started_following"%>have<%end%>
+                                    <%else%>
+                                            <%= link_to activity_stream.actor.login.capitalize, my_page_path(:user_id => activity_stream.actor.id), :class => "blue"%>       
+                                    <%end%>
+                               <%else%>
+                                    <%= link_to activity_stream.actor.login.capitalize, my_page_path(:user_id => activity_stream.actor.id), :class => "blue"%> 
+                               <%end%>
+                                <%if activity_stream.activity.to_s == "profile_updater"%>
+                                     <%if activity_stream.actor == current_user%>
+                                            <%verb = activity_stream.verb.tr('_', ' ')%>
+                                            <%verb = verb.to_s.gsub('has','')%>
+                                            <%verb = verb.to_s.gsub('his','your')%>
+                                             <%verb = verb.to_s.gsub('her','your')%>
+                                            <%=h verb %>
+                                    <%else%>
+                                           <%=h activity_stream.verb.tr('_', ' ') %>
+                                    <%end%>
+                               <%elsif activity_stream.activity.to_s == "started_following"%>
+                                    <%if activity_stream.actor == current_user%>
+                                       <%verb = activity_stream.verb.tr('_', ' ')%>
+                                       <%verb = verb.to_s.gsub('is','are')%>
+                                       <%=h verb %>
+                                   <%else%>
+                                       <%=h activity_stream.verb.tr('_', ' ') %>
+                                   <%end%>
+                               <%else%>
+                                 <%=h activity_stream.verb.tr('_', ' ') %>
+                               <%end%>
+                               <%if  activity_stream.object_type == "Design"%> 
+                                <%unless activity_stream.activity == "uploaded_design"%>
+                                  <%if logged_in?%>
+                                        <%if activity_stream.object.user == current_user%>
+                                                your
+                                        <%else%>
+                                                <%= link_to   activity_stream.object.user.login.capitalize, my_page_path(:user_id =>activity_stream.object.user )%>'s                                      
+                                        <%end%>
+                                  <%else%>
+                                        <%= link_to   activity_stream.object.user.login.capitalize, my_page_path(:user_id =>activity_stream.object.user )%>'s                                
+                                  <%end%>
+                                <%end%>
+                                        <%= activity_stream.object_type.downcase%> <%= link_to get_name(activity_stream.object.name,50),:controller=>:designs, :action => :design,:permalink => activity_stream.object.permalink %>
+                               <%elsif activity_stream.object_type == "Group"%>
+                                        <%= activity_stream.object_type.downcase%>                                 
+                                        <%=link_to get_name(activity_stream.object_name,50) , permalink_url(activity_stream.object.permalink)%>
+                              <%elsif activity_stream.object_type == "News"%>
+                                        <%= activity_stream.object_type.downcase%>
+                                        <%=link_to get_name(activity_stream.object.title,50) , :controller => "news", :action => "news", :permalink =>  activity_stream.object.permalink%>                                          
+                               <%elsif activity_stream.object_type == "News"%>
+                                        <%= activity_stream.object_type.downcase%>
+                                        <%=link_to activity_stream.object.title , :controller => "news", :action => "news", :permalink =>  activity_stream.object.permalink%>
+                                <%elsif activity_stream.object_type == "Game"%>  
+                                        <%= activity_stream.object_type.downcase%>                                   
+                                        <%=link_to get_name(activity_stream.object.title,50) , :controller => "games", :action => "game", :permalink =>  activity_stream.object.permalink%>
+                               <%elsif activity_stream.object_type == "Learning"%>
+                                        <%= activity_stream.object_type.downcase%> tutorial
+                                        <%=link_to get_name(activity_stream.object.title,50) , :controller => "learnings", :action => "learning", :permalink =>  activity_stream.object.permalink%>
+                               <%elsif activity_stream.object_type == "User"%>
+                                        <%=link_to activity_stream.object_name.capitalize, my_page_path(:user_id => activity_stream.object_id)%>                                                                                                         
+                               <%elsif activity_stream.object_type == "Comment"%>
+                                    <%= link_to   activity_stream.object.user.login.capitalize+"'s", my_page_path(:user_id =>activity_stream.object.user ) unless activity_stream.object.nil?%>
+                                    comment on 
+                                   <%reply_on = activity_stream.object.commentable unless activity_stream.object.nil?%>
+                                   <%reply_on_type = activity_stream.object.commentable_type unless activity_stream.object.nil?%>
+                                   <%if reply_on_type == "Design"%>
+                                        <%= link_to  reply_on.name, :controller => "designs", :action => "design", :permalink => reply_on.permalink%> 
+                                   <%else%>
+                                        <%= link_to  reply_on.title, :controller => reply_on_type.downcase.pluralize, :action => reply_on_type.downcase, :permalink => reply_on.permalink unless reply_on.nil?%>
+                                   <%end%>
+                                    <%elsif activity_stream.object_type == "Topic"%>
+                           <%= activity_stream.object_type.downcase%>
+                           <%= link_to get_name(activity_stream.object.title,100),:controller=>:discussions, :action => :topic,:permalink => activity_stream.object.permalink %>
+                               <%end%>
+                         <%if activity_stream.activity == "shared_with_followings"%>
+                           with everyone 
+                              <%if logged_in?%>
+                                <%if activity_stream.actor == current_user%>
+                                      you are
+                                <%else%>
+                                      <%if activity_stream.actor.gender == "Male"%> he is <%else%> she is <%end%>                            
+                                <%end%>
+                              <%else%>
+                                      <%if activity_stream.actor.gender == "Male"%> he is <%else%> she is <%end%>
+                              <%end%>
+                           following
+                         <%elsif activity_stream.activity == "shared_with_followers"%>
+                                  with 
+                              <%if logged_in?%>
+                                <%if activity_stream.actor == current_user%>        
+                                     your
+                                <%else%>
+                                  <%if activity_stream.actor.gender == "Male"%> his <%else%> her <%end%>  
+                                <%end%>
+                             <%else%>
+                               <%if activity_stream.actor.gender == "Male"%> his <%else%> her <%end%>  
+                             <%end%>
+                              followers                
+                         <%end%>                        
+                                <br />
+                                    <%= time_ago(activity_stream.created_at) %>                               
+                          </p>
+                        </div>
+                    </div>
+                    <!-- Two col end -->

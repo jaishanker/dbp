@@ -1,0 +1,34 @@
+Hi <%=h @user.login.capitalize %>,
+<br /><br />
+  <%=h @commentor.login.capitalize%> has posted comment "<%=h @comment.comment%>" on
+  <%if @commentable_object.class.to_s == "Design"%>
+      <%if @user == @commentable_object.user%>
+         your 
+      <%elsif @commentor == @commentable_object.user%> 
+        <%if @commentor.gender == "Male"%>his<%else%> her <%end%> own
+      <%else%>
+        <%=h @commentable_object.user.login.capitalize%>'s 
+      <%end%>  
+  <%end%>
+  <%=h @commentable_object.class.to_s.downcase%> 
+  <%if @commentable_object.class.to_s == "Learning"%>
+    tutorial
+  <%end%>
+  <%if @commentable_object.class.to_s == "Design"%>  
+        <%= link_to @commentable_object.name, @object_url%>
+  <%else%>
+        <%= link_to @commentable_object.title, @object_url%>    
+  <%end%>
+<br /><br />
+Thanks,<br />
+The SolidWorks India Online Community Team
+<%unless @user == @commentable_object.user%>
+  <br />
+ (You have received this email because you were a participant on this comment thread and we thought we should keep you posted.)
+<%end%>
+<br /><br />
+=======================================<br />
+This message was intended for <%=@user.email%>.
+If you do not wish to receive this type of email from SolidWorks India Online Community in the future, please click on the link below to unsubscribe.
+<%=h @unsubscribe_url %>
+<img height = "0" width = "0" src="http://fans.solidworks.in/home/campaign/<%=@user.id%>?camp=10001"></img>

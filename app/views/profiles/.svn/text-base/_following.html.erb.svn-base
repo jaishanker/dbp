@@ -1,0 +1,13 @@
+                  <div class="fourCol" id="following_<%=following.id%>">
+                    <p class="c1"><%=  get_image(following,'user','thumb','imgbrd')%></p>
+                    <p class="c2"><%= link_to following.login.capitalize,my_page_path(:user_id => following.id), :class => "blue"%><br />
+                      <%=h following.first_name+" "+following.last_name %></p>
+                    <p class="c3"> <%= h following.status_message %> <%if following.status_message.nil? %> &nbsp;<%end%></p>
+                    <p class="c4" style="float:right;">
+                        <%if @user == current_user%>
+                               <%= link_to image_tag("unFollow.gif", :width => "15" , :height=>"24", :border=>"0", :alt=>"Unfollow", :title=> "Unfollow #{following.login.capitalize}"),unfollow_user_profile_path(@profile,:followee_id => following.id) %>
+                       <%else%>
+                         &nbsp;
+                       <%end%>
+                    </p>
+                  </div>

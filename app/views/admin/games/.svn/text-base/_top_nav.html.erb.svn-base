@@ -1,0 +1,13 @@
+<ul class="admNav">
+    <li>
+        <a href="/admin/games">Report</a>
+    </li>
+    <li>
+        <a href="/admin/games/report">Chart</a>
+    </li>
+    <li>
+        <a href="/admin/games/new">Add Game</a>
+    </li>
+</ul>
+<div class="spacer01">
+</div>

@@ -1,0 +1,155 @@
+<!--Table Support files -->
+<%= stylesheet_link_tag  "demo_page.css","demo_table_jui.css",'jquery-ui-1.7.2.custom.css' -%>
+<%= javascript_include_tag "jquery.paginate.js","jquery.dataTables.js" %>
+
+<style type="text/css" title="currentStyle">
+  @import "../css/demo_page.css";
+  @import "../css/demo_table_jui.css";
+  @import "../css/jquery-ui-1.7.2.custom.css";
+</style>
+
+
+<script type="text/javascript" charset="utf-8">
+  $(document).ready(function() {
+    oTable = $('#example').dataTable({
+      "bJQueryUI": true,
+      "sPaginationType": "full_numbers"
+    });
+  } );
+</script>
+
+<!-- Profile File Include --><%#= javascript_include_tag "Profile" %>
+<div class="clear"></div>
+
+<!-- Container Start -->
+<div class="content">
+  <!-- Left Col Start -->
+  <div class="c1">
+    <!-- Set Priority File Include -->
+<%#= javascript_include_tag "SetPriority"%>
+    <div class="clear"></div>
+    <!-- Blue Box start -->
+    <div class="Blue4pxbox"><code>$(this).corner();</code>
+      <div class="whiteBoxContent">
+        
+        <!-- Jobs Start -->
+        <div class="pageheading">
+          <p class="c1 head14"> Events Listing</p>
+        </div>
+        <div class="brdBot01"></div>
+        <p class="spacer01"></p>
+        <% form_remote_tag :url=>{:controller=>'events',:action=>'filter_event'} ,:html=>{:name=>'main'} , :before => "$('#spinner_abuse').show();",:complete => "$('#spinner_abuse').hide();" do|f| %>
+        <div class="formrow">
+          <p class="c5">Type:</p>
+          <p class="c10">
+            <% if !@type.empty? %>
+             <%@options_type = [["All",""]]%>
+              <%@type.each do |p|
+                @options_type += [[p, p]]
+              end %>
+            <%else%>
+             <%@options_type = [["All",""]]%>
+            <%end%>
+            <%=select("type","id",@options_type,{}, {:class => "select01", :onchange => ""}) %>
+          </p>
+          <p class="c5">Topic:</p>
+          <p class="c10">
+            <% if !@topic.empty? %>
+             <%@options_topic = [["All",""]]%>
+              <%@topic.each do |p|
+                @options_topic += [[p, p]]
+              end %>
+            <%else%>
+             <%@options_topic = [["All",""]]%>
+            <%end%>
+             <%=select("topic","id",@options_topic,{},{:class => "select01", :onchange => ""}) %>
+          </p>
+        </div>
+        <div class="formrow">
+          <p class="c5">Product:</p>
+          <p class="c10">
+            <% if !@product.empty? %>
+             <%@options_product = [["All",""]]%>
+              <%@product.each do |p|
+                @options_product += [[p, p]]
+              end %>
+            <%else%>
+             <%@options_product = [["All",""]]%>
+            <%end%>
+            <%=select("product","id",@options_product,{}, {:class => "select01", :onchange => ""}) %>
+          </p>
+          <p class="c5">Organizers:</p>
+          <p class="c10">
+            <% if !@organizer.empty? %>
+             <%@options_o = [["All",""]]%>
+              <%@organizer.each do |p|
+                @options_o += [[p, p]]
+              end %>
+            <%else%>
+             <%@options_o = [["All",""]]%>
+            <%end%>
+            <%=select("organizer","id",@options_o,{}, {:class => "select01", :onchange => ""}) %>
+          </p>
+        </div>
+        <div class="formrow">
+          <p class="c5">City:</p>
+          <p class="c10">
+            <% if !@city.empty? %>
+             <%@options_city = [["All",""]]%>
+              <%@city.each do |p|
+                @options_city += [[p, p]]
+              end %>
+            <%else%>
+             <%@options_city = [["All",""]]%>
+            <%end%>
+            <%=select("city","id",@options_city, {},{:class => "select01", :onchange => ""}) %>
+          </p>
+          <p class="c5">Pin Code:</p>
+          <p class="c10"><input type="text" class="inputtxt05" name="pincode"></p>
+        </div>
+        <div class="formrow">
+          <p class="c5">State/Province:</p>
+          <p class="c10">
+            <% if !@state.empty? %>
+            <%@options_s = [["All",""]]%>
+              <%@state.each do |p|
+                @options_s += [[p, p]]
+              end %>
+            <%else%>
+             <%@options_s = [["All",""]]%>
+            <%end%>
+             <%=select("state","id",@options_s,{}, {:class => "select01", :onchange => ""}) %>
+          </p>
+          <p class="c5">&nbsp;</p>
+          <p class="c10">&nbsp;
+            <%= submit_tag 'Search' ,:class=>'grnbtn01' %>
+          <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner_abuse",:style=>"display:none; width: 20px; margin-top: 0px;" ) %>
+        </div>
+       <%end%>
+        <p class="spacer04"></p>
+        <div class="demo_jui" id="events" >
+                <%=render :partial=>"events/events"%>
+        </div>
+        <p class="spacer05"></p>
+        <div class="brdBot01"></div>
+        <p class="spacer01"></p>
+        <!-- Event List start -->
+        <!-- Event List end -->
+        <p class="clear"></p>
+        <!-- Jobs End -->
+      </div>
+    </div>
+    <!-- Blue Box end -->
+    <div class="spacer"></div>
+  </div>
+  <!-- Left Col End -->
+
+  <!-- Right Col Start -->
+  <div class="c2 rightcol" id="eventRight">
+    <%=render :partial=>"right_col"%>
+  </div>
+  <!-- Right Col End -->
+
+</div>
+<!-- Container End -->
+<div class="clear"></div>

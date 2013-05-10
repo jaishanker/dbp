@@ -1,0 +1,196 @@
+<%@existing_hof = HallOfFame.find_by_user_id(current_user.id)%>
+<!-- Profile File Include --><%#= javascript_include_tag "Profile" %>
+<div class="clear">
+</div>
+<div class="content">
+    <!-- Set Priority File Include --><%#= javascript_include_tag "SetPriority" %>
+    <div class="clear">
+    </div>
+    <!-- Blue Box start -->
+    <div class="Blue4pxbox">
+        <code>
+            $(this).corner();
+        </code>
+        <div class="profileForm">
+            <!-- Page Head start -->
+            <div class="pageheading">
+                <div class="c1 head14">
+                    Add Hall of Fame Profile
+                </div>
+            </div>
+            <!-- Page Head end -->
+            <div class="brdBot01">
+            </div>
+            <!-- Form Start -->
+            <p class="spacer04">
+                <% form_for(@hof,:url => {:action => :create},:html => {:multipart => true}) do |f| %>
+                <%#= error_messages_for :des,:header_message => nil %>
+                <div class="uplooad" style = "width:60%" >
+                    <div class="formrow">
+                        <p class="c1">
+                            Name:
+                        </p>
+                        <div class="c2" style="margin:7px 0">
+                           <%if @existing_hof.nil?%>
+                                 <%= f.text_field :name, :class => "inputtxt01" %>
+                           <%else%>
+                                 <%= @existing_hof.name%>
+                                <%= f.text_field :name, :class => "inputtxt01" , :style => "display:none;"%>                             
+                           <%end%>
+                            <p class = "clear"/>
+                            <font color="red">
+                                <%= f.error_message_on :name %>
+                            </font>
+                        </div>
+                    </div>
+                    <div class="formrow">
+                        <p class="c1">
+                            Email:
+                        </p>
+                        <div class="c2"  style="margin:7px 0">
+                           <%if @existing_hof.nil?%>
+                                    <%= f.text_field :email, :class => "inputtxt01" %>
+                          <%else%>
+                                <%= @existing_hof.email%>
+                                   <%= f.text_field :email, :class => "inputtxt01" , :style => "display:none;" %>                        
+                           <%end%>                                    
+                            <p class = "clear"/>
+                            <font color="red">
+                                <%= f.error_message_on :email %>
+                            </font>
+                        </div>
+                    </div>
+
+  
+                    <div class="formrow">
+                        <p class="c1">
+                            Certification:
+                        </p>
+                        <div class="c2 proform">
+                            <%if @existing_hof.nil?%>
+                                <%=f.select :certification, CERTIFICATIONS.sort,{:prompt => "Select Certification"},:class => "proselect" %>                                      
+                                    <%#= f.text_field :certification, :class => "inputtxt01" %>
+                            <%else%>
+                                <%=f.select :certification, CERTIFICATIONS.sort,{:prompt => "Select Certification", :selected => ""},:class => "proselect" %>                                                                    
+                              <%#= f.text_field :certification, :class => "inputtxt01", :value => "" %>
+                            <%end%>
+                            <p class = "clear"/>
+                            <font color="red">
+                                <%= f.error_message_on :certification %>
+                            </font>
+                        </div>
+                    </div>
+                    <div class="formrow">
+                        <p class="c1">
+                            Certification Date:
+                        </p>
+                        <div class="c2">
+                            <%if @existing_hof.nil?%>
+                                    <%= f.text_field :certification_date, :class => "inputtxt01 date_input_ui" %>
+                            <%else%>
+                                    <%= f.text_field :certification_date, :class => "inputtxt01 date_input_ui", :value => "" %>                              
+                            <%end%>
+                            <p class = "clear"/>
+                            <font color="red">
+                                <%= f.error_message_on :certification_date %>
+                            </font>
+                        </div>
+                    </div>
+                    <div class="formrow">
+                        <p class="c1">
+                            Certification No:
+                        </p>
+                        <div class="c2">
+                            <%if @existing_hof.nil?%>
+                                    <%= f.text_field :simulation_no, :class => "inputtxt01" %>
+                            <%else%>
+                                    <%= f.text_field :simulation_no, :class => "inputtxt01", :value => "" %>                              
+                            <%end%>
+                            <p class = "clear"/>
+                            <font color="red">
+                                <%= f.error_message_on :simulation_no %>
+                            </font>
+                        </div>
+                    </div>
+                            <%if @existing_hof.nil?%>
+                                     <div class="formrow">
+                                        <p class="c1">
+                                            Upload Picture:
+                                        </p>
+                                        <p class="c2">
+                                            <%= file_field_tag :photo,:class => "inputtxt01 file"%>
+                                            <br/>
+                                            <font color="red">
+                                                <%= session[:hof_photo_error] %>
+                                            </font>
+                                        </p>
+                                    </div>
+                               <%end%>
+                      <div class="formrow">
+                        <p class="c1">
+                            &nbsp;
+                        </p>
+                        <p class="c2">
+                            <%= submit_tag "Submit",:class => "grnbtn01" %>
+                        </p>
+                    </div>
+                    <% end %>
+                    <div class="formrow">
+                        <p class="c1">
+                            &nbsp;
+                        </p>
+                        <p class="c2">
+                            <strong>Please Note:</strong>
+                            <br/>
+                            1. The profile image should be .gif, .jpg, or .png format. 
+                            <br/>
+                            2. Profile image should be front facing passport photo.
+							<br/>
+							3. Fill different forms if you have more than one certification
+                        </p>
+                    </div>
+                </div>
+                <div style ="float:right;">
+				<h1 class = "head" >This is how Profile will look :</h1><br/>
+                    <div class="box01">
+                        <div class="col-1">
+                            <img src="/images/cswp-user.jpg" width="96" height="96" />
+                        </div>
+                        <div class="col-2">
+                            <p>
+                                <strong>Name:</strong>
+                                Robert D’souza
+                            </p>
+
+                        <p class="spacer06">
+                        </p>
+                        <p>
+                            <strong>Certification:</strong>
+							CSWP
+                        </p>
+                        <p class="spacer06">
+                        </p>
+                        <p>
+                            <strong>Certification No.:</strong>
+                            C-MLLDE8WU99
+                        </p>
+                        <p class="spacer06">
+                        </p>
+                        <p>
+                          <strong>Date:</strong>
+                          July 17, 2009
+                      </p>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- Form End -->
+                </div>
+            </div>
+            <!-- Blue Box end -->
+        </div>
+        <script type = "text/javascript">
+            $(document).ready(function(){
+                 $('.date_input_ui').datepicker({defaultDate: '1 Jan 2000'});
+            });
+        </script>

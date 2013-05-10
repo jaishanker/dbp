@@ -1,0 +1,568 @@
+class DesignsController < ApplicationController
+  
+  before_filter :login_required, :except => [:index, :design, :design_by_user, :show_more_comments,:top_rated_design,
+    :contest_design,:recent_design,:top_designers,:comment_on_design, :activities, :get_more_activities,:next_design, :prev_design]
+  before_filter :design_objects,:only => [:index,:top_designers,:comment_on_design,:design_by_user,:design, :favorites, :activities]
+
+  log_activity_streams :current_user, :login, "uploaded",
+    :@des, :user_id, :create,:uploaded_design, {:total => 1 }
+  log_activity_streams :current_user, :login, "rated",
+    :@design, :user_id, :rate1,:rated_design, {:total => 1,:indirect_object => :@design_owner,:indirect_object_name_method => :login,:indirect_object_phrase => 'owns_this_design' }
+  
+  def index
+    session[:design_owner] = nil
+    session[:category_id] = nil    
+    session[:search_text] = nil
+    unless params[:id].nil?
+      @flag =  params[:id] 
+      current_user.preferred_page = "/designs/index/flag"
+      current_user.save
+    end
+    @design_count = Design.total_count(1)
+    @search_text = params[:search] unless params[:search].nil?
+    @search_text = @search_text.strip() unless params[:search].nil?
+    @tag = params[:tag] unless params[:tag].nil?  
+    @recent = params[:recent] unless params[:recent].nil?      
+    @user = User.find(params[:user_id]) unless params[:user_id].nil?
+    @group = Group.find_by_permalink(params[:group]) unless params[:group].nil?
+    if params[:category_id] == 'all'
+      params[:category_id] = nil
+    end
+    if @search_text and !params[:category_id].blank?
+     session[:search_text] = @search_text
+     session[:category_id] = params[:category_id]
+      @designs = Design.search_designs_for_categoy(@search_text,params[:category_id],params[:page] || 1)    
+    elsif @search_text
+      session[:search_text] = @search_text
+      @designs = Design.search_designs(@search_text,params[:page] || 1)
+     elsif @recent
+      @designs = Design.all_recent_designs(params[:page] || 1)
+     elsif params[:category_id]
+      session[:browse] = "1"
+      session[:category_id] = params[:category_id]       
+      @designs = Design.search_by_category(params[:category_id], 1, params[:page] || 1)
+     elsif params[:user_id]
+      @designs = Design.find_by_user_id(params[:user_id], 1, params[:page] || 1)
+      session[:browse] = "1"
+      session[:design_owner] = params[:user_id] 
+     elsif params[:tag]
+      tag_record = Tag.find_by_name(params[:tag])      
+      if tag_record.nil?
+        Tag.create(:name => params[:tag], :no_of_clicks => 1, :tagable_type => "Design", :status => 1, :tagable_id => params[:tagable_id])
+      else
+        tag_record.no_of_clicks = tag_record.no_of_clicks.to_i + 1
+        tag_record.save
+      end
+      @designs = Design.search_by_tag(@tag , params[:page] || 1)
+    elsif @group
+        members = @group.group_memberships.collect(&:user_id)
+        @designs = Design.paginate_group_member_design(members , params[:page] || 1) unless members.blank?      
+    else
+      @designs = Design.top_rated_designs(1, params[:page] || 1)
+#      @designs_all = Design.find_active(5)
+    end
+    @recent_designs = Design.recent_designs    
+    @no_of_pages = (@designs.total_entries.to_f / PER_PAGE).ceil
+  end
+  
+  def top_rated_design
+    @recent_designs = Design.top_rated_design
+    respond_to do |format|
+      format.js do
+        render :update do |page|
+          page.replace_html 'design_filter', :partial=>'design_filter'
+        end
+        return
+      end
+    end
+  end
+  
+  def recent_design
+    @recent_designs = Design.recent_designs  
+    respond_to do |format|
+      format.js do
+        render :update do |page|
+          page.replace_html 'design_filter', :partial=>'design_filter'
+        end
+        return
+      end
+    end
+  end
+  
+  def contest_design
+    @recent_designs = Design.recent_designs  
+    respond_to do |format|
+      format.js do
+        render :update do |page|
+          page.replace_html 'design_filter', :partial=>'design_filter'
+        end
+        return
+      end
+    end
+  end
+  
+  def my_designs
+    @user = User.find(params[:user_id])
+    @designs = Design.my_designs(@user.id)
+  end 
+  
+  def top_designers
+    #    @top_users = User.top_rated(9)
+    @search_text = params[:search] unless params[:search].nil?     
+    if @search_text
+      @members = User.search_top_desingers(@search_text , params[:page] || 1)      
+    else
+#      @members = User.top_designers(params[:page] || 1)
+       @members = User.top_rated_designers(params[:page] || 1)
+    end
+     @no_of_pages = (@members.total_entries.to_f / USERS_PER_PAGE).ceil        
+    #    design_objects
+  end
+  
+  def comment_on_design
+    @offset = 0
+    @comment_on_designs = DesignComment.recent_comments(PER_PAGE,@offset)
+  end
+  
+  def design_by_user
+    @user = User.find_by_id(params[:id]) unless params[:id].nil?
+#    @designs = @user.designs
+     @designs = Design.my_designs(@user.id)
+  end
+  
+  def design
+    unless session[:browse] == "1"
+               session[:design_owner] = nil 
+               session[:category_id] = nil 
+               session[:search_text] = nil
+     end     
+     @ask_permission = params[:ask_permission]
+    session[:browse] = nil 
+    @recent_designs = Design.random_design(4)
+    @offset = 0
+    unless params[:request_id].nil?
+      request = Request.find(params[:request_id])
+      request.status = "viewed"
+      request.save
+    end
+    #    @design = Design.find(params[:id])
+    @design = Design.find_by_permalink_and_status(params[:permalink],1)
+    if @design.nil?
+      flash[:notice] = "This design does not exist."
+      redirect_to :action => :index
+      return   
+    end
+    #    @design_comments = DesignComment.design_comment(params[:permalink],5,@offset)    
+    @design_comments = DesignComment.design_comment(@design.id,PER_PAGE,@offset)
+    
+    @reasons = AbuseCause.find(:all)
+    
+    @title = @design.name unless @design.name.nil?
+    @description = @design.description unless @design.description.nil?
+    @image_src = @design.pictures[0].photo(:medium) unless @design.pictures[0].nil?
+    @type = "Design"
+    @obj_url = "http://" + SITE_URL + "/designs/design/" + @design.permalink
+    #initializing design central objects.
+    #     design_objects
+    if !session[:flag]
+      @design.update_count
+    else
+      session[:flag] = false
+    end
+    
+  end
+  
+  def show_more_comments
+    @offset = params[:offset].to_i + PER_PAGE
+    if params[:id]
+      @design = Design.find(params[:id])
+      @design_comments = DesignComment.design_comment(params[:id],PER_PAGE,@offset)
+      respond_to do |format|
+        format.js do
+          render :update do |page| 
+            unless @design_comments.size == 0
+              page.insert_html :bottom, 'design_comments', :partial => 'more_design_comments'
+            else
+              page.insert_html :bottom, 'design_comments', 'No more comments are there for this design'
+            end
+          end      
+          return
+        end
+      end
+    else
+      @comment_on_designs = DesignComment.recent_comments(PER_PAGE,@offset)
+      respond_to do |format|
+        format.js do
+          render :update do |page|
+            unless @comment_on_designs.size == 0
+              page.insert_html :bottom, 'design_comments', :partial => 'more_comment_on_design'
+            else
+              page.insert_html :bottom, 'design_comments', 'No more comments are there'
+            end
+          end
+          return
+        end
+      end
+    end
+  end
+
+  def delete_comment
+    comment = Comment.find_by_id(params[:id])
+    act = ActivityStream.find_by_indirect_object_phrase(comment.id)
+    act.destroy
+    comment.destroy
+    design = Design.find_by_id(params[:obj_id])
+    render :update do |page|
+      msg = "show_notice('Comment has been successfully deleted','success')"
+      page.remove "comment_#{comment.id}"
+      page.replace_html "total_comment_top", "#{design.comments.length}"
+      page.replace_html "total_comment", "Total Comments : #{design.comments.length}"
+      page << msg
+    end
+  end
+
+  def delete_reply
+    comment = DesignComment.find(params[:id])
+    act = ActivityStream.find_by_indirect_object_phrase(comment.id)
+    act.destroy    
+    comment.destroy
+    design = Design.find_by_id(params[:obj_id])
+    render :update do |page|
+      msg = "show_notice('Comment has been successfully deleted','success')"
+      page.remove "comment_reply_#{comment.id}"
+      page.replace_html "total_comment_top", "Total Comments : #{design.comments.length}"
+      page.replace_html "total_comment", "Total Comments : #{design.comments.length}"
+      page << msg
+    end    
+  end
+
+  
+  
+  def new
+    session[:photo_error] = nil
+    @des = Design.new
+  end
+  
+  def create
+    @suppress_activity_stream = true
+    params[:design][:tags] = getTags(params[:design][:tags])
+    @des = Design.new(params[:design])
+    @des.user_id = current_user.id
+    @des.status = 1
+    picture = Picture.new
+#    @des.pictures.build(:photo => params[:photo])
+    if request.headers['HTTP_USER_AGENT'].to_s.include?('IE')
+      picture.version = "IE"
+    else
+      picture.version = "Other"
+    end
+      picture.photo = params[:photo]
+      @des.pictures << picture
+      @des.save
+    if @des.errors.empty?
+       @suppress_activity_stream = false
+       @des.user.add_points(DESIGN_UPLOAD,"uploaded_design",@des)
+#       @des.add_rating Rating.new(:user_id => current_user.id)       
+      session[:photo_error] = nil
+      #      if params[:photo] 
+      #        if @des.pictures[0].blank?  
+      #          picture = Picture.new 
+      #        else
+      #          picture = @des.pictures[0]
+      #        end   
+      #        picture.photo  = params[:photo]
+      #        @des.pictures <<  picture
+      #      end 
+      
+      
+      #redirect_to :action => :my_designs, :user_id => current_user.id
+      flash[:notice] = "Design has been successfully created."
+       unless params[:design][:tags].blank?
+             contests = Contest.find_activated
+              current_date = Date.today
+             for contest in contests
+               if params[:design][:tags].to_s.downcase.include? contest.contest_tag.to_s.downcase
+                 if current_date < contest.start_date
+                    flash[:notice] = "You have successfully uploaded your design but could not participate in contest as contest is not yet started"
+                 elsif current_date > contest.end_date
+                    flash[:notice] = "You have successfully uploaded your design but could not participate in contest as contest is over"
+                 else
+                     if current_user.profile.percent_complete.to_i == 100
+                           participation = ContestParticipant.new(:contest_id => contest.id, :user_id => current_user.id , :design_id => @des.id, :status => 1 )
+                           participation.save     
+                           contest.total_participants = contest.total_participants + 1
+                           contest.save
+                           flash[:notice] = "You are now participating in #{contest.name}"  
+                     else
+                       flash[:notice] = "You have successfully uploaded your design but could not participate in contest as your profile is not 100% complete. Please complete your profile and again tag your design with #{contest.contest_tag.to_s}"
+                     end
+                 end
+                end
+             end
+        end      
+      unless facebook_session.nil?        
+        if !facebook_session.user.has_permissions?(['publish_stream'])
+            redirect_to :action => :design, :permalink => @des.permalink, :ask_permission => true
+        else
+            redirect_to :action => :design, :permalink => @des.permalink          
+        end
+      else
+          redirect_to :action => :design, :permalink => @des.permalink        
+      end
+    else
+      
+      if  @des.errors.on('pictures')
+        session[:photo_error] = "Please upload valid image file"
+      else
+        session[:photo_error] = nil
+      end
+      
+      render :action => :new
+    end
+    
+  end
+  
+  def edit
+    @des = Design.find_by_permalink(params[:permalink])
+  end
+  
+  def update
+    params[:design][:tags] = getTags(params[:design][:tags])
+    @des = Design.find_by_permalink(params[:permalink])
+    @des.update_attributes(params[:design])
+    if params[:photo].blank?
+       @des.pictures << @des.pictures.last
+    else
+       @des.pictures.build(:photo => params[:photo])
+    end
+    @des.save
+    if @des.errors.empty?
+      @des.update_permalink
+      session[:photo_error] = nil
+      flash[:notice] = "You have successfully updated your design."
+       unless params[:design][:tags].blank?
+             contests = Contest.find_activated
+             current_date = Date.today             
+              for contest in contests
+               if params[:design][:tags].to_s.downcase.include? contest.contest_tag.to_s.downcase
+                 if current_date < contest.start_date
+                    flash[:notice] = "You have successfully updated your design but could not participate in contest as contest is not yet started"
+                 elsif current_date > contest.end_date 
+                    flash[:notice] = "You have successfully updated your design but could not participate in contest as contest is over"
+                 else                 
+                    if current_user.profile.percent_complete.to_i == 100                   
+                           exist_participation  = ContestParticipant.find_by_contest_id_and_user_id_and_design_id(contest.id, current_user.id,@des.id)
+                          if exist_participation.nil?
+                                participation = ContestParticipant.new(:contest_id => contest.id, :user_id => current_user.id , :design_id => @des.id, :status => 1 )
+                                participation.save!     
+                                contest.total_participants = contest.total_participants + 1
+                                contest.save!
+                                flash[:notice] = "You are now participating in #{contest.name}"    
+                           end
+                     else
+                       flash[:notice] = "You have successfully updated your design but could not participate in contest as your profile is not 100% complete. Please complete your profile and again tag your design with #{contest.contest_tag.to_s}"
+                     end
+                 end                           
+                end
+             end
+        end      
+        
+#      redirect_to :action => :my_designs, :user_id => current_user.id
+      redirect_to :action => :design, :permalink => @des.permalink      
+    else
+      if  @des.errors.on('pictures')
+        session[:photo_error] = "Please upload valid image file"
+      else
+        session[:photo_error] = nil
+      end
+      render :action => :edit
+    end
+  end
+  #   this action was addd for dumping existing data from dbp  
+  #  
+  #  def create_design
+  #    params[:design][:tags] = params[:design][:tags]
+  #    @des = Design.new(params[:design])
+  #    @des.user_id = params[:design][:user_id]
+  #    @des.id = params[:design][:id]
+  #    @des.created_at = params[:design][:created_at]
+  #    @des.updated_at = params[:design][:created_at]
+  #    @des.save!
+  #    if @des.errors.empty?
+  #      params[:photo].split(',').each do |pt|
+  #        begin
+  #          file = UrlUpload.new('http://www.designbetterproducts.in' + pt)
+  #          path = "./public/images/temp/"
+  #          open(File.join(File.expand_path(path), "#{file.original_filename}"), "wb") do |file1|
+  #            file1.write(file.read)
+  #          end
+  #          open(File.join(File.expand_path(path), "#{file.original_filename}"), "r") do |file1|
+  #            picture = Picture.new 
+  #            picture.photo = file1
+  #            @des.pictures << picture  
+  #          end
+  #        rescue
+  #        else
+  #        end
+  #      end
+  #      render :text => "success" 
+  #    else
+  #      render :text => "error" 
+  #    end
+  #    
+  #  end
+  #  
+  #  
+  
+  
+  
+  def rate1
+    @suppress_activity_stream = true
+    @design = Design.find(params[:id], :include=>'ratings')   
+    @design_owner = @design.user
+    unless @design_owner == current_user
+          if enough_points?(params[:rating].to_i * PER_RATING)      
+              if @design
+                if(@design.rated_by_user?(current_user))
+                  old_rating = Rating.get_old_rating(current_user,@design)  
+                  points_to_remove = old_rating.rating.to_i * PER_RATING
+                  @design_owner.actual_substract_points(points_to_remove,"substracted_old_points",@design_owner)        
+                  @design.rating_by_user(current_user).update_attribute('rating', params[:rating])
+                  @design_owner.add_points(params[:rating].to_i * PER_RATING,"received_rating",@design,points_to_remove)        
+                else
+                  @design.add_rating Rating.new(:rating => params[:rating],:user_id => current_user.id)
+                   @design_owner.add_points(params[:rating].to_i * PER_RATING,"received_rating",@design)         
+                end 
+                current_user.add_points(RATING_GIVEN,"given_rating",@design)
+                current_user.substract_points(params[:rating].to_i * PER_RATING,"given_rating_points_substraced",@design)     
+                   if @design_owner.subscribe == 1
+                        @design_owner.notify_rating_received(current_user,@design)        
+                   end
+               end
+               @suppress_activity_stream = false
+              message = "show_notice('Thanks for rating.','success')"
+              render :update do |page|
+                page.replace_html "rated_#{@design.id}", :partial => 'designs/star_rate',:local=>{:d => @design}
+                page << message
+              end
+          else
+              message = "show_notice('You dont have enough points to do this action','error')"
+              render :update do |page|
+                page << message
+              end      
+          end    
+    else
+        message = "show_notice('You cant give rating to your own design','error')"
+        render :update do |page|
+            page << message
+        end            
+    end
+  end
+  
+  def favorites
+    @designs = Favorite.my_favorites(current_user.id , 'Design', params[:page] || 1)
+#    @designs_active = []
+#        @designs.each do |l|
+#           if l.status == 1
+#            @designs_active << l
+#           end
+#        end
+    #    @designs = current_user.favorite_designs(params[:page] || 1)          
+    @no_of_pages = (@designs.total_entries.to_f / PER_PAGE).ceil
+  end
+  
+  def zoom
+    begin
+      @design = Design.find(params[:id])
+    rescue
+    else
+  end
+  render :action => "zoom.html.erb",:layout => false
+  end
+  
+  
+  def activities
+    @offset = 0
+    @activities = ActivityStream.specific_activities('Design', activity_stream_location,@offset)           
+  end
+
+  def get_more_activities  
+    @offset =  params[:offset].to_i+PER_PAGE
+    @activities = ActivityStream.specific_activities('Design', activity_stream_location,@offset)          
+    respond_to do |format|
+      format.html
+      format.js {
+        render :update do |page| 
+          if @activities.size == 0 or @offset >= MAX_LIMIT
+            page.insert_html :bottom, 'activities', 'No more design central activities are there'       
+          else
+            page.insert_html :bottom, 'activities', :partial => '/home/more_activities'
+          end
+        end
+      }
+    end 
+  end    
+  
+  def get_next_design
+    
+  end
+
+  def delete_design
+
+    @design = Design.find(params[:id])
+    p "design----------->"
+    p @design
+    unless @design.nil?
+      @design.status = params[:status]
+      @design.save
+      @design.comments.collect{|c| c.status =  params[:status]
+                                                         c.save}
+      @design.requests.collect{|r| r.active =  params[:status]
+                                                         r.save}
+      @design.favorites.collect{|f| f.status =  params[:status]
+                                                         f.save}
+      @design.design_tags.collect{|t| t.status =  params[:status]
+                                                         t.save}
+      @design.participants.collect{|p| p.destroy}
+      if params[:status] == "0"
+       params[:status] = "1"
+      else
+        params[:status] = "0"
+      end
+      @design.activity_streams.collect{|a| a.status =  params[:status]
+                                                         a.save}
+     @design.comments.collect{|c| c.activity_streams.collect{|a| a.update_attribute(:status,params[:status])}}
+    end
+    flash[:notice] = "Design has been delete successfully."
+    redirect_to "/designs?user_id=#{current_user.id}"
+  end
+
+  def next_design
+    session[:browse] = '1'
+    redirect_to :action => "design", :permalink => params[:permalink]
+  end
+  
+  def prev_design
+    session[:browse] = '1'
+    redirect_to :action => "design", :permalink => params[:permalink]
+  end  
+  private
+  
+  def design_objects
+    @offset = 0
+    @design_count = Design.total_count(1)
+    when_fragment_expired 'recent_design_right_cache', Time.parse(30.seconds.from_now.to_s) do
+       @recent_designs_right = Design.recent_design(10)
+    end
+    when_fragment_expired 'comment_on_design_cache', Time.parse(30.seconds.from_now.to_s) do
+      p "cahe-----------------comment-----------------------on--------------------desing"
+       @recent_comments = DesignComment.recent_comments(4,@offset)
+    end
+    #    @top_rated_designers = User.top_rated(6)
+    when_fragment_expired 'top_rated_designers_cache', Time.parse(30.minutes.from_now.to_s) do
+      p "cahe-----------------top-----------------------rated--------------------designers"
+       @top_rated_designers = User.top_rated_user
+    end
+    #    @total_pages = (@design_count.to_f / PER_PAGE).ceil
+  end
+end

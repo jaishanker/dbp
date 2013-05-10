@@ -1,0 +1,11 @@
+<%unless @outgoing_requests.empty?%>
+       <%= render :partial => "outgoing_request", :collection => @outgoing_requests%>                        
+  <div id="more_outgoing_request_link">
+    <%if logged_in?%>
+      <p class="spacer03"><span class="grnbtn02">
+      <%= link_to_remote "Click for more Requests",    :url => { :action => "get_more_outgoing_requests", :offset => @offset, :user_id => @user.id,:filter_by => @filter_by }, :before => "destroyDiv('more_outgoing_request_link')"%></span></p>
+  <%end%>
+  </div>
+<%else%>
+  You dont have any outgoing request
+<%end%>   

@@ -1,0 +1,21 @@
+<% @recent_designs.each do |d| %>
+  <div class="contest_img">
+    <%= link_to get_image(d,'design','small','imgbrd'),{:controller=>"designs",:action=>"design",:permalink=>d.permalink}%>
+    <p>
+      <span class="memimg">
+        <%= link_to get_image(d.user,'user','thumb','nobrd'),my_page_path(:user_id => d.user.id) %>
+  <%#= get_my_page_link(get_image(d.user,'user','thumb','nobrd'), d.user.id)%>
+  <%#= get_image(d.user,'user','thumb')%>
+        <!--<a href="Members_Page.html">
+        <img src="../images/snap01.gif" width="36" height="36" class="imgbrd01" /></a>-->
+      </span>
+      <span class="meminfo">
+        <%= link_to get_name(d.user.login,12),my_page_path(:user_id => d.user.id)%>
+  <%#= get_my_page_link(get_name(d.user.login), d.user.id)%>
+          <!-- <a href="My_Page.html"><%#= get_name(d.user.login)%></a>-->
+        <br/>
+        <%= time_ago(d.created_at).gsub('about','') %>
+      </span>
+    </p>
+  </div>
+<% end %>

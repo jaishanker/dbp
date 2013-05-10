@@ -1,0 +1,97 @@
+<!-- Container Start -->
+<div class="content">
+    <%= render :partial => "top_nav" %>
+    <h1>Designs - Report Abuse</h1>
+    <form id="form1" name="form1" method="post" action="">
+        <table border="0" cellpadding="5" cellspacing="0" id="mytable01">
+            <tr>
+                <td colspan="2">
+                    <ul class="admtot">
+                        <li>
+                            Total Designs:&nbsp;<%= @design_count %>
+                        </li>
+                        <li>
+                            Total Views:&nbsp;<%= @views_count %>
+                        </li>
+                        <li>
+                            Total Rated:&nbsp;<%= @ratings_count %>
+                        </li>
+                        <li>
+                            Total Comments:&nbsp;<%= @comments_count %>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <br/>
+    <div class="demo_jui">
+        <table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
+            <thead>
+                <tr class="dataTable">
+                    <th width="15%">
+                        Title
+                    </th>
+                    <th width="15%">
+                        Posted By
+                    </th>
+                    <th width="10%">
+                        Date
+                    </th>
+                    <th width="10%">
+                        Abuse on Design
+                    </th>
+                    <th width="10%">
+                        Status
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <% unless @design.length == 0 %>
+                <% @design.each do |l| %>
+                <tr class="dataTable">
+                    <td>
+                        <a href="/designs/design/<%=l.permalink%>" target = "_blank"><%= get_name(l.title) %></a>
+                    </td>
+                    <td>
+                        <a href="#">
+                        <%= get_name(l.posted_by) %>
+                    </td>
+                    <td>
+                        <%= l.date.to_date.strftime("%d %b %Y") %>
+                    </td>
+                    <td align="center">
+                        <%= l.abuse_count %>
+                    </td>
+                    <td align="center">
+                        <% if l.status ==  0 %>
+                        <label>
+                            Admin Deactivated
+                        </label>
+                        <% elsif l.status == 1 %>
+                        <label>
+                            <%= radio_button_tag "designCentral#{l.id}","disabled",l.status.to_i == 0,:onclick => remote_function(:url => {:controller => "admin/designs",:action => "update_status",:id => l.id,:status => 0}) %>Deactivate
+                        </label>
+                        <% elsif l.status == 2 %>
+                        <label>
+                            System Deactivated
+                        </label>
+                        <% end %>
+                    </td>
+                </tr>
+                <% end %>
+                <% end %>
+            </tbody>
+        </table>
+    </div>
+    <div id="chartdiv" align="center">
+    </div>
+    <script type="text/javascript">
+        /*
+         var chart = new FusionCharts("Charts/FCF_MSColumn3D.swf", "ChartId", "800", "450");
+         chart.setDataURL("Data/designCenterReport.xml");
+         chart.render("chartdiv");
+         */
+    </script>
+</div>
+<!-- Container End -->

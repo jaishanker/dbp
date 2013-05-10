@@ -1,0 +1,96 @@
+<div id="qualification_form">
+      <% form_remote_tag :url => {:action => "update_qualifications"}, :before => "$('#spinner').show();",:complete => "$('#spinner').hide();" , :html => {:id => "qualification_form"}do -%>
+              <!-- <form action="" method="get"> -->
+              <div class="proform">
+                      <div class="formrow">
+                      <p class="c3">Are you a  Diploma in Mech engineering?:</p>
+                                      <p class="c4">
+                              <SPAN id="DisplayName">
+                                              <%=radio_button("profile", "diploma", "Yes")%> Yes
+                                              <%=radio_button("profile", "diploma", "No")%> No
+                                              <!-- <input name="MechEng" type="radio" value="radio" />Yes
+                                              <input name="MechEng" type="radio" value="radio" />No -->
+                          </SPAN>
+                          <br>
+                          <span id="diploma_error"> </span>
+                                </p>
+                      </div>
+                      <div class="formrow">
+                      <p class="c3">Are you a BE in Mechanical engineering?:</p>
+                                      <p class="c4">
+                                              <%=radio_button("profile", "be", "Yes")%> Yes
+                                              <%=radio_button("profile", "be", "No")%> No
+                                      <br>
+                                      <span id="be_error"> </span>                                              
+                                      <!--	<input name="RadioGroup1" type="radio" id="RadioGroup1_0" value="radio" checked="checked" />Yes
+                                              <input type="radio" name="RadioGroup1" value="radio" id="RadioGroup1_1" />No -->
+                                      </p>
+                      </div>
+                      <div class="formrow">
+                      <p class="c3">Do you hold a master’s degree in Mech engg?:</p>
+                                      <p class="c4">
+                                              <%=radio_button("profile", "masters", "Yes")%> Yes
+                                              <%=radio_button("profile", "masters", "No")%> No
+                                      <br>
+                                      <span id="masters_error"> </span>                                                            
+                                      <!--	<input name="RadioGroup1" type="radio" id="RadioGroup1_0" value="radio" checked="checked" />Yes
+                                              <input type="radio" name="RadioGroup1" value="radio" id="RadioGroup1_1" />No -->
+                                      </p>
+                      </div>
+                      <div class="formrow">
+                      <p class="c3">Which year you graduated (final graduation)?:</p>
+                                      <p class="c4">
+                               <%=date_select("profile", "graduation_year", {:start_year => 1960, :end_year => Time.now.year,:order => [:year], :prompt => "Select year"}, {:class => "proselect01"})%>
+                               <%#=select("profile","graduation_year", @year_of_graduation,{:selected => @profile.graduation_year.to_s},:class => "proselect" ) %>
+                               <br> <span id="graduation_year_error"> </span>
+                               <%#=select_year(2000, :field_name => 'graduation_year, :start_year => 1990, :end_year => 2010', :promt => "Select Year")%>
+                         <!--  <select class="proselect" id="ValidSelection" name="ValidSelection">
+                              <option value="0">Select Years</option>
+                              <option>Before 1995</option>
+                              <option>1995 - 2000</option>
+                              <option>2000 - 2005</option>
+                              <option>2005 - 2008</option>
+                        </select> -->
+                                </p>
+                  </div>
+                  <div class="frm_brd"></div>
+
+  <div class="proform_l">
+    <div class="formrow">
+      <p class="c1">&nbsp;</p>
+      <p class="c2"><b>Tip:</b> Start with Higher Education</p>
+    </div>
+  </div>
+  <div id="user_qualifications"> 
+            <%= render :partial => 'user_qualification', :collection => @user_qualifications %> 
+</div>
+
+<div class="proform_l">
+  <div class="formrow">
+           <p class="c1"></p>
+            <p class="c2"><%= add_user_qualification_link "Add Qualification [+]" %> </p>
+  </div>
+</div>
+
+
+  
+
+  </div>
+ 
+              <div class="proform">
+              <div class="proform_l">
+                      <div class="formrow">
+                      <p class="c1">&nbsp;</p>
+                      <p class="c2">
+                          <%= submit_tag 'Save and Continue' , :class => "grnbtn01", :onclick => "return validateQualification()"%>
+                        <!--  <input name="Save" type="submit" value="Save and Continue" class="grnbtn01" /> -->
+                              <input name="Save" type="reset" value="Cancel"  class="grnbtn01" onclick = "<%= remote_function :update => "ComContent1",:url =>{ :action => :get_qualifications} , :before => "$('#spinner').show();",:complete => "$('#spinner').hide();", :class => "grnbtn01"%>"/>
+                              <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner",:style=>"display:none; width: 20px; margin-top: 0px;" ) %>
+                      </p>
+                  </div>
+                  </div>
+          </div>
+         <!-- </form> -->
+      <%end%>
+          <p class="spacer01"></p>
+</div>

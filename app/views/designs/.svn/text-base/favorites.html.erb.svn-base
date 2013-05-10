@@ -1,0 +1,83 @@
+<!-- Profile File Include --><%#= javascript_include_tag "Profile" %>
+<div class="clear">
+</div>
+<!-- Container Start -->
+<div class="content">
+    <!-- Left Col Start -->
+    <div class="c1">
+        <!-- Set Priority File Include --><%#= javascript_include_tag "SetPriority" %>
+        <div class="clear">
+        </div>
+        <!-- Blue Box start -->
+        <div class="Blue4pxbox">
+            <code>
+                $(this).corner();
+            </code>
+            <div class="whiteBoxContent">
+                <!-- Design Central Start --><!-- Section Head start -->
+                <div class="pageheading">
+                    <div class="c1 head14">
+                        My Favorite Designs
+                    </div>
+<!--
+                    <div class="c5 total">
+                            <%#@type="designs/favorites"%>
+                            <%#=render :partial=>"designs/search"%>
+                    </div>
+-->
+                </div>
+                <p class="clear brdBot01">
+                </p>
+                <div class="pageheading">
+                    <p class="c1 total">
+                        <a href="#">Total Favorite Designs : <%= @designs.total_entries %></a>
+                        <!--| <a href="#" class="archive">Select Archive</a>-->
+                    </p>
+                    <p class="c3">
+                        <span id="pagination" class="pagination01"></span>
+                    </p>
+                </div>
+                <p class="clear brdBot01">
+                </p>
+                <!-- Section Head End -->
+                <!-- Design list -->
+                <% unless @designs.length == 0 %>
+                <% @designs.each do |d| %>
+                <%= render :partial => "design",:locals => {:d => d,:same_design => false},:inline=>true %>
+                <% end %>
+                <% else %>
+                No designs found<% end %>
+                <!-- Design Central End -->
+            </div>
+        </div>
+        <!-- Blue Box end -->
+        <div class="spacer">
+        </div>
+    </div>
+    <!-- Left Col End -->
+    <!-- Right Col Start -->
+    <div class="c2 rightcol">
+        <!-- My Page Links Include -->
+        <%= render :partial => 'right_col'%>
+        <%#= javascript_include_tag "MyPage_links" %>
+    </div>
+    <!-- Right Col End -->
+</div>
+
+<%if @no_of_pages >= 2%>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#pagination").paginate({
+      href : '/designs/favorites?page=',  
+      count: <%=@no_of_pages%>,
+      start: <%=params[:page] || 1%>,
+      display: 5,
+      border: false,
+      text_color: '',
+      background_color: '',
+      text_hover_color: '',
+      background_hover_color: ''
+    });
+  });
+  </script>
+<%end%>

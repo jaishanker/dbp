@@ -1,0 +1,55 @@
+               <!-- Container Start -->
+                <div class="content">
+                    <!-- Left Col Start -->
+                    <div class="c1">
+                        <!-- Blue Box start -->
+                        <div class="Blue4pxbox">
+                            <code>
+                                $(this).corner();
+                            </code>
+                            <div class="whiteBoxContent">
+                               <!-- static content starts here -->
+                              <div class="pageheading">
+                                    <div class=" head14">
+                                        <strong>Sitemap </strong>                                    
+                                      </div>
+										
+											<p class="spacer05"></p>
+										 <p class="brdBot01"><em></em></p>
+										 <strong> </strong>
+                              </div>	 
+                                   
+							 <img src="../images/sitemap.jpg" width="691" height="820" border="0" usemap="#Map" />
+<map name="Map" id="Map"><area shape="rect" coords="5,247,191,286" href="/designs" />
+<area shape="rect" coords="474,141,689,185" href="/discussions" />
+<area shape="rect" coords="19,563,129,603" href="/groups" />
+<area shape="rect" coords="533,468,630,508" href="/games" />
+<area shape="rect" coords="2,774,215,821" href="/learnings" />
+</map>
+ 
+  									  <p class="spacer05"></p>
+										
+									      
+                                <p class="brdDot01">
+                                </p>
+                                
+ 								
+								
+                                <div class="clear">
+                                </div>	
+										
+                    </div>
+									  
+                               
+                                <!-- static content ends here -->
+                            </div>
+                         <!-- Blue Box end -->
+                        <div class="spacer">
+                        </div>
+                     </div>
+                     <!-- Left Col End -->
+                    <!-- Right Col Start -->
+                           <%=render :partial=>"home/recent_right_col"%>
+                    <!-- Right Col End -->  
+               </div>
+                <!-- Container End -->

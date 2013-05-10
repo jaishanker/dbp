@@ -1,0 +1,57 @@
+<div class="header">
+    <div class="logo">
+        <a href="/admin"/>
+    </div><a href="/admi n"></a>
+    <div class="joinnow">
+        <!--<a href="index.html"></a>
+        <a id="href_2012748673" onclick="return hs.htmlExpand(this, { objectType:'iframe',outlineType:'rounded-white',width:530,height:730},'Join Now!' )" href="/users/new">Join Now!</a>-->
+    </div>
+    <!-- Login Start -->
+    <div class="login">
+        <% form_remote_tag :url=>{:controller=>'sessions',:action=>'create'}, :html=>{:name => "loginfrm",:id => "loginforadmin"}, :before => "$('#loader').show();",:complete => "$('#loader').hide();" do -%>
+        <%=hidden_field "","admin_login", :value =>true %>
+        <p class="txt14">
+            Login
+        </p>
+       <table cellspacing="0" cellpadding="0">
+                  <tr  align="left" valign="top">
+                         <td>
+                                <input type="text" id="username" class="userinput" value="Username/Email" name="username" onblur ="this.value=(this.value=='') ? 'Username/Email' : this.value;" onfocus ="this.value=(this.value=='Username/Email') ? '' : this.value;"/>
+                         </td>
+                         <td>
+                                 <input type="password" name="password" id="" autocomplete="off" value="Password"  class="passinput" style=""  onfocus ="this.value=(this.value=='Password') ? '' : this.value;" onblur ="this.value=(this.value=='') ? 'Password' : this.value;"/>
+                         </td>           
+                         <td>
+                                <%= submit_tag "Login",:style => "",:class=>"ovalbutton",:style => "display:none;" %>
+
+                              <p class="loginbtn">
+                                  <%= link_to_remote "<span>Login</span>",:url=>{:controller=>'sessions',:action=>'create'},:submit => "loginform",:html => {:class => "ovalbutton"} %>
+                              </p>
+                              <p class="line">
+                              </p>
+                              <a id="href_2012748673" onclick="$('.date_input_ui').datepicker();return hs.htmlExpand(this, { objectType:'ajax',outlineType:'rounded-white',width:530,height:200},'Forgot Password' );$('.date_input_ui').datepicker();" href="/sessions/forgot_password" class="forgot">Forgot Password?</a>                                
+                         </td>           
+                         <td>
+                         </td>
+                 </tr>
+                 <tr  align="left"  valign="top">
+                        <td>
+                          <label for="remember_me"><%= check_box_tag 'remember_me'%> <span style="color:#fff;font-size:12px;">Remember me</span></label> 
+                          </td>
+                         <td>
+                         </td>
+                         <td>
+                         </td>
+                  </tr>
+              </table>
+        <%end %>
+    </div>
+    <!-- Login Start -->
+</div>
+<!-- Head Link Start -->
+<%=render :partial=>"/layouts/admin_header_links" %>
+<!-- Head Link End -->
+<div class="clear">
+</div>
+<!-- Head Banner Start -->
+<!-- Head Banner End -->

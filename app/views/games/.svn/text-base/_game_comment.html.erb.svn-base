@@ -1,0 +1,97 @@
+<script>
+    function toggleReplyDiv(divid)
+    {
+      $('#ComContent_'+divid).slideToggle();
+    }
+</script>
+
+<div class="group" id="comment_<%=game_comment.id%>">
+  <div class="threCol">
+    <div class="cc1">
+      <%= link_to get_image(game_comment.user,'user','thumb','nobrd'),my_page_path(:user_id => game_comment.user.id) %>
+<%#= get_my_page_link(post.user.login,post.user.id)%>
+    </div>
+    <div class="cc2">
+      <%= link_to get_name(game_comment.user.login,15),my_page_path(:user_id => game_comment.user.id)%>
+      <!--<a href="Members_Page.html" class="blue"><%#= get_name(d.user.login) %></a>-->
+      <br/>
+      <%= time_ago(game_comment.created_at) %>
+    </div>
+    <div class="cc4">
+      <%=h get_name(game_comment.comment,5000)%>
+      <br/>
+      <%if logged_in? and current_user.id == game_comment.user.id%>
+        <%= link_to_remote "Delete",:url => { :action => "delete_comment",:id=>game_comment.id,:obj_id=>@game.id}, :before => "$('#spinner_delete_#{game_comment.id}').show();",:complete => "$('#spinner_delete_#{game_comment.id}').hide();" ,:html => { :href =>"javaScript:void(0)" },:confirm=>"Are you sure you want to delete?"%>
+        <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner_delete_#{game_comment.id}",:style=>"display:none; width: 20px; margin-top: 0px;" ) %>
+      <%end%>
+
+
+
+      <div>&nbsp;</div>
+      <%unless game_comment.replies.length == 0%>
+        <%game_comment.replies.each do |re|%>
+          <div id="comment_reply_<%=re.id%>">
+            <div id ="ComContent">
+              <div class="brd">
+                <div class="twocol02">
+                  <p class="c1">
+                    <%= link_to get_image(re.user,'user','thumb','nobrd'),my_page_path(:user_id => re.user.id) %>
+                    <br />
+                    <span class="mname">
+                      <%= link_to truncate(re.user.login,15),my_page_path(:user_id => re.user.id)%>
+                    </span>
+                  </p>
+                  <p class="c2"><%= h get_name(re.comment,5000)%></p>
+                  <p>
+                    <%= time_ago(re.created_at) %>,&nbsp;
+                    <%if logged_in? and current_user.id == re.user_id%>
+                      <%= link_to_remote "Delete",:url => { :action => "delete_reply",:id=>re.id,:obj_id=>@game.id}, :before => "$('#spinner_delete_#{re.id}').show();",:complete => "$('#spinner_delete_#{re.id}').hide();" ,:html => { :href =>"javaScript:void(0)" },:confirm=>"Are you sure you want to delete?"%>
+                      <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner_delete_#{re.id}",:style=>"display:none; width: 20px; margin-top: 0px;" ) %>
+                    <%end%>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>&nbsp;</div>
+        <%end%>
+      <%end%>
+      <a href="javascript:void(0);" class="black" onclick="toggleReplyDiv(<%=game_comment.id%>)">Reply</a>
+      <p class="spacer01"></p>
+      <div id="ComContent_<%=game_comment.id%>" style ="display:none;">
+        <div id ="ComContent">
+          <%if logged_in?%>
+            <div class="brd">
+              <%@type = "Game"%>
+              <div class="twocol02">
+                <p class="c1">
+                  <%= link_to get_image(current_user,'user','thumb','nobrd'),my_page_path(:user_id => current_user.id) %>
+                  <br />
+                  <span class="mname">
+                    <%= link_to get_name(current_user.login,15),my_page_path(:user_id => current_user.id)%>
+                  </span>
+                </p>
+                <p class="c2">
+                  <% form_remote_tag :url=>{:controller=>'comment',:action=>'reply_comment',:id=>game_comment.id,:type=>@type} ,:html=>{:name=>'replycomment'} ,:before => "$('#spinner_#{game_comment.id}').show();",:complete => "$('#spinner_#{game_comment.id}').hide();" do|f| %>
+                    <%=hidden_field "obj","obj_id", :value =>game_comment.commentable_id%>
+                    <%= text_area_tag 'comment_text', nil, :rows => 2, :cols => 40, :class => 'inputtxt07'%>
+                    <%= submit_tag 'Post' ,:class=>'grnbtn04' %>
+                  <%end%>
+                </p>
+              </div>
+            </div>
+          <%else%>
+            <div class="brd">
+              <div class="twocol02">
+                <p class="c2">Please login, to comment.</p>
+              </div>
+            </div>
+          <%end%>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<p class="clear">
+</p>

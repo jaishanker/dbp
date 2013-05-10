@@ -1,0 +1,16 @@
+.jPaginate {height:10px; position:relative; color:#a5a5a5; font-size:small; width:100%;}
+.jPaginate a {cursor:pointer; margin:0px 3px; float:left; font-size:11px;}
+.jPag-control-back {position:absolute; left:0px; background: url(../images/pagination.gif) no-repeat 0px 0px !important; color:#FFF !important;}
+.jPag-control-front {position:absolute; top:0px; background: url(../images/pagination.gif) no-repeat 11px 0px !important; color:#FFF !important;}
+.jPaginate span {cursor:pointer;} 
+ul.jPag-pages {float:left; list-style-type:none; margin:0px; padding:0px;}
+ul.jPag-pages li {display:inline; float:left; padding:0px; margin:0px; background: url(../images/pagination_brd.gif) no-repeat right bottom;}
+ul.jPag-pages li a {float:left; padding:0px 2px; font-size: 11px; color:#4ebaff;}
+.jPag-first {color:#FFF !important;} 
+.jPag-last {color:#FFF !important;} 
+span.jPag-current {cursor:default; font-weight:normal; padding:0px 2px; margin:0px 1px; float:left; font-size:11px; font-weight: bold; color:#4ebaff;}
+ul.jPag-pages li span.jPag-previous, ul.jPag-pages li span.jPag-next, span.jPag-sprevious, span.jPag-snext, ul.jPag-pages li span.jPag-previous-img, ul.jPag-pages li span.jPag-next-img, span.jPag-sprevious-img, span.jPag-snext-img {height:10px; margin:0px; float:left;}
+span.jPag-sprevious, span.jPag-sprevious-img {margin:2px 0px 2px 2px; width:10px; text-align:right;}
+span.jPag-snext, span.jPag-snext-img {margin:2px 2px 2px 0px; width:10px; text-align:right;}
+span.jPag-sprevious-img {background:transparent url(../images/pagearrow_left.gif) no-repeat center right;}
+span.jPag-snext-img {background:transparent url(../images/pagearrow_right.gif) no-repeat center left;} 

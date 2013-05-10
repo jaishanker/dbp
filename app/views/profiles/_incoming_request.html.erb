@@ -1,0 +1,42 @@
+<div class="threCol">
+  <div class="cc1">
+    <%=  get_image(incoming_request.sender,'user','thumb')%>
+  </div>
+  <div class="cc2">
+    <%= link_to incoming_request.sender.login.capitalize,my_page_path(:user_id => incoming_request.sender_id), :class => "blue"%><br />
+  <%= time_ago(incoming_request.created_at) %></div>
+
+  <%obj = incoming_request.requestable_type.constantize.find(incoming_request.requestable_id)%>
+
+  <%if incoming_request.requestable_type =="Design"%>
+    <div class="cc3">to  view Design
+      <%= link_to obj.name, {:controller => "designs", :action => "design", :permalink => obj.permalink,:request_id =>incoming_request.id}%>
+    </div>
+  <%elsif incoming_request.requestable_type =="Learning"%>
+    <div class="cc3">to  view Learning Material
+      <%= link_to obj.title, {:controller => "learnings", :action => "learning", :permalink => obj.permalink,:request_id =>incoming_request.id}%>
+    </div>
+  <%elsif incoming_request.requestable_type =="Topic"%>
+    <div class="cc3">to  view Forum Topic
+      <%= link_to obj.title, {:controller => "discussions", :action => "topic", :permalink => obj.permalink,:request_id =>incoming_request.id}%>
+    </div>
+  <%else%>
+    <div class="cc3">to  view
+      <%=h incoming_request.requestable_type %>
+      <%= link_to obj.title, {:controller => incoming_request.requestable_type.downcase.pluralize, :action => incoming_request.requestable_type.downcase, :permalink => obj.permalink,:request_id =>incoming_request.id}%>
+    </div>
+  <%end%>
+
+  <div class="cc5">
+
+    <p class="btns">
+      <%if incoming_request.status == "pending" %>
+        <%= get_link_to_object(incoming_request.requestable_type,obj.permalink,incoming_request.id)%>
+  <%#= link_to "Decline", decline_request_profile_path(current_user.profile, :request_id => incoming_request.id), :class => "grnbtn02"%>
+        <%= link_to "Ignore",ignore_request_profile_path(current_user.profile, :request_id => incoming_request.id), :class => "grnbtn02"%>
+      <%else%>
+        <%=incoming_request.status.capitalize%>
+      <%end%></p>
+
+  </div>
+</div>

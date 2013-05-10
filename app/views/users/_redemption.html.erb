@@ -1,0 +1,25 @@
+<!-- Two col start -->
+<%redemption_user_info = RedeemUserInfo.find_by_redemption_id(redemption.id)%>
+<div class="threCol">
+   <div class="cc1" style="width:8%">
+          <%= get_image(redemption.product,'product','thumb','snap') %>
+    </div>
+    <div class="cc3" style="width:90%">
+      <%if redemption.approved == 0%>
+            You have requested to redeem your points to purchase "<%=h redemption.product.title%>" but its not yet approved by admin.        
+      <%else%>
+             You have redeemed your <%=h redemption.points%> points to purchase "<%=h redemption.product.title%>"
+             <%if redemption_user_info.shipment_type == 0%>
+                 <%if redemption.shifted == 0%>
+                    and you will shortly receive your "<%=h redemption.product.title%>" to your shipment address.
+                 <%else%>
+                   and "<%=h redemption.product.title%>" has been shifted to your shipment address.                  
+                 <%end%>
+             <%else%>
+               and you can collect your "<%=h redemption.product.title%>" from any of our authorized center.
+             <%end%>
+       <%end%>
+    </div>
+  </div>
+  <!-- Two col end -->
+

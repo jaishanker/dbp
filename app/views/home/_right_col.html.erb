@@ -1,0 +1,8 @@
+<%= get_right_panel_banner(@right_banner,'Home') %>
+<div id="rightcol_Index" class="c2 rightcol">
+    <%=render :partial => "/home/members_search_form" %>
+    <%=render :partial=> 'home/experts.html.erb' %>
+    <div class="clear"/><div class="clear"/><%=render :partial=> 'home/active_stream.html.erb' %>
+    <div class="clear"/><%=render :partial=> 'home/recent_posts.html.erb' %>
+</div>
+<%= get_right_panel_banner(@right_banner,'Home','Bottom') %>

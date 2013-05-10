@@ -1,0 +1,121 @@
+        <div class="threCol">
+            <div class="cc1" style="width:8%"><%=link_to get_image(manage_activity_stream.actor,'user','thumb','nobrd'),my_page_path(:user_id => manage_activity_stream.actor.id)%>                 
+               </div>           
+             <div class="cc3" style="width:82%">
+                  <%if logged_in?%>
+                        <%if manage_activity_stream.actor == current_user%>
+                                You <%unless manage_activity_stream.activity == "started_following"%>have<%end%>
+                        <%else%>
+                                <%= link_to manage_activity_stream.actor.login.capitalize, my_page_path(:user_id => manage_activity_stream.actor.id), :class => "blue"%>       
+                        <%end%>
+                   <%else%>
+                        <%= link_to manage_activity_stream.actor.login.capitalize, my_page_path(:user_id => manage_activity_stream.actor.id), :class => "blue"%> 
+                   <%end%>
+                    <%if manage_activity_stream.activity.to_s == "profile_updater"%>
+                         <%if manage_activity_stream.actor == current_user%>
+                                <%verb = manage_activity_stream.verb.tr('_', ' ')%>
+                                <%verb = verb.to_s.gsub('has','')%>
+                                <%verb = verb.to_s.gsub('his','your')%>
+                                 <%verb = verb.to_s.gsub('her','your')%>
+                                <%=h verb %>
+                        <%else%>
+                               <%=h manage_activity_stream.verb.tr('_', ' ') %>
+                        <%end%>
+                  <%elsif manage_activity_stream.activity.to_s == "started_following"%>
+                         <%if manage_activity_stream.actor == current_user%>
+                                 <%verb = manage_activity_stream.verb.tr('_', ' ')%>
+                                 <%verb = verb.to_s.gsub('is','are')%>
+                                <%=h verb %>
+                           <%else%>
+                                <%=h manage_activity_stream.verb.tr('_', ' ') %>
+                          <%end%>                        
+                   <%else%>
+                     <%=h manage_activity_stream.verb.tr('_', ' ') %>
+                   <%end%>
+                   <%if  manage_activity_stream.object_type == "Design"%> 
+                            <%unless manage_activity_stream.activity == "uploaded_design"%>
+                              <%if logged_in?%>
+                                    <%if manage_activity_stream.object.user == current_user%>
+                                            your
+                                    <%else%>
+                                            <%= link_to   manage_activity_stream.object.user.login.capitalize, my_page_path(:user_id =>manage_activity_stream.object.user )%>'s                                      
+                                    <%end%>
+                              <%else%>
+                                    <%= link_to   manage_activity_stream.object.user.login.capitalize, my_page_path(:user_id =>manage_activity_stream.object.user )%>'s                                
+                              <%end%>
+                            <%end%>
+                            <%= manage_activity_stream.object_type.downcase%>
+                           <%= link_to get_name(manage_activity_stream.object.name,100),:controller=>:designs, :action => :design,:permalink => manage_activity_stream.object.permalink %>
+                   <%elsif manage_activity_stream.object_type == "Group"%>
+                            <%= manage_activity_stream.object_type.downcase%>             
+                            <%=link_to get_name(manage_activity_stream.object_name,100) , permalink_url(manage_activity_stream.object.permalink) %>
+                  <%elsif manage_activity_stream.object_type == "News"%>
+                            <%= manage_activity_stream.object_type.downcase    %>
+                            <%=link_to get_name(manage_activity_stream.object.title,100) , :controller => "news", :action => "news", :permalink =>  manage_activity_stream.object.permalink%>
+                   <%elsif manage_activity_stream.object_type == "Game"%>  
+                            <%= manage_activity_stream.object_type.downcase%>                  
+                            <%=link_to manage_activity_stream.object.title , :controller => "games", :action => "game", :permalink =>  manage_activity_stream.object.permalink%>
+                   <%elsif manage_activity_stream.object_type == "Learning"%>
+                            <%= manage_activity_stream.object_type.downcase%> tutorial
+                            <%=link_to get_name(manage_activity_stream.object.title,100) , :controller => "learnings", :action => "learning", :permalink =>  manage_activity_stream.object.permalink%>
+                   <%elsif manage_activity_stream.object_type == "User"%>
+                        <%= link_to manage_activity_stream.object_name.capitalize, my_page_path(:user_id => manage_activity_stream.object_id)%>    
+                   <%elsif manage_activity_stream.object_type == "Comment"%>
+                                    <%= link_to   manage_activity_stream.object.user.login.capitalize, my_page_path(:user_id =>manage_activity_stream.object.user ) unless manage_activity_stream.object.nil?%>'s
+                                    comment on 
+                                   <%reply_on = manage_activity_stream.object.commentable unless manage_activity_stream.object.nil?%>
+                                   <%reply_on_type = manage_activity_stream.object.commentable_type unless manage_activity_stream.object.nil?%>
+                                   <%if reply_on_type == "Design"%>
+                                        <%= link_to  reply_on.name, :controller => "designs", :action => "design", :permalink => reply_on.permalink%> 
+                                   <%else%>
+                                        <%= link_to  reply_on.title, :controller => reply_on_type.downcase.pluralize, :action => reply_on_type.downcase, :permalink => reply_on.permalink unless reply_on_type.nil?%>
+                                   <%end%>
+                    <%elsif manage_activity_stream.object_type == "Topic"%>
+                           <%= manage_activity_stream.object_type.downcase%>
+                           <%= link_to get_name(manage_activity_stream.object.title,100),:controller=>:discussions, :action => :topic,:permalink => manage_activity_stream.object.permalink %>                                
+                   <%end%>
+                   <%if manage_activity_stream.activity == "shared_with_followings"%>
+                     with everyone 
+                        <%if logged_in?%>
+                          <%if manage_activity_stream.actor == current_user%>
+                                you are
+                          <%else%>
+                                <%if manage_activity_stream.actor.gender == "Male"%> he is <%else%> she is <%end%>                            
+                          <%end%>
+                        <%else%>
+                                <%if manage_activity_stream.actor.gender == "Male"%> he is <%else%> she is <%end%>
+                        <%end%>
+                     following
+                   <%elsif manage_activity_stream.activity == "shared_with_followers"%>
+                            with 
+                        <%if logged_in?%>
+                          <%if manage_activity_stream.actor == current_user%>        
+                               your
+                          <%else%>
+                            <%if manage_activity_stream.actor.gender == "Male"%> his <%else%> her <%end%>  
+                          <%end%>
+                       <%else%>
+                         <%if manage_activity_stream.actor.gender == "Male"%> his <%else%> her <%end%>  
+                       <%end%>
+                        followers                
+                   <%end%>
+                  <br />
+                  <%= time_ago(manage_activity_stream.created_at) %>                 
+                  <br />
+                        <%if manage_activity_stream.object_type == "Design"%>
+                    <iframe src="http://www.facebook.com/plugins/like.php?href=http://fans.solidworks.in/<%=manage_activity_stream.object.class.to_s.downcase.pluralize%>/<%=manage_activity_stream.object.class.to_s.downcase%>/<%=manage_activity_stream.object.permalink%>&amp;layout=standard&amp;show_faces=true&amp;width=450&amp;action=like&amp;colorscheme=light&amp;height=80" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:30px;" allowTransparency="true"></iframe>
+                    <%end%>
+                      <br />
+                                   
+                   <!-- <br /><a href="#" class="black">Comment</a> --></div>
+              <div class ="cc4" style="width:8px">
+                    <%=link_to "X",{ :controller => "home", :action => "delete_activity", :id => manage_activity_stream}, :confirm => "Are you sure you want to delete this activity?"%>
+              </div>
+         </div>
+
+
+
+
+
+
+

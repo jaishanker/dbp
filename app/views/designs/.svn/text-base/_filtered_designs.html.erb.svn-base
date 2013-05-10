@@ -1,0 +1,7 @@
+<% unless @designs.length == 0 %>
+      <% @designs.each do |d| %>
+        <%= render :partial => "design",:locals => {:d => d,:same_design => true,:by_user=>false},:inline=>true %>
+      <% end %>
+<% else %>
+  No designs found
+<% end %>

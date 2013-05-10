@@ -1,0 +1,23 @@
+<%# if logged_in? %>
+<div id="managehome">
+    <ul class="admNav">
+        <li>
+            <%= link_to 'Manage Banner',:controller=> "admin/banner", :action => :index %>
+        </li>
+        <li>
+            <%= link_to 'Notify Users',:controller=>:admin_base, :action => :notify_users %>
+        </li>
+        <li>
+            <%= link_to 'Product Management',:controller=> "admin/products", :action => :index %>
+        </li>
+        <li>
+            <%= link_to 'Hall Of Fame',:controller=> "admin/hall_of_fame", :action => :index %>
+        </li>
+        <li>
+            <%= link_to 'News Rss',:controller=> "admin/news_rss", :action => :index %>
+        </li>
+    </ul>
+    <%=render :partial=>"admin_base/site_statistic" %>
+</div>
+<%#else %>
+<%#end %>

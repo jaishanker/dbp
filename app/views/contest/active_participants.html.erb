@@ -1,0 +1,84 @@
+<!-- Profile File Include --><%#= javascript_include_tag "Profile" %>
+<div class="clear">
+</div>
+<div class="content">
+  <!-- Left Col Start -->
+  <div class="c1">
+    <!-- Set Priority File Include -->
+<%#= javascript_include_tag "SetPriority"%>
+    <div class="clear">
+    </div>
+    <!-- Blue Box start -->
+    <div class="Blue4pxbox">
+      <code>
+        $(this).corner();
+      </code>
+      <div class="whiteBoxContent">
+        <!-- Design Central Start --><!-- Section Head start -->
+        <div class="pageheading">
+          <div class="c7 head14">
+                Active Contest Participants
+          </div>
+<!--
+          <div class="c5"> -->
+            <%#@type="designs/top_designers"%>
+            <%#=render :partial=>"search"%>
+         <!--  </div> -->
+
+        </div>
+        <p class="clear brdBot01">
+        </p>
+        <div class="pageheading">
+          <p class="c1 total">
+              <%#if @search_text%>
+                  <!-- <a>Top Active Found : <%#=@members.total_entries%></a> -->
+              <%#else%>
+                  <a>Total Active Participants : <%=@active_c_participants.total_entries%></a> 
+              <%#end%>
+          </p>
+          <p class="c3">
+            <span id="contest_pagination" class="pagination01"></span>
+          </p>
+        </div>
+       <%if @no_of_pages >= 2%>
+        <script type="text/javascript">
+          $(document).ready(function(){
+            $("#contest_pagination").paginate({
+              href : '/contest/active_participants?page=',   
+              count: <%=@no_of_pages%>,
+              start: <%=params[:page] || 1%>,
+              display: 5,
+              border: false,
+              text_color: '',
+              background_color: '',
+              text_hover_color: '',
+              background_hover_color: ''
+            });
+          });
+        </script>
+      <%end%>
+        <p class="frm_brd01"></p>
+        <p class="spacer05"></p>
+        <p class="spacer01"></p>
+        <!-- Design list -->
+        <%unless @active_c_participants.empty?%>
+          <%= render :partial => "/home/member" , :collection => @active_c_participants%>
+        <%else%>
+            No such active participants are there.
+        <%end%>
+
+        <p class="clear"></p>
+        <!-- Design Central End -->
+      </div>
+    </div>
+    <!-- Blue Box end -->
+    <div class="spacer">
+    </div>
+  </div>
+  <!-- Left Col End -->
+  <!-- Right Col Start -->
+  <div class="c2 rightcol" id="rightcol">
+    <%= render :partial => "right_col" %>
+  </div>
+  <!-- Right Col End -->
+</div>

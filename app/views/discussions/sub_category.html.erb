@@ -1,0 +1,143 @@
+<%= javascript_include_tiny_mce_if_used %>
+<%= tiny_mce if using_tiny_mce? %>
+<!-- Profile File Include --><%#= javascript_include_tag "Profile" %>
+<div class="clear">
+</div>
+<div class="content">
+    <!-- Left Col Start -->
+    <div class="c1">
+        <!-- Set Priority File Include --><%#= javascript_include_tag "SetPriority" %>
+        <div class="clear">
+        </div>
+        <!-- Blue Box start -->
+        <div class="Blue4pxbox">
+            <code>
+                $(this).corner();
+            </code>
+            <div class="whiteBoxContent">
+                <!-- Discussion List Start --><!-- Section Head start -->
+                <div class="pageheading">
+                    <div class="c7 head14">
+                        <p class="head">
+                            <a href="/discussions" style="color:#000000">Discussion Lounge </a>
+                        </p>
+                    </div>
+                    <div class="c5">
+                        <%@title_search="Search in Discussion" %>
+                        <%@type="discussions/search" %>
+                        <%=render :partial=>"/designs/search" %>
+                    </div>
+                </div>
+                <p class="clear brdBot01">
+                </p>
+                <div class="pageheading">
+                    <p class="c1 total">
+                        <a>Posts :&nbsp;<%=@posts %></a>
+                        | <a>Topics :&nbsp;<%=@topics %></a>
+                        | <a>Members :&nbsp;<%=@members %></a>
+                        | <a>Views :&nbsp;<%=@views %></a>
+                    </p>
+                </div>
+                <p class="clear brdBot01">
+                </p>
+                <!-- Section Head End --><!-- List start -->
+                <div class="discussion">
+                    <p class="spacer">
+                    </p>
+                    <p class="head">
+                        <%= link_to @sub_category.category.name,{:action => :category,:id => @sub_category.category.id }, :class => "aBlack" %>
+                        &nbsp;-&nbsp;<%= get_name(@sub_category.name) %>
+                    </p>
+                    <% if logged_in? %>
+                    <%# if @group_users.include?(current_user.id) %>
+                    <p class="grnbtn">
+                        <a href="/discussions/postadd?discussion_category_id=<%=@sub_category.category.id%>&sub_category_id=<%=@sub_category.id%>" onclick="postTopic();return hs.htmlExpand(this, { objectType:'ajax',outlineType:'rounded-white',width:480,height:500  },'Post New Forum Topic' );" id="href_2012748673">Add Post</a>
+                    </p>
+                    <%# end %>
+                    <% end %>
+                    <!-- Table Start -->
+                    <div class="tbl">
+                        <div class="tblRow tblHead">
+                            <p class="col1">
+                                Forum Discussions
+                            </p>
+                            <p class="col3">
+                                Posts
+                            </p>
+                            <p class="col4">
+                                Last Post
+                            </p>
+                            <p class="col6">
+                                Views
+                            </p>
+                        </div>
+                        <!-- Topic div start -->
+                        <div class="tblRow <%= cycle('trOdd','trEven') %>">
+                            <p class="col1">
+                                <strong><%= get_name(@sub_category.name) + " (#{@sub_category.topics.length} Topics)" %></strong>
+                                <br/>
+                                <%= @sub_category.description %>
+                            </p>
+                            <p class="col3">
+                                <span><%= get_post_count_sc(@sub_category) %></span>
+                            </p>
+                            <p class="col4">
+                                &nbsp;
+                            </p>
+                            <p class="col6">
+                                <span><%= get_view_count_sc(@sub_category) %></span>
+                            </p>
+                        </div>
+                        <% @sub_category.topics.each do |topic| %>
+                        <div class="tblRow">
+                            <p class="col5">
+                                <%= link_to get_name(topic.title,120),{:action => :topic,:permalink => topic.permalink},:class => "black03" %>
+                            </p>
+                            <p class="col3">
+                                <%= topic.posts.length %>
+                            </p>
+                            <p class="col4">
+                                by <%#= get_my_page_link(topic.posts.last.user.login,topic.posts.last.user.id) unless topic.posts.last.nil? %>
+                                <%= link_to get_name(topic.posts.last.user.login),my_page_path(:user_id => topic.posts.last.user.id) unless topic.posts.last.nil? %>
+                                <br/>
+                                <%= time_ago(topic.posts.last.created_at) unless topic.posts.last.nil? %>
+                                <%#= topic.posts.last.created_at.strftime("%a %b %d,%Y %H:%M %P")  unless topic.posts.last.nil? %>
+                            </p>
+                            <p class="col6">
+                                <%= topic.view_count.nil? ? 0 : topic.view_count %>
+                            </p>
+                        </div>
+                        <% end %>
+                        <p class="clear brdBot01">
+                        </p>
+                        <!-- Topic div end -->
+                    </div>
+                    <!-- Table end -->
+                </div>
+                <!-- List end -->
+                <p class="clear">
+                </p>
+                <!-- Discussion List End -->
+            </div>
+        </div>
+        <!-- Blue Box end -->
+        <div class="spacer">
+        </div>
+    </div>
+    <!-- Left Col End -->
+    <!-- Right Col Start -->
+    <div class="c2 rightcol" id="rightcol">
+        <%= render :partial => "right_col" %>
+    </div>
+    <!-- Right Col End -->
+</div>
+<script type = "text/javascript">
+        function postTopic(){
+        $('select').addClass('inputtxt01');
+     	unsetTextareaToTinyMCE('textarea_editor');
+        setTextareaToTinyMCE('textarea_editor');
+        $('#topic_discussion_category_id').change(function(){
+        <%= remote_function(:url => {:controller => '/discussions',:action => "update_sub_category"},:submit => "category_dropdown",:before => "$('#spinner').show();",:complete => "$('#spinner').hide();") %>
+        });
+        }
+</script>

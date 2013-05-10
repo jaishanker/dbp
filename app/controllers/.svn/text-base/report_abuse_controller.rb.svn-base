@@ -1,0 +1,46 @@
+class ReportAbuseController < ApplicationController
+
+  def report_abuse
+    @reasons = AbuseCause.find(:all)
+    @obj_id = params[:id]
+    @flag = params[:flag]
+    @type = params[:type_id]
+    @topic_id = params[:topic_id] unless params[:topic_id].nil?
+    @report_abuse = @type.constantize.find_by_user_id_and_entity_id(current_user.id, @obj_id) unless @obj_id.nil?
+    render :layout=>false
+  end
+
+  def report_abuse_post
+    if !params[:abuse][:abuse_selector].empty? and !params[:description].empty?
+        @report_abuse = params[:abuse][:type].constantize.find_by_user_id_and_entity_id(current_user.id, params[:abuse][:obj_id]) unless params[:abuse][:obj_id].nil?
+        if !@report_abuse.blank?
+          @report_abuse.entity_id = params[:abuse][:obj_id]
+          @report_abuse.user_id = current_user.id
+          @report_abuse.description = params[:description]
+          @report_abuse.abuse_cause_id = params[:abuse][:abuse_selector].to_s
+          @report_abuse.updated_at = Time.now()
+          @report_abuse.save
+          @flag=true
+        else
+          @report_abuse =  params[:abuse][:type].constantize.new :entity_id=>params[:abuse][:obj_id] , :user_id=>current_user.id, :abuse_cause_id=>params[:abuse][:abuse_selector].to_s ,:description=>params[:description],:created_at =>Time.now(),:updated_at=>Time.now()
+          @report_abuse.save
+        end
+        if @flag
+          message = "Abuse hase been successfully updated."
+        else
+          message = "Abuse has been successfully added"
+        end
+  #    flash[:notice] = message
+      render :update do |page|
+           page <<  "show_notice('#{message}','success')"
+           page << "$('.cancel_popup').trigger('click')"
+       end
+    else
+       message = "show_notice('Please select category and write note.','success')"
+       render :update do |page|
+          page << message
+       end
+    end
+  end
+
+end

@@ -1,0 +1,22 @@
+
+
+development:
+
+TEST_URL : http://localhost/test.csv
+OUTPUT_URL: http://fans.solidworks.in/
+OUTPUT_DIR: /root/Desktop/sitemaps/
+DELETE_OP_DIR_CONTENT: Y
+STATIC_FILE_NAME: static.xml
+SITE_URL: http://fans.solidworks.in/
+XML_NODE_LIMIT: 49995
+
+
+production:  
+
+TEST_URL : http://localhost/test.csv
+OUTPUT_URL: http://fans.solidworks.in/
+OUTPUT_DIR: /root/Desktop/sitemaps/
+DELETE_OP_DIR_CONTENT: Y
+STATIC_FILE_NAME: static.xml
+SITE_URL: http://fans.solidworks.in/
+XML_NODE_LIMIT: 49995

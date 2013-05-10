@@ -1,0 +1,241 @@
+<script>
+    function filterGroups(val){
+      window.location = '/groups?category_id=' + val
+    }
+</script>
+<!-- Profile File Include --><%#= javascript_include_tag "Profile" %>
+<div class="clear">
+</div>
+<!-- Container Start -->
+<div class="content">
+  <!-- Left Col Start -->
+  <div class="c1">
+    <!-- Blue Box start -->
+    <div class="Blue4pxbox">
+      <code>
+        $(this).corner();
+      </code>
+      <div class="whiteBoxContent">
+        <%= image_tag "banner-groups.jpg",:style => "margin:-10px;" %>
+        <div class="clear spacer05">
+        </div>
+        <!-- Group Start -->
+        <div class="pageheading">
+          <p class="c1 head14">
+            <%if @popular_group %>Popular <%elsif @active_group%> Active <%end%>Groups
+            <%if logged_in? %>
+              <%if current_user.expertise_points >= 4000%>
+                <%= link_to "Create Group", new_group_path, :class => "archive" %>
+              <%end%>
+            <%end %><!-- <a href="Group_create.html" class="archive">Create Group</a> -->
+          </p>
+          <div class="c5 total">
+            <%@type = "groups/index" %>
+            <%@title_search = "Search Groups" %>
+            <%= render :partial => "designs/search" %>
+            <!--
+            <div id="search_box">
+            <form action="/groups" method="get" id="search_form">
+            <input type="text" class="swap_value" value="Search" id="s" name="search">
+            <input type="image" height="20" width="18" title="Search" alt="Search" id="go" src="/images/btn_search_box.gif">
+            </form>
+            </div>
+            -->
+          </div>
+        </div>
+        <%if logged_in? %>
+          <div class="pageheading">
+            <%if current_user.expertise_points >= 4000%>
+              <p class="c1">
+                <strong>Congratulations!</strong>
+                You can create your own groups now.
+              </p>
+            <%else%>
+              <p class="c1">
+                Black belt Members can create groups.
+              </p>
+            <%end%>
+          </div>
+        <%end %>
+        <p class="clear brdBot01">
+        </p>
+        <div class="pageheading">
+          <p class="c1" id = "group_type_dropdown">
+            <%= select "group_type","filter", GROUP_TYPES.sort,{:selected => params[:category_id]}, {:class => "select01", :onchange => "filterGroups(this.value)"} %>
+            <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner",:style=>"display:none;padding-left:3px;" ) %>
+            <!--    	<select name="">
+            <option value="All Group Types">All Group Types</option>
+            <option value="Group One">Group One</option>
+            <option value="Group Two">Group Two</option>
+            </select>  -->
+          </p>
+          <p class="c3">
+            <span id="group_pagination" class="pagination01"></span>
+          </p>
+        </div>
+        <%if @no_of_pages >= 2 %>
+          <script type="text/javascript">
+            $(document).ready(function(){
+              $(function(){
+                $("#group_pagination").paginate({
+  <%if @search_text and !params[:category_id].blank?%>
+            href : '/groups/index?category_id='+<%=params[:category_id]%>+ '&search=<%=@search_text%>&page=',
+  <%elsif !params[:category_id].blank?%>
+            href : '/groups?category_id=<%=@category_id%>&page=',
+  <%elsif @search_text%>
+            href : '/groups?search=<%=@search_text%>&page=',
+  <%elsif @popular_group%>
+            href : '/groups?popular=<%=@popular_group%>&page=',
+  <%elsif @active_group%>
+            href : '/groups?active=<%=@active_group%>&page=',
+  <%else%>
+            href : '/groups?page=',
+  <%end%>
+          count: <%=@no_of_pages%>,
+          start: <%=params[:page] || 1%>,
+          display: 5,
+          border: false,
+          text_color: '',
+          background_color: '',
+          text_hover_color: '',
+          background_hover_color: ''
+        });
+      });
+      $(function(){
+        $("#group_pagination_bottom").paginate({
+  <%if @search_text and !params[:category_id].blank?%>
+            href : '/groups/index?category_id='+<%=params[:category_id]%>+ '&search=<%=@search_text%>&page=',
+  <%elsif !params[:category_id].blank?%>
+            href : '/groups?category_id=<%=@category_id%>&page=',
+  <%elsif @search_text%>
+            href : '/groups?search=<%=@search_text%>&page=',
+  <%elsif @popular_group%>
+            href : '/groups?popular=<%=@popular_group%>&page=',
+  <%else%>
+            href : '/groups?page=',
+  <%end%>
+          count: <%=@no_of_pages%>,
+          start: <%=params[:page] || 1%>,
+          display: 5,
+          border: false,
+          text_color: '',
+          background_color: '',
+          text_hover_color: '',
+          background_hover_color: ''
+        });
+      });
+                                                                                                    
+    });
+                                                        
+                                    
+          </script>
+        <%end %>
+        <p class="clear brdBot01">
+        </p>
+        <div id="group_results">
+          <%if !@groups.empty? %>
+            <%for group in @groups %>
+              <!-- Four col comment start -->
+              <div class="group">
+                <div class="fourCol">
+                  <div class="c1">
+                    <!-- <img src="../images/group01.gif" width="125" height="80" alt="DWG Editor" />-->
+                    <%= link_to get_image(group,'groups','small'), permalink_url(group.permalink) %>
+    <%#= get_image(group,'groups','small') %>
+                  </div>
+                  <div class="c2">
+                    <p class="cc2">
+                      Name:
+                    </p>
+                    <p class="cc2">
+                      Type:
+                    </p>
+                    <p class="cc2">
+                      Members:
+                    </p>
+                  </div>
+                  <div class="c3" style="width:37%">
+                    <p class="cc3 head">
+                      <%=link_to group.name, permalink_url(group.permalink) %>
+                    </p>
+                    <p class="cc3">
+                      <%= !group.group_type.nil? ? group.group_type: "<br/>" %>
+                    </p>
+                    <p class="cc3">
+                      <%if group.users.size == 0%>
+                        None
+                      <%else%>
+                        <%=link_to number_with_delimiter(group.users.size).to_s+" members",members_group_path(group)%>
+                      <%end%>
+    <%#=number_with_delimiter(group.users.size) %><!--members-->
+                    </p>
+                  </div>
+                  <div class="c4" style="width:26%">
+                    <%if logged_in? %>
+                      <%if group.owner_id == current_user.id%>
+                        <%= link_to "Edit", edit_group_path(group), :class => "grnbtn" %>
+                        <%= link_to "Delete", delete_group_path(group), :class => "grnbtn",:confirm=>"Are you sure you want to delete this group?" %>
+                      <%else%>
+                        <%unless group.users.include?(current_user) %>
+                          <%= link_to "Join Group", join_group_path(:id=>group.id), :class => "grnbtn" %>
+                        <%else %>
+                          <%= link_to "Unjoin", unjoin_group_path(group), :class => "grnbtn",:confirm=>"Are you sure you want to unjoin this group?" %>
+                        <%end %>
+                      <%end%>
+                    <%end %>
+                  </div>
+                </div>
+              </div>
+              <!-- Four col comment end --><%end %>
+          <%else %>
+            No groups found.<%end %>
+          <p class="clear">
+          </p><p class="clear brdBot01">  </p>
+          <div class="pageheading">
+            <p class="c1 total" id="disign_filter">
+            <p class="c3">
+              <span id="group_pagination_bottom" class="pagination01"></span>
+            </p>
+            </p>
+          </div><p class="clear brdBot01">  </p>
+          <p class="spacer01">
+          </p>
+          <!-- Group End -->
+          <div class="group" id="activities">
+            <div class="threCol">
+              <div class="head">
+                Recent Group Activities
+              </div>
+            </div>
+            <%unless @group_activities.empty? %>
+              <%= render :partial => 'activity_streams/activity_stream', :collection => @group_activities %>
+              <div id="more_activities_link">
+                <p class="spacer03">
+                  <span class="grnbtn02"><%= link_to_remote "Show More",  :url =>{:controller=>"discussions",:action=>"get_more_groups_activities",:offset=>@offset}  , :before => "$('#spinner_show').show()", :complete => "destroyDiv('more_activities_link')" %>
+                  </span>
+                  <span><%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner_show",:style=>"display:none; width: 16px; margin-top: 0px;" ) %></span>
+                </p>
+              </div>
+            <%else %>
+              Sorry, no recent activities<%end %>
+          </div>
+          <p class="clear"/>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Blue Box end -->
+    <div class="spacer">
+    </div>
+  </div>
+  <!-- Left Col End -->
+  <!-- Right Col Start -->
+  <div class="c2 rightcol" id="rightcol_group">
+    <%=render :partial=>"groups/right_col" %>
+  </div>
+  <!-- Right Col End -->
+</div>
+<!-- Container End -->
+<div class="clear">
+</div>

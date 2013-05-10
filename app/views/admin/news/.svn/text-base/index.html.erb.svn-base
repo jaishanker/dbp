@@ -1,0 +1,99 @@
+<!-- Container Start -->
+<div class="content">
+    <%= render :partial => "top_nav" %>
+    <h1>News - Generic Report</h1>
+    <form id="form1" name="form1" method="post" action="">
+        <table border="0" cellpadding="5" cellspacing="0" id="mytable01">
+            <tr>
+                <td colspan="2">
+                    <ul class="admtot">
+                        <li>
+                            Total News:&nbsp;<%= @news_count %> 
+                        </li>
+                        <li>
+                            Total Views:&nbsp;<%= @views_count %>
+                        </li>
+                        <li>
+                            Total Comments:&nbsp;<%= @comments_count %> 
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <br/>
+    <p style="float:right;">
+        <%= link_to "Download Report",:controller => "admin/news",:action => "download" %>
+    </p>
+    <br/><div class="clear">&nbsp;</div>
+    <div class="demo_jui">
+        <table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
+            <thead>
+                <tr class="dataTable">
+                    <th width="20%">
+                        News Title
+                    </th>
+                    <th width="8%">
+                        Start Date
+                    </th>
+                    <th width="8%">
+                        End Date
+                    </th>
+                    <th width="10%">
+                       Views
+                    </th>
+                    <th width="10%">
+                        Comments
+                    </th>
+                    <th width="15%">
+                        Status
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <% unless @news.length == 0 %>
+                <% @news.each do |l| %>
+                <tr class="dataTable">
+                    <td>
+                          <a target = "_blank" href="/news/news/<%= l.permalink %>"><%=get_name(l.title,50)%></a>&nbsp;|&nbsp;
+						 <%= link_to  "View Stats"  ,:controller=>"admin/news", :action => :report,:id => l.id %>&nbsp;|&nbsp;
+                          <%= link_to  "Edit"  ,:controller=>"admin/news", :action => :edit,:permalink => l.permalink %>
+                  </td>
+                    <td>
+                        <%= l.start_date.strftime("%d %b %Y") %>
+                    </td>
+					 <td>
+                        <%= l.end_date.strftime("%d %b %Y") %>
+                    </td>
+                    <td align="center">
+                        <%= l.view_count.nil? ? 0 : l.view_count %>
+                    </td>
+                    <td align="center">
+                          <%= l.comments.length %>
+                    </td>
+                    <td align="center">
+                        <label>
+                            <%= radio_button_tag "newsCentral#{l.id}","enabled",l.status.to_i == 1,:onclick => remote_function(:url => {:controller => "admin/news",:action => "update_status",:id => l.id,:status => 1}) %>Active
+                        </label>
+                        <label>
+                            <%= radio_button_tag "newsCentral#{l.id}","disabled",l.status.to_i == 0,:onclick => remote_function(:url => {:controller => "admin/news",:action => "update_status",:id => l.id,:status => 0}) %>Deactive
+                        </label>
+                    </td>
+                </tr>
+                <% end %>
+                <% end %>
+            </tbody>
+        </table>
+    </div>
+    <div id="chartdiv" align="center">
+      
+    </div>
+    <script type="text/javascript">
+    	/*
+        var chart = new FusionCharts("Charts/FCF_MSColumn3D.swf", "ChartId", "800", "450");
+        chart.setDataURL("Data/newsCenterReport.xml");
+        chart.render("chartdiv");
+        */
+    </script>
+</div>
+<!-- Container End -->

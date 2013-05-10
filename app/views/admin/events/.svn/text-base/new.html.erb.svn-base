@@ -1,0 +1,182 @@
+<%= javascript_include_tag "jquery-ui.js","ui.dropslide.js","jquery.date_input","jquery.anchorHandler","jquery.utils","jquery.strings","ui.timepickr.js","jquery.autocomplete.js" %>
+<%= stylesheet_link_tag "date_input","jquery.autocomplete.css" %>
+<%= render :partial => "top_nav" %>
+<!-- Blue Box start -->
+<div class="Blue4pxbox">
+    <code>
+        $(this).corner();
+    </code>
+    <div class="profileForm">
+        <!-- Page Head start -->
+        <div class="pageheading">
+            <div class="c1 head14">
+                Add Event
+            </div>
+        </div>
+        <!-- Page Head end -->
+        <div class="brdBot01">
+        </div>
+        <!-- Form Start --><p class="spacer04"/><% form_for(@event,:url => {:action => :create},:html => {:multipart => true}) do |f| %>
+        <%= error_messages_for :event,:header_message => nil,:message => nil %>
+        <div class="uplooad">
+            <div class="formrow">
+                <p class="c1">
+                    Topic:
+                </p>
+                <p class="c2">
+                    <%= f.text_field :topic, :class => "inputtxt04 ac" %>
+                </p>
+            </div>
+            <div class="formrow">
+                <p class="c1">
+                    Type:
+                </p>
+                <p class="c2">
+                      <%= f.select(:eventtype,EVENT_TYPES) %>
+                </p>
+            </div>
+            <div class="formrow">
+                <p class="c1">
+                    Product:
+                </p>
+                <p class="c2">
+                    <%= f.text_field :product, :class => "inputtxt04  ac" %>
+                </p>
+            </div>
+            <div class="formrow">
+                <p class="c1">
+                    Organizer:
+                </p>
+                <p class="c2">
+                    <%= f.text_field :organizer, :class => "inputtxt04  ac" %>
+                </p>
+            </div>
+            <div class="formrow">
+                <p class="c1">
+                    Description:
+                </p>
+                <p class="c2">
+                    <%= f.text_area :description, :class => "inputtxt04",:rows => 6 %>
+                </p>
+            </div>
+            <div class="formrow">
+                <p class="c1">
+                    Date:
+                </p>
+                <p class="c2">
+                    <%= f.text_field :date, :class => "inputtxt04 date_input" %>
+                </p>
+            </div>
+            <div class="formrow">
+                <p class="c1">
+                    Start Time:
+                </p>
+                <p class="c2">
+                    <%= f.text_field :start_time, :class => "inputtxt04 time_input" %>
+                </p>
+            </div>
+            <div class="formrow">
+                <p class="c1">
+                    End Time:
+                </p>
+                <p class="c2">
+                    <%= f.text_field :end_time, :class => "inputtxt04 time_input" %>
+                </p>
+            </div>
+            <div class="formrow">
+                <p class="c1">
+                    City:
+                </p>
+                <p class="c2">
+                    <%= f.text_field :city, :class => "inputtxt04 ac" %>
+                </p>
+            </div>
+            <div class="formrow">
+                <p class="c1">
+                    State:
+                </p>
+                <p class="c2">
+                    <%= f.select(:state,INDIA_STATES) %>
+                </p>
+            </div>
+            <div class="formrow">
+                <p class="c1">
+                    Pin code:
+                </p>
+                <p class="c2">
+                    <%= f.text_field :pin, :class => "inputtxt04" %>
+                </p>
+            </div>
+            <div class="formrow">
+                <p class="c1">
+                   Venue Location:
+                </p>
+                <p class="c2">
+                    <%= f.text_area :location, :class => "inputtxt04",:rows => 6 %>
+                </p>
+            </div>
+            <div class="formrow">
+                <p class="c1">
+                    Sponsor:
+                </p>
+                <p class="c2">
+                    <%= f.text_field :sponsor, :class => "inputtxt04" %>
+                </p>
+            </div>
+            <div class="formrow">
+                <p class="c1">
+                    Phone no:
+                </p>
+                <p class="c2">
+                    <%= f.text_field :phone_no, :class => "inputtxt04" %>
+                </p>
+            </div>
+            <div class="formrow">
+                <p class="c1">
+                    Directions:
+                </p>
+                <p class="c2">
+                    <%= f.text_area :directions, :class => "inputtxt04",:rows => 6 %>
+                </p>
+            </div>
+            <div class="formrow">
+                <p class="c1">
+                    Agenda:
+                </p>
+                <p class="c2">
+                    <%= f.text_area :agenda, :class => "inputtxt04",:rows => 6 %>
+                </p>
+            </div>
+            <div class="formrow">
+                <p class="c1">
+                    &nbsp;
+                </p>
+                <p class="c2">
+                    <%= submit_tag "Submit",:class => "grnbtn01" %>
+                </p>
+            </div>
+            <% end %>
+        </div>
+        <!-- Form End -->
+    </div>
+</div>
+<!-- Blue Box end -->
+<script type = "text/javascript">
+     $(document).ready(function(){
+    $('.ac').each(function(i, el){
+        $(el).autocomplete("/admin/events/auto_complete?type=" + $(el).attr('id').split('_')[1] , {
+            width: 260,
+            selectFirst: false
+        });
+    });
+    
+    $('select').addClass('inputtxt04')
+    
+    $(function(){
+        $(".date_input").date_input();
+        $('.time_input').timepickr({
+            convention: 12
+        });
+    });
+     });
+</script>

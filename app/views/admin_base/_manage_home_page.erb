@@ -1,0 +1,22 @@
+
+
+<ul class="admNav">
+  <li>
+    <%= link_to_remote 'Content Positions',:url =>{:controller=>:admin_base, :action => :content_position}%>
+  </li>
+  <li>
+    <%= link_to_remote 'Banner - Main',:url =>{:controller=>:admin_base, :action => :banner_main}%>
+  </li>
+  <li>
+    <%= link_to_remote 'Banner - Top Two',:url =>{:controller=>:admin_base, :action => :banner_top_two}%>
+  </li>
+  <li>
+    <%= link_to_remote 'Banner - Right Panel',:url =>{:controller=>:admin_base, :action => :banner_right_panel}%>
+  </li>
+  <li>
+    <%= link_to_remote 'Right Panel Positions',:url =>{:controller=>:admin_base, :action => :right_panel_position}%>
+  </li>
+</ul>
+<div id="admin_navigation">
+  <%=render :partial=>"admin_base/content_position" %>
+</div>

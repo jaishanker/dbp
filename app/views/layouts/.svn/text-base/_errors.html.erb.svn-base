@@ -1,0 +1,27 @@
+<ul class="error_ul">
+    <%= error_messages_for :learning_category , :header_message =>nil ,:message => nil, :class=>"error_ul" %>
+</ul>
+<ul class="error_ul">
+    <%= error_messages_for :category , :header_message =>nil ,:message => nil, :class=>"error_ul" %>
+</ul>
+<ul class="error_ul">
+    <%= error_messages_for :design_category , :header_message =>nil ,:message => nil, :class=>"error_ul" %>
+</ul>
+<ul class="error_ul">
+    <%= error_messages_for :discussion_category , :header_message =>nil ,:message => nil, :class=>"error_ul" %>
+</ul>
+<ul class="error_ul">
+    <%= error_messages_for :group_category , :header_message =>nil ,:message => nil, :class=>"error_ul" %>
+</ul>
+<ul class="error_ul">
+    <%= error_messages_for :news_category , :header_message =>nil ,:message => nil, :class=>"error_ul" %>
+</ul>
+<ul class="error_ul">
+    <%= error_messages_for :sub_category , :header_message =>nil ,:message => nil, :class=>"error_ul" %>
+</ul>
+<ul class="error_ul">
+    <%= error_messages_for :topic , :header_message =>nil ,:message => nil, :class=>"error_ul" %>
+</ul>
+<ul class="error_ul">
+    <%= error_messages_for :news_rss , :header_message =>nil ,:message => nil, :class=>"error_ul" %>
+</ul>

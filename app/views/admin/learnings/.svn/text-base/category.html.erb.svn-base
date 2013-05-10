@@ -1,0 +1,109 @@
+<!-- Container Start -->
+<div class="content">
+    <%= render :partial => "top_nav" %>
+    <h1>Learning Center - Manage Category<span class="fright">Total Category:&nbsp;<%= @categories.length %></span></h1>
+    <table border="0" cellpadding="5" cellspacing="0" id="mytable01">
+        <tr>
+            <td>
+                <ul class="admtot">
+                    <li>
+                        Total Materials:&nbsp;<%= @learning_count %>
+                    </li>
+                    <li>
+                        Total Favorited:&nbsp;<%= @favorites_count %>
+                    </li>
+                    <li>
+                        Total Views:&nbsp;<%= @views_count %>
+                    </li>
+                    <li>
+                        Total Rated:&nbsp;<%= @ratings_count %>
+                    </li>
+                    <li>
+                        Total Comments:&nbsp;<%= @comments_count %>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            <div id = "error">
+            </div>
+        </tr>
+        <tr>
+            <td>
+                <% remote_form_for(@learning_category, :url => "/admin/learnings/category_create", :before => "$('#spinner').show();", :complete => "$('#spinner').hide();") do |f| %>
+                Create Category&nbsp;<%= f.text_field :name,:class => "inputtxt01" %>
+                <%= f.submit "Create",:class => "grnbtn02" %>
+                <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner",:style=>"display:none; width: 20px;height:20px; margin-top: 0px;" ) %>
+                <% end %>
+            </td>
+        </tr>
+    </table>
+    <br/>
+    <form id="form1" name="form1" method="post" action="">
+        <div class="demo_jui">
+            <table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
+                <thead>
+                    <tr class="dataTable">
+                        <th width="24%">
+                            Category Name
+                        </th>
+                        <th width="9%">
+                            Date
+                        </th>
+                        <th width="8%">
+                            Action
+                        </th>
+                        <th width="20%">
+                            Status
+                            <br/>
+                            Active / Inactive
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% unless @categories.length == 0 %>
+                    <% @categories.each do |c| %>
+                    <tr class="dataTable">
+                        <td>
+                            <a href="#"><%= get_name(c.name) %></a>
+                        </td>
+                        <td>
+                            <%= c.created_at.strftime("%d %b %Y") %>
+                        </td>
+                        <td align="center">
+                            <label>
+                                <a id="edit_cat_href_<%= c.id%>" onclick="return hs.htmlExpand(this, { objectType:'ajax',outlineType:'rounded-white',width:500,height:225  },'Edit Category' )" href="/admin_base/edit_category/<%=c.id%>">Edit</a>
+                            </label>
+                            &nbsp;|&nbsp;
+                            <label>
+                                <%= link_to "Delete",{:controller => "admin/learnings",:action => "delete_category",:id => c.id} ,{:confirm => "are you sure you whnt to delete this category ?"} %>
+                            </label>
+                        </td>
+                        <td align="center">
+                            <label>
+                                <%= radio_button_tag "learningCentral#{c.id}","enabled",c.status.to_i == 1,:onclick => remote_function(:url => {:controller => "admin/learnings",:action => "update_cat_status",:id => c.id,:status => 1}) %>Active
+                            </label>
+                            <label>
+                                <%= radio_button_tag "learningCentral#{c.id}","disabled",c.status.to_i == 0,:onclick => remote_function(:url => {:controller => "admin/learnings",:action => "update_cat_status",:id => c.id,:status => 0}) %>Deactive
+                            </label>
+                        </td>
+                    </tr>
+                    <% end %>
+                    <% end %>
+                </tbody>
+            </table>
+        </div>
+    </form>
+</div>
+<!-- Container End -->
+<script type = "text/javascript">
+    
+    $(document).ready(function(){
+        $('.delete_cat').click(function(i, el){
+            el = $(el);
+            
+        })
+    });
+    
+</script>

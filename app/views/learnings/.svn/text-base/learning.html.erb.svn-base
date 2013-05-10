@@ -1,0 +1,392 @@
+<script>
+                  function toggleCommentDiv(){
+                    $('#learning_share').hide();
+                    $('#learning_favorite').hide();
+                    $('#learning_comment').slideToggle();
+                  }
+                  function toggleShareDiv(){
+                    $('#learning_comment').hide();
+                    $('#learning_favorite').hide();
+                    $('#learning_share').slideToggle();
+                  }
+                  function toggleFavoriteDiv(){
+                    $('#learning_comment').hide();
+                    $('#learning_share').hide();
+                    $('#learning_favorite').slideToggle();
+                  }
+                  function toggleAbuseDiv(){
+                    $('#report_abuse').slideToggle();
+                  }
+                function checkFollowings(){
+                  <%if logged_in?%>
+                      <%if current_user.following_by_type('User').empty?%>
+                        show_notice('You are not following anybody yet','error')
+                        return false;
+                      <%end%>
+                  <%end%>
+                }
+                function checkFollowers(){
+                  <%if logged_in?%>
+                      <%if current_user.followers.empty?%>
+                        show_notice('You dont have any followers yet','error')
+                        return false;
+                      <%end%>
+                  <%end%>
+                }
+</script>
+<div class="clear">
+</div>
+<div class="content">
+    <!-- Left Col Start -->
+    <div class="c1">
+        <div class="clear">
+        </div>
+        <!-- Blue Box start -->
+        <div class="Blue4pxbox">
+            <code>
+                $(this).corner();
+            </code>
+            <div class="whiteBoxContent">
+                <!-- Design Central Start --><!-- Section Head start -->
+                <div class="pageheading">
+                    <div class="c7 head14">
+                        Learning Center
+                    </div>
+                    <div class="c5">
+                        <%@title_search="Search in Learnings" %>
+                        <%@type="learnings" %>
+                        <%=render :partial=>"designs/search" %>
+                    </div>
+                </div>
+                <p class="clear brdBot01">
+                </p>
+                <div class="pageheading">
+                    <p class="c1 total">
+                        <select name="searchField" class="select01" onchange ="filterLearnings(this.value)">
+                            <option value = "all">All</option>
+                            <%grouped_options ={ 'Categories' => LearningCategory.all_active.map{|c| [c.name,c.id.to_s]} , 'Types' =>LEARNING_FORMAT} %>
+                            <%=grouped_options_for_select(grouped_options,params[:category_id],'Sort by') %>
+                            <%#= options_for_select LearningCategory.all_active.map{|c| [c.name,c.id]} %>
+                        </select>
+                        Total Learnings : <%= @learning_count %>
+                    </p>
+                    <p class="c3">
+                        <span id="design_pagination" class="pagination01"></span>
+                    </p>
+                </div>
+                <!--
+                <script type="text/javascript">
+                $(function(){
+                $("#design_pagination").paginate({
+                count: 500,
+                start: 100,
+                display: 5,
+                border: false,
+                text_color: '',
+                background_color: '',
+                text_hover_color: '',
+                background_hover_color: ''
+                });
+                });
+                </script>
+                -->
+                <p class="clear brdBot01">
+                </p>
+                <!-- Section Head End --><!-- Two col comment start -->
+                <div class="twocol">
+                    <div class="c3">
+                        <p class="head01">
+                            <a href="#"><%= get_name(@learning.title,75) %></a>
+                        </p>
+                        <!--<p class="txt01 fleft">
+                        - by&nbsp;
+                        </p>
+                        <p class="txtblue fleft">
+                        <%#= link_to get_name(@learning.user.login,8),my_page_path(:user_id => @learning.user.id)%>
+                        <a href="Members_Page.html"><%#= get_name(@design.user.login) %></a>
+                        </p>-->
+                        <p class="txt01 fleft">
+                            &nbsp;<%= time_ago(@learning.created_at) %>&nbsp;
+                        </p>
+                        <% l = @learning %>
+                        <div id="rated_<%=l.id%>" style="display:block;">
+                            <%=render :partial=>"/learnings/star_rate" ,:locals => {:d => @learning },:inline=>true %>
+                        </div>
+                        <div class="viewcomm01">
+                            <p class="views">
+                            </p>
+                            <p class="icolink">
+                                <%= get_view_count(@learning.view_count) %>
+                            </p>
+                            <p class="comments">
+                            </p>
+                            <p class="icolink">
+                                <a><%length = @learning.comments.length %>
+                                    <%if length == 1 %>
+                                    <%c_name = "comment" %>
+                                    <%else %>
+                                    <%c_name = "comments" %>
+                                    <%end %>
+                                    <span id="total_comment_top"><%=length %></span>&nbsp;<%=c_name %>
+                                </a>
+                            </p>
+                            <p class="favorites">
+                            </p>
+                            <p class="icolink">
+                                <%fav = @learning.favoriting_users.size %>
+                                <%if fav == 1 %>
+                                <%f_name = "favorite" %>
+                                <%else %>
+                                <%f_name = "favorites" %>
+                                <%end %>
+                                <%=fav %>&nbsp;<%=f_name %>
+                            </p>
+                            <p class="clear">
+                            </p>
+                        </div>
+                    </div>
+                    <p class="clear">
+                    </p>
+                    <%if logged_in? %>
+                    <% if @learning.embed_code.blank? %>
+                    <p class="txt" style="text-align:center">
+                        <%= get_image(@learning,'design','large') %>
+                    </p>
+                    <% else %>
+                    <p class="txt" style="text-align:center;">
+                        <%= @learning.embed_code %>
+                    </p>
+                    <% end %>
+                    <%else %>
+                    <p class="txt" style="text-align:center">
+                        <%= get_image(@learning,'design','large') %>
+                    </p>
+                    <!--
+                    <p class="spacer01 brdBot01">
+                    </p>
+                    <p class="txt topmargin">
+                    Please login to watch video related to this post.
+                    </p>
+                    <p class="spacer01 brdBot01">
+                    </p>
+                    -->
+                      <%end %>
+                    <p class="clear">
+                    </p>
+                    <p class="txt topmargin">
+                        <%=h @learning.description %>
+                    </p>
+                    <% unless @learning.tags.nil? %>
+                    <% unless @learning.tags.length == 0 %>
+                    <p class="tags">
+                        <% @learning.tags.split(',').each do |tag| %>
+                        <%= link_to h(tag) , :controller => "learnings", :action => "index" , :tag => tag, :tagable_id => @learning.id %><%= "," unless tag == @learning.tags.split(',').last %>
+                        <% end %>
+                    </p>
+                    <% end %>
+                    <% end %>
+                  <div class="clear spacer05">
+                  </div>
+                    <p class="spacer01 brdBot01">
+                    </p>
+                     <div class="clear spacer05">
+                  </div>
+                    <%url = request.host_with_port %>
+                    <iframe src="http://www.facebook.com/plugins/like.php?href=http://fans.solidworks.in/<%=@learning.class.to_s.downcase.pluralize%>/<%=@learning.class.to_s.downcase%>/<%=@learning.permalink%>&amp;layout=standard&amp;show_faces=true&amp;width=450&amp;action=like&amp;colorscheme=light&amp;height=80" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:80px;" allowTransparency="true"></iframe>
+                    <%if logged_in? %>
+                    <p class="combox" style="float:right;text-align:right;">
+                        <span class="abuse"></span>
+                        <% @comment = "LearningReportAbuse" %>
+                        <a id="href_2012748673" onclick="return hs.htmlExpand(this, { objectType:'ajax',outlineType:'rounded-white',width:450,height:325  },'Report Abuse' )" href="<%=report_abuse_path%>/?id=<%=@learning.id%>&flag=learning&type_id=<%=@comment%>">Report Abuse</a>
+                    </p>
+                    <%end %>
+                    <p class="spacer01">
+                    </p>
+                    <p class="spacer01 brdBot01">
+                    </p>
+                    <a name="descom"></a>
+                    <% @comment = "LearningReportAbuse" %>
+                    <%=render :partial=>"/designs/report_abuse", :locals => {:comment=>@comment,:design_id=>@learning.id,:reasons=>@reasons,:flag=>"learning"},:inline=>true %>
+                    <!-- Heading Start -->
+                    <div class="pageheading">
+                        <p class="c1 head12">
+                            Comments
+                        </p>
+                        <p class="c3">
+                            <span id="pagination" class="pagination01"></span>
+                        </p>
+                        <p class="c2 total" id="total_comment">
+                            Total Comments :<%= @learning.comments.length %>
+                        </p>
+                    </div>
+                    <p class="clear brdBot01">
+                    </p>
+                    <!-- Heading end --><!-- Three col comment start -->
+                    <div id="learning_comments">
+                        <%unless @learning_comments.empty? %>
+                        <%=render :partial=>"learnings/learning_comment", :collection => @learning_comments %>
+                        <div id="more_learning_comments_link">
+                            <p class="spacer03">
+                                <span class="grnbtn02"><%= link_to_remote "Show More",    :url => { :action => "show_more_comments",:id =>@learning.id,  :offset => @offset }, :before => "$('#spinner_show').show()", :complete => "destroyDiv('more_learning_comments_link')" %></span>
+                                <span><%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner_show",:style=>"display:none; width: 16px; margin-top: 0px;" ) %></span>
+                            </p>
+                        </div>
+                        <%else %>
+                        No comment for this learning material yet. Be the first to comment!<%end %>
+                    </div>
+                    <!-- Three col comment end -->
+                    <div class="iconComment brdBotDot01">
+                        <div>
+                            <div class = "fleft">
+                                <p class="postcom">
+                                </p>
+                                <p class="icolink">
+                                    <a href="javascript:void(0);" class="blacklink" onclick="toggleCommentDiv()">Comment </a>
+                                </p>
+                                <p class="share">
+                                </p>
+                                <p class="icolink">
+                                    <a href="javascript:void(0);" class="blacklink" onclick="toggleShareDiv()">Share</a>
+                                </p>
+                                <!--
+                                <p class="sameuser">
+                                </p>
+                                <p class="icolink">
+                                <a href="DesignBy.html" class="blacklink">Show Similar Content</a>
+                                </p>
+                                -->
+                                <p class="favorites">
+                                </p>
+                                <p class="icolink">
+                                    <a href="javascript:void(0);" class="blacklink" onclick="toggleFavoriteDiv()">Add to Favorites</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Comment form starts -->
+                <div id = "learning_comment" style ="display:block;">
+                    <div id="ComContent">
+                        <% if logged_in? %>
+                        <div class="brd">
+                            <%@type="Learning" %>
+                            <% form_remote_tag :url=>{:controller=>'comment',:action=>'post_comment',:id=>l.id,:type=>@type} ,:html=>{:name=>'postcomment'} , :before => "$('#spinner').show();",:complete => "$('#spinner').hide();" do %>
+                            <%= text_area_tag 'comment_text', nil, :class => 'inputtxt' %>
+                            <%= submit_tag 'Post' ,:class=>'grnbtn' %>
+                            <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner",:style=>"display:none; width: 20px; margin-top: 0px;" ) %>
+                            <%end %>
+                        </div>
+                        <%else %>
+                        <div class="brd">
+                            Please login to post comment.
+                        </div>
+                        <%end %>
+                    </div>
+                </div>
+                <!-- comment form ends --><!-- sharing form -->
+                <div id = "learning_share" style ="display:none;">
+                    <div id="ComContent">
+                        <%if logged_in?%>
+                        <%height = "height:153px;"%>
+                        <%else%>
+                        <%height = "height:51px;"%>
+                        <%end%>
+                        <div class="brd" style="<%=height%>">
+                            <div class="group iconComment">
+                               <% if logged_in? %>
+                                <div class="fourCol">
+                                    <p class="c7">
+                                        <span class="followingIcon"></span>
+                                        <span class="black">Share with People You Follow</span>
+                                    </p>
+                                    <% form_remote_tag :url => {:controller=> "share",:action => 'share_with_followings'} do -%>
+                                    <p class="c8">
+                                        <%=hidden_field_tag 'id', l.id %>
+                                        <%=hidden_field_tag 'type', @type %>
+                                        <!-- <%=check_box_tag 'all_following', '1', false, :class => 'inputcheck'%>All Followings --><span><%= submit_tag 'Share' , :class=>"grnbtn01" %></span>
+                                    </p>
+                                    <%end %>
+                                    <p class="frm_brd01">
+                                    </p>
+                                </div>
+                                <div class="fourCol">
+                                    <p class="c7">
+                                        <span class="followersIcon"></span>
+                                        <span class="black">Share with Followers</span>
+                                    </p>
+                                    <% form_remote_tag :url => "/share/share_with_followers" do -%>
+                                    <p class="c8">
+                                        <%=hidden_field_tag 'id', l.id %>
+                                        <%=hidden_field_tag 'type', @type %>
+                                        <!-- <%=check_box_tag 'all_followers', '1', false, :class => 'inputcheck'%>All Followers --><span><%= submit_tag 'Share' , :class=>"grnbtn01" %></span>
+                                    </p>
+                                    <%end %>
+                                    <p class="frm_brd01">
+                                    </p>
+                                </div>
+                              <%end%>
+                                <%=render :partial=>"designs/share_with_other" ,:locals=>{:d=>l,:flag=>true},:inline=>true %>
+                                <!-- <div class="fourCol">
+                                <p class="c7">
+                                <span class="othernetwork"></span>
+                                <span class="black">Share with Other Network</span>
+                                </p>
+                                <ul class="shareIcons">
+                                <li><a class="shareFacebook" target = "_blank" href="http://www.facebook.com/sharer.php?u=http://<%=request.host_with_port%>/learnings/learning/<%=l.id%>"></a></li>
+                                <li><a class="shareOrkut" target = "_blank" href="http://promote.orkut.com/preview?nt=orkut.com&du=http://<%=request.host_with_port%>/learnings/learning/<%=l.id%>&tt=<%=@title%>&cn=<%=@description%>&tn=<%= l.pictures[0].nil? ? "" : l.pictures[0].photo.url(:medium) %>"></a></li>
+                                <li><a class="shareTwitter" target = "_blank" href="http://twitter.com/home?status=<%=@title%> http://<%=request.host_with_port%>/learnings/learning/<%=l.id%>" title=""></a></li>
+                                </ul>
+                                <p class="clear10"></p>
+                                </div>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- sharing form end -->
+                <div id = "learning_favorite" style ="display:none;">
+                    <div id="ComContent">
+                        <% if logged_in? %>
+                        <%if current_user.has_favorite?(l) %>
+                        <div class="brd">
+                            You have already favorited this learning material.
+                        </div>
+                        <%else %>
+                        <div class="brd">
+                            <form action="postcomment.jsp" method="get" name="postcomment">
+                                <p style="float:left;">
+                                    Do you want to Add this Learning to your Favorites?
+                                </p>
+                                <p style="float:left;">
+                                    <label>
+                                        <input type="radio" name="RadioGroup1" value="yes" id="RadioGroup1_0"<% if logged_in? %><%unless current_user.has_favorite?(l) %>onclick="<%= remote_function :url =>{:controller => "share", :action => :add_to_favorite, :id => l.id ,:type=>@type} %>" <%end %><%if current_user.has_favorite?(l) %>checked="checked" <%end %><%end %>/>Yes
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="RadioGroup1" value="yes" id="RadioGroup1_1"<% if logged_in? %><%if current_user.has_favorite?(l) %>onclick="<%= remote_function :url =>{:controller => "share", :action => :remove_from_favorite, :id => l.id ,:type=>@type} %>" <%end %><%unless current_user.has_favorite?(l) %>checked="checked" <%end %><%end %>/>No
+                                    </label>
+                                </p>
+                            </form>
+                            <div id ="success_msg_<%=l.id%>">
+                            </div>
+                        </div>
+                        <%end %>
+                        <%else %>
+                        <div class="brd">
+                            Please login to add as Favorites.
+                        </div>
+                        <%end %>
+                    </div>
+                </div>
+                <!-- Two col comment end -->
+                <p class="clear">
+                </p>
+            </div>
+        </div>
+    </div>
+    <!-- Blue Box end -->
+    <!-- Left Col End -->
+    <!-- Right Col Start -->
+    <div class="c2 rightcol" id="rightcol">
+        <%= render :partial => "right_col" %>
+    </div>
+    <!-- Right Col End -->
+</div>

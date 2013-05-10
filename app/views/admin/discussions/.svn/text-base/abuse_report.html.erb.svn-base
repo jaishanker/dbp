@@ -1,0 +1,79 @@
+<!-- Container Start -->
+<div class="content">
+    <%= render :partial => "top_nav" %>
+    <h1>Discussions - Report Abuse</h1>
+    <form id="form1" name="form1" method="post" action="">
+        <table border="0" cellpadding="5" cellspacing="0" id="mytable01">
+            <tr>
+                <td colspan="2">
+                   <ul class="admtot">
+                        <li>
+                            Total Category:&nbsp;<%= @category_count %>
+                        </li>
+                        <li>
+                            Total Sub Category:&nbsp;<%= @sub_category_count %>
+                        </li>
+                        <li>
+                            Total Topics:&nbsp;<%= @topics_count %>
+                        </li>
+                        <li>
+                            Total Posts:&nbsp;<%= @posts_count %>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <br/>
+    <div class="demo_jui">
+        <table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
+            <thead>
+                <tr class="dataTable">
+                    <th width="15%">
+                        Topic
+                    </th>
+					 <th width="55%">
+                        Post
+                    </th>
+                    <th width="10%">
+                        Abuse on Posts
+                    </th>
+                    <th width="15%">
+                        Status
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <% unless @post.length == 0 %>
+                <% @post.each do |l| %>
+                <tr class="dataTable">
+                    <td>
+                        <a href="/discussions/topic/<%=l.permalink%>" target = "_blank"><%= get_name(l.title) %></a>
+                    </td>
+					 <td>
+                        <%= h l.body %>
+                    </td>
+                    <td align="center">
+                        <%= l.abuse_count %>
+                    </td>
+                    <td align="center">
+                        <% if l.status ==  0 %>
+                        <label>
+                            Admin Deactivated
+                        </label>
+                        <% elsif l.status == 1 %>
+                        <label>
+                            <%= radio_button_tag "discussionCentral#{l.id}","disabled",l.status.to_i == 0,:onclick => remote_function(:url => {:controller => "admin/discussions",:action => "update_status_of_post",:id => l.id,:status => 0}) %>Deactivate
+                        </label>
+                        <% elsif l.status == 2 %>
+                        <label>
+                            System Deactivated
+                        </label>
+                        <% end %>
+                    </td>
+                </tr>
+                <% end %>
+                <% end %>
+            </tbody>
+        </table>
+    </div>

@@ -1,0 +1,164 @@
+<script type="text/javascript">
+
+  $(document).ready(function(){
+    var link = $('.upload_link');
+    link.each(function( i, el){
+      
+      new AjaxUpload($(el), {
+        
+        action: '/profiles/upload_user_pic',
+        name: 'userfile',
+        autoSubmit: true,
+        responseType: false,
+        onChange: function(file, extension){
+          $('#message').html('Uploading...');
+        },
+        
+        onSubmit: function(file, extension){
+          if (!(extension && /^(jpg|png|jpeg|gif)$/.test(extension))) {
+            
+          show_notice('Please Upload valid image file','error');
+            return false;
+          }
+          
+        },
+        onComplete: function(file, response){
+
+
+<% if request.headers['HTTP_USER_AGENT'].to_s.include?('IE') %>
+  <%= remote_function(:url => {:controller => :profiles,:action => :upload_user_pic})%>
+<% end %>       
+          
+        }
+      });
+      
+    });
+    $('.hlight_per').each(function( i, el){
+      el.style.width = "<%=  current_user.profile.nil? ? 0 : current_user.profile.percent_complete.to_i  %>%";
+    });
+  });
+</script>
+<!-- Profile Box start -->
+<div class="Blue4pxbox"><code>$(this).corner();</code>
+  <div class="profilehead">
+     <%if current_user.profile.pic_present%>
+        <p class="<%= get_class(current_user.expertise_points||0)%>"></p>
+     <%end%>
+    <p class="head">My Profile</p>
+  </div>
+  <div class="pusher" id="fadeInOut">
+    show [+] 
+   </div>
+  <div class="profilebox" style="display:none;">
+    <!-- Photo Profile start -->
+    <div class="c1">
+      <div class="profilephoto">
+        <div class="cc1 profile_pic">
+            <%=  get_image(current_user,'user','thumb_large')%>
+            <%if current_user.profile.pic_present%>
+                 <br/>
+                <span class="<%= get_belt_class(current_user.expertise_points||0)%>"> </span>
+             <%end%>
+         </div>
+        <div class="cc2">
+          <p class="profiletxt">
+            <%= current_user.status_message%>
+            <span class="editbtn">
+              <%= link_to "edit", profile_path(current_user.profile,:status_msg => '1')%>
+<%#= link_to_remote "edit", :update =>"ComContent", :url => {:controller => 'profiles', :action => "edit_basics"} %>
+            </span>
+          </p>
+          <p class="clear"></p>
+          <div class="slider">
+            <p class="perleft">0</p>
+            <p class="txt">Profile Completeness</p>
+            <p class="perright">100</p>
+            <p class="clear"></p>
+            <p class="comp_per"></p>
+            <p class="pend_per"><span id="per_bar" class="hlight_per"></span></p>
+
+          </div>
+        </div>
+         <p class="clear"></p>
+            <a href="#" class="upload_link">Edit/Upload Picture</a> &nbsp;(Max. 5 MB)
+      </div>
+    </div>
+    <!-- Photo Profile end -->
+
+    <!-- Profile Navigation start -->
+    <div class="c2">
+      <ul class="profilelist">
+        <li><%= link_to "View/ Edit Profile", profile_path(current_user.profile, :user_id => current_user.id)%> </li>
+        <li><%= link_to "My Page",my_page_path(:user_id => current_user.id)%></li>
+        <li> <%= link_to "Network Requests (#{@current_users_request})", my_requests_profile_path(current_user.profile)%></li>
+        <li>
+          <%= link_to "My Designs (#{@current_users_designs})", :controller => 'designs', :action => 'index', :user_id => current_user.id %>
+        </li>
+        <li><%= link_to "My Groups (#{@current_users_groups})", my_groups_user_path(current_user)%></li>
+        <li><%= link_to "My Settings", profile_path(current_user.profile, :my_settings => '1')%></li>
+      </ul>
+    </div>
+    <!-- Profile Navigation end -->
+    <!-- Profile Following start -->
+    <div class="c3">
+      <p class="txt11b"><u><%= link_to "Following", list_followings_profile_path(current_user.profile,:user_id => current_user.id), :class=>"txt11b"%></u></p>      <ul class="followers">
+        <%unless @followings.empty?%>
+          <%for followee in @followings%>
+            <%if followee == @followings.last%>
+              <li><%= link_to followee.login,my_page_path(:user_id =>followee) unless followee.nil?%></li>
+            <%else%>
+              <li><%= link_to followee.login,my_page_path(:user_id => followee) unless followee.nil?%>,</li>
+            <%end%>
+          <%end%>
+        <%else%>
+          <li>You are not following anybody yet</li>
+        <%end%>
+      </ul>
+    </div>
+    <!-- Profile Following end -->
+    <!-- Profile Followers start -->
+    <div class="c4">
+      <p class="txt11b"><u><%= link_to "Followers", list_followers_profile_path(current_user.profile,:user_id => current_user.id), :class=>"txt11b"%></u></p>
+      <ul class="followers">
+        <%unless @followers.empty?%>
+          <%for follower in @followers%>
+            <%if follower == @followers.last%>
+              <li>
+                <%= link_to follower.login,my_page_path(:user_id =>follower)%>
+              </li>
+            <%else%>
+              <li><%= link_to follower.login,my_page_path(:user_id =>follower)%>,</li>
+            <%end%>
+          <%end%>
+        <%else%>
+          <li>You dont have any followers yet</li>
+        <%end%>
+      </ul>
+    </div>
+    <!-- Profile Followers end -->
+    <!-- My Favourites start -->
+    <div class="c5">
+      <p class="txt11b"><u><%= link_to "My Favorites", my_favorites_user_path(current_user) , :class => "txt11b"%></u></p>
+      <ul class="followers">
+        <%unless @fovorite_types.empty?%>
+          <%for fovorite_type in @fovorite_types%>
+            <%if fovorite_type.to_s == @fovorite_types.last.to_s%>
+              <li><%=link_to fovorite_type.favorable_type.to_s+"s", :controller => fovorite_type.favorable_type.to_s.downcase+"s", :action => :favorites%></li>
+            <%else%>
+              <li><%=link_to fovorite_type.favorable_type.to_s+"s", :controller => fovorite_type.favorable_type.to_s.downcase+"s", :action => :favorites%>,</li>
+            <%end%>
+          <%end%>
+        <%else%>
+          You dont have any fovorite yet
+        <%end%>
+      </ul>
+    </div>
+    <!-- My Favourites end -->
+
+    <div class="clear"></div>
+
+  </div>
+</div>
+
+<p class="spacer"/>
+<!-- Profile Box end --> 

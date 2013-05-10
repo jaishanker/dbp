@@ -1,0 +1,64 @@
+<div class="clear">
+</div>
+<div class="content">
+  <!-- Left Col Start -->
+  <div class="c1">
+    <div class="clear">
+    </div>
+    <!-- Blue Box start -->
+    <div class="Blue4pxbox">
+      <code>
+        $(this).corner();
+      </code>
+      <div class="whiteBoxContent">
+        <!-- Design Central Start --><!-- Section Head start -->
+        <div class="pageheading">
+          <p class="c1 head14">Comments on Designs</p>
+          <!--<p class="c2">
+            <select name="" class="select01">
+              <option value="">Sort Comments by</option>
+              <option value="">Photos</option>
+              <option value="">Name</option>
+              <option value="">My Network</option>
+            </select>
+          </p>-->
+
+        </div>
+        <div class="brdBot01"></div>
+        <!-- Form Start -->
+        <!-- Three col comment start -->
+        <div class="group" id="design_comments">
+        <%unless @comment_on_designs.empty?%>
+          <%=render :partial=>"comment_on_design", :collection => @comment_on_designs %>
+         <div id="more_design_comments_link">
+          <p class="clear"></p>
+              <p class="spacer03"><span class="grnbtn02">
+                 <%= link_to_remote "Show More",:url => { :action => "show_more_comments",:offset => @offset  }, :before => "$('#spinner_show').show()", :complete => "destroyDiv('more_design_comments_link')" ,:class=>"grnbtn"%>
+              </span></p>
+          </div>   
+          <%else%>
+                No comment found!
+         <%end%>
+        </div>
+        <div class="clear"></div>
+        <!-- Three col comment end -->
+        <!-- Form End -->
+        <div class="clear"></div>
+        <p class="clear"></p>
+
+        <!-- Group End -->
+        <p class="clear"></p>
+        <!-- Design Central End -->
+      </div>
+    </div>
+    <!-- Blue Box end -->
+    <div class="spacer">
+    </div>
+  </div>
+  <!-- Left Col End -->
+  <!-- Right Col Start -->
+  <div class="c2 rightcol" id="rightcol">
+    <%= render :partial => "right_col" %>
+  </div>
+  <!-- Right Col End -->
+</div>

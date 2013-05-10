@@ -1,0 +1,29 @@
+<% @recent_learnings.each do |l| %>
+  <div class="contest_img">
+    <%= link_to get_image(l,'learning','small','imgbrd'),{:controller=>"learnings",:action=>"learning",:permalink=>l.permalink}%>
+    <p>
+      <%if logged_in?%>
+        <% l.assets.each do |a| %>
+        <% format = get_single_format(a) %>
+          <%if format == "DOC"%>
+            <span class="">
+              <%= link_to "",assets_path(:id =>a.id), :class => "word",:title=>"click to download" %>
+            </span>
+          <%elsif format == "PDF"%>
+            <span class="">
+              <%= link_to "",assets_path(:id =>a.id), :class => "pdf",:title=>"click to download"%>
+            </span>
+          <%elsif format == "XLS"%>
+              <%= link_to "excel",assets_path(:id =>a.id), :class => "",:title=>"click to download"%>
+          <%else%>
+             <%#= link_to "Play" ,{:controller=>"learnings",:action=>"learning",:permalink => l.permalink},:title=>"click to play"%>
+          <%end%>
+          <!--<span class="meminfo">Basic Learning</span>-->
+        <%end%>
+      <%end%> 
+        <!--by -
+  <%#= link_to get_name(l.user.login),my_page_path(:user_id => l.user.id)%>-->
+        <%= time_ago(l.created_at) %> 
+    </p>
+  </div>
+<% end %>

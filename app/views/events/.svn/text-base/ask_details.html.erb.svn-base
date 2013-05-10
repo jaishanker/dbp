@@ -1,0 +1,65 @@
+<div style = "margin:30px">
+ <% remote_form_for @participant,:url => {:controller => :events,:action => :participate}, :before => "$('#spinner11').show();", :complete => "$('#spinner11').hide();$(this).remove()",:id => "event_reg_form" do |f| %>
+                  <div id = "participation_form">
+						<%= f.hidden_field :status,:value => 1 %>
+                        <%= f.hidden_field :event_id,:value => @event.id %>
+                        <%= f.hidden_field :user_id,:value => current_user.id %>
+                        </div>   
+
+<p class = "aBlack"><%= label_tag 'name' %></p>
+<p class = "c1">
+        <%if current_user.gender =="Male"%>
+                <%=f.select :salutation, SALUTATION,{:selected => "Mr."}, {:class=>"proselect02"} %>
+        <%else%>
+                <%=f.select :salutation, SALUTATION, {:selected => "Mrs."}, {:class=>"proselect02"}%>          
+        <%end%>
+        <%=f.text_field :name, :class=>"inputtxt08"%>
+        <br/>
+        <span id="name_error"></span>  
+  </p>
+<br/>
+  
+<p class = "aBlack"><%= label_tag 'organization' %></p>
+<p class = "c1">
+        <%= f.text_field :organization,:class => "inputtxt01" %>
+        <br>
+        <span id="organization_error"></span>  
+  </p>
+<br/>
+<p  class = "aBlack"><%= label_tag 'designation' %></p>
+<p class = "c2">
+        <%= f.text_field :position,:class => "inputtxt01" %>
+        <br>
+        <span id="position_error"></span>  
+ </p>
+
+  <br/>
+
+<p  class = "aBlack"><%= label_tag 'mob_no' %></p>
+<p class = "c2">
+        <%= f.text_field :mob_no,:class => "inputtxt01" %>
+        <br>
+        <span id="mob_no_error"></span>  
+ </p>
+  <br/>
+
+<p  class = "aBlack"><%= label_tag 'fax_no' %></p>
+<p class = "c2">
+        <%= f.text_field :fax_no,:class => "inputtxt01" %>
+        <br>
+        <span id="fax_no_error"></span>  
+ </p>
+  <br/>
+
+<p  class = "aBlack"><%= label_tag 'Which of the following best describe your role in the organization?' %></p>
+<p class = "c2">
+        <%= f.select :role,ROLES,{:prompt => "Select role"},{:class => "proselect03"}%>
+        <br>
+        <span id="role_error"></span>  
+ </p>  
+ 
+<p><%= submit_tag 'Participate',:class => "grnbtn" %>
+<%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner11",:style=>"display:none; width: 20px; margin-top: 0px;" ) %>
+</p>
+<% end -%>
+</div>

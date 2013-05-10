@@ -1,0 +1,117 @@
+<!-- Container Start -->
+<div class="content">
+    <%= render :partial => "top_nav" %>
+    <h1>Designs - Generic Report</h1>
+    <form id="form1" name="form1" method="post" action="">
+        <table border="0" cellpadding="5" cellspacing="0" id="mytable01">
+            <tr>
+                <td colspan="2">
+                    <ul class="admtot">
+                        <li>
+                            Total Designs:&nbsp;<%= @design_count %>
+                        </li>
+                        <li>
+                            Total Favorited:&nbsp;<%= @favorites_count %>
+                        </li>
+                        <li>
+                            Total Views:&nbsp;<%= @views_count %>
+                        </li>
+                        <li>
+                            Total Rated:&nbsp;<%= @ratings_count %>
+                        </li>
+                        <li>
+                            Total Comments:&nbsp;<%= @comments_count %>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <br/>
+    <p style="float:right;">
+        <%= link_to "Download Report",:controller => "admin/designs",:action => "download" %>
+    </p>
+    <br/>
+    <br/>
+    <p class = "clear"/>
+    <div id="chartdiv" align="center">
+    </div>
+    <div class="demo_jui">
+        <table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
+            <thead>
+                <tr class="dataTable">
+                    <th widht="20%">
+                        Design Name
+                    </th>
+                    <th widht="10%">
+                        Posted By
+                    </th>
+                    <th widht="10%">
+                        Date
+                    </th>
+                    <th widht="10%">
+                        Ratings
+                    </th>
+                    <th widht="10%">
+                        Views
+                    </th>
+                    <th widht="10%">
+                        Comments
+                    </th>
+                    <th widht="10%">
+                        Favorites
+                    </th>
+                    <th widht="10%">
+                        Shares
+                    </th>
+                    <th widht="10%">
+                        Status
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <% unless @design.length == 0 %>
+                <% @design.each do |l| %>
+                <tr class="dataTable">
+                    <td>
+                        <a target = "_blank" href="/designs/design/<%= l.permalink %>"><%=get_name(l.name,50)%></a>&nbsp;|&nbsp;
+						 <%= link_to  "View Stats"  ,:controller=>"admin/designs", :action => :report,:id => l.id %>
+                    </td>
+                    <td>
+                            <%=link_to get_name(l.user.login).to_s+" ("+l.user.designs.length.to_s+")" ,my_page_path(:user_id => l.user.id), :popup => true%>
+                         <!-- <a target = "_blank" href="/my_page?user_id=<%= l.user.id %>"><%= get_name(l.user.login) %>&nbsp;(<%=l.user.designs.length %>)</a>  -->
+                    </td>
+                    <td>
+                        <%= l.created_at.strftime("%d %b %Y") %>
+                    </td>
+                    <td align="center">
+                        <%= l.ratings_count.length %>
+                    </td>
+                    <td align="center">
+                        <%= l.view_count.nil? ? 0 : l.view_count %>
+                    </td>
+                    <td align="center">
+                        <%= l.comments.length %>
+                    </td>
+                    <td align="center">
+                        <%= l.favorites.length %>
+                    </td>
+                    <td align="center">
+                        <%= l.shares.length %>
+                    </td>
+                    <td align="center">
+                        <label>
+                            <%= radio_button_tag "designCentral#{l.id}","enabled",l.status.to_i == 1,:onclick =>  remote_function(:url => {:controller => "admin/designs",:action => "update_status",:id => l.id,:status => 1}) %>Active
+                        </label>
+                        <label>
+                            <%= radio_button_tag "designCentral#{l.id}","disabled",l.status.to_i == 0,:onclick =>  remote_function(:url => {:controller => "admin/designs",:action => "update_status",:id => l.id,:status => 0}) %>Deactive
+                        </label>
+                    </td>
+                </tr>
+                <% end %>
+                <% end %>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- Container End -->

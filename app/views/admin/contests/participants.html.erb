@@ -1,0 +1,86 @@
+<!-- <h1>Admin::Contests#participants</h1>
+<p>Find me in app/views/admin/contests/participants.html.erb</p>
+-->
+<!-- Container Start -->
+<div class="content">
+    <%= render :partial => "top_nav" %>
+    <h1>Participants of "<%=@contest.name%>"</h1>
+    <form id="form1" name="form1" method="post" action="">
+        <table border="0" cellpadding="5" cellspacing="0" id="mytable01">
+            <tr>
+                <td colspan="2">
+                    <ul class="admtot">
+                        <li>
+                            Total Participants:&nbsp;<%= @contest_participants.length %>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+    <p style="float:right;">
+        <%= link_to "Download Report",:controller => "admin/contests",:action => "download_participants", :id => @contest.id %>
+    </p>
+
+    <br/>
+    <div class="clear">
+        &nbsp;
+    </div>
+    <div class="demo_jui">
+        <table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
+            <thead>
+                <tr class="dataTable">
+                    <th>
+                        Participant
+                    </th>
+                    <th>
+                        Design
+                    </th>
+                    <th>
+                        Winner?
+                    </th>
+                    <th>
+                        Active / Deactive
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <% unless @contest_participants.length == 0 %>
+                <% @contest_participants.each do |p| %>
+                <tr class="dataTable">
+                    <td>
+                        <%=link_to p.user.first_name.to_s.capitalize+" "+p.user.last_name.to_s.capitalize,my_page_path(:user_id => p.user.id), :popup => true%>
+                    </td>
+                    <td align="center">
+                        <%=link_to p.design.name, {:controller => "/designs", :action => "design", :permalink => p.design.permalink},  :popup => true%>
+                    </td> 
+                    <td align="center">
+                            <%= check_box_tag "winner_#{p.id}","1",@contest.winner1 == p.id || @contest.winner2 == p.id ,:onclick => remote_function(:url => {:controller => "admin/contests",:action => "declare_winner",:id => p.id},:with => "'checked=' + this.checked") %>                      
+                     </td>
+                    <td align="center">
+                        <label>
+                            <%= radio_button_tag "participantStatus#{p.id}","enabled",p.status.to_i == 1,:onclick => remote_function(:url => {:controller => "admin/contests",:action => "update_participant_status",:id => p.id,:status => 1}) %>Active
+                        </label>
+                        <label>
+                            <%= radio_button_tag "participantStatus#{p.id}","disabled",p.status.to_i == 0,:onclick => remote_function(:url => {:controller => "admin/contests",:action => "update_participant_status",:id => p.id,:status => 0}) %>Deactive
+                        </label>
+                    </td>
+                </tr>
+                <% end %>
+                <% end %>
+            </tbody>
+        </table>
+    </div>
+    <div id="chartdiv" align="center">
+    </div>
+    <script type="text/javascript">
+        /*
+         var chart = new FusionCharts("Charts/FCF_MSColumn3D.swf", "ChartId", "800", "450");
+         chart.setDataURL("Data/contestCenterReport.xml");
+         chart.render("chartdiv");
+         */
+    </script>
+</div>
+<!-- Container End -->
+

@@ -1,0 +1,15 @@
+Status report from <%= @start_date.strftime('%Y-%m-%d') %> to <%= @end_date.strftime('%Y-%m-%d') %> 
+
+<br /><br />
+
+<%= @users_count %> new members this week<br />
+<%= @total_active_users_count %> Total number of active members<br />
+<%= @total_users_count %> Total number of members<br />
+<%= @posts_count %> new posts on the forums<br />
+<%= @new_designs_count %> new designs uploaded<br />
+<%= @new_comment_count %> new comments from users<br />
+<br /><br />
+
+Thanks,<br />
+The SolidWorks India Online Community Team
+

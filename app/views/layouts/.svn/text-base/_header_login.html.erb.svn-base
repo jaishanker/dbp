@@ -1,0 +1,97 @@
+
+<div class="header">
+    <div class="logo">
+        <a href="/"/>
+    </div><a href="/"></a>
+    <div class="joinnow">
+        <a href="/"></a>
+        <a id="href_2012748673" onclick="return hs.htmlExpand(this, { objectType:'ajax',outlineType:'rounded-white',width:530,height:730},'Join Now!' )" href="/users/new">Join Now!</a>
+    </div>
+    <!-- Login Start -->
+    <div class="login" id="login_div">
+        <% form_remote_tag :url=>{:controller=>'sessions',:action=>'create'}, :html=>{:name => "loginfrm",:id => "loginform"}, :before => "$('#loader').show();",:complete => "$('#loader').hide();" do -%>
+        <p class="txt14">
+            Login
+        </p>
+        <table cellspacing="0" cellpadding="0">
+            <tr align="left" valign="top" height="20px">
+                <td>
+                    <input type="text" id="username" class="userinput" value="Username/Email" name="username" onblur ="this.value=(this.value=='') ? 'Username/Email' : this.value;" onfocus ="this.value=(this.value=='Username/Email') ? '' : this.value;"/>
+                </td>
+                <td>
+                    <input type="password" name="password" id="" autocomplete="off" value="Password" class="passinput" style="" onfocus ="this.value=(this.value=='Password') ? '' : this.value;" onblur ="this.value=(this.value=='') ? 'Password' : this.value;"/>
+                </td>
+				<td>
+
+                                   <label for="remember_me">
+                        <%= check_box_tag 'remember_me' %> <span>Remember me</span>
+                    </label></td>
+				
+                <td>                    
+                   <p class="loginbtn">
+                        <%= submit_tag "Login",:class=>"loginbutton"%>
+                         
+                        <%#= link_to_remote "<span>Login</span>",:url=>{:controller=>'sessions',:action=>'create'},:submit => "loginform",:html => {:class => "ovalbutton"} %>
+                    </p>
+                    
+                    <p class="line">
+                    </p>
+                    <a id="href_2012748673" onclick="$('.date_input_ui').datepicker();return hs.htmlExpand(this, { objectType:'ajax',outlineType:'rounded-white',width:530,height:200},'Forgot Password' );$('.date_input_ui').datepicker();" href="/sessions/forgot_password" class="forgot">Forgot Password?</a>
+                               
+                 </td>
+                <td>
+                </td>
+            </tr>
+
+            <tr>
+              <td class="facebookicon">
+                     <%= fb_login_button('window.location = "/users/link_user_accounts";')%>                
+                </td>
+                <td>
+                  <!-- <span id="login"></span>  -->
+                  </td>
+            </tr>
+             
+        </table>
+
+
+        <%end %>
+    </div>
+    <!-- Login Start -->
+</div>
+<!-- Head Link Start -->
+<%=render :partial=>"layouts/header_links" %>
+<!-- Head Link End -->
+<div class="clear">
+</div>
+<!-- Head Banner Start -->
+<div class="banner">
+    <% if @top_banner.nil? %>
+    <div class="c1">
+        <div class="bannerdiv01">
+        </div>
+    </div>
+    <div class="c2">
+        <div class="bannerdiv02">
+        </div>
+    </div>
+    <% else %>
+    <%= @top_banner.banner_code %>
+    <% end %>
+</div>
+<!-- Head Banner End -->
+
+<!-- Head Banner End -->
+<!--
+<script type="text/javascript">
+  twttr.anywhere(function (T) {
+    T("#login").connectButton();
+       // triggered when auth completed successfully
+      },
+      signOut: function() {
+        // triggered when user logs out
+      }
+
+  });
+</script>
+-->

@@ -1,0 +1,126 @@
+<%= get_right_panel_banner(@right_banner,'Contest') %>
+<script type="text/JavaScript">
+    $(document).ready(function() {
+    $('input[type="text"]').focus(function() {
+    if (this.value == this.defaultValue){
+    this.value = '';
+    }
+    if(this.value != this.defaultValue){
+    this.select();
+    }
+    });
+    $('input[type="text"]').blur(function() {
+    if ($.trim(this.value) == ''){
+    this.value = (this.defaultValue ? this.defaultValue : '');
+    }
+    });
+    });
+</script>
+<%=render :partial => "/home/members_search_form" %>
+<!-- Hot Contest start -->
+<div class ="<%= cycle('cBoxblue','cBoxorange','cBoxgreen') %>">
+    <div class="cBoxhead">
+        <p class="headtxt">
+            Hot Contest
+        </p>
+        <%= link_to "more +",{ :controller => "contest", :action => "hot_contests"},:class=>"more"%>
+        <!-- <a href="#" class="more">more + </a> -->
+    </div>
+    <div class = "cBoxcontainer">
+     <ul class="recendesignpost">
+        <%unless @hot_contests.empty?%>
+          <%@hot_contests.each do |c|%>
+              <li>
+                <%= link_to get_name(c.name,25), :controller => "contest", :action => "index", :id=> c.id%>
+              
+                <%= c.start_date.strftime("%d %b %Y") %> - <%= c.start_date.strftime("%d %b %Y") %>
+              </li>
+           <%end%>
+           <!-- 
+              <li>
+                  <a href="Contest_details.html">Sci-Fi Chair Design</a>200 views | 250 comments
+                  <br/>
+                  01 Jan 2010 - 20 Jan 2010
+              </li>
+              <li>
+                  <a href="Contest_details.html">Product 2010</a>200 views | 250 comments
+                  <br/>
+                  01 Jan 2010 - 20 Jan 2010
+              </li>
+              <li>
+                  <a href="Contest_details.html">Go-Green Contest</a>200 views | 250 comments
+                  <br/>
+                  01 Jan 2010 - 20 Jan 2010
+              </li>
+              <li>
+                  <a href="Contest_details.html">Beetle The Old fashion New Car</a>200 views | 250 comments
+                  <br/>
+                  01 Jan 2010 - 20 Jan 2010
+              </li>
+              <li>
+                  <a href="Contest_details.html">Sports Bike</a>200 views | 250 comments
+                  <br/>
+                  01 Jan 2010 - 20 Jan 2010
+              </li>   
+              -->
+           <%else%>
+              <li>
+                   No hot contest yet.
+              </li>                
+           <%end%>
+    </ul>
+        <p class="spacer01">
+        </p>
+      </div>
+</div>
+<p class = "clear"/>
+<!-- Hot Contest end --><!-- Expert Div start -->
+<div class="expert">
+    <div class="<%= cycle('cBoxblue','cBoxorange','cBoxgreen') %>">
+        <div class="cBoxhead">
+            <p class="headtxt">
+                Active Participants
+            </p>
+            <%=link_to "more +",{ :controller => "contest", :action => "active_participants"}, :class => "more"%>
+         </div>
+        <!-- <a href="#" class="more">more + </a> -->
+    </div>
+  <!--  <p class="bluearrow">
+    </p> -->
+    <!-- Three col start -->
+<div class = "cBoxcontainer">
+    <div class="snaprow">
+        <%unless @active_participants.empty?%>
+          <%@active_participants.each do |a|%>
+              <div class="c1">
+                  <p class="snap clear">
+                        <%= link_to get_image(a,'user','thumb','nobrd'),my_page_path(:user_id => a.id) %>
+                      <!-- <a href="My_Page.html"><img src="../images/snap01.gif" width="36" height="36" class="nobrd" /></a> -->
+                  </p>
+                  <p class="mname">
+                      <%if a.profile.pic_present%>
+                           <%class_name = get_class(a.expertise_points||0)%>
+                            <%unless class_name == "belt_white"%>
+                                  <span class="<%= class_name%>"></span>   
+                            <%end%>
+                        <%end%>
+                        <%= link_to get_name(a.login.capitalize,8),my_page_path(:user_id => a.id) %>
+        <!--              <span class="member"></span>
+                      <a href="My_Page.html">Kamlesh</a> -->
+                  </p>
+              </div>   
+           <%end%>
+        <%else%>
+          No active participants yet.
+        <%end%>
+
+    </div>
+     <!-- Three col end -->
+    <p class="spacer01">
+    </p>
+ </div>
+</div>
+<!-- Expert Div end -->
+<div class="clear">
+</div>
+<%= get_right_panel_banner(@right_banner,'Contest','Bottom') %>

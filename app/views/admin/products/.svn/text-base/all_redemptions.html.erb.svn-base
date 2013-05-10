@@ -1,0 +1,110 @@
+<!-- Container Start -->
+<div class="content">
+    <%= render :partial => "top_nav" %>
+    <h1>Redemptions - Generic Report</h1>
+
+    <p style="float:right;">
+        <%= link_to "Download Report",:controller => "admin/products",:action => "download_redemption" %>
+    </p>
+    <br/><div class="clear">&nbsp;</div>
+    <div class="demo_jui">
+        <table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
+            <thead>
+                <tr class="dataTable">
+                    <th>
+                        Product Title
+                    </th>
+                    <th>
+                        Requested By
+                    </th>
+                    <th>
+                        Requested On
+                    </th>
+                    <th>
+                        Points Needed
+                    </th>
+                    <th>
+                        Shipment asked?
+                    </th>
+                  <th>
+                        Approved?
+                    </th>                 
+                  <th>
+                        Shifted?
+                    </th>      
+                   <th>
+                        Status
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <% unless @redemptions.length == 0 %>
+                <% @redemptions.each do |l| %>
+                  <%redemption_user_info = RedeemUserInfo.find_by_redemption_id(l.id)%>
+                <tr class="dataTable">
+                    <td align="center">
+                     
+                     <%= get_name(l.product.title) %>
+                    </td>
+                    <td align="center">
+                        <a id="href_<%= l.id%>" onclick="return hs.htmlExpand(this, { objectType:'ajax',outlineType:'rounded-white',width:470,height:400},'User Details' )" href="/admin/products/user_details/<%=redemption_user_info.id%>">  <%= get_name(l.user.login) %></a>
+                        <%#=link_to get_name(l.user.login) ,my_page_path(:user_id => l.user.id), :popup => true%>
+                    </td>
+		    <td align="center">
+                        <%= l.created_at.strftime("%d %b %Y")  %>
+                    </td>
+		    <td align="center">
+                        <%= l.points %>
+                    </td>
+		    <td align="center">
+                        <%if redemption_user_info.shipment_type == 0%>
+                          Yes
+                        <%else%>
+                          No
+                        <%end%>
+                    </td>
+		    <td align="center">
+                        <%if l.approved == 1%>
+                          Approved
+                        <%else%>
+                              <span id="approve_link_<%=l.id%>">
+                                      <%=link_to_remote "Approve" , :url => {:action => "approve", :id => l.id}, :confirm => "Are you sure you want approve this redemption request?", :before => "$('#spinner').show();", :complete => "$('#spinner').hide();"%>
+                              </span>
+                                     <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner",:style=>"display:none; width: 20px; margin-top: 0px;" ) %>
+                       <%end%>
+                    </td>
+                    <td align="center">
+                        <label>
+                            <%= radio_button_tag "redemption_shift_#{l.id}","shifted",l.shifted.to_i == 1,:onclick =>  remote_function(:url => {:controller => "admin/products",:action => "update_shipment_status",:id => l.id,:shifted => 1}) %>Shifted
+                        </label>
+                        <label>
+                            <%= radio_button_tag "redemption_shift_#{l.id}","not_shifted",l.shifted.to_i == 0,:onclick =>  remote_function(:url => {:controller => "admin/products",:action => "update_shipment_status",:id => l.id,:shifted => 0}) %>Not yet
+                        </label>
+                    </td>
+                    <td align="center">
+                        <label>
+                            <%= radio_button_tag "redemption#{l.id}","enabled",l.status.to_i == 1,:onclick =>  remote_function(:url => {:controller => "admin/products",:action => "update_redemption_status",:id => l.id,:status => 1}) %>Active
+                        </label>
+                        <label>
+                            <%= radio_button_tag "redemption#{l.id}","enabled",l.status.to_i == 0,:onclick =>  remote_function(:url => {:controller => "admin/products",:action => "update_redemption_status",:id => l.id,:status => 0}) %>Deactive
+                        </label>
+                    </td>
+                </tr>
+                <% end %>
+                <% end %>
+            </tbody>
+        </table>
+    </div>
+    <div id="chartdiv" align="center">
+      
+    </div>
+    <script type="text/javascript">
+    	/*
+        var chart = new FusionCharts("Charts/FCF_MSColumn3D.swf", "ChartId", "800", "450");
+        chart.setDataURL("Data/newsCenterReport.xml");
+        chart.render("chartdiv");
+        */
+    </script>
+</div>
+<!-- Container End -->
+

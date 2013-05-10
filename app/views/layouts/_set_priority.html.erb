@@ -1,0 +1,24 @@
+  <!-- Ser Priority start -->  
+  <div class= "setprio ">  
+      <p class= "setpriority "><a>Quick Links</a></p>
+      <ul class= "setprioLink ">
+        <li>
+        <a href= "/ " id= "SP4 ">Home</a>/
+      </li>
+      <li>
+         <%=link_to "Recent Activities",{:controller=>"home",:action=>"recent_activity", :preffered_page => true}%>/
+      </li>
+      <li>
+        <%=link_to "Designs of the Month",{:controller=>"designs",:action=>"index",:id=>"flag"}%>/
+      </li>
+      <li>
+        <%= link_to "Hot Discussions",hot_discussions_path(),:class=>""%>/
+        <!-- <a href= "Hot_Discussion.html " id= "SP3 ">Hot Discussions</a> / -->
+      </li>
+      <li><a href= "/blog " id= "SP4 ">Recent Blogs</a> </li>
+     <!--<li> /
+        <%#=link_to "Recent Contest",{:controller=>"contest",:action=>"recent_contests"}%>
+     </li>-->
+      </ul>  
+  </div>  
+  <!-- Ser Priority end -->  

@@ -1,0 +1,378 @@
+<%= javascript_include_tag :fckeditor %>  
+<script type ="text/javascript">
+	var seconds = new Array;
+
+</script>	
+<div class="whiteBoxContent" style ="width:670px;">
+    <!-- Forum Start -->
+    <div class="pageheading" style ="width:670px;">
+        <div class="c1 head14">
+            <%= @topic.discussion_category.name %>&nbsp;-&nbsp;<%= @topic.sub_category.name %>&nbsp;-&nbsp;<%= get_name(@topic.title,120) %>
+        </div>
+    </div>
+    <p class="clear brdBot01">
+    </p>
+    <div class="pageheading">
+        <% unless @topic.posts.last.nil? %>
+        <p class="c1">
+            Last Post: <%= time_ago(@topic.posts.last.created_at) %>
+            <!--<a href="#post<%#= @topic.posts.last.id %>" class="black">Last Post
+            </a>-->by&nbsp;<%#= get_my_page_link(get_name(@topic.posts.last.user.login),@topic.posts.last.user.id) %>
+            <%= link_to get_name(@topic.posts.last.user.login),my_page_path(:user_id => @topic.posts.last.user.id) %>
+        </p>
+        <% end %>
+        <p class="c3">
+            <span id="pagination" class="pagination01"></span>
+        </p>
+    </div>
+    <p class="clear brdBot01">
+    </p>
+    <div class="pageheading" id="">
+        <p class="c1 total">
+            Posts:&nbsp; <span id="post_count"><%= @topic.posts.count %></span>
+            | Members:&nbsp;<%= get_post_user_count(@topic.posts) %>
+            | Views:&nbsp;<%= @topic.view_count.nil? ? 0 : @topic.view_count %>
+        </p>
+        <% if logged_in? %>
+       <!-- <p class="c6">
+            <span class="share"></span>
+            <span class="icolink"><a href="javascript:void(0)" id = "topic_share_link" class="blacklink">Share this</a></span>
+        </p>-->
+        <p class="c6" id="">
+            <span class="postcom"></span>
+            <span class="icolink"><a href="javascript:void(0)" id = "topic_reply_link" class="blacklink">Reply</a></span>
+        </p>
+        <p class="clear">
+        </p>
+
+        <!--  reply -->
+        <div id = "topic_reply" style ="display:none;">
+            <div id ="ComContent">
+                <div class="brd1">
+                    <% if !@group.nil? and  @group_users_list.include?(current_user.id) %>
+                    <% remote_form_for @post, :url=>{:action=>'create_post'}, :before => fckeditor_before_js('post', 'created_at'), :complete => "$('#spinner').hide(); post_on_fb('replying','Topic',#{@topic.id});" do|f| %>
+                    <%#= f.text_area :body, :class => 'inputtxt',:rows => 8 %>
+                    <%= fckeditor_textarea("post", "created_at", :toolbarSet => 'Easy', :width => '660px;', :height => '150px', :ajax => true) %>                                          
+                    <%= f.hidden_field :topic_id, :value => @topic.id %>
+                    <%= f.submit 'Reply' ,:class=>'grnbtn', :onclick => "$('#spinner').show();" %>
+                    <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner",:style=>"display:none; width: 20px; margin-top: 0px;" ) %>
+                    <% end %>
+                    <% else %>
+                    You are not a member of this group. 
+                    Click <%= link_to "here","javascript:void(0)",:onclick => "toggleGroupDiv('gr_details','gr_activities','gr_discussions')" %> to join the group.<% end %>
+                </div>
+            </div>
+        </div>
+        <!--   reply --><!-- sharing form -->
+        <div id = "topic_share" style ="display:none;">
+            <div id="ComContent">
+                <%if logged_in? %>
+                <div class="brd" style="height:158px;width:660px;"">
+                    <div class="group iconComment">
+                        <div class="fourCol">
+                            <p class="c7">
+                                <span class="followingIcon"></span>
+                                <span class="black">Share with Following</span>
+                            </p>
+                            <% form_remote_tag :url => {:controller=> "share",:action => 'share_with_followings'} do -%>
+                            <p class="c8">
+                                <%=hidden_field_tag 'id', @topic.id %>
+                                <%=hidden_field_tag 'type', "Topic" %>
+                                <!-- <%=check_box_tag 'all_following', '1', false, :class => 'inputcheck'%>All Followings --><%= submit_tag 'Share' , :class=>"grnbtn01" %>
+                            </p>
+                            <%end %>
+                            <p class="frm_brd01">
+                            </p>
+                        </div>
+                        <div class="fourCol">
+                            <p class="c7">
+                                <span class="followersIcon"></span>
+                                <span class="black">Share with Followers</span>
+                            </p>
+                            <% form_remote_tag :url => "/share/share_with_followers" do -%>
+                            <p class="c8">
+                                <%=hidden_field_tag 'id', @topic.id %>
+                                <%=hidden_field_tag 'type', "Topic" %>
+                                <!-- <%=check_box_tag 'all_followers', '1', false, :class => 'inputcheck'%>All Followers --><%= submit_tag 'Share' , :class=>"grnbtn01" %>
+                            </p>
+                            <%end %>
+                            <p class="frm_brd01">
+                            </p>
+                        </div>
+                        <div class="fourCol">
+                            <p class="c7">
+                                <span class="othernetwork"></span>
+                                <span class="black">Share with Other Network</span>
+                            </p>
+                            <ul class="shareIcons">
+                                <li>
+                                    <a class="shareFacebook" target = "_blank" href="http://www.facebook.com/sharer.php?u=http://<%=request.host_with_port%>/discussions/topic/<%=@topic.permalink%>"></a>
+                                </li>
+                                <li>
+                                    <a class="shareOrkut" target = "_blank" href="http://promote.orkut.com/preview?nt=orkut.com&du=http://<%=request.host_with_port%>/discussions/topic/<%=@topic.permalink%>&tt=<%=@title%>"></a>
+                                </li>
+                                <li>
+                                    <a class="shareTwitter" target = "_blank" href="http://twitter.com/home?status=<%=@topic.title%> http://<%=request.host_with_port%>/discussions/topic/<%=@topic.permalink%>"></a>
+                                </li>
+                            </ul>
+                            <p class="clear10">
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <%else %>
+                <div class="brd" style="width:660px;">
+                    Please login to share with Followings and Followers.
+                </div>
+                <%end %>
+            </div>
+        </div>
+        <!-- sharing form end --><% end %>
+    </div>
+    <p class="clear brdBot01">
+    </p>
+    <div id="ComContent">
+    </div>
+    <div id="ComContent01">
+    </div>
+    <!-- Two col comment start --><% @topic.posts.each do |post| %>
+  
+      <script type = "text/javascript">      
+                                        <% if (Time.now - post.updated_at).to_i < 300 %>
+                                        		seconds[<%=post.id%>] = parseInt(300 - <%=(Time.now - post.updated_at).to_i%>) ;
+                                      
+									      $(document).ready(function(){
+                                                                                 // document.counter.d2.value='30' 
+                                                         setInterval ( "decrement_counter('<%=post.id%>')", 1000 );
+                                                               });
+                                       <% end %>
+                                                                       
+                                                    
+									
+                </script>    
+
+    <div class="twocol01 <%= cycle('','grybg') %>" id="post_<%=post.id%>">
+        <div class="c1">
+            <%= link_to get_image(post.user,'user','thumb','nobrd'),my_page_path(:user_id => post.user.id) %>
+            <%#= get_my_page_link(get_image(post.user,'user','thumb','nobrd'),post.user.id) %>
+            <br/>
+            <p>
+                <%= link_to post.user.login,my_page_path(:user_id => post.user.id) %>
+                <%#= get_my_page_link(post.user.login,post.user.id) %>
+            </p>
+            <p>
+              Posts: <span class="user_post"><%= post.user.posts.count %></span>
+            </p>
+            <p>
+                Registered:&nbsp;<%= time_ago(post.user.created_at) %><%#= post.user.created_at.strftime("%d/%m/%y") %>
+            </p>
+            <p>
+                <!--<a href="#" class="orange">Forum Points: 116</a>-->
+            </p>
+        </div>
+        <div class="c2" id="<%=post.id%>_post">
+
+    <% if logged_in? %>      
+        <%if current_user.id == post.user_id%>
+            <%if (Time.now - post.updated_at).to_i < 300%>      
+                       <div id = "counter_<%= post.id %>" class="welcome_div" style ="background:#FFCC00;margin:0 auto;display:none;">
+                            <p style ="margin:5px;padding-left:10px;padding-right:10px;padding-top:5px;padding-bottom:5px;color:#000;">
+                                You can <%= link_to_remote "Edit",:url => {:controller=>"discussions", :action => "edit_post",:id=>post.id,:topic_id=>@topic.id}, :before => "$('#spinner_#{post.id}').show();",:complete => "$('#spinner_#{post.id}').hide();",:html => { :href =>"javaScript:void(0)", :id => "edit_lnk_#{post.id}", :style => "text-decoration:underline;color:#000;"} %>&nbsp;this post for next <span class = "counter_display" id="counter_display_<%= post.id%>"></span>
+                                minutes.<%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner_#{post.id}",:style=>"display:none; width: 20px; margin-top: 0px;" ) %>
+                            </p>
+                        </div> 
+            
+             <%end%>
+          <%end%>
+     <%end%>    
+     
+            <p class="head01">
+                <%= post == @topic.posts.first ?   get_name(@topic.title,120) : "RE: " + get_name(@topic.title,120) %>
+                <br/>
+                <span class="head02">Posted:&nbsp; <%= time_ago(post.created_at) %></span>
+            </p>
+            <p class="brdBot01">
+            </p>
+            <p class="clear">
+            </p>
+            <p class="txt">
+                <%= get_discussion_post(post.body) %>
+            </p>
+            <p class="clear">
+            </p>
+            <% if logged_in? %>
+            <p class="combox" style="float:right;text-align:right;">
+              <%if current_user.id == post.user_id%>             
+                    <%= link_to_remote "Delete",:url => {:controller=>"groups", :action => "delete_post",:id=>post.id,:topic_id=>@topic.id}, :before => "$('#spinner1_#{post.id}').show();",:complete => "$('#spinner1_#{post.id}').hide();",:html => { :href =>"javaScript:void(0)" },:confirm=>"Are you sure you want to delete?"%>
+                    <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner1_#{post.id}",:style=>"display:none; width: 20px; margin-top: 0px;" ) %>                                        
+            <%end%>
+                <span class="abuse"></span>
+                <% @comment = "DiscussionReportAbuse" %>
+                <a id="href_2012748673" onclick="return hs.htmlExpand(this, { objectType:'ajax',outlineType:'rounded-white',width:450,height:325  },'Report Abuse' )" href="<%=report_abuse_path%>/?id=<%=post.id%>&flag=discussion&type_id=<%=@comment%>&topic_id=<%=@topic.id%>">Report Abuse</a>
+            </p>
+            <% end %>
+        </div>
+    </div>
+    <% end %>
+    <% if @topic.posts.length == 0 %>
+    <p class = "txt" style ="text-align:center;">
+        No posts yet.
+    </p>
+    <% end %>
+    <!-- Two col comment end --><!-- Forum End --><% if logged_in? %>
+    <div class="pageheading">
+        <p class="c1">
+            &nbsp;
+        </p>
+        <!--<p class="c6">
+            <span class="share"></span>
+            <span class="icolink"><a href="javascript:void(0)" id = "topic_share_link_1" class="blacklink">Share this</a></span>
+        </p>-->
+        <p class="c6" id="">
+            <span class="postcom"></span>
+            <span class="icolink"><a href="javascript:void(0)" id = "topic_reply_link_1" class="blacklink">Reply</a></span>
+        </p>
+        <p class="clear">
+        </p>
+
+        <!--  reply -->
+        <div id = "topic_reply_1" style ="display:block;">
+            <div id ="ComContent">
+                <div class="brd" style ="width:660px;">
+                    <% if !@group.nil? and  @group_users_list.include?(current_user.id) %>
+                    <% remote_form_for @post, :url=>{:action=>'create_post'}, :before => fckeditor_before_js('post', 'status'),:complete => "$('#spinner1').hide();  post_on_fb('replying','Topic',#{@topic.id});" do|f| %>
+                    <%#= f.text_area :body, :class => 'inputtxt',:rows => 8 %>
+                    <%= fckeditor_textarea("post", "status", :toolbarSet => 'Easy', :width => '660px;', :height => '150px', :ajax => true) %>                      
+                    <%= f.hidden_field :topic_id, :value => @topic.id %>
+                    <%= f.submit 'Reply' ,:class=>'grnbtn', :onclick => "$('#spinner1').show();" %>
+                    <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner1",:style=>"display:none; width: 20px; margin-top: 0px;" ) %>
+                    <% end %>
+                    <% else %>
+                    You are not a member of this group. 
+                    Click <%= link_to "here","javascript:void(0)",:onclick => "toggleGroupDiv('gr_details','gr_activities','gr_discussions')" %> to join the group.<% end %>
+                </div>
+            </div>
+        </div>
+        <!--   reply --><!-- sharing form -->
+        <div id = "topic_share_1" style ="display:none;">
+            <div id="ComContent">
+                <%if logged_in? %>
+                <div class="brd" style="height:158px;width:660px;">
+                    <div class="group iconComment">
+                        <div class="fourCol">
+                            <p class="c7">
+                                <span class="followingIcon"></span>
+                                <span class="black">Share with Following</span>
+                            </p>
+                            <% form_remote_tag :url => {:controller=> "share",:action => 'share_with_followings'} do -%>
+                            <p class="c8">
+                                <%=hidden_field_tag 'id', @topic.id %>
+                                <%=hidden_field_tag 'type', "Topic" %>
+                                <%#=check_box_tag 'all_following', '1', false, :class => 'inputcheck' %><!--All Followings--><%= submit_tag 'Share' , :class=>"grnbtn01" %>
+                            </p>
+                            <%end %>
+                            <p class="frm_brd01">
+                            </p>
+                        </div>
+                        <div class="fourCol">
+                            <p class="c7">
+                                <span class="followersIcon"></span>
+                                <span class="black">Share with Followers</span>
+                            </p>
+                            <% form_remote_tag :url => "/share/share_with_followers" do -%>
+                            <p class="c8">
+                                <%=hidden_field_tag 'id', @topic.id %>
+                                <%=hidden_field_tag 'type', "Topic" %>
+                                <%#=check_box_tag 'all_followers', '1', false, :class => 'inputcheck' %><!--All Followers--><%= submit_tag 'Share' , :class=>"grnbtn01" %>
+                            </p>
+                            <%end %>
+                            <p class="frm_brd01">
+                            </p>
+                        </div>
+                        <div class="fourCol">
+                            <p class="c7">
+                                <span class="othernetwork"></span>
+                                <span class="black">Share with Other Network</span>
+                            </p>
+                            <ul class="shareIcons">
+                                <li>
+                                    <a class="shareFacebook" target = "_blank" href="http://www.facebook.com/sharer.php?u=http://<%=request.host_with_port%>/discussions/topic/<%=@topic.permalink%>"></a>
+                                </li>
+                                <li>
+                                    <a class="shareOrkut" target = "_blank" href="http://promote.orkut.com/preview?nt=orkut.com&du=http://<%=request.host_with_port%>/discussions/topic/<%=@topic.permalink%>&tt=<%=@title%>"></a>
+                                </li>
+                                <li>
+                                    <a class="shareTwitter" target = "_blank" href="http://twitter.com/home?status=<%=@topic.title%> http://<%=request.host_with_port%>/discussions/topic/<%=@topic.permalink%>"></a>
+                                </li>
+                            </ul>
+                            <p class="clear10">
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <%else %>
+            <div class="brd" style="wisth:660px;">
+                Please login to share with Followings and Followers.
+            </div>
+            <%end %>
+        </div>
+    </div>
+    <!-- sharing form end -->
+    <% end %>
+    <p class="clear">
+    </p>
+</div>
+<script type = "text/javascript">
+   $(document).ready(function(){
+          $('#topic_reply_link').click(function(){
+            $('#topic_share').hide();
+            $('#topic_reply').slideToggle();
+          })
+        
+          $('#topic_share_link').click(function(){
+            $('#topic_reply').hide();
+            $('#topic_share').slideToggle();
+          })
+          $('#topic_reply_link_1').click(function(){
+            $('#topic_share_1').hide();
+            $('#topic_reply_1').slideToggle();
+          })
+        
+          $('#topic_share_link_1').click(function(){
+            $('#topic_reply_1').hide();
+            $('#topic_share_1').slideToggle();
+          })
+          });
+          function checkFollowings(){
+          <%if logged_in?%>
+              <%if current_user.following_by_type('User').empty?%>
+                show_notice('You are not following anybody yet','error')
+                return false;
+              <%end%>
+          <%end%>
+        }
+          function checkFollowers(){
+        <%if logged_in?%>
+              <%if current_user.followers.empty?%>
+                show_notice('You dont have any followers yet','error')
+                return false;
+              <%end%>
+          <%end%>
+        } 
+		
+			        function decrement_counter(id){ 
+        $('#counter_' + id ).show();
+                             seconds[id] -= 1
+        					   var min = parseInt(seconds[id] / 60);
+        					   var sec = seconds[id] % 60;
+        						sec = sec > 9 ? sec : '0' + sec;					   
+                               $('#counter_display_' + id).html(min + ":" + sec)
+        					   
+        					   if (seconds[id] == 0){
+        					   	$('#counter_' + id ).remove();
+        					   }
+        					   }      
+        
+		
+</script>

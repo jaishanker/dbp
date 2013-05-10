@@ -1,0 +1,253 @@
+<!-- Profile File Include --><%#= javascript_include_tag "Profile" %>
+<div class="clear">
+</div>
+<div class="content">
+  <!-- Left Col Start -->
+  <div class="c1">
+    <!-- Set Priority File Include --><%#= javascript_include_tag "SetPriority" %>
+    <div class="clear">
+    </div>
+    <!-- Blue Box start -->
+    <div class="Blue4pxbox">
+      <code>
+                $(this).corner();
+      </code>
+      <div class="whiteBoxContent01">
+        <div class="banner">
+        </div>
+        <!-- Left col content start -->
+        <div class="WhBxContent">
+          <% unless @contest.length == 0 %>
+                <% @contest.each do |c| %>
+              <!-- Contest01 start -->
+              <div id="contest01">
+                <!-- page heading start -->
+                <span id="contest_<%=c.id%>">
+                  <h3><%= get_name(c.name,50) %></h3>
+                </span>
+                <p class="spacer01">
+                </p>
+                <div class="pageheading">
+                  <!--
+                                        <p class="head13">
+                                        <a href="Contest_details.html">At how Many Revolutions per minute do you work?</a>
+                                        </p>
+                                        -->
+                  <p class="c1 pad5">
+                    <span class="dateBg">start date:</span>
+                    <%= c.start_date.strftime("%d %b %Y") %>- <span class="dateBg">closing date:</span>
+                    <%= c.start_date.strftime("%d %b %Y") %>&nbsp:&nbsp; <span class="dateBg">result date:</span>
+                    <%= c.result_date.strftime("%d %b %Y") %>
+                  </p>
+                </div>
+                <!-- page heading end -->
+                <p class="spacer">
+                </p>
+                <div class="txt">
+                  <%= get_image(c,'contest','original',"nobrd") %>
+                </div>
+                <p class="spacer01">
+                </p>
+                <div class="txt01">
+                  <%= h c.description %>
+                </div>
+                <p class="spacer01">
+                </p>
+                <div class="txt01">
+              
+                  <!-- Checkout the <a href="/contest/terms" onclick="return hs.htmlExpand(this, { objectType:'ajax',outlineType:'rounded-white',width:650,height:700  },'Design Submission and Rules for Submission' )" id="href_2012748673" class="orange01">Design Submission and Rules for Submission</a>
+                  section for more details.  --> Contest begins <%= c.start_date.strftime("%d %b, %Y") %>and ends <%= c.end_date.strftime("%d %b, %Y") %>. We must receive your entry by 12:00a.m IST before <%= c.end_date.next.strftime("%d %b, %Y") %>. 
+                  Winners will be announced here on or around <%= c.result_date.strftime("%d %b %Y") %>
+                </div>
+                <p class="spacer01">
+                </p>
+                <%participants = c.active_participants%>
+                <%unless participants.empty?%>
+                  <h2>Entries to this contest</h2>
+                  <p class="spacer01">
+                  </p>
+                  <p class="brdDot01">
+                  </p>
+                  <!-- Scroll Image Start --><!-- "previous page" action -->
+                  <div class="participant">
+                    <p class="partici">
+                    </p>
+                    <p class="icolink">
+                      <a href="#">Total participants: <%= participants.length %></a>
+                    </p>
+                  </div>
+                  <p class="spacer">
+                  </p>
+                  <A class="prevPage browse01 left"></A>
+                  <!-- root element for scrollable -->
+                  <DIV id="wheele_<%=c.id %>" class="scrollable01">
+                    <!-- root element for the items -->
+                    <DIV class="items01">
+                      <!-- 1-5 -->
+                                                                  <%for participant in participants%>
+                        <div class="contest_img">           
+                          <%=link_to get_image(participant.design,'design','medium','imgbrd'),{:controller=>"designs",:action=>"design",:permalink=>participant.design.permalink} %>
+                          <!-- <IMG src="../images/contest_thumb01.jpg" class="imgbrd"> -->
+                          <p>
+                            <span class="memimg">
+                              <%= link_to get_image(participant.user,'user','thumb','imgbrd01'),my_page_path(:user_id => participant.user.id) %>
+                              <!-- <a href="Members_Page.html"><img src="../images/snap01.gif" width="36" height="36" class="imgbrd01" /></a> -->
+                            </span>
+                            <span class="meminfo">
+                              <span>
+                                <%= link_to get_name(participant.user.login.capitalize,8),my_page_path(:user_id => participant.user.id) %>
+                                <%if logged_in?%>
+                                            <%if participant.user_id == current_user.id%>
+                                                          <%=link_to "X", {:controller => "contest", :action => "withdraw_participation", :id => participant.id, :contest_id => c.id}, :confirm => "You really want to withdraw your participation from this contest?" , :style => "text-decoration:underline;margin-left:35px;", :title => "Withdraw Participation"%>                                                    
+                                           <%end%>     
+                               <%end%>
+                              </span>
+                              <!-- <a href="My_Page.html">Kamlesh</a> -->
+                              <br/>
+                              <%= time_ago(participant.created_at).gsub('about','').gsub('less than a minute ago', '1 minute ago') %>
+                              <!--10 mins ago. -->
+                            </span>
+                          </p>
+                        </div>
+                      <%end%> 
+                    </DIV>
+                  </DIV>
+                  <!-- "next page" action --><A class="nextPage browse01 right"></A>
+                  <BR clear=all>
+                  <!-- javascript coding -->
+                  <SCRIPT>
+                    // What is $(document).ready ? See: http://flowplayer.org/tools/using.html#document_ready
+                    $(document).ready(function(){
+                      // initialize scrollable together with the mousewheel plugin
+                      $("#wheele_<%=c.id %>").scrollable().mousewheel();
+                      });
+                  </SCRIPT>
+                <%else%>
+                  <b> No participation yet.</b>
+                <%end%>
+                <!-- Scroll Image end -->
+            
+                                              <% unless c.tags.nil? %>
+                                                    <% unless c.tags.length == 0 %>
+                    <p class="tags">
+                      <% c.tags.split(',').each do |tag| %>
+                            <%= link_to h(tag) , :controller => "contest", :action => "index" , :tag => tag, :tagable_id => c.id %>
+                            <%= "," unless tag == c.tags.split(',').last %>
+                      <% end %>
+                    </p>
+                  <% end %>
+            <% end %>
+                <div class="spacer">
+                </div>                                   
+             <%if Date.today < c.start_date%>
+                  <h2 style="text-align:center;">This contest is not yet started.</h2>           
+             <%elsif Date.today > c.end_date%>
+               <%if Date.today >= c.result_date%>
+                    <%if !c.winner1.nil? and !c.winner2.nil?%>
+                           <%winner1 = ContestParticipant.find(c.winner1)%>
+                           <%winner2 = ContestParticipant.find(c.winner2)%>
+                            <h1>  Winners of this contest are: </h1>
+                            <span style ="font-size:12px">
+                                    <%= link_to winner1.design.name,{ :controller => "designs", :action => "design", :permalink => winner1.design.permalink} , :popup => true%>
+                                    by 
+                                    <%=link_to winner1.user.login ,my_page_path(:user_id => winner1.user.id), :popup => true%> <br/>
+                                    <%= link_to winner2.design.name,{ :controller => "designs", :action => "design", :permalink => winner2.design.permalink}, :popup => true%>
+                                    by 
+                                  <%=link_to winner2.user.login ,my_page_path(:user_id => winner2.user.id), :popup => true%>
+                          </span>
+                     <%elsif !c.winner1.nil?%>
+                          <%winner1 = ContestParticipant.find(c.winner1)%>                       
+                            <h1> Winner of this contest is: </h1>
+                            <span style ="font-size:12px">
+                                    <%= link_to winner1.design.name, {:controller => "designs", :action => "design", :permalink => winner1.design.permalink}, :popup => true%>
+                                    by 
+                                  <%=link_to winner1.user.login ,my_page_path(:user_id => winner1.user.id), :popup => true%>  
+                             </span>
+                     <%elsif !c.winner2.nil?%>
+                          <%winner2 = ContestParticipant.find(c.winner2)%>                       
+                            <h1> Winner of this contest is: </h1>
+                            <span style ="font-size:12px">
+                                  <%= link_to winner2.design.name,{ :controller => "designs", :action => "design", :permalink => winner2.design.permalink}, :popup => true%>
+                                  by 
+                                <%=link_to winner2.user.login ,my_page_path(:user_id => winner2.user.id), :popup => true%>          
+                             </span>
+                     <%else%>
+                       <h2 style="text-align:center;">Sorry, this contest is over.</h2> 
+                     <%end%>                       
+               <%else%>
+                  <h2 style="text-align:center;">Sorry, this contest is over.</h2>                 
+               <%end%>
+             <%else%>
+                   <% if logged_in? %>
+                                                             <%# if c.participant_ids.include?(current_user.id) %>
+                        <!--
+                        <table width = "100%">
+                                                    <tr>
+                                                        <td align = "center">
+                                                            <h4>You are participating this Contest</h4>
+                                                            <%#=link_to "Widhdraw particiaption", {:controller => "contest", :action => "withdraw_participation", :id => c.id}, :confirm => "You really want to withdraw your participation from this contest?" , :style => "text-decoration:underline;"%>
+                        </td>
+                        </tr>
+                        </table>
+                        -->
+
+                                                                         <%# else %>
+
+
+                        <h2 style="text-align:center;">To participate, <%=link_to "upload", {:controller => "designs", :action => "new"} , :style => "color:#000;text-decoration:underline;"%> your design with tag "<%=c.contest_tag%>".</h2>                                                  
+                        <!--    
+                                              <div class="partibtn">
+                        <a href="/contest/particapate_now/<%#=c.id%>" onclick="$('.scrollable02').scrollable().mousewheel();return hs.htmlExpand(this, { objectType:'ajax',outlineType:'rounded-white',width:800,height:425  },'Participate Now' ); $('.scrollable02').scrollable().mousewheel();" id = "href_<%#= c.id %>"></a>
+                        </div>
+                        -->
+
+
+                                                    <%# end %>
+                     <% else %>
+                        <table width = "100%">
+                          <tr>
+                            <td align = "center">
+                              <h4>Please <a href="javascript:void(0);" class="ask_login" style ="color:#000;text-decoration:underline;"> Log in  </a> to participate in the contest.</h4>
+                            </td>
+                          </tr>
+                        </table>
+                      <% end %>    
+                  <%end%>
+                <div class="spacer02">
+                </div>                        
+                <p class="brdDot01">
+                </p>
+              </div>
+            <% end %>
+      <% else %>
+            <div style ="min-height:150px">
+              <p style ="text-align:center">
+                No contests running at this moment !
+              </p>
+            </div>
+          <% end %>
+          <!-- Contest01 end -->
+        </div>
+        
+        <!-- Left col content end -->
+      </div>
+    </div>
+    <!-- Blue Box end -->
+    <div class="spacer">
+    </div>
+  </div>
+  <!-- Left Col End -->
+  <!-- Right Col Start -->
+  <div class="c2 rightcol" id="rightcol">
+    <%= render :partial => "right_col" %>
+  </div>
+  <!-- Right Col End -->
+</div>
+
+<%if params[:id]%>
+  <script type="text/javascript">    
+    $(document).ready(function(){
+      $.scrollTo($('#contest_<%=params[:id]%>'));
+      });
+      </script>
+<%end%>

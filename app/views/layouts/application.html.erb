@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html dir="ltr" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:og="http://opengraphprotocol.org/schema/" xmlns:fb="http://www.facebook.com/2008/fbml" lang="en">
+  <head>
+    <title><%= get_title %></title>
+    <meta property="og:title" content="<%=@title unless @title.nil?%>"/>
+    <meta property="og:type" content="<%=@type unless @type.nil?%>"/>
+    <meta property="og:url" content="<%=@obj_url unless @obj_url.nil?%>"/>
+    <meta property="og:image" content="<%=@image_src unless @image_src.nil?%>"/>
+    <meta property="og:site_name" content="http://<%=SITE_URL%>"/>
+    <meta property="fb:admins" content="100001286347743"/>
+    <meta property="og:description" content="<%=@description unless @description.nil?%>"/>
+    
+     <link rel="alternate" type="application/rss+xml" title="Design RSS" href="http://fans.solidworks.in/design_rss" />
+     <link rel="alternate" type="application/rss+xml" title="Learning RSS" href="http://fans.solidworks.in/learning_rss" />
+     <link rel="alternate" type="application/rss+xml" title="Blog RSS" href="http://fans.solidworks.in/blog/feed/rss" />
+	
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" >
+<!--<script src="http://platform.twitter.com/anywhere.js?id=yWjfpF2us6qSxgK6JvNYA&v=1" type="text/javascript"></script> -->
+       <%#= javascript_include_tag :defaults%>
+      <%= stylesheet_link_tag  "styles.css","overlay.css",'lightview',"jquery.tabs",'notification',"jquery-ui-1.7.2.custom","jqzoom", "jquery.multiSelect.css",:cache => "dbp"-%>
+      <%#= init_tinymce_hammer_if_required %>
+
+        <%#= javascript_include_tiny_mce_if_used %>
+        <%#= tiny_mce if using_tiny_mce? %>
+      <%= javascript_include_tag "jquery.js","jquery.tools.min.js","jquery.MetaData.js","jquery.rating.js","common.js","overlay.js","jquery.corner.js","jquery.paginate.js","ui.core","datepiker","notice.js","tag", "jquery.scrollTo","jqzoom","rc.js","jquery.multiSelect.js", "jquery.bgiframe.min.js",:cache => "dbp" %>
+      <%= fb_connect_javascript_tag %>
+      <%= init_fb_connect "XFBML", :js => :jquery%>   
+<%#= javascript_include_tag "jquery.date_input" %>
+<%#= stylesheet_link_tag "date_input" %>
+      <meta name="title" content="<%=@title unless @title.nil?%>" />
+      <meta name="description" content="<%=@description unless @description.nil?%> " />
+      <link rel="image_src" href="<%=@image_src unless @image_src.nil?%>" / >
+            </head>
+        <body id = "<%=get_id(controller.controller_name)%>">
+
+          <%ua = request.headers['HTTP_USER_AGENT'].downcase%>
+          <% if ua.index('opera')  or ua.index('msie 6')  or ua.index('firefox/2')%>
+            <div id="browser_notice">
+              <p class="error-notice">This site is not best viewed in this browser. Please upgrade to the latest for best experience. (Click to hide)</p>
+            </div>
+          <%end%>
+          <div id ="browser_notice1">
+
+          </div>
+          <div class="notice-wrap">
+            <div class="notice-item-wrapper">
+
+            </div>
+          </div>
+          <div class="wrapper">
+
+            <script type = "text/javascript">
+              $(document).ready(function(){
+<% if flash[:notice] %>
+      show_notice('<%= flash[:notice] %>','success');
+  <% flash[:notice] = nil %>
+<% end %>
+<% if flash[:error] %>show_notice('<%= flash[:error] %>','error');
+  <% flash[:error] = nil %>
+<% end %>
+    var browser_notice = get_cookie('browser_notice_closed')
+    if(browser_notice == 'true')
+    {
+      $('#browser_notice').remove();
+    }
+    else
+    {
+      $('#browser_notice').show();
+    }
+  });
+                                                                                             
+            </script>
+            <!-- Header start-->
+            <% if logged_in? %>
+              <%=render :partial=>"layouts/header.html.erb" %>
+            <%else %>
+              <%=render :partial=>"layouts/header_login.html.erb" %>
+            <%end %>
+            <!-- Header end-->
+            <div class="clear">
+            </div>
+            <!-- Container Start -->
+
+  
+
+  
+            <%= yield %>
+            <!-- Container End -->
+            <div class="clear">
+            </div>
+          </div>
+          <!-- Wrapper End -->
+          <div class="clear">
+          </div>
+          <!-- Footer File Include -->
+          <%=render :partial=>"layouts/footer.html.erb" %>
+          <% if logged_in? and !@activitity_streams.nil? %>
+            <%unless @activitity_streams.empty? %>
+              <%=render :partial=>"layouts/activity_stream_widget" %>
+            <%end %>
+          <%end %>
+          <%= javascript_include_tag "uploader" %>
+          <!-- survery monkey script -->
+          <!--<script src="http://www.surveymonkey.com/jsPop.aspx?sm=PiVT6tmPmdbNkVOEuOtYZQ_3d_3d">
+          </script>-->
+          <!-- survery monkey script end -->
+          <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-16187960-1");
+              pageTracker._trackPageview();
+            }
+            catch (err) {
+            }
+          </script>
+<!--
+<script type="text/javascript">
+twttr.anywhere.config({ callbackURL: "http://192.168.1.4:3000" });
+  twttr.anywhere(function (T) {
+    T.hovercards();
+  });
+twttr.anywhere({ window: myFrame }, function (T) {
+    // Your code here
+  });
+
+
+</script>
+  -->
+        </body>
+        </html>

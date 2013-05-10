@@ -1,0 +1,12 @@
+Hi <%=h @user.login.capitalize %>,
+<br /><br />
+    Your request for "<%=@product.title%>" to redeem your points has been sent to admin for approval. 
+<br /><br />
+Thanks,<br />
+The SolidWorks India Online Community Team
+<br /><br />
+=======================================<br />
+This message was intended for <%=@user.email%>.
+If you do not wish to receive this type of email from SolidWorks India Online Community in the future, please click on the link below to unsubscribe.
+<%=h @unsubscribe_url %>
+<img height = "0" width = "0" src="http://fans.solidworks.in/home/campaign/<%=@user.id%>?camp=10011"></img>

@@ -1,0 +1,40 @@
+<div class="partnow">
+    <div id = "error">
+    </div>
+    <% remote_form_for :participation, @participation,:url => {:controller => "contest",:action => "create_participation"} ,:html => {:multipart => true}, :before => "$('#spinner').show();", :complete => "$('#spinner').hide();" do |f| -%>
+    <%= f.hidden_field :contest_id,:value => @contest.id %>
+	<%= f.hidden_field :design_id,:id => "contest_design_#{@contest.id}" %>
+    <div class="txt">
+        <b>Select your participating image for <%= get_name(@contest.name) %></b>
+    </div>
+    <p class="spacer04">
+    </p>
+    <div class = "selected_design">
+    </div>
+    <% unless current_user.designs.length == 0 %>
+    <div class= "image_check">
+        <DIV class="items01" style ="width:<%= current_user.designs.length * 160  %>px;">
+            <% current_user.designs.each do |d| %>
+            <div class = "contest_img">
+         <a href="javascript:void(0);" onclick = "$('.contest_img img').removeClass('imageselected');$(this).children('img').addClass('imageselected');$('#contest_design_<%=@contest.id%>').val('<%=d.id%>')"><%= get_image(d,'design','medium','imgbrd') %> </a>
+               <!--  <img onclick = "$('.contest_img img').removeClass('imageselected');$(this).addClass('imageselected');$('#contest_design_<%=@contest.id%>').val('<%=d.id%>')" rel = "<%=d.id%>" src="/images/contest_thumb01.jpg" class="imgbrd01" /> --><%= get_name(d.name,50) %>
+            </div><% end %>
+        </div>
+    </div>
+    <p class="spacer04">
+    </p>
+    <p class="c1">
+        &nbsp;
+    </p>
+    <p class="c2">
+        <%= submit_tag 'Done Let the best design win!' , :class => "grnbtn" %>
+        <input id = "participate_cancel_<%= @contest.id %>" type="button" class="grnbtn" value="Cancel" onclick="return hs.close(this)"/>
+      <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner",:style=>"display:none; width: 20px; margin-top: 0px;" ) %>
+    </p>
+    <p class="spacer04">
+    </p>
+	<% else %>
+    <b>
+    Please upload a design first & use it as contest deisgn.<% end %>
+    <%end %>
+</div>

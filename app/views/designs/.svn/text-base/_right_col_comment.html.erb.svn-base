@@ -1,0 +1,24 @@
+
+    <!-- Two col start -->
+    <div class="twcol">
+        <div class="snaprow">
+            <p class="c1">
+                   <%= link_to get_image(c.user,'user','thumb','nobrd'),my_page_path(:user_id => c.user.id) unless c.user.nil?%>
+                  <%#= get_my_page_link(get_image(c.user,'user','thumb','nobrd'), c.user.id)%>
+                   <%#=  get_image(c.user,'user','thumb')%>
+                   <%#= link_to get_name(c.user.login,8),my_page_path(:user_id => c.user.id) unless c.user.nil?%>
+                  <%#= get_my_page_link(truncate(c.user.login,8), c.user.id)%>
+                  <!--<a href="My_Page.html"> <span class="mname"><%#=c.user.first_name%></span>-->
+                </a>
+            </p>
+            <p class="c2">
+               <%= link_to get_name(c.user.login,40),my_page_path(:user_id => c.user.id) unless c.user.nil?%>
+               <%#= get_my_page_link(truncate(c.user.login,8), c.user.id)%> commented on
+                 <%if !c.design.nil?%>
+                 <%= link_to get_name(c.design.name,60),{:controller=>:designs, :action => :design,:permalink => c.design.permalink} ,:class=>"commname"%><br/>
+                 <%= time_ago(c.created_at) %>
+               <%end%>
+            </p>
+        </div>
+    </div>
+    <!-- Two col end -->

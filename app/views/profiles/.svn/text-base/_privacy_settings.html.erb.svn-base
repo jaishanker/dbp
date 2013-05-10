@@ -1,0 +1,189 @@
+<div id="privacy_setting">
+	<form action="" method="get">
+	<div class="proform">
+        	<div class="formrow">
+                <p class="head">Please select your Profile visibility options from the following</p>
+            </div>
+    		<div class="frm_brd01"></div>
+        	<div class="formrow">
+                <p class="c6">&nbsp;</p>
+				<p class="c7 head"> All Community Members</p>
+				<!-- <p class="c8 head">All Following</p> -->
+            </div>
+    		<div class="frm_brd01"></div>
+        	<div class="formrow">
+                <p class="c6">Basic Information :</p>
+				<p class="c7"><%if @privacy_setting.basic_info_member%><img src="../images/ticked.gif" width="20" height="20" /><%end%></p>
+			    <!-- <p class="c8"><%if @privacy_setting.basic_info_following%><img src="../images/ticked.gif" width="20" height="20" /><%end%></p> -->
+            </div>
+    		<div class="frm_brd01"></div>
+        	<div class="formrow">
+                <p class="c6">Qualification :</p>
+				<p class="c7"><%if @privacy_setting.qualification_member%><img src="../images/ticked.gif" width="20" height="20" /><%end%></p>
+			    <!-- <p class="c8"><%if @privacy_setting.qualification_following%><img src="../images/ticked.gif" width="20" height="20" /><%end%></p> -->
+            </div>
+    		<div class="frm_brd01"></div>
+        	<div class="formrow">
+                <p class="c6">Professional :</p>
+				<p class="c7"><%if @privacy_setting.profession_member%><img src="../images/ticked.gif" width="20" height="20" /><%end%></p>
+			    <!-- <p class="c8"><%if @privacy_setting.profession_following%><img src="../images/ticked.gif" width="20" height="20" /><%end%></p> -->
+            </div>
+    		<div class="frm_brd01"></div>
+        	<div class="formrow">
+                <p class="c6">Certification & Skills :</p>
+				<p class="c7"><%if @privacy_setting.certification_member%><img src="../images/ticked.gif" width="20" height="20" /><%end%></p>
+			    <!-- <p class="c8"><%if @privacy_setting.certification_following%><img src="../images/ticked.gif" width="20" height="20" /><%end%></p> -->
+            </div>
+ 
+    		<div class="frm_brd01"></div>
+        	<div class="formrow">
+                <p class="c6">My Designs :</p>
+				<p class="c7"><%if @privacy_setting.designs_member%><img src="../images/ticked.gif" width="20" height="20" /><%end%></p>
+			    <!-- <p class="c8"><%if @privacy_setting.designs_following%><img src="../images/ticked.gif" width="20" height="20" /><%end%></p> -->
+            </div>
+    		<div class="frm_brd01"></div>
+        	<div class="formrow">
+                <p class="c6">My Requests :</p>
+				<p class="c7"><%if @privacy_setting.requests_member%><img src="../images/ticked.gif" width="20" height="20" /><%end%></p>
+			    <!-- <p class="c8"><%if @privacy_setting.requests_following%><img src="../images/ticked.gif" width="20" height="20" /><%end%></p> -->
+            </div>
+    		<div class="frm_brd01"></div>
+        	<div class="formrow">
+                <p class="c6">My Following :</p>
+				<p class="c7"><%if @privacy_setting.followings_member%><img src="../images/ticked.gif" width="20" height="20" /><%end%></p>
+			    <!-- <p class="c8"><%if @privacy_setting.followings_following%><img src="../images/ticked.gif" width="20" height="20" /><%end%></p> -->
+            </div>
+    		<div class="frm_brd01"></div>
+        	<div class="formrow">
+                <p class="c6">My Followers :</p>
+				<p class="c7"><%if @privacy_setting.followers_member%><img src="../images/ticked.gif" width="20" height="20" /><%end%></p>
+			    <!-- <p class="c8"><%if @privacy_setting.followers_following%><img src="../images/ticked.gif" width="20" height="20" /><%end%></p> -->
+            </div>
+    		<div class="frm_brd01"></div>
+        	<div class="formrow">
+                <p class="c6">My Favorites :</p>
+				<p class="c7"><%if @privacy_setting.favourites_member%><img src="../images/ticked.gif" width="20" height="20" /><%end%></p>
+			    <!-- <p class="c8"><%if @privacy_setting.favourites_following%><img src="../images/ticked.gif" width="20" height="20" /><%end%></p> -->
+            </div>
+    		<div class="frm_brd01"></div>
+        	<div class="formrow">
+                <p class="c6">My Groups :</p>
+				<p class="c7"><%if @privacy_setting.groups_member%><img src="../images/ticked.gif" width="20" height="20" /><%end%></p>
+			    <!-- <p class="c8"><%if @privacy_setting.groups_following%><img src="../images/ticked.gif" width="20" height="20" /><%end%></p> -->
+            </div>
+    		<!--<div class="frm_brd01"></div>
+        	<div class="formrow">
+                <p class="c6">My Contests :</p>
+				<p class="c7"><%if @privacy_setting.contests_member%><img src="../images/ticked.gif" width="20" height="20" /><%end%></p>
+			    <p class="c8"><%#if @privacy_setting.contests_following%><img src="../images/ticked.gif" width="20" height="20" /><%#end%></p>
+
+            </div>-->
+    		<div class="frm_brd01"></div>
+        	<div class="formrow">
+                <p class="c6">&nbsp;</p>
+				<p class="c7"><input name="Save" type="button" value="Edit" class="grnbtn01" onclick = "$('#privacy_setting').hide(); $('#privacy_setting_form').show();"/></p>
+			    <p class="c8">&nbsp;</p>
+            </div>
+    </div>
+    </form>
+    <p class="spacer01"></p>
+  </div>
+
+<div id="privacy_setting_form" style="display:none;">
+      <% remote_form_for :privacy_setting, @privacy_setting,:url => {:action => "update_privacy_settings"} , :update => "ComContent1", :before => "$('#spinner').show();",:complete => "$('#spinner').hide();" do |f|-%>
+	<div class="proform">
+        	<div class="formrow">
+                <p class="head">Please select your Profile visibility options from the following</p>
+            </div>
+    		<div class="frm_brd01"></div>
+        	<div class="formrow">
+                <p class="c6">&nbsp;</p>
+				<p class="c7 head"> All Community Members</p>
+				<!-- <p class="c8 head">All Following</p> -->
+            </div>
+    		<div class="frm_brd01"></div>
+        	<div class="formrow">
+                <p class="c6">Basic Information:</p>
+				<p class="c7"><%= f.check_box :basic_info_member, :class => "inputcheck member",:disabled=>"disabled" %></p>
+				<!-- <p class="c8"><%= f.check_box :basic_info_following, :class => "inputcheck following" %></p> -->
+             </div>
+    		<div class="frm_brd01"></div>
+        	<div class="formrow">
+                <p class="c6">Qualification:</p>
+				<p class="c7"><%= f.check_box :qualification_member, :class => "inputcheck member",:disabled=>"disabled" %></p>
+				<!-- <p class="c8"><%= f.check_box :qualification_following, :class => "inputcheck following" %></p> -->
+             </div>
+    		<div class="frm_brd01"></div>
+        	<div class="formrow">
+                <p class="c6">Professional:</p>
+				<p class="c7"><%= f.check_box :profession_member, :class => "inputcheck member",:disabled=>"disabled" %></p>
+				<!-- <p class="c8"><%= f.check_box :profession_following, :class => "inputcheck following" %></p> -->
+             </div>
+    		<div class="frm_brd01"></div>
+        	<div class="formrow">
+                <p class="c6">Certification & Skills:</p>
+				<p class="c7"><%= f.check_box :certification_member, :class => "inputcheck member",:disabled=>"disabled" %></p>
+				<!--  <p class="c8"><%= f.check_box :certification_following, :class => "inputcheck following" %></p>  -->
+             </div>
+    		<div class="frm_brd01"></div>
+        	<div class="formrow">
+                <p class="c6">My Designs:</p>
+				<p class="c7"><%= f.check_box :designs_member, :class => "inputcheck member",:disabled=>"disabled" %>
+			  </p>
+				<!-- <p class="c8"><%= f.check_box :designs_following, :class => "inputcheck following" %></p>  -->
+             </div>
+    		<div class="frm_brd01"></div>
+        	<div class="formrow">
+                <p class="c6">My Requests:</p>
+				<p class="c7"><%= f.check_box :requests_member, :class => "inputcheck member" %></p>
+				<!-- <p class="c8"><%= f.check_box :requests_following, :class => "inputcheck following" %></p> -->
+             </div>
+    		<div class="frm_brd01"></div>
+        	<div class="formrow">
+                <p class="c6">My Following:</p>
+				<p class="c7"><%= f.check_box :followings_member, :class => "inputcheck member" %></p>
+				<!-- <p class="c8"><%= f.check_box :followings_following, :class => "inputcheck following" %></p>  -->
+             </div>
+    		<div class="frm_brd01"></div>
+        	<div class="formrow">
+                <p class="c6">My Followers:</p>
+				<p class="c7"><%= f.check_box :followers_member, :class => "inputcheck member" %></p>
+				<!--  <p class="c8"><%= f.check_box :followers_following, :class => "inputcheck following" %></p>  -->
+             </div>
+    		<div class="frm_brd01"></div>
+        	<div class="formrow">
+                <p class="c6">My Favorites:</p>
+				<p class="c7"><%= f.check_box :favourites_member, :class => "inputcheck member" %></p>
+				<!-- <p class="c8"><%= f.check_box :favourites_following, :class => "inputcheck following" %></p>  -->
+             </div>
+    		<div class="frm_brd01"></div>
+        	<div class="formrow">
+                <p class="c6">My Groups:</p>
+				<p class="c7"><%= f.check_box :groups_member, :class => "inputcheck member" %></p>
+				<!-- <p class="c8"><%= f.check_box :groups_following, :class => "inputcheck following" %></p> -->
+             </div>
+    		<!--<div class="frm_brd01"></div>
+        	<div class="formrow">
+                <p class="c6">My Contests:</p>
+				<p class="c7"><%= f.check_box :contests_member, :class => "inputcheck member" %></p>
+			 <p class="c8"><%#= f.check_box :contests_following, :class => "inputcheck following" %></p> 
+             </div>-->
+    		<div class="frm_brd01"></div>
+        	<div class="formrow">
+                <p class="c6">&nbsp;</p>
+				<p class="c7"><input type="checkbox" class="inputcheck" onclick="selectAllMembers(this)"> Select All</p>
+				<!-- <p class="c8"><input type="checkbox" class="inputcheck" onclick="selectAllFollowings(this)">Select All</p> -->
+             </div>
+    		<div class="frm_brd01"></div>
+        	<div class="formrow">
+                <p class="c6">&nbsp;</p>
+				<p class="c7">
+                        <%= submit_tag 'Save and Continue' , :class => "grnbtn01"%>
+                    <input name="Save" type="button" value="Cancel" class="grnbtn01"  onclick = " $('#privacy_setting_form').hide(); $('#privacy_setting').show();"/>
+                </p>
+				<p class="c8">&nbsp;</p>
+             </div>
+    </div>
+   <%end%>
+    <p class="spacer01"></p>  
+</div>

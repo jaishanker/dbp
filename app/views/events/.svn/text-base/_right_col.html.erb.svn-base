@@ -1,0 +1,107 @@
+<%= get_right_panel_banner(@right_banner,'Event') %>
+<script type="text/JavaScript">
+    $(document).ready(function() {
+    $('input[type="text"]').focus(function() {
+    if (this.value == this.defaultValue){
+    this.value = '';
+    }
+    if(this.value != this.defaultValue){
+    this.select();
+    }
+    });
+    $('input[type="text"]').blur(function() {
+    if ($.trim(this.value) == ''){
+    this.value = (this.defaultValue ? this.defaultValue : '');
+    }
+    });
+    });
+</script>
+<%=render :partial => "/home/members_search_form" %>
+<!-- Learning Center Activities Div start -->
+<div class ="<%= cycle('cBoxblue','cBoxorange','cBoxgreen') %>">
+    <div class="cBoxhead">
+        <p class="headtxt">
+            Learning Center Activities
+        </p>
+        <%= link_to "more +",{:controller => "learnings", :action => "activities"},:class=>"more" %>
+    </div>
+  <% cache 'learning_cache' do %>
+    <div class="cBoxcontainer">
+        <!-- Two col start --><% unless @learning_center_activities.length == 0 %>
+        <%= render :partial => "home/activity_stream",:collection => @learning_center_activities %>
+        <% else %>
+        No learning center acitivity found<% end %>
+        <!-- Two col end -->
+        <p class = "spacer01">
+        </p>
+    </div>
+  <%end%>
+</div>
+<!-- Learning Center Activities Div end -->
+<div class="clear">
+</div>
+<!-- Design Central Activities Div start -->
+<div class ="<%= cycle('cBoxblue','cBoxorange','cBoxgreen') %>">
+    <div class="cBoxhead">
+        <p class="headtxt">
+            Design Central Activities
+        </p>
+        <%= link_to "more +",{:controller => "designs", :action => "activities"},:class=>"more" %>
+    </div>
+   <% cache 'design_cache' do %>
+    <div class="cBoxcontainer">
+        <!-- Two col start --><% unless @design_central_activities.length == 0 %>
+        <%= render :partial => "home/activity_stream",:collection => @design_central_activities %>
+        <% else %>
+        No design central acitivity found<% end %>
+        <!-- Two col end -->
+        <p class = "spacer01">
+        </p>
+    </div>
+  <%end%>
+</div>
+<!-- Design Central Activities Div end -->
+<div class="clear">
+</div>
+<!-- Discussion Lounge Activity Div start -->
+<div class ="<%= cycle('cBoxblue','cBoxorange','cBoxgreen') %>">
+    <div class="cBoxhead">
+        <p class="headtxt">
+            Discussion Lounge Activity
+        </p>
+        <a href="/discussions/activities" class="more">more + </a>
+    </div>
+  <% cache 'discussion_cache' do %>
+    <div class="cBoxcontainer">
+        <!-- Two col start -->
+        <% unless @discussion_lounge_activities.length == 0 %>
+        <%= render :partial => "home/activity_stream",:collection => @discussion_lounge_activities %>
+        <% else %>
+        No discussion lounge acitivity found<% end %>
+        <!-- Two col end -->
+        <p class = "spacer01">
+        </p>
+    </div>
+  <%end%>
+</div>
+<!-- Discussion Lounge Activity Div end -->
+<div class="clear">
+</div>
+<!-- Contest Activities Div start -->
+<!--<div class="actstream">
+<div class="greenhead01">
+<p class="headtxt">Contest Activities</p>
+<a href="/contest" class="more">more + </a>
+</div>
+<p class="greenarrow"></p>
+<%# unless @recent_activities.length == 0 %>
+<%# @recent_activities.each do |c| %>
+<%#= render :partial => "designs/right_col_comment",:locals => {:c=> c} %>
+<%# end %>
+<%# else %>
+No comments found<%# end %>
+</div>-->
+<!-- Contest Activities Div end -->
+<div class="clear">
+</div>
+<%= get_right_panel_banner(@right_banner,'Event','Bottom') %>

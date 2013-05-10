@@ -1,0 +1,50 @@
+                    <!-- Four col comment start -->
+                    <div class="group">
+                        <div class="fourCol">
+                            <div class="c1">
+                                <%= get_image(product,'products','small') %>
+                            </div>
+                            <div class="c2"  style="width:18%">
+                                <p class="cc2">
+                                    Name:
+                                </p>
+                                <p class="cc2">
+                                    Points Required:
+                                </p>
+                                <p class="cc2">
+                                    Your Redeemptions:
+                                </p>                    
+                                <p class="cc2">
+                                    Available Till:
+                                </p>
+                                <p class="cc2">
+                                    Description:
+                                </p>                    
+                            </div>
+                            <div class="c3" style="width:35%">
+                                <p class="cc3 head">
+                                    <%=h product.title%>
+                                </p>
+                                <p class="cc3">
+                                    <%=h product.points_required%>
+                                </p>
+                                <p class="cc3">
+                                    <%= @user_products[product.id].nil?  ? '0 times' : @user_products[product.id].to_s == '1'  ?  '1 time ' : @user_products[product.id].to_s + ' times'  %>
+                                </p>                    
+                                <p class="cc3">
+                                    <%=h product.expiry_date%>
+                                </p>
+                                <p class="cc3">
+                                    <%=h product.description%>
+                                </p>                    
+                            </div>
+                                  <div class="c4" style="width:25%">
+                                      <%if current_user.points.to_i >= product.points_required.to_i%>
+<a class="grnbtn" id="href_2012748673" onclick="return hs.htmlExpand(this, { objectType:'ajax',outlineType:'rounded-white',width:500,height:450},'Shipment Address' )" href="/redemptions/redeem?id=<%=product.id%>">Redeem Now!</a>
+<%#= link_to "Redeem Now!",{ :controller => "redemptions", :action => "redeem_points", :product_id => product.id}, :class => "grnbtn" %>
+                                      <%else%>
+                                        You need <%= product.points_required.to_i - current_user.points.to_i%> more points.
+                                      <%end%>
+                                  </div>
+                        </div>
+                    </div>

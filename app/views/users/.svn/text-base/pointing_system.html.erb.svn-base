@@ -1,0 +1,642 @@
+                <!-- Container Start -->
+                <div class="content">
+                    <!-- Left Col Start -->
+                    <div class="c1">
+                        <!-- Blue Box start -->
+                        <div class="Blue4pxbox">
+                            <code>
+                                $(this).corner();
+                            </code>
+                            <div class="whiteBoxContent">
+                                <!-- Group Start --><!-- Section Head start -->
+                                <div class="pageheading">
+                                    <div class="c1 head14">
+                                        <strong>1. Introduction of the Point system and the Levels:</strong>
+                                    </div>
+                                  </div>
+									 <p class="spacer05">
+                                    </p>
+                                    <p class="clear brdBot01">
+                                    </p>
+                                    <p class="spacer05">
+                                    </p>
+                                    <p>We have introduced the Level System whereby which activities performed by a registered member will result in the member gaining points. After a certain level of points have been achieved the member moves to the next level. Each level comes with certain advantages to the members along with the ability to reimburse the points that has been gathered. 
+                                        <br/><br/>For now there are 5 Levels each corresponding to certain number of points earned by members through activities done on the community. 
+                                    </p>
+                                    <br/>
+                
+                                 <div class="point_tbl">
+                                    <div class="row head">
+                                        <p class="col-1">
+                                            Levels
+                                        </p>
+                                       <!-- <p class="col-2">
+                                            Belt
+                                        </p> -->
+                                        <p class="col-3">
+                                            Point Range 
+                                        </p>
+                                    </div>
+                                    <p class="clear">
+                                    </p>
+                                    <div class="row">
+                                        <p class="col-1">
+                                            level 1 
+                                        </p>
+                                    <!--    <p class="col-2">
+                                            White
+                                        </p> -->
+                                        <p class="col-3">
+                                            0 - 2000
+                                        </p>
+                                    </div>
+                                    <p class="clear">
+                                    </p>
+                                    <div class="row">
+                                        <p class="col-1">
+                                            level 2 
+                                        </p>
+                                    <!--    <p class="col-2">
+                                            Yellow
+                                        </p> -->
+                                        <p class="col-3">
+                                            2001 - 10,000
+                                        </p>
+                                    </div>
+                                    <p class="clear">
+                                    </p>
+                                    <div class="row">
+                                        <p class="col-1">
+                                            level 3 
+                                        </p>
+                                    <!--    <p class="col-2">
+                                            Green
+                                        </p> -->
+                                        <p class="col-3">
+                                            10,001 - 20,000
+                                        </p>
+                                    </div>
+                                    <p class="clear">
+                                    </p>
+                                    <div class="row">
+                                        <p class="col-1">
+                                            level 4 
+                                        </p>
+                                      <!--  <p class="col-2">
+                                            Blue
+                                        </p> -->
+                                        <p class="col-3">
+                                            21,001 - 40,000
+                                        </p>
+                                    </div>
+                                    <p class="clear">
+                                    </p>
+                                    <div class="row">
+                                        <p class="col-1">
+                                            level 5 
+                                        </p>
+                                      <!--  <p class="col-2">
+                                            Black
+                                        </p> -->
+                                        <p class="col-3">
+                                            &gt;40,000
+                                        </p>
+                                    </div>
+                                    <p class="clear">
+                                    </p>
+                                </div>
+                                <div class="clear">
+                                </div>
+                                <p class="spacer05">
+                                </p>                
+                
+                                <div class="pageheading">
+                                    <div class="c1 head14">
+                                        <strong>2. How can you earn points?:</strong>
+                                    </div>
+                                  </div>
+									 <p class="spacer05">
+                                    </p>
+                                    <p class="clear brdBot01">
+                                    </p>
+                                    <p class="spacer05">
+                                    </p>
+                                    <p>
+                                            Points can be earned by simply being an active member and contributor to the community. The more active you are the more points you earn. The more you contribute to the community the more you earn.
+                                    </p>
+                                    <br/>
+                                   <div class="pageheading">
+                                    <div class="c1 head14">
+                                        <strong>3. Points utilized per day:</strong>
+                                    </div>
+                                  </div>
+									 <p class="spacer05">
+                                    </p>
+                                    <p class="clear brdBot01">
+                                    </p>
+                                    <p class="spacer05">
+                                    </p>
+                                    <p>
+                                            There are certain activities that utilize your points earned on a daily basis. The activities that utilize the points are: Ratings given / favorites given and comments given. In a day you can utilize half of the total points you have earned. Thus if you login with 1000 points than you can utilize up to 500 points in that day, to utilize more you will have to come the next day when you total points would have gone up again. All utilized points remain in your account for redemption – utilized points only limit the number of point gaining action you can perform in a day. 
+
+                                    </p>
+                                    <br/>                
+                
+                                  <div class="pageheading">
+                                    <div class="c1 head14">
+                                       <strong>4. Points Calculation:</strong>
+									</div>
+									<br/>
+										<p class = "error clear" >* Points for spending per day = Points earned / 2</p>
+                                </div>
+                                <p class="clear brdBot01">
+                                </p>
+                                <p class="spacer05">
+                                </p>
+                                <div class="point_tbl">
+                                    <div class="row head">
+                                        <p class="col-1">
+                                            Activity
+                                        </p>
+                                        <p class="col-2">
+                                            Points Earned
+                                        </p>
+                                        <p class="col-3">
+                                            Points for Spending
+                                        </p>
+                                    </div>
+                                    <p class="clear">
+                                    </p>
+                                    <div class="row">
+                                        <p class="col-1">
+                                            Email verification
+                                        </p>
+                                        <p class="col-2">
+                                            100
+                                        </p>
+                                        <p class="col-3">
+                                            0
+                                        </p>
+                                    </div>
+                                    <p class="clear">
+                                    </p>
+                                    <div class="row">
+                                        <p class="col-1">
+                                            Profile completion
+                                        </p>
+                                        <p class="col-2">
+                                            1000
+                                        </p>
+                                        <p class="col-3">
+                                            0
+                                        </p>
+                                    </div>
+                                    <p class="clear">
+                                    </p>
+                                    <div class="row">
+                                        <p class="col-1">
+                                            Uploading profile photo 
+                                        </p>
+                                        <p class="col-2">
+                                            200
+                                        </p>
+                                        <p class="col-3">
+                                            0
+                                        </p>
+                                    </div>
+                                    <p class="clear">
+                                    </p>
+                                    <div class="row">
+                                        <p class="col-1">
+                                            Uploading Design
+                                        </p>
+                                        <p class="col-2">
+                                            250
+                                        </p>
+                                        <p class="col-3">
+                                            0
+                                        </p>
+                                    </div>
+                                    <p class="clear">
+                                    </p>
+                                    <div class="row">
+                                        <p class="col-1">
+                                            Rating received
+                                        </p>
+                                        <p class="col-2">
+                                            Rating * 10
+                                        </p>
+                                        <p class="col-3">
+                                            0
+                                        </p>
+                                    </div>
+                                    <p class="clear">
+                                    </p>
+                                    <div class="row">
+                                        <p class="col-1">
+                                            Rating given
+                                        </p>
+                                        <p class="col-2">
+                                            5
+                                        </p>
+                                        <p class="col-3">
+                                            Rating *10
+                                        </p>
+                                    </div>
+                                    <p class="clear">
+                                    </p>
+                                    <div class="row">
+                                        <p class="col-1">
+                                            Favorite given
+                                        </p>
+                                        <p class="col-2">
+                                            0
+                                        </p>
+                                        <p class="col-3">
+                                            20
+                                        </p>
+                                    </div>
+                                    <p class="clear">
+                                    </p>
+                                    <div class="row">
+                                        <p class="col-1">
+                                            Favorite received
+                                        </p>
+                                        <p class="col-2">
+                                            20
+                                        </p>
+                                        <p class="col-3">
+                                            0
+                                        </p>
+                                    </div>
+                                    <p class="clear">
+                                    </p>
+                                    <div class="row">
+                                        <p class="col-1">
+                                            Comments Given
+                                        </p>
+                                        <p class="col-2">
+                                            5
+                                        </p>
+                                        <p class="col-3">
+                                            20
+                                        </p>
+                                    </div>
+                                    <p class="clear">
+                                    </p>
+                                    <div class="row">
+                                        <p class="col-1">
+                                            Comments Received
+                                        </p>
+                                        <p class="col-2">
+                                            2
+                                        </p>
+                                        <p class="col-3">
+                                            0
+                                        </p>
+                                    </div>
+                                    <p class="clear">
+                                    </p>
+                                    <div class="row">
+                                        <p class="col-1">
+                                            Adding topic in discussion forum
+                                        </p>
+                                        <p class="col-2">
+                                            5
+                                        </p>
+                                        <p class="col-3">
+                                            0
+                                        </p>
+                                    </div>
+                                    <p class="clear">
+                                    </p>
+                                    <div class="row">
+                                        <p class="col-1">
+                                            Posting reply in Discussion forum
+                                        </p>
+                                        <p class="col-2">
+                                            2
+                                        </p>
+                                        <p class="col-3">
+                                            0
+                                        </p>
+                                    </div>
+                                    <p class="clear">
+                                    </p>
+                                    <!--<div class="row">
+                                        <p class="col-1">
+                                            Participating in Contest
+                                        </p>
+                                        <p class="col-2">
+                                            100
+                                        </p>
+                                        <p class="col-3">
+                                            0
+                                        </p>
+                                    </div>
+                                    <p class="clear">
+                                    </p>
+                                    <div class="row">
+                                        <p class="col-1">
+                                            Contest winner 
+                                        </p>
+                                        <p class="col-2">
+                                            1000
+                                        </p>
+                                        <p class="col-3">
+                                            0
+                                        </p>
+                                    </div>
+                                    <p class="clear">
+                                    </p>
+                                    <div class="row">
+                                        <p class="col-1">
+                                            Contest runnerup
+                                        </p>
+                                        <p class="col-2">
+                                            500
+                                        </p>
+                                        <p class="col-3">
+                                            0
+                                        </p>
+                                    </div>
+                                    <p class="clear">
+                                    </p>-->
+                                    <div class="row">
+                                        <p class="col-1">
+                                            Followers
+                                        </p>
+                                        <p class="col-2">
+                                            Num of followers * 5
+                                        </p>
+                                        <p class="col-3">
+                                            0
+                                        </p>
+                                    </div>
+                                    <p class="clear">
+                                    </p>
+                                </div>
+                                <p class="spacer05">
+                                </p>
+ 
+                                <div class="pageheading">
+                                   <div class="c1 head14">
+                                        <strong>5. Redeeming Points and Moving Levels:</strong>
+                                    </div>
+                                  </div>
+									 <p class="spacer05">
+                                    </p>
+                                    <p class="clear brdBot01">
+                                    </p>
+                                    <p class="spacer05">
+                                    </p>
+                                    <p>
+                                            Your points are updated and calculated from login to the next login after 12 hours. It means that in a single day the points you earn will be added to your score after a period of 12 hours irrespective of the number of logins you do in a day. 
+                                            <br/><br/>
+                                            Also the points have to be earned and be in your account for at least 7 days before you can redeem them. That means that if you have earned 100 points   today you can redeem those 100 points only after 7 days. Your redeemable points have to be in your account for at least 7 days.
+                                            <br/><br/>
+                                            Your Level is maintained as long as you login in and gain points regularly. The points start lapsing if your account has had no activity over a period of 30 days. After a 30 day lapse you will lose 500 points and for every subsequent 30 days after that the account looses 200 points. 
+                                            <br/><br/>
+                                            You can redeem your points for SolidWorks Merchandising and /or any other promotional offer that is active. Points Redemption plan will begin from July of 2010. 
+                                    </p>
+                                    <br/>                               
+                
+                                <div class="pageheading">
+                                    <div class="c1 head14">
+                                      <strong> 6. Description of Some Activity: </strong>
+                                    </div>
+                                </div>
+                                <p class="clear brdBot01">
+                                </p>
+                                <p class="spacer05">
+                                </p>
+                                <h2 class="head">Email Verification:</h2>
+                                <p>
+                                    You will receive 100 points on verification of Email at the time of registration. This is one time activity.
+                                </p>
+                                <p class="spacer">
+                                </p>
+                                <p class="brdDot01">
+                                </p>
+                                <p class="spacer05">
+                                </p>
+                                <h2 class="head">Profile completion:</h2>
+                                <p>Once your profile has reached 100 % you earn points. Editing after 100% profile compilation will <strong>not</strong> result in awarding you any points.
+                                </p>
+                                <p class="spacer">
+                                </p>
+                                <p class="brdDot01">
+                                </p>
+                                <p class="spacer05">
+                                </p>
+                
+                
+                                <h2 class="head">Uploading Photo and giving details of CSWP:</h2>
+                                <p>
+                                    When you upload your picture and give details about the CSWP, you are awarded points. You will get points for every certification detail you give for the CSWP section.
+                                </p>
+                                <p class="spacer">
+                                </p>
+                                <p class="brdDot01">
+                                </p>
+                                <p class="spacer05">
+                                </p>
+                
+                
+
+                                <h2 class="head">Uploading Design:</h2>
+                                <p>
+                                  Points are earned here based on the ratings that you get for the designs. The better the rating the better the points you gain. If you move from the lower rating to a higher rating the difference in point will be added and not the entire point. For e.g. if your design has a rating of 3 (150 points) and then over a period of time it moves to 4 (250) you will get only 100 points (250 -150= 100).
+                                </p>
+                                <p class="spacer">
+                                </p>
+                                <p class="brdDot01">
+                                </p>
+                                <p class="spacer05">
+                                </p>
+                
+                                <h2 class="head">Submission of Posts:</h2>
+                                <p>
+                                  Points are earned here on basis of postings done by you – either something you have started or responded to. You will not get additional points to replying to your own post. 
+                                </p>
+                                <p class="spacer">
+                                </p>
+                                <p class="brdDot01">
+                                </p>
+                                <p class="spacer05">
+                                </p>        
+                
+                                <h2 class="head">Submission of Ratings / Comments / Favorites given by you:</h2>
+                                <p>
+                                  Points are earned if you give ratings, comments or favorites to other members of the community. You do not get points if you rate, comment or favorite your own design or posts.
+                                </p>
+                                <p class="spacer">
+                                </p>
+                                <p class="brdDot01">
+                                </p>
+                                <p class="spacer05">
+                                </p>                       
+
+                                <h2 class="head">Submission of Comments / Favorites received by you:</h2>
+                                <p>
+                                  Points are earned if you receive comments or favorites by other members of the community. 
+                                </p>
+                                <p class="spacer">
+                                </p>
+                                <p class="brdDot01">
+                                </p>
+                                <p class="spacer05">
+                                </p>                 
+                
+                                <h2 class="head">Rating Received:</h2>
+                                <p>
+                                  When you receive rating on your design, you are awarded 10 points per star received. Say if  any of your design has received 2 stars,you gain 2 * 10 = 20 points. 
+                                  <strong> You will not be allowed to rate your own design. </strong>
+
+                                </p>
+                                <p class="spacer">
+                                </p>
+                                <p class="brdDot01">
+                                </p>
+                                <p class="spacer05">
+                                </p>                
+ 
+                
+                                <h2 class="head">Participating in contest :</h2>
+                                <p>                                  
+                                     Points are earned if you participate in a contest in the community 
+                                  </p>
+                                <p class="spacer">
+                                </p>
+                                <p class="brdDot01">
+                                </p>
+                                <p class="spacer05">
+                                </p>
+                
+                                <h2 class="head">Having a Follower Network:</h2>
+                                <p>                                  
+                                     Points are earned on every member who follows you multiplied by 5. So if you have 5 followers you gain 5*5= 25 points.
+                                  </p>
+                                <p class="spacer">
+                                </p>
+                                <p class="brdDot01">
+                                </p>
+                                <p class="spacer05">
+                                </p>                
+ 
+                
+                                <div class="pageheading">
+                                    <div class="c1 head14">
+                                        <strong>7. What is Belt system?</strong>
+                                    </div>
+									 <p class="spacer05">
+                                    </p>
+                                    <p class="clear brdBot01">
+                                    </p>
+                                    <p class="spacer05">
+                                    </p>
+                                    <p>
+                                         We have introduced a belt system. Your belts will change as per your Qualifications and Certification & Skills.
+                                    </p>
+                                    <br/>
+                                    <div class="c1 head14">
+                                       Belt Categorization
+                                    </div>
+                                </div>
+                                <p class="clear brdBot01">
+                                </p>
+                                <p class="spacer05">
+                                </p>
+                
+                                <div class="point_tbl">
+                                    <div class="row head">
+                                        <p class="col-1">
+                                            Belt
+                                        </p>
+                                        <p class="col-3">
+                                            Expertise Level
+                                        </p>
+                                    </div>
+                                    <p class="clear">
+                                    </p>
+                                    <div class="row">
+                                        <p class="col-1">
+                                           Yellow
+                                        </p>
+                                       <p class="col-3">
+                                            Beginner
+                                        </p> 
+                                     </div>
+                                    <p class="clear">
+                                    </p>
+                                    <div class="row">
+                                        <p class="col-1">
+                                            Blue
+                                        </p>
+                                        <p class="col-3">
+                                            Learner
+                                        </p> 
+                                    </div>
+                                    <p class="clear">
+                                    </p>
+                                    <div class="row">
+                                        <p class="col-1">
+                                            Green
+                                        </p>
+                                       <p class="col-3">
+                                            Proficient
+                                        </p> 
+                                    </div>
+                                    <p class="clear">
+                                    </p>
+                                    <div class="row">
+                                        <p class="col-1">
+                                            Black
+                                        </p>
+                                       <p class="col-3">
+                                            Expert
+                                        </p>  
+                                    </div>
+                                    <p class="clear">
+                                    </p>   
+                                </div>
+                                <div class="clear">
+                                </div>
+                                <p class="spacer05">
+                                </p>    
+                
+        <div class="welcome_div" style ="background:#FFCC00;margin:0 auto;" >
+            <p  style ="margin:5px;padding:10px;color:#000;">
+                    Update your profile and grab your belt...
+                    <%= link_to "Click Here!", profile_path(current_user.profile, :user_id => current_user.id) ,{:style=>"color:#000000;"}%>
+            </p>
+          </div>                
+                                <p class="spacer05">
+                                </p>                           
+                                <div class="clear">
+                                </div>
+                
+ 								<!--
+                                <p class="error">
+                                    * The points spent will actually not be deducted from the points earned by any user. It is just a check to limit the number of activity done by the user each day. Each day the user can continue doing any activity till his net expenditure reduces half of the points earned by him. 
+                                </p>
+								-->
+                
+
+ 
+                               <!-- Follower End -->
+                            </div>
+                        </div>
+                        <!-- Blue Box end -->
+                        <div class="spacer">
+                        </div>
+                    </div>
+                    <!-- Left Col End -->
+                    <!-- Right Col Start -->
+                    <div class="c2 rightcol">
+                        <!-- My Page Links Include -->
+                        <%= render :partial => '/profiles/my_page_links'%>
+                    </div>
+                    <!-- Right Col End -->
+                </div>
+                <!-- Container End -->

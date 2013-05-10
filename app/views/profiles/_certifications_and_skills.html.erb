@@ -1,0 +1,628 @@
+<div id="certification">
+            <form action="" method="get">
+            <div class="proform">
+                            <!-- Question Set start -->
+                    <div class="formrow">
+                    <p class="c3">Are you a "Certified SolidWorks Expert" (CSWE)?:</p>
+                                    <p class="c4"><%= h @profile.cswe%></p>
+                </div>
+
+                    <div class="formrow">
+                    <p class="c3">Are you a "Certified SolidWorks Associate" (CSWA)?:</p>
+                                    <p class="c4"><%= h @profile.solidworks_associate%></p>
+                </div>
+
+                    <div class="formrow">
+                    <p class="c3">Are you a "Certified SolidWorks Professional" (CSWP)?:</p>
+                                    <p class="c4"><%= h @profile.cswp%></p>
+                </div>
+
+                <div class="formrow">
+                    <p class="c3">Are you a "CSWP – Surface" Professional?:</p>
+                        <p class="c4"><%= h @profile.cswp_surface_prof%></p>
+                </div>
+
+                    <div class="formrow">
+                    <p class="c3">Are you a "CSWP – SheetMetal" Professional?:</p>
+                                    <p class="c4">
+                                <%= h @profile.cswp_shetmetal_prof%>
+                              </p>
+                </div>
+
+                    <div class="formrow">
+                    <p class="c3">Are you a "CSWP – Mold Tools" Professional?:</p>
+                                    <p class="c4">
+                                <%= h @profile.cswp_mold_tools%>
+                              </p>
+                </div>
+
+                    <div class="formrow">
+                    <p class="c3">Are you a "CSWP – Weldment" Professional?:</p>
+                                    <p class="c4">
+                                <%= h @profile.cswp_weldment_prof%>
+                              </p>
+                </div>
+
+                    <div class="formrow">
+                    <p class="c3">Are you  a "Certified SolidWorks Simulation Professional" (CSWSP) - FEA?:</p>
+                                    <p class="c4">
+                                <%= h @profile.cswsp%>
+                              </p>
+                </div>
+
+                <div class="spacer04"></div>
+                <div class="brdBot01"></div>
+                <div class="spacer04"></div>
+                    <div class="formrow">
+                      <p class="c3"><u>SolidWorks Product Usage</u></p>
+                                    <p class="c4 head"></p>
+                </div>
+                <div class="spacer04"></div>
+
+                    <div class="formrow">
+                    <p class="c3">Which are the SolidWork Versions that you have used?:</p>
+                                    <p class="c4"><%= h @profile.solidworks_version%></p>
+                </div>
+
+                    <div class="formrow">
+                    <p class="c3">Which are the SolidWork Simulation or Cosmos versions that you have used?:</p>
+                                    <p class="c4"><%= h @profile.simulation_version%></p>
+                </div>
+
+                    <div class="formrow">
+                    <p class="c3">Which are the SolidWork EPDM Versions that you have used?:</p>
+                                    <p class="c4"><%= h @profile.epdm_version%></p>
+                </div>
+
+                    <div class="formrow">
+                    <p class="c3">Which are the SolidWork 3D VIA Versions that you have used?:</p>
+                                    <p class="c4"><%= h @profile.solidworks_3d_version%></p>
+                </div>
+
+                    <div class="formrow">
+                    <p class="c3">How many years have you used SolidWorks for designing products?:</p>
+                                    <p class="c4"><%= h @profile.solidwork_usege_exp%></p>
+                </div>
+                    <div class="formrow">
+                    <p class="c3">How many years of experience do you have as a design engineer using  CAD products?:</p>
+                                    <p class="c4 c2pad"><%= h @profile.cad_usage_exp%></p>
+                </div>
+
+
+               <div class="frm_brd"></div>
+               <%@user_certificates.each do|user_certificate|%>
+                   <div class="formrow">
+                        <p class="c3">Certification:</p>
+                        <p class="c4"><%=h user_certificate.certificate%></p>
+                    </div>
+                        <div class="formrow">
+                        <p class="c3">Certification Description:</p>
+                        <p class="c4"><%=h user_certificate.description%></p>
+                    </div>
+                    <div class="frm_brd"></div>
+                <%end%>
+                    <div class="formrow">
+                    <p class="c3">Skills :</p>
+                    <p class="c4"><%= h @profile.skills%></p>
+                </div>
+
+
+            <div class="proform_l">
+
+
+
+
+                </div>
+        </div>
+        <div class="frm_brd"></div>
+            <div class="proform">
+            <div class="proform_l">
+                    <div class="formrow">
+                    <p class="c1">&nbsp;</p>
+                    <p class="c2">        
+                           <%if @user == current_user%>
+                            <input name="Save" onclick = "$('#certification').hide(); $('#certification_form').show();"  type="button" value="Edit" class="grnbtn01" /> 
+                           <%end%>
+                    </p>
+                </div>
+                </div>
+        </div>
+        </form>
+        <p class="spacer01"></p>
+  </div>
+
+
+<div id="certification_form" style="display:none;">
+          <% form_remote_tag :url => '/profiles/update_cetifications_and_skills' , :before => "$('#spinner').show();",:complete => "$('#spinner').hide();" do -%>
+          <div class="proform">
+                          <!-- Question Set start -->
+
+                  <div class="formrow">
+                  <p class="c3">Are you a "Certified SolidWorks Expert" (CSWE)?:</p>
+                                  <p class="c4">
+                                          <%=radio_button("profile", "cswe", "Yes")%> Yes
+                                          <%if @profile.cswe.nil?%>
+                                               <%=radio_button("profile", "cswe", "No",:checked => true)%> No
+                                          <%else%>
+                                             <%=radio_button("profile", "cswe", "No")%> No
+                                          <%end%>
+                                          <!-- <input name="RadioGroup1" type="radio" id="RadioGroup1_0" value="radio" checked="checked" />Yes
+                                          <input type="radio" name="RadioGroup1" value="radio" id="RadioGroup1_1" />No -->
+                                  </p>
+              </div> 
+
+    
+                  <div class="formrow">
+                  <p class="c3">Are you a "Certified SolidWorks Associate" (CSWA)?:</p>
+                                  <p class="c4">
+                                          <%=radio_button("profile", "solidworks_associate", "Yes")%> Yes
+                                          <%if @profile.solidworks_associate.nil?%>
+                                               <%=radio_button("profile", "solidworks_associate", "No",:checked => true)%> No
+                                          <%else%>
+                                             <%=radio_button("profile", "solidworks_associate", "No")%> No
+                                          <%end%>
+                                          <!-- <input name="RadioGroup1" type="radio" id="RadioGroup1_0" value="radio" checked="checked" />Yes
+                                          <input type="radio" name="RadioGroup1" value="radio" id="RadioGroup1_1" />No -->
+                                  </p>
+              </div>        	
+
+                  <div class="formrow">
+                  <p class="c3">Are you a "Certified SolidWorks Professional" (CSWP)?:</p>
+                                  <p class="c4">
+                                          <%=radio_button("profile", "cswp", "Yes")%> Yes
+                                          <%if @profile.cswp.nil?%>
+                                               <%=radio_button("profile", "cswp", "No",:checked => true)%> No
+                                          <%else%>
+                                             <%=radio_button("profile", "cswp", "No")%> No
+                                          <%end%>
+                                          <!-- <input name="RadioGroup1" type="radio" id="RadioGroup1_0" value="radio" checked="checked" />Yes
+                                          <input type="radio" name="RadioGroup1" value="radio" id="RadioGroup1_1" />No -->
+                                  </p>
+              </div> 
+
+        
+              <div class="formrow">
+                  <p class="c3">Are you a "CSWP – Surface" Professional?:</p>
+                                  <p class="c4">
+                                          <%=radio_button("profile", "cswp_surface_prof", "Yes")%> Yes
+                                          <%if @profile.cswp_surface_prof.nil?%>
+                                                <%=radio_button("profile", "cswp_surface_prof", "No",:checked => true)%> No        
+                                          <%else%>
+                                            <%=radio_button("profile", "cswp_surface_prof", "No")%> No        
+                                          <%end%>
+                                          <!-- <input name="RadioGroup1" type="radio" id="RadioGroup1_0" value="radio" checked="checked" />Yes
+                                          <input type="radio" name="RadioGroup1" value="radio" id="RadioGroup1_1" />No -->
+                                  </p>
+              </div>
+
+                  <div class="formrow">
+                  <p class="c3">Are you a "CSWP – SheetMetal" Professional?:</p>
+                                  <p class="c4">
+                                          <%=radio_button("profile", "cswp_shetmetal_prof", "Yes")%> Yes
+                                          <%if @profile.cswp_shetmetal_prof.nil?%>
+                                                 <%=radio_button("profile", "cswp_shetmetal_prof", "No",:checked => true)%> No  
+                                          <%else%>
+                                                <%=radio_button("profile", "cswp_shetmetal_prof", "No")%> No  
+                                          <%end%>
+                                          <!-- <input name="RadioGroup1" type="radio" id="RadioGroup1_0" value="radio" checked="checked" />Yes
+                                          <input type="radio" name="RadioGroup1" value="radio" id="RadioGroup1_1" />No -->
+                                  </p>
+              </div>
+
+                  <div class="formrow">
+                  <p class="c3">Are you a "CSWP – Mold Tools" Professional?:</p>
+                                  <p class="c4">
+                                          <%=radio_button("profile", "cswp_mold_tools", "Yes")%> Yes
+                                          <%if @profile.cswp_mold_tools.nil?%>
+                                               <%=radio_button("profile", "cswp_mold_tools", "No",:checked => true)%> No
+                                          <%else%>
+                                             <%=radio_button("profile", "cswp_mold_tools", "No")%> No
+                                          <%end%>
+                                          <!-- <input name="RadioGroup1" type="radio" id="RadioGroup1_0" value="radio" checked="checked" />Yes
+                                          <input type="radio" name="RadioGroup1" value="radio" id="RadioGroup1_1" />No -->
+                                  </p>
+              </div> 
+
+                  <div class="formrow">
+                  <p class="c3">Are you a "CSWP – Weldment" Professional?:</p>
+                                  <p class="c4">
+                                          <%=radio_button("profile", "cswp_weldment_prof", "Yes")%> Yes
+                                          <%if @profile.cswp_weldment_prof.nil?%>
+                                               <%=radio_button("profile", "cswp_weldment_prof", "No",:checked => true)%> No
+                                          <%else%>
+                                             <%=radio_button("profile", "cswp_weldment_prof", "No")%> No
+                                          <%end%>
+                                          <!-- <input name="RadioGroup1" type="radio" id="RadioGroup1_0" value="radio" checked="checked" />Yes
+                                          <input type="radio" name="RadioGroup1" value="radio" id="RadioGroup1_1" />No -->
+                                  </p>
+              </div>               
+
+                 <div class="formrow">
+                  <p class="c3">Are you a "Certified SolidWorks Simulation Professional" (CSWSP) - FEA?:</p>
+                                  <p class="c4">
+                                          <%=radio_button("profile", "cswsp", "Yes")%> Yes
+                                          <%if @profile.cswsp.nil?%>
+                                               <%=radio_button("profile", "cswsp", "No",:checked => true)%> No
+                                          <%else%>
+                                             <%=radio_button("profile", "cswsp", "No")%> No
+                                          <%end%>
+                                          <!-- <input name="RadioGroup1" type="radio" id="RadioGroup1_0" value="radio" checked="checked" />Yes
+                                          <input type="radio" name="RadioGroup1" value="radio" id="RadioGroup1_1" />No -->
+                                  </p>
+              </div> 
+
+                
+              <div class="spacer04"></div>
+              <div class="brdBot01"></div>
+              <div class="spacer04"></div>
+                  <div class="formrow">
+                    <p class="c3"><u> SolidWorks Product Usage </u></p>
+                                  <p class="c4 head"></p>
+              </div>
+              <div class="spacer04"></div>
+
+                  <div class="formrow">
+                  <p class="c3">Which are the SolidWork Versions that you have used?:</p>
+                                  <p class="c4">
+                                     <%unless @profile.solidworks_version.nil?%>
+                                           <%if @profile.solidworks_version.include?('2010')%>
+                                              <%=check_box_tag 'solidworks_version[]', '2010',true, :class => "solidworks_version"%>2010 
+                                          <%else%>
+                                            <%=check_box_tag 'solidworks_version[]', '2010',false, :class => "solidworks_version"%>2010 
+                                          <%end%>
+                                          <%if @profile.solidworks_version.include?('2009')%>
+                                                 <%=check_box_tag 'solidworks_version[]', '2009',true, :class => "solidworks_version"%>2009 
+                                          <%else%>
+                                                <%=check_box_tag 'solidworks_version[]', '2009',false, :class => "solidworks_version"%>2009 
+                                          <%end%>                                                 
+                                          <%if @profile.solidworks_version.include?('2008')%>
+                                                <%=check_box_tag 'solidworks_version[]', '2008',true, :class => "solidworks_version"%>2008 
+                                          <%else%>
+                                               <%=check_box_tag 'solidworks_version[]', '2008',false, :class => "solidworks_version"%>2008 
+                                          <%end%>                                          
+                                          <%if @profile.solidworks_version.include?('2007')%>
+                                          <%=check_box_tag 'solidworks_version[]', '2007',true, :class => "solidworks_version"%>2007 
+                                          <%else%>
+                                            <%=check_box_tag 'solidworks_version[]', '2007',false, :class => "solidworks_version"%>2007 
+                                          <%end%>                                          
+                                          <%if @profile.solidworks_version.include?('2006')%>
+                                          <%=check_box_tag 'solidworks_version[]', '2006',true, :class => "solidworks_version"%>2006    
+                                          <%else%>
+                                           <%=check_box_tag 'solidworks_version[]', '2006',false, :class => "solidworks_version"%>2006    
+                                          <%end%>                                          
+                                          <%if @profile.solidworks_version.include?('2005')%>
+                                          <%=check_box_tag 'solidworks_version[]', '2005',true, :class => "solidworks_version"%>2005 
+                                          <%else%>
+                                            <%=check_box_tag 'solidworks_version[]', '2005',false, :class => "solidworks_version"%>2005 
+                                          <%end%>                                          
+                                           <br>
+                                           <%if @profile.solidworks_version.include?('2004')%>
+                                           <%=check_box_tag 'solidworks_version[]', '2004',true, :class => "solidworks_version"%>2004 
+                                          <%else%>
+                                            <%=check_box_tag 'solidworks_version[]', '2004',false, :class => "solidworks_version"%>2004 
+                                          <%end%>                                           
+                                           <%if @profile.solidworks_version.include?('2003')%>
+                                           <%=check_box_tag 'solidworks_version[]', '2003',true, :class => "solidworks_version"%>2003 
+                                          <%else%>
+                                            <%=check_box_tag 'solidworks_version[]', '2003',false, :class => "solidworks_version"%>2003 
+                                          <%end%>                                           
+                                           <%if @profile.solidworks_version.include?('2002')%>
+                                           <%=check_box_tag 'solidworks_version[]', '2002',true, :class => "solidworks_version"%>2002 
+                                          <%else%>
+                                            <%=check_box_tag 'solidworks_version[]', '2002',false, :class => "solidworks_version"%>2002 
+                                          <%end%>                                           
+                                           <%if @profile.solidworks_version.include?('2001')%>
+                                          <%=check_box_tag 'solidworks_version[]', '2001',true, :class => "solidworks_version"%>2001  
+                                          <%else%>
+                                            <%=check_box_tag 'solidworks_version[]', '2001',false, :class => "solidworks_version"%>2001 
+                                          <%end%>                                          
+                                          <%if @profile.solidworks_version.include?('2000')%>
+                                          <%=check_box_tag 'solidworks_version[]', '2000',true, :class => "solidworks_version"%>2000 
+                                          <%else%>
+                                            <%=check_box_tag 'solidworks_version[]', '2000',false, :class => "solidworks_version"%>2000 
+                                          <%end%>                                          
+                                          <%if @profile.solidworks_version.include?('1999')%>
+                                          <%=check_box_tag 'solidworks_version[]', '1999',true, :class => "solidworks_version"%>1999    
+                                          <%else%>
+                                            <%=check_box_tag 'solidworks_version[]', '1999',false, :class => "solidworks_version"%>1999 
+                                          <%end%>                                          
+                                          <br>
+                                          <%if @profile.solidworks_version.include?('1998')%>
+                                          <%=check_box_tag 'solidworks_version[]', '1998',true, :class => "solidworks_version"%>1998 
+                                          <%else%>
+                                            <%=check_box_tag 'solidworks_version[]', '1998',false, :class => "solidworks_version"%>1998 
+                                          <%end%>          
+                                          <%if @profile.solidworks_version.include?('1997')%>
+                                          <%=check_box_tag 'solidworks_version[]', '1997',true, :class => "solidworks_version"%>1997     
+                                          <%else%>
+                                            <%=check_box_tag 'solidworks_version[]', '1997',false, :class => "solidworks_version"%>1997 
+                                          <%end%>          
+                                          <%if @profile.solidworks_version.include?('None')%>
+                                          <%=check_box_tag 'solidworks_version[]', 'None',true, :onclick => "disableOtherChkBox(this.checked,'solidworks_version')", :id => "solidworks_version"%>None     
+                                          <%else%>
+                                            <%=check_box_tag 'solidworks_version[]', 'None',false, :onclick => "disableOtherChkBox(this.checked,'solidworks_version')", :id => "solidworks_version"%>None 
+                                          <%end%>                                            
+                                     <%else%>
+                                          <%=check_box_tag 'solidworks_version[]', '2010',false, :class => "solidworks_version"%>2010  
+                                          <%=check_box_tag 'solidworks_version[]', '2009',false, :class => "solidworks_version"%>2009 
+                                          <%=check_box_tag 'solidworks_version[]', '2008',false, :class => "solidworks_version"%>2008 
+                                          <%=check_box_tag 'solidworks_version[]', '2007',false, :class => "solidworks_version"%>2007 
+                                          <%=check_box_tag 'solidworks_version[]', '2006',false, :class => "solidworks_version"%>2006                                     
+                                          <%=check_box_tag 'solidworks_version[]', '2005',false, :class => "solidworks_version"%>2005 
+                                           <br>
+                                           <%=check_box_tag 'solidworks_version[]', '2004',false, :class => "solidworks_version"%>2004 
+                                           <%=check_box_tag 'solidworks_version[]', '2003',false, :class => "solidworks_version"%>2003 
+                                           <%=check_box_tag 'solidworks_version[]', '2002',false, :class => "solidworks_version"%>2002 
+                                          <%=check_box_tag 'solidworks_version[]', '2001',false, :class => "solidworks_version"%>2001                                  
+                                          <%=check_box_tag 'solidworks_version[]', '2000',false, :class => "solidworks_version"%>2000 
+                                          <%=check_box_tag 'solidworks_version[]', '1999',false, :class => "solidworks_version"%>1999    
+                                          <br>
+                                          <%=check_box_tag 'solidworks_version[]', '1998',false, :class => "solidworks_version"%>1998 
+                                          <%=check_box_tag 'solidworks_version[]', '1997',false, :class => "solidworks_version"%>1997      
+                                          <%=check_box_tag 'solidworks_version[]', 'None',false, :onclick => "disableOtherChkBox(this.checked,'solidworks_version')", :id => "solidworks_version"%>None                                           
+                                     <%end%>
+                           <%#=multiple_select("profile", "solidworks_version", VERSIONS,{:outer_class => "multiple_select", :inner_class => "multiple_select_checkbox"})%>
+                           <%#=select("profile", "solidworks_version", VERSIONS,{:selected => @profile.worked_on_solidworks.split(',')},:multiple => true,:size => 3) %>     
+                                  </p>
+              </div>
+
+                  <div class="formrow">
+                  <p class="c3">Which are the SolidWork Simulation or Cosmos versions that you have used?:</p>
+                                  <p class="c4">
+                                    <%unless @profile.simulation_version.nil?%>
+                                          <%if @profile.simulation_version.include?('2010')%>
+                                               <%=check_box_tag 'simulation_version[]', '2010',true, :class => "simulation_version"%>2010 
+                                          <%else%>
+                                               <%=check_box_tag 'simulation_version[]', '2010',false, :class => "simulation_version"%>2010 
+                                          <%end%>
+                                          <%if @profile.simulation_version.include?('2009')%>
+                                               <%=check_box_tag 'simulation_version[]', '2009',true, :class => "simulation_version"%>2009 
+                                          <%else%>
+                                               <%=check_box_tag 'simulation_version[]', '2009',false, :class => "simulation_version"%>2009 
+                                          <%end%>
+                                          <%if @profile.simulation_version.include?('2008')%>
+                                               <%=check_box_tag 'simulation_version[]', '2008',true, :class => "simulation_version"%>2008 
+                                          <%else%>
+                                               <%=check_box_tag 'simulation_version[]', '2008',false, :class => "simulation_version"%>2008 
+                                          <%end%>
+                                          <%if @profile.simulation_version.include?('2007')%>
+                                               <%=check_box_tag 'simulation_version[]', '2007',true, :class => "simulation_version"%>2007 
+                                          <%else%>
+                                               <%=check_box_tag 'simulation_version[]', '2007',false, :class => "simulation_version"%>2007 
+                                          <%end%>
+                                          <%if @profile.simulation_version.include?('2006')%>
+                                               <%=check_box_tag 'simulation_version[]', '2006',true, :class => "simulation_version"%>2006 
+                                          <%else%>
+                                               <%=check_box_tag 'simulation_version[]', '2006',false, :class => "simulation_version"%>2006 
+                                          <%end%>
+                                          <%if @profile.simulation_version.include?('2005')%>
+                                               <%=check_box_tag 'simulation_version[]', '2005',true, :class => "simulation_version"%>2005 
+                                          <%else%>
+                                               <%=check_box_tag 'simulation_version[]', '2005',false, :class => "simulation_version"%>2005 
+                                          <%end%>
+                                           <br>
+                                          <%if @profile.simulation_version.include?('2004')%>
+                                               <%=check_box_tag 'simulation_version[]', '2004',true, :class => "simulation_version"%>2004 
+                                          <%else%>
+                                               <%=check_box_tag 'simulation_version[]', '2004',false, :class => "simulation_version"%>2004 
+                                          <%end%>
+                                          <%if @profile.simulation_version.include?('2003')%>
+                                               <%=check_box_tag 'simulation_version[]', '2003',true, :class => "simulation_version"%>2003 
+                                          <%else%>
+                                               <%=check_box_tag 'simulation_version[]', '2003',false, :class => "simulation_version"%>2003 
+                                          <%end%>
+                                          <%if @profile.simulation_version.include?('2002')%>
+                                               <%=check_box_tag 'simulation_version[]', '2002',true, :class => "simulation_version"%>2002 
+                                          <%else%>
+                                               <%=check_box_tag 'simulation_version[]', '2002',false, :class => "simulation_version"%>2002 
+                                          <%end%>
+                                          <%if @profile.simulation_version.include?('2001')%>
+                                               <%=check_box_tag 'simulation_version[]', '2001',true, :class => "simulation_version"%>2001 
+                                          <%else%>
+                                               <%=check_box_tag 'simulation_version[]', '2001',false, :class => "simulation_version"%>2001 
+                                          <%end%>
+                                          <%if @profile.simulation_version.include?('2000')%>
+                                               <%=check_box_tag 'simulation_version[]', '2000',true, :class => "simulation_version"%>2000 
+                                          <%else%>
+                                               <%=check_box_tag 'simulation_version[]', '2000',false, :class => "simulation_version"%>2000 
+                                          <%end%>
+                                          <%if @profile.simulation_version.include?('1999')%>
+                                               <%=check_box_tag 'simulation_version[]', '1999',true, :class => "simulation_version"%>1999 
+                                          <%else%>
+                                               <%=check_box_tag 'simulation_version[]', '1999',false, :class => "simulation_version"%>1999 
+                                          <%end%>
+                                          <br>
+                                          <%if @profile.simulation_version.include?('1998')%>
+                                               <%=check_box_tag 'simulation_version[]', '1998',true, :class => "simulation_version"%>1998 
+                                          <%else%>
+                                               <%=check_box_tag 'simulation_version[]', '1998',false, :class => "simulation_version"%>1998 
+                                          <%end%>
+                                          <%if @profile.simulation_version.include?('1997')%>
+                                               <%=check_box_tag 'simulation_version[]', '1997',true, :class => "simulation_version"%>1997 
+                                          <%else%>
+                                               <%=check_box_tag 'simulation_version[]', '1997',false, :class => "simulation_version"%>1997 
+                                          <%end%>
+                                          <%if @profile.simulation_version.include?('1996')%>
+                                               <%=check_box_tag 'simulation_version[]', '1996',true, :class => "simulation_version"%>1996 
+                                          <%else%>
+                                               <%=check_box_tag 'simulation_version[]', '1996',false, :class => "simulation_version"%>1996 
+                                          <%end%>
+                                          <%if @profile.simulation_version.include?('1995')%>
+                                               <%=check_box_tag 'simulation_version[]', '1995',true, :class => "simulation_version"%>1995 
+                                          <%else%>
+                                               <%=check_box_tag 'simulation_version[]', '1995',false, :class => "simulation_version"%>1995 
+                                          <%end%>
+                                          <%if @profile.simulation_version.include?('None')%>
+                                               <%=check_box_tag 'simulation_version[]', 'None',true, :onclick => "disableOtherChkBox(this.checked,'simulation_version')", :id => "simulation_version"%>None 
+                                          <%else%>
+                                               <%=check_box_tag 'simulation_version[]', 'None',false, :onclick => "disableOtherChkBox(this.checked,'simulation_version')", :id => "simulation_version"%>None 
+                                          <%end%>                                          
+                                   <%else%>
+                                          <%=check_box_tag 'simulation_version[]', '2010',false, :class => "simulation_version"%>2010 
+                                          <%=check_box_tag 'simulation_version[]', '2009',false, :class => "simulation_version"%>2009 
+                                          <%=check_box_tag 'simulation_version[]', '2008',false, :class => "simulation_version"%>2008 
+                                          <%=check_box_tag 'simulation_version[]', '2007',false, :class => "simulation_version"%>2007 
+                                          <%=check_box_tag 'simulation_version[]', '2006',false, :class => "simulation_version"%>2006                                    
+                                           <%=check_box_tag 'simulation_version[]', '2005',false, :class => "simulation_version"%>2005 
+                                           <br>
+                                           <%=check_box_tag 'simulation_version[]', '2004',false, :class => "simulation_version"%>2004 
+                                           <%=check_box_tag 'simulation_version[]', '2003',false, :class => "simulation_version"%>2003 
+                                           <%=check_box_tag 'simulation_version[]', '2002',false, :class => "simulation_version"%>2002 
+                                          <%=check_box_tag 'simulation_version[]', '2001',false, :class => "simulation_version"%>2001                                     
+                                          <%=check_box_tag 'simulation_version[]', '2000',false, :class => "simulation_version"%>2000 
+                                          <%=check_box_tag 'simulation_version[]', '1999',false, :class => "simulation_version"%>1999  
+                                          <br>
+                                          <%=check_box_tag 'simulation_version[]', '1998',false, :class => "simulation_version"%>1998 
+                                          <%=check_box_tag 'simulation_version[]', '1997',false, :class => "simulation_version"%>1997     
+                                          <%=check_box_tag 'simulation_version[]', '1996',false, :class => "simulation_version"%>1996                                    
+                                          <%=check_box_tag 'simulation_version[]', '1995',false, :class => "simulation_version"%>1995          
+                                          <%=check_box_tag 'simulation_version[]', 'None',false, :onclick => "disableOtherChkBox(this.checked,'simulation_version')", :id => "simulation_version"%>None                                            
+                                   <%end%>
+                           <%#=select("profile", "simulation_version", VERSIONS,{},:multiple => true,:size => 3) %>     
+                                  </p>
+              </div>
+
+                  <div class="formrow">
+                  <p class="c3">Which are the SolidWork EPDM Versions that you have used?:</p>
+                                  <p class="c4">
+                                      <%unless @profile.epdm_version.nil?%>
+                                            <%if @profile.epdm_version.include?('2010')%>                                        
+                                                <%=check_box_tag 'epdm_version[]', '2010',true, :class => "epdm_version"%>2010 
+                                            <%else%>
+                                               <%=check_box_tag 'epdm_version[]', '2010',false, :class => "epdm_version"%>2010 
+                                            <%end%>
+                                            <%if @profile.epdm_version.include?('2009')%>                                        
+                                                <%=check_box_tag 'epdm_version[]', '2009',true, :class => "epdm_version"%>2009 
+                                            <%else%>
+                                               <%=check_box_tag 'epdm_version[]', '2009',false, :class => "epdm_version"%>2009 
+                                            <%end%>
+                                            <%if @profile.epdm_version.include?('2008')%>                                        
+                                                <%=check_box_tag 'epdm_version[]', '2008',true, :class => "epdm_version"%>2008 
+                                            <%else%>
+                                               <%=check_box_tag 'epdm_version[]', '2008',false, :class => "epdm_version"%>2008 
+                                            <%end%>
+                                            <%if @profile.epdm_version.include?('None')%>                                        
+                                                <%=check_box_tag 'epdm_version[]', 'None',true, :onclick => "disableOtherChkBox(this.checked,'epdm_version')", :id => "epdm_version"%>None 
+                                            <%else%>
+                                               <%=check_box_tag 'epdm_version[]', 'None',false, :onclick => "disableOtherChkBox(this.checked,'epdm_version')", :id => "epdm_version"%>None 
+                                            <%end%>                                            
+                                       <%else%>
+                                          <%=check_box_tag 'epdm_version[]', '2010',false, :class => "epdm_version"%>2010 
+                                          <%=check_box_tag 'epdm_version[]', '2009',false, :class => "epdm_version"%>2009 
+                                          <%=check_box_tag 'epdm_version[]', '2008',false, :class => "epdm_version"%>2008    
+                                          <%=check_box_tag 'epdm_version[]', 'None',false, :onclick => "disableOtherChkBox(this.checked,'epdm_version')", :id => "epdm_version"%>None                                              
+                                       <%end%>
+                           <%#=select("profile", "epdm_version", VERSIONS,{},:multiple => true,:size => 3) %>     
+                                  </p>
+              </div>
+
+                                  <div class="formrow">
+                  <p class="c3">Which are the SolidWork 3D VIA Versions that you have used?:</p>
+                                  <p class="c4">
+                                  <%unless @profile.solidworks_3d_version.nil?%>
+                                        <%if @profile.solidworks_3d_version.include?('2010')%>           
+                                                <%=check_box_tag 'solidworks_3d_version[]', '2010',true, :class => "solidworks_3d_version"%>2010 
+                                        <%else%>
+                                                <%=check_box_tag 'solidworks_3d_version[]', '2010',false, :class => "solidworks_3d_version"%>2010 
+                                        <%end%>
+                                        <%if @profile.solidworks_3d_version.include?('2009')%>           
+                                                <%=check_box_tag 'solidworks_3d_version[]', '2009',true, :class => "solidworks_3d_version"%>2009 
+                                        <%else%>
+                                                <%=check_box_tag 'solidworks_3d_version[]', '2009',false, :class => "solidworks_3d_version"%>2009 
+                                        <%end%>
+                                        <%if @profile.solidworks_3d_version.include?('None')%>           
+                                                <%=check_box_tag 'solidworks_3d_version[]', 'None',true, :onclick => "disableOtherChkBox(this.checked,'solidworks_3d_version')", :id => "solidworks_3d_version"%>None 
+                                        <%else%>
+                                                <%=check_box_tag 'solidworks_3d_version[]', 'None',false, :onclick => "disableOtherChkBox(this.checked,'solidworks_3d_version')", :id => "solidworks_3d_version"%>None 
+                                        <%end%>                                        
+                                  <%else%>
+                                        <%=check_box_tag 'solidworks_3d_version[]', '2010',false, :class => "solidworks_3d_version"%>2010 
+                                        <%=check_box_tag 'solidworks_3d_version[]', '2009',false, :class => "solidworks_3d_version"%>2009    
+                                        <%=check_box_tag 'solidworks_3d_version[]', 'None',false, :onclick => "disableOtherChkBox(this.checked,'solidworks_3d_version')", :id => "solidworks_3d_version"%>None                                            
+                                  <%end%>
+                           <%#=select("profile", "solidworks_3d_version", VERSIONS,{},:multiple => true,:size => 3) %>     
+                                  </p>
+              </div>
+
+                  <div class="formrow">
+                  <p class="c3">How many years have you used SolidWorks for designing products?:</p>
+                                  <p class="c4">
+                          <%=select("profile", "solidwork_usege_exp", EXPERIENCE,{},:class => "proselect") %>
+                                   </p>
+              </div>
+                  <div class="formrow">
+                  <p class="c3">How many years of experience do you have as a design engineer using  CAD products?:</p>
+                                  <p class="c4 c2pad">
+                          <%=select("profile", "cad_usage_exp", EXPERIENCE,{},:class => "proselect") %>        
+                                    </p>
+              </div>
+
+
+
+               <div class="frm_brd"></div>
+               <div id="user_certificates">  
+                        <%= render :partial => 'user_certificate', :collection => @user_certificates %> 
+                </div>
+
+                <div class="formrow">
+                     <p class="c3">&nbsp;</p>
+                      <p class="c4"><%= add_user_certificate_link "Add Certification [+]" %> </p>
+                </div>
+
+                  <div class="formrow">
+                  <p class="c3">Skills :</p>
+                  <p class="c4"><%= text_area :profile, :skills, :class=> "proinput03" %></p>
+              </div>
+
+                          <!-- Question Set end -->
+
+
+      </div>
+      <div class="frm_brd"></div>
+          <div class="proform">
+          <div class="proform_l">
+                  <div class="formrow">
+                  <p class="c1">&nbsp;</p>
+                  <p class="c2">
+                          <%= submit_tag 'Save and Continue' , :class => "grnbtn01"%>                         
+                          <input name="Save" type="button" value="Cancel" class="grnbtn01" onclick = " $('#certification_form').hide(); $('#certification').show(); " />
+                          <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner",:style=>"display:none; width: 20px; margin-top: 0px;" ) %>
+                  </p>
+              </div>
+              </div>
+      </div>
+    <%end%>
+      <p class="spacer01"></p>
+</div>
+
+<script type="text/JavaScript">
+    $(document).ready(function(){
+            if($("#solidworks_version").is(':checked'))
+            {
+                     $('.solidworks_version').each(function( i, el){   
+                            el.disabled = true;
+                     });
+            }
+
+            if($("#simulation_version").is(':checked'))
+            {
+                     $('.simulation_version').each(function( i, el){   
+                            el.disabled = true;
+                     });
+            }                
+
+            if($("#epdm_version").is(':checked'))
+            {
+                     $('.epdm_version').each(function( i, el){   
+                            el.disabled = true;
+                     });
+            }           
+
+            if($("#solidworks_3d_version").is(':checked'))
+            {
+                     $('.solidworks_3d_version').each(function( i, el){   
+                            el.disabled = true;
+                     });
+            }                      
+    });               
+</script>

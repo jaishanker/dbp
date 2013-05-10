@@ -1,0 +1,134 @@
+class NewsController < ApplicationController
+  
+  def index
+    @search_text = params[:search] unless params[:search].nil?
+    @search_text = @search_text.strip() unless params[:search].nil?
+    if @search_text
+      @news = News.search_news(@search_text,params[:page]||1)
+    elsif params[:filter_by]
+      @news = News.find_all_filtered(params[:page]||1,params[:filter_by])      
+    else      
+      @news = News.find_all_filtered(params[:page]||1)
+    end
+    @no_of_pages = (@news.total_entries.to_f / PER_PAGE).ceil
+    
+    # gets news rss from solidworks site
+    @news_rss = NewsRss.find_active
+    
+  end
+  
+  def news
+    unless params[:request_id].nil?
+      request = Request.find(params[:request_id])
+      request.status = "viewed"
+      request.save
+    end    
+    @news = News.find_by_permalink_and_status(params[:permalink],1)
+    @offset = 0    
+    if @news.nil?
+      flash[:notice] = "This news does not exist."
+      redirect_to :action => :index
+      return
+    end
+    @news_comments = NewsComment.news_comment(@news.id,@offset)
+    if !session[:flag]
+      @news.update_count
+    else
+      session[:flag] = false
+    end
+    
+    @title = @news.title unless @news.title.nil?
+    @description = @news.description unless @news.description.nil?
+    @image_src = @news.pictures[0].photo(:medium) unless @news.pictures[0].nil?
+    
+  end
+  
+  def show_more_comments
+    @news = News.find(params[:id])
+    @offset = params[:offset].to_i + PER_PAGE    
+    @news_comments = NewsComment.news_comment(params[:id],@offset)
+    render :update do |page| 
+      unless @news_comments.size == 0
+        page.insert_html :bottom, 'news_comments', :partial => 'more_news_comments'
+      else
+        page.insert_html :bottom, 'news_comments', 'No more comments are there for this news'
+      end
+    end     
+  end
+  
+  def delete_comment
+    comment = Comment.find(params[:id])    
+    comment.destroy
+    news = News.find_by_id(params[:obj_id])
+    render :update do |page|
+      msg = "show_notice('Comment has been successfully deleted','success')"
+      page.remove "comment_#{params[:id]}"
+      page.replace_html "total_comment", "Total Comments : #{news.comments.length}"
+      page << msg      
+    end
+  end
+  
+  
+  def delete_reply
+    comment = NewsComment.find(params[:id])
+    comment.destroy
+    news = News.find_by_id(params[:obj_id])
+    render :update do |page|
+      msg = "show_notice('Comment has been successfully deleted','success')"
+      page.remove "comment_reply_#{params[:id]}"
+      page.replace_html "total_comment", "Total Comments : #{news.comments.length}"
+      page << msg
+    end
+  end
+  
+  def update_news_feeds
+    @news_rss = NewsRss.find_active
+    
+    render :update do |page|
+      @news_rss.each do |n|
+        begin
+          url =  n.link
+          res = Net::HTTP.get_response(URI.parse(url))
+          xml = XmlSimple.xml_in(res.body)
+          puts "------------------------------------------------------------"
+          @rss = xml['channel'].first['item']
+          page.replace_html "news_rss_#{n.id }",
+         :partial => "news_rss",:object => @rss
+        rescue
+           page.replace_html "news_rss_#{n.id }",
+         "<p style=\"text-align:center;padding:10px;\">No recent News found.</p>"
+        else
+        end
+      end
+    end
+    
+  end
+  
+#  
+#  private
+#  
+#  def get_news_rss
+#    require 'xmlsimple'
+#    # @news_rss = CACHE.get("news_rss")
+#    
+#    if @news_rss.nil?
+#      
+#      @news_rss = {}
+#      begin
+#        url =  SW_NEWS_RSS
+#        res = Net::HTTP.get_response(URI.parse(url))
+#        xml = XmlSimple.xml_in(res.body)
+#        puts "------------------------------------------------------------"
+#        
+#        @news_rss = xml['channel'].first['item']
+#      rescue
+#        @news_rss = {}
+#      else
+#      end
+#      
+#      CACHE.add("news_rss",@news_rss,86400,false) # 1 day
+#      
+#    end
+#  end
+  
+end

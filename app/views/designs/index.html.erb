@@ -1,0 +1,233 @@
+<!-- Profile File Include --><%#= javascript_include_tag "Profile" %>
+<div class="clear">
+</div>
+<div class="content">
+  <!-- Left Col Start -->
+  <div class="c1">
+    <!-- Set Priority File Include -->
+<%#= javascript_include_tag "SetPriority"%>
+    <div class="clear">
+    </div>
+	
+    <!-- Blue Box start -->
+    <div class="Blue4pxbox">
+      <code>
+        $(this).corner();
+      </code>
+      <div class="whiteBoxContent">
+        <%= image_tag "banner-design.jpg",:style => "margin:-10px;"%>
+		<div class="clear spacer05">
+    </div>
+		<!-- Design Central Start --><!-- Section Head start -->
+        <div class="pageheading">
+          <div class="c7 head14">
+            <%if @search_text%>
+              Search results for "<%=@search_text%>"
+            <%elsif @group%>
+              Designs by members of group "<%=h @group.name%>"
+            <%elsif @user%>
+                <%if logged_in? %>
+                    <%if @user == current_user%> 
+                             My Designs 
+                    <%else%> 
+                            <%=h @user.login.capitalize%>'s Designs
+                    <%end%>
+                <%else%>
+                   <%=h @user.login.capitalize%>'s Designs
+                <%end%>
+            <%else%>
+              <%if @flag%>
+                Designs of the Month
+              <%else%>
+                Design Central
+              <%end%>
+            <%end%>
+          </div>
+          <div class="c5">
+            <%@title_search="Search Designs"%>
+            <%@type="designs"%>
+            <%=render :partial=>"search"%>
+          </div>
+        </div>
+        <p class="clear brdBot01">
+        </p>
+        <div class="pageheading">
+          <p class="c1 total" id="disign_filter">
+            <%if !@user%>
+                <%if @search_text or @tag%>
+                    Total Designs Found : <%= @designs.total_entries %>       
+                <%elsif @recent%>
+                    Total Recent Designs : <%= @designs.total_entries %>                         
+                <%else%>
+                    <select name="searchField" class="select01" onchange = "window.location = '/designs/index?category_id=' + this.value">
+                      <option value = "all">All</option>
+                      <%= options_for_select DesignCategory.all_active.map{|c| [c.name,c.id]} , params[:category_id].to_i%>
+                    </select>
+                    <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner",:style=>"display:none;padding-left:3px;" ) %>
+                    Total Designs :
+                      <%= @designs.total_entries %> 
+                <%end%>
+            <%else%>
+            Total Designs By <%if logged_in?%>
+                                            <%if @user == current_user%>
+                                                     You
+                                            <%else%>
+                                                    <%=@user.login.capitalize%>
+                                            <%end%>
+                                        <%else%>
+                                                   <%=@user.login.capitalize%>                                          
+                                        <%end%>
+                                                    : <%= @designs.total_entries %>
+            <%end%>
+          </p>
+          <p class="c3">
+            <span id="design_pagination" class="pagination01"></span>
+          </p>
+        </div>
+        <p class="frm_brd01">
+        </p>
+        <p class="spacer05">
+        </p>
+        <%if !@search_text%>
+          <!-- Section Head End --><% unless @recent_designs.length == 0 %>
+            <!-- Scroll Image Start --><!-- "previous page" action -->
+            <div class="participant">
+              <p class="icolink">
+                <%= link_to_remote("Recent Designs",:url => { :action => "recent_design"}, :before => "javascript:void(0);",:complete => "hide_show('recent');",:html => { :class=>"orange",:id=>"recent"}) %>
+                &nbsp;|&nbsp;<%= link_to_remote("Top Rated Designs",:url => { :action => "top_rated_design"}, :before => "javascript:void(0);",:complete => "hide_show('top');",:html => {:class=>"",:id=>"top"} )%>
+                <!--&nbsp;|&nbsp;<%#= link_to_remote("Contest Designs",:url => { :action => "contest_design"}, :before => "javascript:void(0);",:complete => "hide_show('contest');",:html => {:class=>"",:id=>"contest"}) %>-->
+
+              </p>
+            </div>
+            <p class="spacer01">
+            </p>
+            <a class="prevPage browse01 left"></a>
+            <!-- root element for scrollable -->
+            <div id="wheeled01" class="scrollable01">
+              <!-- root element for the items -->
+              <div class="items01" id="design_filter">
+                <%=render :partial=>"design_filter"%>
+              </div>
+            </div>
+            <!-- "next page" action --><a class="nextPage browse01 right"></a>
+            <br clear=all/>
+            <!-- javascript coding -->
+
+            <!-- Scroll Image end -->
+            <p class="frm_brd01">
+            </p>
+          <%end%>
+          <p class="spacer01">
+          </p>
+        <% end %>
+        <!-- Design list -->
+        <div id="design_list">
+          <% unless @designs.length == 0 %>
+            <% @designs.each do |d| %>
+              <%= render :partial => "design",:locals => {:d => d,:same_design => true,:by_user=>false},:inline=>true %>
+            <% end %>
+          <% else %>
+            No designs found
+          <% end %>
+                    <div class="pageheading">
+                    <p class="c1 total" id="disign_filter">
+                    <p class="c3">
+                      <span id="design_pagination2" class="pagination01"></span>
+                    </p>
+                    </p>
+                    </div>
+                   <p class="clear brdBot01">
+                    </p>
+            <p class="spacer01">
+          </p>
+            <%if logged_in?%>
+              <table  width = "100%">
+                <tr>
+                  <td align="center">
+                    <div class="greenheadrightcol">
+                      <a href="/designs/new">Upload your Design Now!</a>
+                    </div>
+                  </td>
+                  
+                </tr>
+              </table>
+            <%end%>
+          
+
+        </div>
+        <!-- Design Central End -->
+      </div>
+    </div>
+    <!-- Blue Box end -->
+    <div class="spacer">
+    </div>
+
+  </div>
+  <!-- Left Col End -->
+  <!-- Right Col Start -->
+  <div class="c2 rightcol" id="rightcol">
+    <%= render :partial => "right_col" %>
+  </div>
+  <!-- Right Col End -->
+</div>
+
+<%if @no_of_pages >= 2%>
+  <script type="text/javascript" defer="defer">
+  $(document).ready(function(){
+      $("#design_pagination").paginate({
+ <%if @search_text and !params[:category_id].blank?%>
+          href : '/designs/index?category_id='+<%=params[:category_id]%>+ '&search=<%=@search_text%>&page=',
+  <%elsif !params[:category_id].blank?%>
+          href : '/designs/index?category_id='+<%=params[:category_id]%>+ '&page=',
+  <%elsif params[:user_id]%>
+          href : '/designs/index?user_id='+<%=params[:user_id]%>+ '&page=',
+  <%elsif @search_text%>
+          href : '/designs/index?search=<%=@search_text%>&page=',
+  <%elsif @recent%>
+          href : '/designs/index?recent=<%=@recent%>&page=',
+  <%else%>
+          href : '/designs/index?page=',
+  <%end%>
+        count: <%=@no_of_pages%>,
+        start: <%=params[:page] || 1%>,
+        display: 5,
+        border: false,
+        text_color: '',
+        background_color: '',
+        text_hover_color: '',
+        background_hover_color: ''
+      });
+    });
+  $(document).ready(function(){
+      $("#design_pagination2").paginate({
+ <%if @search_text and !params[:category_id].blank?%>
+          href : '/designs/index?category_id='+<%=params[:category_id]%>+ '&search=<%=@search_text%>&page=',
+  <%elsif !params[:category_id].blank?%>
+          href : '/designs/index?category_id='+<%=params[:category_id]%>+ '&page=',
+  <%elsif params[:user_id]%>
+          href : '/designs/index?user_id='+<%=params[:user_id]%>+ '&page=',
+  <%elsif @search_text%>
+          href : '/designs/index?search=<%=@search_text%>&page=',
+  <%elsif @recent%>
+          href : '/designs/index?recent=<%=@recent%>&page=',
+  <%else%>
+          href : '/designs/index?page=',
+  <%end%>
+        count: <%=@no_of_pages%>,
+        start: <%=params[:page] || 1%>,
+        display: 5,
+        border: false,
+        text_color: '',
+        background_color: '',
+        text_hover_color: '',
+        background_hover_color: ''
+      });
+    });
+
+    // What is $(document).ready ? See: http://flowplayer.org/tools/using.html#document_ready
+    $(document).ready(function(){
+      // initialize scrollable together with the mousewheel plugin
+      $("#wheeled01").scrollable().mousewheel();
+    });
+  </script>
+<%end%>

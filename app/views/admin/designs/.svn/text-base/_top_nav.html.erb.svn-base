@@ -1,0 +1,16 @@
+<ul class="admNav">
+    <li>
+        <a href="/admin/designs">Report</a>
+    </li>
+    <li>
+        <a href="/admin/designs/report">Chart</a>
+    </li>
+    <li>
+        <a href="/admin/designs/category">Manage Category</a>
+    </li>
+    <li>
+        <a href="/admin/designs/abuse_report">Abuse Report</a>
+    </li>
+  </ul>
+<div class="spacer01">
+</div>

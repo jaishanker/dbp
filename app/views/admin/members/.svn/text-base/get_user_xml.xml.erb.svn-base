@@ -1,0 +1,8 @@
+<graph yAxisName="<%#= @user.login %>" caption="Generic Report" numberPrefix="" decimalPrecision="0" >
+<set name="Designs" value="<%= @user.designs.length %>" color="F6BD0F"/>
+<set name="Comments" value="<%= @user.comments.length %>" color="8BBA00"/>
+<set name="Favorites" value="<%= @user.favorites.length %>" color="FF8E46"/>
+<set name="Followings" value="<%= @user.followings.length %>" color="008E8E"/>
+<set name="Followers" value="<%= @user.followers.length %>" color="9D080D"/>
+<set name="Discussion Posts" value="<%= @user.posts.length %>" color="A186BE"/>
+</graph>

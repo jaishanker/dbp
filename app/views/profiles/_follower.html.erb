@@ -1,0 +1,25 @@
+<div class="fourCol">
+  <p class="c1"><%= get_image(follower,'user','thumb','imgbrd') %></p>
+  <p class="c2"><%= link_to follower.login.capitalize,my_page_path(:user_id => follower.id), :class => "blue"%><br />
+  <%=h follower.first_name+" "+ follower.last_name%></p>
+  <p class="c3"> <%= h follower.status_message %> <%if follower.status_message.nil? %> &nbsp;<%end%> </p>
+  <p class="c4" style="padding-left:320px;">
+      <%if @user == current_user%>
+          <% if @user.following?(follower)%>
+             You are also following <%= h follower.login.capitalize%>
+          <%else%>
+             <span class="grnbtn02" id="follow_<%=follower.id%>"> <%= link_to "Follow",follow_profile_path(@profile,:member_id => follower.id),:onclick => "return disablePartLink(this,#{follower.id});" %> </span>        
+          <%end%>
+       <%else%>
+         &nbsp;
+       <%end%>
+  </p>
+  <p class="c5" style="float:right;"><%if @user == current_user %> <%= link_to image_tag("block.gif", :width => "15" , :height=>"24", :border=>"0", :alt=>"Block #{follower.login.capitalize}", :title=> "Block #{follower.login.capitalize}"),block_user_profile_path(@profile,:follower_id => follower.id)%> <%end%></p>
+  <p class="c6" style="float:right;">
+        <% if @user.following?(follower)  and @user == current_user%>
+            <%= link_to image_tag("unFollow.gif", :width => "15" , :height=>"24", :border=>"0", :alt=>"Unfollow #{follower.login.capitalize}", :title=> "Unfollow #{follower.login.capitalize}"),unfollow_user_profile_path(@profile,:follower_id => follower.id) %>
+       <%else%>
+          &nbsp;
+        <%end%>
+  </p>
+</div>

@@ -1,0 +1,113 @@
+<!-- Profile File Include --><%#= javascript_include_tag "Profile" %>
+<div class="clear">
+</div>
+<div class="content">
+  <!-- Left Col Start -->
+  <div class="c1">
+    <!-- Set Priority File Include --><%#= javascript_include_tag "SetPriority" %>
+    <div class="clear">
+    </div>
+    <!-- Blue Box start -->
+    <div class="Blue4pxbox">
+      <code>
+        $(this).corner();
+      </code>
+      <div class="whiteBoxContent">
+        <!-- Discussion List Start --><!-- Section Head start -->
+        <div class="pageheading">
+          <div class="c7 head14">
+            Search result for "<%=@search_text%>"
+          </div>
+          <p class="c3">
+            <span id="discussion_pagination" class="pagination01"></span>
+          </p>
+        </div>
+        <p class="clear">
+        </p>
+
+        <!-- Section Head End --><!-- List start -->
+        <div class="discussion">
+          <p class="spacer">
+          </p>
+          <!-- Table Start -->
+          <div class="tbl">
+            <div class="tblRow tblHead">
+              <p class="col5">
+                Topics
+              </p>
+              <p class="col3">
+                Posts
+              </p>
+              <p class="col4">
+                Last Post
+              </p>
+              <p class="col6">
+                Views
+              </p>
+            </div>
+            <!-- Topic div start -->
+            <%unless @topics.length == 0 %>
+              <% @topics.each do |topic| %>
+                <div class="tblRow">
+                  <p class="col5">
+                    <%= link_to get_name(topic.title,200),{:action => :topic,:permalink => topic.permalink},:class => "black03"  %>
+                  </p>
+                  <p class="col3">
+                    <%= topic.posts.count %>
+                  </p>
+                  <p class="col4">
+                    by <%#= get_my_page_link(topic.posts.last.user.login,topic.posts.last.user.id) unless topic.posts.last.nil?%>
+                    <%= link_to get_name(topic.posts.last.user.login),my_page_path(:user_id => topic.posts.last.user.id) unless topic.posts.last.nil? %>
+                    <br/>
+                    <%= time_ago(topic.posts.last.created_at)  unless topic.posts.last.nil? %>
+                  </p>
+                  <p class="col6">
+                    <%= topic.view_count.nil? ? 0 : topic.view_count %>
+                  </p>
+                </div>
+              <% end %>
+            <%else%>
+              <p class="clear">&nbsp;</p>
+              No topic found.
+            <%end%>
+            <!-- Topic div end -->
+          </div>
+          <!-- Table end -->
+        </div>
+        <!-- List end -->
+        <p class="clear">
+        </p>
+        <!-- Discussion List End -->
+      </div>
+    </div>
+    <!-- Blue Box end -->
+    <div class="spacer">
+    </div>
+  </div>
+  <!-- Left Col End -->
+  <!-- Right Col Start -->
+  <div class="c2 rightcol" id="rightcol">
+    <%= render :partial => "right_col" %>
+  </div>
+  <!-- Right Col End -->
+</div>
+<%if @no_of_pages >= 2%>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $(function(){
+        $("#discussion_pagination").paginate({
+          href : '/discussions/search?search=<%=@search_text%>&page=',
+          count: <%=@no_of_pages%>,
+          start: <%=params[:page] || 1%>,
+          display: 5,
+          border: false,
+          text_color: '',
+          background_color: '',
+          text_hover_color: '',
+          background_hover_color: ''
+        });
+      });
+    });
+  </script>
+<%end%>
+

@@ -1,0 +1,65 @@
+<!-- Logo Header Start -->
+<div class="header">
+  <div class="logo">
+    <a href="/recent_activity"></a>
+  </div>
+  <!-- Login Start -->
+  <div class="logout">
+    <code>
+      $(this).corner("br bl");
+    </code>
+    <p class="txt14">
+      Welcome <%= current_user.first_name%>&nbsp;<%= current_user.last_name%>
+    </p>
+    <p class="txt11">
+      (You have earned total <%=current_user.points || 0%> points <%unless @products_count == 0 or current_user.points == 0%><%=link_to "Redeem", :controller => "redemptions", :action => "list_products"%> <%end%>) <a href="/pointing_system">Know More>></a>
+    </p>
+    <p class="loginbtn">
+
+      <% unless facebook_session.nil?%>
+         <!-- <a class="ovalbutton" href="javascript:void(0)" onclick="FB.Connect.logout(function (){ document.location='/logout/'; });"><span>Logout</span></a>        -->
+         <a class="ovalbutton" href="javascript:void(0)" onclick="FB.Connect.logoutAndRedirect('/logout')"><span>Logout</span></a>  
+      <% else %>
+            <a class="ovalbutton" href="/logout" onclick=""><span>Logout</span></a>
+      <%end%>
+    </p>
+    <p class="clear">
+    </p>
+  </div>
+  <!-- Login Start -->
+</div>
+<!-- Logo Header End -->
+<%=render :partial=>"layouts/header_links"%>
+<!-- Head Link End -->
+<div class="clear">
+</div>
+<!-- Head Banner Start -->
+<div class="banner">
+  <% if @top_banner.nil? %>
+ <div class="c1">
+    <div class="bannerdiv01">
+    </div>
+  </div>
+  <div class="c2">
+    <div class="bannerdiv02">
+    </div>
+  </div>  
+  <% else %>
+  <%= @top_banner.banner_code %>
+  <% end %>
+</div>
+<!-- Head Banner End -->
+<div class="clear"></div>
+<!-- For profile of user -->
+<%# cache "profile_data_cache_#{current_user.id.to_s}" do %>
+<%= render :partial => "/layouts/profile"%>
+<%#end%>
+<div class="clear"></div>
+
+<!-- For set priority bar -->
+
+<%= render :partial => "/layouts/set_priority"%>
+
+<div class="clear"></div>
+
+

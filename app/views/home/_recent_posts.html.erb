@@ -1,0 +1,23 @@
+<div class='<%= cycle("cBoxblue","cBoxorange","cBoxgreen") %>'>
+    <div class="cBoxhead">
+        <p class="headtxt">
+            Recent Discussion Posts
+        </p>
+        <%=link_to "more +" , recent_post_path(:id=>"recent") ,:class=>"more" %>
+    </div>
+    <div class="cBoxcontainer">
+        <ul>
+            <%unless @recent_post.length == 0 %>
+            <%@recent_post.each do |recent| %>
+            <li>
+                <%=link_to get_name(recent.title,120) ,{:controller=>:discussions, :action => :topic,:permalink => recent.permalink} %>
+                <%= time_ago(recent.created_at) %>&nbsp;by <%=recent.user.login %>
+            </li>
+            <%end %>
+            <%else %>
+            No recent post found.<%end %>
+        </ul>
+        <p class="spacer01">
+        </p>
+    </div>
+</div>

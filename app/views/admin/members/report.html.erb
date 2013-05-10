@@ -1,0 +1,81 @@
+<div class="content">
+    <h1><a target = "_blank" href="/my_page?user_id=<%=@user.id%>"><%= @user.login %>'s</a> Dashboard</h1>
+    <form id="form1" name="form1" method="post" action="">
+        <table border="0" cellpadding="5" cellspacing="0" id="mytable01">
+            <tr>
+                <td width="21%">
+                    Joining Date
+                </td>
+                <td width="63%">
+                    <%= @user.activated_at.nil? ? "Not Activated" : @user.activated_at.strftime("%d %b %Y") %>
+                </td>
+                <td width="16%" rowspan="6" align="center">
+                    <%= get_image(@user,'user','thumb_large','') %>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Status
+                </td>
+                <td>
+                    <%= get_user_status(@user.status) %>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Belt
+                </td>
+                <td>
+                      <span class ="<%= get_class(@user.expertise_points) %>"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Designs Uploaded
+                </td>
+                <td>
+                    <a target = "_blank" href="/designs/index?user_id=<%= @user.id %>">View Designs</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Points Earned
+                </td>
+                <td>
+                    <%= @user.points %>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Points Redeemed
+                </td>
+                <td>
+                    <%= @user.redeemed_points %>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <br/>
+    <h2>Login Details <span>Last Login:&nbsp;<%= @user.last_login_at.nil? ? "Not Logged in Yet" : @user.last_login_at.strftime("%d %b %Y") %></span></h2>
+    <br/>
+    <div id="chartdiv" align="center">
+        FusionCharts. 
+    </div>
+    <script type="text/javascript">
+        var chart = new FusionCharts("/Charts/FCF_Column3D.swf", "ChartId", "800", "350");
+         chart.setDataURL("/admin/members/get_user_xml/<%=@user.id%>");
+        chart.render("chartdiv");
+    </script>
+    </div>
+</div>
+<script type = "text/javascript">
+    
+    $(document).ready(function(){
+    
+        oTable = $('#example1, #example2').dataTable({
+            "bJQueryUI": true,
+            "sPaginationType": "full_numbers"
+        });
+        
+    });
+</script>

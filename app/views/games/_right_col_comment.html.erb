@@ -1,0 +1,19 @@
+
+    <!-- Two col start -->
+        <div class="snaprow">
+            <p class="c1">
+                   <%= link_to get_image(c.user,'user','thumb','nobrd'),my_page_path(:user_id => c.user.id) %>
+                   <%#=  get_image(c.user,'user','thumb')%>
+                   <%#= link_to get_name(c.user.login),my_page_path(:user_id => c.user.id)%>
+                  <!--<a href="My_Page.html"> <span class="mname"><%#=c.user.first_name%></span>-->
+                </a>
+            </p>
+            <p class="c2">
+               <%= link_to get_name(c.user.login,50),my_page_path(:user_id => c.user.id)%> commented on
+                 <%if !c.title.nil?%>
+                 <%= link_to get_name(c.game.title,60),{:controller=>:games, :action => :game,:permalink => c.game.permalink} ,:class=>"commname"%><br/>
+                 <%= time_ago(c.created_at) %>
+               <%end%>
+            </p>
+        </div>
+    <!-- Two col end -->

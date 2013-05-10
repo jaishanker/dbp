@@ -1,0 +1,64 @@
+<!-- Container Start -->
+    <%= render :partial => "top_nav" %>
+    <h1>Discussion Lounge - Manage Sub Category<span class="fright">Total Sub Categories:&nbsp;<%= @sub_categories.length %></span></h1>
+                <div class="Blue4pxbox">
+                    <code>
+                        $(this).corner();
+                    </code>
+                    <div class="profileForm">
+                        <!-- Page Head start -->
+                        <div class="pageheading">
+                            <div class="c1 head14">
+                                Edit Sub Category
+                            </div>
+                        </div>
+                        <!-- Page Head end -->
+                        <div class="brdBot01">
+                        </div>
+                        <!-- Form Start --><p class="spacer04"/>
+                   <% form_for(@sub_category,:url => {:controller=>"admin/discussions",:action => :update_sub_category1,:id=>@sub_category.id},:html => {:multipart => true}) do |f| %>
+                   <%= error_messages_for :sub_category,:header_message => nil,:message => nil %>
+                        <div class="uplooad">
+                            <div class="formrow">
+                                <div class="c1">
+                                    Category:
+                                </div>
+                                <div class="c2">
+                                    <%= f.select :discussion_category_id, DiscussionCategory.all_active.map{|c| [c.name,c.id]} %>
+                                </div>
+                            </div>
+                            <div class="formrow">
+                                <div class="c1">
+                                    Name:
+                                </div>
+                                <div class="c2">
+                                    <%= f.text_field :name, :class => "inputtxt01" %>
+                                </div>
+                            </div>
+                            <div class="formrow">
+                                <div class="c1">
+                                    Description:
+                                </div>
+                                <div class="c2">
+                                    <%= f.text_area :description, :class => "inputtxt01",:rows => 8 %>
+                                </div>
+                            </div>
+                            <div class="formrow">
+                                <div class="c1">
+                                    &nbsp;
+                                </div>
+                                <div class="c2">
+                                    <%= submit_tag "Update",:class => "grnbtn01" %>
+                                </div>
+                            </div>
+                            <% end %>
+                        </div>
+                        <!-- Form End -->
+                    </div>
+                </div>
+<!-- Container End -->
+<script type="text/javascript">
+    $(document).ready(function(){
+    $('select').addClass('inputtxt01');
+      });
+</script>

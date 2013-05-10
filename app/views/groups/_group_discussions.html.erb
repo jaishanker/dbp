@@ -1,0 +1,97 @@
+<div class="whiteBoxContent" style ="width:670px;">
+    <!-- Discussion List Start --><!-- Section Head start -->
+    <div class="pageheading" style ="width:670px;">
+        <p class="c1 total">
+            <a>Posts :&nbsp;<%=get_post_count_sc(@sub_category) %></a>
+            | <a>Topics :&nbsp;<%=@sub_category.topics.count %></a>
+            | <a>Members :&nbsp;<%=get_member_count_sc(@sub_category) %></a>
+            | <a>Views :&nbsp;<%=get_view_count_sc(@sub_category) %></a>
+        </p>
+    </div>
+    <p class="clear brdBot01">
+    </p>
+    <!-- Section Head End --><!-- List start -->
+    <div class="discussion">
+        <p class="spacer">
+        </p>
+        <p class="head">
+            <%= get_name(@sub_category.category.name) %>&nbsp;-&nbsp;<%= get_name(@sub_category.name) %>
+        </p>
+        <% if logged_in? %>
+        <% if @group.users.include?(current_user) %>
+        <p class="grnbtn">
+            <a href="/groups/postadd?discussion_category_id=<%=@sub_category.category.id%>&sub_category_id=<%=@sub_category.id%>" onclick="postTopic();return hs.htmlExpand(this, { objectType:'ajax',outlineType:'rounded-white',width:480,height:410  },'Post New Forum Topic' );postTopic();" id="href_201274867312345">Add Post</a>
+        </p>
+        <% end %>
+        <% end %>
+        <!-- Table Start -->
+        <div class="tbl">
+            <div class="tblRow tblHead">
+                <p class="col1">
+                    Forum Discussions
+                </p>
+                <p class="col3">
+                    Posts
+                </p>
+                <p class="col4">
+                    Last Post
+                </p>
+                <p class="col6">
+                    Views
+                </p>
+            </div>
+            <!-- Topic div start -->
+            <div class="tblRow <%= cycle('trOdd','trEven') %>">
+                <p class="col1">
+                    <strong><%= get_name(@sub_category.name) + " (#{@sub_category.topics.count} Topics)" %></strong>
+                    <br/>
+                    <%= @sub_category.description %>
+                </p>
+                <p class="col3">
+                    <span><%= get_post_count_sc(@sub_category) %></span>
+                </p>
+                <p class="col4">
+                    &nbsp;
+                </p>
+                <p class="col6">
+                    <span><%= get_view_count_sc(@sub_category) %></span>
+                </p>
+            </div>
+            <% @sub_category.topics.each do |topic| %>
+            <div class="tblRow">
+                <p class="col5">
+                    <%= link_to get_name(topic.title,120),topic_link_path(topic.permalink),:class => "black03" %>
+                </p>
+                <p class="col3">
+                    <%= topic.posts.count %>
+                </p>
+                <p class="col4">
+                    by <%#= get_my_page_link(topic.posts.last.user.login,topic.posts.last.user.id) unless topic.posts.last.nil? %>
+                    <%= link_to get_name(topic.posts.last.user.login),my_page_path(:user_id => topic.posts.last.user.id) unless topic.posts.last.nil? %>
+                    <br/>
+                    <%= time_ago(topic.posts.last.created_at) unless topic.posts.last.nil? %>
+                    <%#= topic.posts.last.created_at.strftime("%a %b %d,%Y %H:%M %P")  unless topic.posts.last.nil? %>
+                </p>
+                <p class="col6">
+                    <%= topic.view_count.nil? ? 0 : topic.view_count %>
+                </p>
+            </div>
+            <% end %>
+            <p class="clear brdBot01">
+            </p>
+            <!-- Topic div end -->
+        </div>
+        <!-- Table end -->
+    </div>
+    <!-- List end -->
+    <p class="clear">
+    </p>
+    <!-- Discussion List End -->
+</div>
+<script>
+    function postTopic(){
+        unsetTextareaToTinyMCE('textarea_editor');
+        setTextareaToTinyMCE('textarea_editor');
+    }
+    
+</script>

@@ -1,0 +1,36 @@
+<div class="snaprow">
+   <p class="c1">
+     <%= link_to get_image(activity_stream.actor,'user','thumb','snap'),my_page_path(:user_id =>activity_stream.actor.id) unless activity_stream.actor.nil? %>
+     <%#= link_to activity_stream.actor.login.capitalize, my_page_path(:user_id => activity_stream.actor.id), :class => "mname" unless activity_stream.actor.nil?%>
+   </p>
+   <p class="c2">
+      <%= link_to activity_stream.actor.login.capitalize, my_page_path(:user_id => activity_stream.actor.id), :class => "blue" unless activity_stream.actor.nil?%>
+      <%=h activity_stream.verb.tr('_', ' ') %>
+      <%if activity_stream.object_type == "User"%>
+            you
+      <%else%>
+        your <%= activity_stream.object_type.downcase%>
+          <%if activity_stream.object_type == "Design"%>
+                <%= link_to get_name(activity_stream.object.name,50),:controller=>:designs, :action => :design,:permalink => activity_stream.object.permalink %>            
+          <%elsif activity_stream.object_type == "Group"%>
+                <%=link_to get_name(activity_stream.object.name,50) , :controller => "groups", :action => "group", :permalink =>  activity_stream.object.permalink%>
+          <%elsif activity_stream.object_type == "Comment"%>
+            on
+               <%if activity_stream.object.commentable_type == "Design"%>
+                <%=link_to get_name(activity_stream.object.commentable.name,50) , :controller => activity_stream.object.commentable_type.downcase.pluralize, :action => activity_stream.object.commentable_type.downcase, :permalink =>  activity_stream.object.commentable.permalink%>                
+               <%else%>
+                <%=link_to get_name(activity_stream.object.commentable.title,50) , :controller => activity_stream.object.commentable_type.downcase.pluralize, :action => activity_stream.object.commentable_type.downcase, :permalink =>  activity_stream.object.commentable.permalink%>                                 
+                <%end%>
+          <%elsif activity_stream.object_type == "Topic"%>
+                 <%=link_to get_name(activity_stream.object.title,50) , :controller => "discussions", :action => "topic", :permalink =>  activity_stream.object.permalink%>                
+          <%end%>
+      <%end%>
+      <%if activity_stream.activity == "shared_with_followings"%>
+               with everyone <%if activity_stream.actor.gender == "Male"%> he <%else%> she <%end%> is following
+               <%elsif activity_stream.activity == "shared_with_followers"%>
+               with <%if activity_stream.actor.gender == "Male"%> his <%else%> her <%end%>  followers                
+       <%end%>      
+       <br />
+            <%= time_ago(activity_stream.created_at) %>         
+    </p>
+</div>

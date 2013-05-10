@@ -1,0 +1,170 @@
+        <% form_remote_tag :url => '/profiles/update_cetifications_and_skills' , :update => "ComContent" do -%>	
+	<div class="proform">
+			<!-- Question Set start -->
+        	<div class="formrow">
+                <p class="c3">Are you a "Certified SolidWorks Associate" (CSWA)?:</p>
+				<p class="c4">
+                                        <%=radio_button("profile", "solidworks_associate", "Yes")%> Yes
+                                        <%=radio_button("profile", "solidworks_associate", "No")%> No
+					<!-- <input name="RadioGroup1" type="radio" id="RadioGroup1_0" value="radio" checked="checked" />Yes
+					<input type="radio" name="RadioGroup1" value="radio" id="RadioGroup1_1" />No -->
+				</p>
+            </div>        	
+            <div class="formrow">
+                <p class="c3">Are you a "CSWP – Surface" professional?:</p>
+				<p class="c4">
+                                        <%=radio_button("profile", "cswp_surface_prof", "Yes")%> Yes
+                                        <%=radio_button("profile", "cswp_surface_prof", "No")%> No        
+					<!-- <input name="RadioGroup1" type="radio" id="RadioGroup1_0" value="radio" checked="checked" />Yes
+					<input type="radio" name="RadioGroup1" value="radio" id="RadioGroup1_1" />No -->
+				</p>
+            </div>
+            
+        	<div class="formrow">
+                <p class="c3">Are you a "CSWP – Sheet metal" professional?:</p>
+				<p class="c4">
+                                        <%=radio_button("profile", "cswp_shetmetal_prof", "Yes")%> Yes
+                                        <%=radio_button("profile", "cswp_shetmetal_prof", "No")%> No                
+					<!-- <input name="RadioGroup1" type="radio" id="RadioGroup1_0" value="radio" checked="checked" />Yes
+					<input type="radio" name="RadioGroup1" value="radio" id="RadioGroup1_1" />No -->
+				</p>
+            </div>
+            <div class="spacer04"></div>
+            <div class="brdBot01"></div>
+            <div class="spacer04"></div>
+        	<div class="formrow">
+                <p class="c3">SolidWorks / CAD Usage</p>
+				<p class="c4 head"></p>
+            </div>
+            <div class="spacer04"></div>
+
+        	<div class="formrow">
+                <p class="c3">What is the oldest SolidWorks Version that you have used?:</p>
+				<p class="c4">
+                         <%=select("profile", "solidworks_version", VERSIONS,{},:class => "proselect") %>
+            <!--    	<select name="" class="proselect">
+                    	<option>Select Version</option>
+                    	<option>2008 – 2009</option>
+                    	<option>2004 - 2007</option>
+                    	<option>2001 - 2003</option>
+                    	<option>1997 - 2000</option>
+                    </select> -->
+				</p>
+            </div>
+        	<div class="formrow">
+                <p class="c3">How many years you have used SolidWorks for designing products:</p>
+				<p class="c4">
+                        <%=select("profile", "solidwork_usege_exp", EXPERIENCE,{},:class => "proselect") %>
+                	<!-- <select name="" class="proselect">
+                    	<option>Select Years</option>
+                    	<option>+2 Years</option>
+                    	<option>+4 Years</option>
+                    	<option>+6 Years</option>
+                    	<option>+8 Years</option>
+                    </select> -->
+				</p>
+            </div>
+        	<div class="formrow">
+                <p class="c3">How many years you have worked as a design engineer designing products with any CAD softwares in any company? :</p>
+				<p class="c4 c2pad">
+                        <%=select("profile", "cad_usage_exp", EXPERIENCE,{},:class => "proselect") %>        
+                	<!-- <select name="" class="proselect">
+                    	<option>Select Years</option>
+                    	<option>+2 Years</option>
+                    	<option>+4 Years</option>
+                    	<option>+6 Years</option>
+                    	<option>+8 Years</option>
+                    </select> -->
+				</p>
+            </div>
+        	<div class="formrow">
+                <p class="c3">Have you used SolidWorks Simulation or Cosmos?:</p>
+				<p class="c4">
+                                        <%=radio_button("profile", "sw_simulation_or_cosmos", "Simulation")%> Simulation
+                                        <%=radio_button("profile", "sw_simulation_or_cosmos", "Cosmos")%> Cosmos           
+					<!-- <input name="RadioGroup1" type="radio" id="RadioGroup1_0" value="radio" checked="checked" />Simulation
+					<input type="radio" name="RadioGroup1" value="radio" id="RadioGroup1_1" />Cosmos -->
+				</p>
+            </div>
+        	<div class="formrow">
+                <p class="c3">Have you used SolidWorks Flow Simulation? :</p>
+				<p class="c4">
+                                        <%=radio_button("profile", "sw_flow_used", "Yes")%> Yes
+                                        <%=radio_button("profile", "sw_flow_used", "No")%> No                   
+					<!-- <input name="RadioGroup1" type="radio" id="RadioGroup1_0" value="radio" checked="checked" />Yes
+					<input type="radio" name="RadioGroup1" value="radio" id="RadioGroup1_1" />No -->
+				</p>
+            </div>
+        	<div class="formrow">
+                <p class="c3">How many years you have used the above SolidWorks Simulation products?:</p>
+				<p class="c4">
+                        <%=select("profile", "solidwork_simulation_usege_exp", EXPERIENCE,{},:class => "proselect") %>                
+                	<!-- <select name="" class="proselect">
+                    	<option>Select Years</option>
+                    	<option>+2 Years</option>
+                    	<option>+4 Years</option>
+                    	<option>+6 Years</option>
+                    	<option>+8 Years</option>
+                    </select> -->
+				</p>
+            </div>
+        	<div class="formrow">
+                <p class="c3">Have you compared SolidWorks Simulation results with physical testing? :</p>
+				<p class="c4">
+                                        <%=radio_button("profile", "comparison_phy_testing", "Yes")%> Yes
+                                        <%=radio_button("profile", "comparison_phy_testing", "No")%> No              
+					<!--<input name="RadioGroup1" type="radio" id="RadioGroup1_0" value="radio" checked="checked" />Yes
+					<input type="radio" name="RadioGroup1" value="radio" id="RadioGroup1_1" />No -->
+				</p>
+            </div>
+
+ <div class="frm_brd"></div>
+
+ <div class="formrow">
+                <p class="c3">Have you worked on SolidWorks products?:</p>
+				<p class="c4">
+                                        <%=radio_button("profile", "worked_on_solidworks", "Yes")%> Yes
+                                        <%=radio_button("profile", "worked_on_solidworks", "No")%> No                   
+					<!-- <input name="RadioGroup1" type="radio" id="RadioGroup1_0" value="radio" checked="checked" />Yes
+					<input type="radio" name="RadioGroup1" value="radio" id="RadioGroup1_1" />No -->
+				</p>
+            </div>
+        	<div class="formrow">
+                <p class="c3">Name the SolidWork Products you worked on:</p>
+                <p class="c4"><%= text_field :profile, :solidword_product_worked_on, :class=> "proinput" %></p>
+            </div>
+        	<div class="formrow">
+                <p class="c3">Certification 1:</p>
+                <p class="c4"><input name="fmname" type="text" value="" class="proinput" /></p>
+            </div>
+        	<div class="formrow">
+                <p class="c3">Certification Description 1:</p>
+                <p class="c4"><textarea name="" cols="" rows="" class="proinput03"></textarea></p>
+            </div>
+        	<div class="formrow">
+                <p class="c3">&nbsp;</p>
+                <p class="c4"><a href="#">Add More [+]</a></p>
+            </div>
+        	<div class="formrow">
+                <p class="c3">Skills :</p>
+                <p class="c4"><%= text_area :profile, :skills, :class=> "proinput03" %></p>
+            </div>
+
+ 			<!-- Question Set end -->
+			
+    	 
+    </div>
+    <div class="frm_brd"></div>
+	<div class="proform">
+    	<div class="proform_l">
+        	<div class="formrow">
+                <p class="c1">&nbsp;</p>
+                <p class="c2">
+                	<%= submit_tag 'Save and Continue' , :class => "grnbtn01"%>
+                	<input name="Save" type="button" value="Cancel" class="grnbtn01" onclick = "<%= remote_function :update => "ComContent",:url =>{ :action => :get_cetifications_and_skills} , :class => "grnbtn01"%>" />
+                </p>
+            </div>
+	    </div>
+    </div>
+  <%end%>
+    <p class="spacer01"></p>

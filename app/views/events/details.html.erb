@@ -1,0 +1,213 @@
+<div class="content">
+    <!-- Left Col Start -->
+    <div class="c1"  id="event_details" >
+        <!-- Set Priority File Include --><%#= javascript_include_tag "SetPriority" %>
+        <div class="clear">
+        </div>
+        <!-- Blue Box start -->
+        <div class="Blue4pxbox">
+            <code>
+                $(this).corner();
+            </code>
+            <div class="whiteBoxContent">
+                <div class="newuser01">
+                    <div class="txt">
+                        <strong>Event Name: </strong>
+                        <%=@event.topic %>
+                    </div>
+                    <div class="spacer01">
+                    </div>
+                    <p class="spacer04">
+                    </p>
+                    <p class="c1">
+                        Event Type:
+                    </p>
+                    <p class="c2">
+                        <%= get_name(@event.eventtype,200) %>
+                    </p>
+                    <p class="spacer04">
+                    </p>
+                    <p class="c1">
+                        Product:
+                    </p>
+                    <p class="c2">
+                        <%= get_name(@event.product,200) %>
+                    </p>
+                    <p class="spacer04">
+                    </p>
+                    <p class="c1">
+                        Organizer:
+                    </p>
+                    <p class="c2">
+                        <%= get_name(@event.organizer,200) %>
+                    </p>
+
+                   <p class="spacer04">
+                    </p>
+                    <p class="c1">
+                        Agenda:
+                    </p>
+                    <p class="c2">
+                        <%= get_name(@event.agenda,200) %>
+                    </p>
+
+                    <p class="spacer04">
+                    </p>
+                    <p class="c1">
+                        Description:
+                    </p>
+                    <p class="c2">
+                        <%= get_name(@event.description,200) %>
+                    </p>
+                    <p class="spacer04">
+                    </p>
+                    <p class="c1">
+                        Venue Location:
+                    </p>
+                    <p class="c2">
+                        <%= get_name(@event.location,200) %>
+                    </p>
+                    <p class="spacer04">
+                    </p>
+                    <p class="c1">
+                        City:
+                    </p>
+                    <p class="c2">
+                        <%= get_name(@event.city,200) %>
+                    </p>
+                    <p class="spacer04">
+                    </p>
+                    <p class="c1">
+                        State:
+                    </p>
+                    <p class="c2">
+                        <%= get_name(@event.state,200) %>
+                    </p>
+                    <p class="spacer04">
+                    </p>
+                    <p class="c1">
+                        Pin:
+                    </p>
+                    <p class="c2">
+                        <%= get_name(@event.pin,200) %>
+                    </p>
+                    <p class="spacer04">
+                    </p>
+                    <p class="c1">
+                        Date:
+                    </p>
+                    <p class="c2">
+                        <%= @event.date.strftime("%d %b %Y") %>
+                    </p>
+                    <p class="spacer04">
+                    </p>
+                    <p class="c1">
+                        Time:
+                    </p>
+                    <p class="c2">
+                        <%= @event.start_time.strftime("%I:%M %p")  + " - " + @event.end_time.strftime("%I:%M %p") %>
+                    </p>
+                    <p class="spacer04">
+                    </p>
+                    <p class="c1">
+                        Sponsor:
+                    </p>
+                    <p class="c2">
+                        <%= get_name(@event.sponsor,200) %>
+                    </p>
+                    <p class="spacer04">
+                    </p>
+                    <p class="c1">
+                        Phone:
+                    </p>
+                    <p class="c2">
+                        <%= get_name(@event.phone_no,200) %>
+                    </p>
+                    <p class="spacer04">
+                    </p>
+                    <p class="c1">
+                        Directions:
+                    </p>
+                    <p class="c2">
+                        <%= get_name(@event.directions,550) %>
+                    </p>
+                    <p class="spacer04">
+                    </p>
+                    <p class="brdBot01">
+                    </p>
+                    <p class="spacer04">
+                    </p>
+                    <p class="c2">
+                        <% if logged_in? %>
+                        <%if @already_participated%>
+                   	<table width = "95%" >
+                            <tr>
+                                <td align = "center">
+                                   <h2>You have already paricipated in this event.</h2>
+								</td>
+                            </tr>
+                        </table>                          
+                        <% elsif @event_participants.collect(&:user_id).include?(current_user.id) %>
+                   	<table width = "95%" >
+                            <tr>
+                                <td align = "center">
+                                   <h2>You have already paricipated in one of the events of this organizer.</h2>
+								</td>
+                            </tr>
+                        </table>
+						<% else %>
+                        <% remote_form_for @participant,:url => {:controller => :events,:action => :participate}, :before => "$('#spinner1').show();", :complete => "$('#spinner1').hide();$(this).remove()",:id => "event_reg_form" do |f| %>
+                        <div id = "participation_form">
+						<%= f.hidden_field :status,:value => 1 %>
+                        <%= f.hidden_field :event_id,:value => @event.id %>
+                        <%= f.hidden_field :user_id,:value => current_user.id %>
+                        </div>
+						 <table width = "95%">
+                            <tr>
+                                <td align = "center" id = "part_conf" >
+                                    <div class="greenheadrightcol" >
+                                        <a onclick="return hs.htmlExpand(this, { objectType:'ajax',outlineType:'rounded-white',width:400,height:400},'User Details' )" href="/events/ask_details?event_id=<%=@event.id%>">Participate</a>
+                                     <%#= link_to_remote("Participate",:url => {:controller => :events,:action => :participate},:submit => "participation_form", :before => "$('#spinner1').show();", :complete => "$('#spinner1').hide();" ) %>
+                                    </div>
+									<%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner1",:style=>"display:none; width: 20px; margin-top: 0px;" ) %>
+								</td>
+                            </tr>
+                        </table>
+                        <% end %>
+                        <% end %>
+                        <% else %>
+                        <table width = "95%">
+                            <tr>
+                                <td align = "center">
+                                    <div class="greenheadrightcol" style="width:580px" >
+                                        <a onclick="return hs.htmlExpand(this, { objectType:'ajax',outlineType:'rounded-white',width:530,height:730},'Join Now!' )" href="/users/new?event=true&event_id=<%=@event.id%>">Register to this community and Participate in the Event</a>
+                                    </div>
+									<strong>OR</strong>
+									<div class="greenheadrightcol" style="width:580px" >
+                                        <a onclick="return hs.htmlExpand(this, { objectType:'ajax',outlineType:'rounded-white',width:400,height:250},'Login' )" href="/sessions/new?event=true&event_id=<%=@event.id%>">User your Username and Password to Login and Participate in this event</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <% end %>
+                        
+                    </p>
+                </div>
+                <div class = "spacer">
+                </div>
+            </div>
+        </div>
+        <!-- Blue Box end -->
+        <div class="spacer">
+        </div>
+    </div>
+    <!-- Left Col End -->
+    <!-- Right Col Start -->
+    <div class="c2 rightcol" id="eventRight">
+        <%=render :partial=>"right_col" %>
+    </div>
+    <!-- Right Col End -->
+</div>
+<!-- Container End -->
+<div class="clear">
+</div>

@@ -1,0 +1,350 @@
+class DiscussionsController < ApplicationController
+  
+  before_filter :common_objects,:only => [:index,:category,:sub_category,:topic, :active_forum_participants,:hot_discussions, :search, :activities]
+  before_filter :get_count,:only => [:index,:category,:sub_category,:hot_discussions, :search]
+  
+  log_activity_streams :current_user, :login, "posted",
+  :@topic, :title, :create_topic,:posted_topic, {:total => 1 }  
+  log_activity_streams :current_user, :login, "posted reply on",
+  :@topic, :title, :create,:posted_reply, {:total => 1,:indirect_object => :@topic_owner,:indirect_object_name_method => :login,:indirect_object_phrase => :@post }    
+  
+  
+  #-----------------Tiny MCE------------------------
+  
+  uses_tiny_mce(:options => {:theme => 'advanced',
+    :browsers => %w{msie gecko},
+    :theme_advanced_toolbar_location => "top",
+    :theme_advanced_toolbar_align => "left",
+    :theme_advanced_resizing => true,
+    :theme_advanced_resize_horizontal => true,
+    :paste_auto_cleanup_on_paste => true,
+    :theme_advanced_buttons1 => %w{separator bold italic separator link unlink separator bullist numlist separator undo redo separator},
+    :theme_advanced_buttons2 => %w{},
+    :theme_advanced_buttons3 => %w{},
+    :width => 285,
+    :plugins => %w{contextmenu paste}}
+  )
+  
+  #--------------------------------------------------
+  
+  
+  def index
+    @offset = 0
+    @r_post = params[:id] unless params[:id].nil?
+    @categories = DiscussionCategory.all_active
+    
+    @group_sub_categories = []
+    group_cat = DiscussionCategory.find_by_name("Groups",:include => {:sub_categories => {:topics =>:posts}} )
+    @group_sub_categories = group_cat.sub_categories unless group_cat.nil?
+    @group_link = {}
+    Group.all.each do |g|
+      @group_link[g.name] = g.permalink
+    end
+    @offset = 0
+    @activities = ActivityStream.specific_activities('Topic', activity_stream_location,@offset,5)      
+  end
+  
+  
+  def category
+    begin
+      @category = DiscussionCategory.find_details(params[:id])
+    rescue
+      flash[:notice] = "This category does not exist."
+      redirect_to :action => :index
+    end
+    
+  end
+  
+  def sub_category
+    @group_users = []
+    begin
+      @sub_category = SubCategory.find_details(params[:id])
+      @group = Group.find_by_name(@sub_category.name,:include => :users)
+      @group_users = @group.users.collect(&:id) unless @group.nil?
+      
+    rescue
+      flash[:notice] = "This sub category does not exist."
+      redirect_to :action => :index
+    end
+    
+  end
+  
+  def topic
+    begin
+      unless params[:request_id].nil?
+        request = Request.find(params[:request_id])
+        request.status = "viewed"
+        request.save
+      end
+      @topic = Topic.find_details(params[:permalink])
+      @topic.update_count
+      @post = @topic.posts.new
+      @title = @topic.title unless @topic.title.nil?
+      @description = ''
+      @image_src = ''
+      
+      @group = Group.find_by_name(@topic.sub_category.name,:include => :users)
+      @group_users = @group.users.collect(&:id) unless @group.nil?
+      
+    rescue
+      flash[:notice] = "This topic does not exist."
+      redirect_to :action => :index
+    end
+    
+  end
+  
+  def create
+    if params[:post][:status]
+      params[:post][:body] = params[:post][:status]
+      params[:post][:status] = 1
+    end
+    if params[:post][:created_at]
+      params[:post][:body] = params[:post][:created_at]
+      params[:post][:created_at] = nil
+    end        
+    @suppress_activity_stream = true
+    @post = Post.new(params[:post])
+    @post.user_id = current_user.id
+    @post.status = 1
+    @post.save
+    @topic = @post.topic       
+    @topic_owner = @topic.user    
+    if @post.errors.empty?
+      @suppress_activity_stream = false
+      @post.user.add_points(POSTING_REPLY, "posted_reply",@post)
+      flash[:notice] = "Post added successfully. You can edit this post for next 5 minutes."
+      render :update do |page|     
+        page.redirect_to "/discussions/topic/#{@topic.permalink}"          
+        #          page.select('.inputtxt').val('')        
+        #            page << "tinyMCE.get(id).setContent('');"     
+        #            page.reload              
+      end
+    else
+      #        flash[:error] = "Errors occured while adding Post, please add post text"
+      render :update do |page|
+        page <<  "show_notice('Please add post text','error')"
+      end
+    end
+    #    redirect_to :action => "topic", :permalink => @topic.permalink
+  end
+  
+  
+  def update_sub_category
+    render :update do |page|
+      
+      @cat = DiscussionCategory.find(params[:topic][:discussion_category_id])
+      
+      @sub_categories = []
+      @sub_categories = @cat.sub_categories unless @cat.nil?
+      
+      page.replace_html :sub_category_dropdown,
+      select(:topic,:sub_category_id,@sub_categories.map{|s| [s.name,s.id]})
+      page << "$('select').addClass('inputtxt01')"
+      
+    end
+  end
+  
+  
+  def postadd
+    @topic = Topic.new
+    @topic.discussion_category_id = params[:discussion_category_id]
+    @topic.sub_category_id = params[:sub_category_id]
+    @a = @topic.posts.build
+    @discussion_categories = DiscussionCategory.all_active
+    render :action=>"postadd" ,:layout=>false
+  end
+  
+  def active_forum_participants
+    @search_text = params[:search] unless params[:search].nil?         
+    if @search_text
+      @active_participants = User.search_active_forum_participants(@search_text , params[:page] || 1)      
+    else       
+      @active_participants = User.active_forum_participants(params[:page || 1])  
+    end
+    @no_of_pages = (@active_participants.total_entries.to_f / USERS_PER_PAGE).ceil    
+    #       @active_participants = Post.paginate_by_sql "select user_id,count(id) as post_count from posts group by user_id order by post_count desc" , :page => 1
+  end
+  
+  
+  def create_topic 
+    @suppress_activity_stream = true
+    @topic = Topic.new(params[:topic])
+    @topic.user_id = current_user.id
+    @topic.status = 1
+    @topic.save
+    if @topic.errors.empty?
+      @topic.posts.create(:body => params[:topic][:body], :user_id => current_user.id, :status => 1)      
+      @suppress_activity_stream = false
+      @topic.user.add_points(TOPIC_ADDITION,"added topic",@topic)
+      flash[:notice] = "Topic added successfully"
+      render :update do |page|
+        page.redirect_to :action => :topic,:permalink => @topic.permalink
+      end
+    else
+      render :update do |page|
+        page <<  "show_notice('Errors occured while adding Topic','error')"
+        @topic.attribute_names.each do |n|
+          error_msg = error_message_on( 'topic', n )
+          error_msg = error_msg.to_s.gsub("<div class=\"formError\">","")
+          error_msg = error_msg.to_s.gsub("</div>","")
+          page << "displayError(\"topic\",\"#{n}\",\"#{n.capitalize.gsub('_',' ').gsub('id','') + ' ' +error_msg}\");"  if @topic.errors.on(n)       
+        end        
+        page << "displayError(\"post\",\"body\",\"Post can't be blank\")" if params["topic"]["new_post_attributes"][0]["body"].strip == ""        
+        
+      end
+    end
+  end
+  
+  def hot_discussions
+    @category = DiscussionCategory.find_all_details()
+    @hot_topics = Topic.find_hot_topics()
+    current_user.preferred_page = "/discussions/hot_discussions"
+    current_user.save
+  end
+  
+  def search
+    @search_text = params[:search] unless params[:search].nil?     
+    @topics = Topic.search_discussions(@search_text,params[:page] || 1)
+    @no_of_pages = (@topics.total_entries.to_f / PER_PAGE).ceil    
+  end
+  
+  def activities
+    @offset = 0
+    @activities = ActivityStream.specific_activities('Topic', activity_stream_location,@offset)           
+  end
+  
+  def get_more_activities  
+    @offset =  params[:offset].to_i+PER_PAGE
+    @activities = ActivityStream.specific_activities('Topic', activity_stream_location,@offset)          
+    respond_to do |format|
+      format.html
+      format.js {
+        render :update do |page| 
+          if @activities.size == 0 or @offset >= MAX_LIMIT
+            page.insert_html :bottom, 'activities', 'No more discussion lounge activities are there'       
+          else
+            page.insert_html :bottom, 'activities', :partial => '/home/more_activities'
+          end
+        end
+      }
+    end 
+  end
+  
+  def get_more_groups_activities
+    @offset =  params[:offset].to_i+PER_PAGE
+    @activities = ActivityStream.specific_activities('Group', activity_stream_location,@offset)
+    respond_to do |format|
+      format.html
+      format.js {
+        render :update do |page|
+          if @activities.size == 0 or @offset >= MAX_LIMIT
+            page.insert_html :bottom, 'activities', 'No more groups activities found'
+          else
+            page.insert_html :bottom, 'activities', :partial => 'more_activities'
+          end
+        end
+      }
+    end
+  end
+  
+  def get_more_discussion_activities  
+    @offset =  params[:offset].to_i+5
+    @activities = ActivityStream.specific_activities('Topic', activity_stream_location,@offset,5)          
+    respond_to do |format|
+      format.html
+      format.js {
+        render :update do |page| 
+          if @activities.size == 0 or @offset >= MAX_LIMIT
+            page.insert_html :bottom, 'activities', 'No more discussion lounge activities are there'       
+          else
+            page.insert_html :bottom, 'activities', :partial => 'more_discussion_activities'
+          end
+        end
+      }
+    end 
+  end  
+  
+  def delete_post
+    post = Post.find_by_id(params[:id])
+    act = ActivityStream.find_by_indirect_object_phrase(post.id)    
+    act.destroy if act
+    post.destroy
+    topic = Topic.find_by_id(params[:topic_id])
+    render :update do |page|
+      msg = "show_notice('Post has been successfully deleted','success')"
+      page.remove "post_#{post.id}"
+      page.replace_html "post_count", "#{topic.posts.count}"
+      page.select('.user_post').html(post.user.posts.count)
+      page << msg
+    end
+  end
+  
+  def edit_post
+    @post = Post.find(params[:id])
+    @topic = Topic.find_by_id(params[:topic_id])
+    render :update do |page|
+      page.replace_html "#{@post.id}_post", :partial => 'edit_post'
+    end
+  end  
+  
+  def update_post
+    #    @suppress_activity_stream = true
+    @post = Post.find(params[:id])
+    if (Time.now - @post.updated_at).to_i < 300
+      @post.update_attributes(:body => params[:post][:body])
+      @topic = @post.topic       
+      #    @topic_owner = @topic.user    
+      if @post.errors.empty?
+        #        @suppress_activity_stream = false
+        #        @post.user.add_points(POSTING_REPLY, "posted_reply",@post)
+        flash[:notice] = "Post edited successfully. You can still edit this post for next 5 minutes."
+        render :update do |page|          
+          page.redirect_to :action => :topic,:permalink => @topic.permalink
+          #                   page.reload
+          #                   page.select('.inputtxt').val('')             
+        end
+      else
+        #              flash[:error] = "Errors occured while adding Post, please add post text"
+        render :update do |page|
+          page <<  "show_notice('Please add post text','error')"
+        end
+      end
+    else
+      #              flash[:error] = "Sorry, you can edit post only for 2 minutes after posting it."      
+      render :update do |page|
+        page <<  "show_notice('Sorry, you can edit post only for 5 minutes after posting it.','error')"
+      end      
+    end
+    #      redirect_to :action => :topic,:permalink => @topic.permalink    
+  end  
+
+  
+  private
+  
+  def common_objects
+    #    @forum_participants = User.forum_participants(6)
+    when_fragment_expired 'forum_cache', Time.parse(30.minute.from_now.to_s) do
+      p "active------------forum-----------cache------------"
+      @forum_participants = Post.top_participants
+    end
+    when_fragment_expired 'popular_group_cache', Time.parse(1.day.from_now.to_s) do
+      p "popular------------group-----------cache------------"
+      @popular_groups = Group.popular_groups(3)
+    end
+    when_fragment_expired 'popular_tag_cache', Time.parse(1.day.from_now.to_s) do
+      p "popular------------tag-----------cache------------"
+      @popular_tags = Tag.popular_tags
+      @sorted_popular_tags = Tag.popular_tags.sort_by{ |i| i.name }
+    end
+    @recent_post = Topic.recent_post(5)
+    
+  end
+  
+  def get_count
+    @posts = Post.count_all
+    @members = Post.count_members
+    @topics = Topic.count_all
+    @views = Topic.views
+  end
+  
+end

@@ -1,0 +1,11 @@
+<graph xaxisname='Period' yaxisname='Users' hovercapbg='DEDEBE' hovercapborder='889E6D' rotateNames='0' yAxisMaxValue='100' numdivlines='9' divLineColor='CCCCCC' divLineAlpha='80' decimalPrecision='0' showAlternateHGridColor='1' AlternateHGridAlpha='30' AlternateHGridColor='CCCCCC' caption='<%= session[:title]%>' subcaption='Events Statistic for <%= session[:duration] %>' >   <categories font='Arial' fontSize='11' fontColor='000000'>
+     <% session[:output].each do |k| %>
+	  <category name='<%= k[0] %>' hoverText='<%= k[0] %>'/>
+ 	<% end %>	 
+    </categories>
+   <dataset seriesname='<%= session[:type] + "s"%>' color='52bbfe'>
+   	 <% session[:output].each do |v| %>
+	   <set value='<%= v[1][1] %>' />
+ 	<% end %>	
+   </dataset>
+</graph>

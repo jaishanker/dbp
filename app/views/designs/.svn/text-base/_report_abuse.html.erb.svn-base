@@ -1,0 +1,15 @@
+<div id = "report_abuse" style ="display:none;">
+    <div id ="ComContent">
+        <div id ="abuse_<%=design_id%>"></div>
+        <div class="brd">
+            <form action="postcomment.jsp" method="get" name="postcomment">
+                <% reasons.each do |r| %>
+                <div>
+                    <input onclick="<%=  remote_function :url =>{:controller=>:designs, :action => :report_abuse,:abuse_selector=>r.id, :type_id => comment,:design_id=>design_id,:flag=>flag}%>" checked=true type="radio" value="<%= r.id %>" name="abuse_selector" />
+                    <%= r.cause %>
+                </div>
+                <%end%>
+            </form>
+        </div>
+    </div>
+</div>

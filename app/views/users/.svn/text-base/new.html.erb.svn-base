@@ -1,0 +1,194 @@
+<div class="newuser">
+    <div class="txt">
+        Fill up few easy information below and join Solidworks India Community<h1>INSTANTLY!</h1>
+    </div>
+    <div class="spacer01">
+    </div>
+    <div class="mandat">
+        All fields are Mandatory.
+    </div>
+    <% @user.password = @user.password_confirmation = nil %>
+    <%= error_messages_for :user %>
+    <%# form_for :user, :url => users_path do |f| -%>
+    <% remote_form_for(@user, :before => "$('#spinner').show();", :complete => "$('#spinner').hide();") do |f| %>
+    <p class="spacer04">
+    </p>
+    <p class="c1">
+        Username:
+    </p>
+    <p class="c2">
+        <%= f.text_field :login, :class=> "inputtxt01" %>
+        <br>
+        <span id="login_error"></span>
+    </p>
+    <p class="spacer04">
+    </p>
+    <p class="c1">
+        &nbsp;
+    </p>
+    <p class="c2">
+        [Username should be Min 3 and Max 40 characters long. This will be your Display name across the SolidWorks India Community website.]
+    </p>
+    <p class="spacer04">
+    </p>
+    <p class="c1">
+        Password:
+    </p>
+    <p class="c2">
+        <%= f.password_field :password, :class=> "inputtxt01" %>
+        <br>
+        <span id="password_error"></span>
+    </p>
+    <p class="spacer04">
+    </p>
+    <p class="c1">
+        Confirm Password:
+    </p>
+    <p class="c2">
+        <%= f.password_field :password_confirmation, :class=> "inputtxt01" %>
+        <br>
+        <span id="password_confirmation_error"></span>
+    </p>
+    <p class="spacer04">
+    </p>
+    <p class="c1">
+        First Name:
+    </p>
+    <p class="c2">
+        <%= f.text_field :first_name, :class=> "inputtxt01" %>
+        <br>
+        <span id="first_name_error"></span>
+    </p>
+    <p class="spacer04">
+    </p>
+    <p class="c1">
+        Last Name:
+    </p>
+    <p class="c2">
+        <%= f.text_field :last_name, :class=> "inputtxt01" %>
+        <br>
+        <span id="last_name_error"></span>
+    </p>
+    <p class="spacer04">
+    </p>
+    <p class="c1">
+        Email-Id:
+    </p>
+    <p class="c2">
+        <%= f.text_field :email, :class=> "inputtxt01" %>
+        <br>
+        <span id="email_error"></span>
+    </p>
+    <p class="spacer04">
+    </p>
+    <p class="c1">
+        Gender:
+    </p>
+    <p class="c2">
+        <%= f.radio_button :gender, "Male",:checked => true %>&nbsp;Male &nbsp; <%= f.radio_button :gender, "Female" %>&nbsp;Female
+    </p>
+    <p class="spacer04">
+    </p>
+    <p class="c1">
+        Status:
+    </p>
+    <p class="c2">
+        <%= f.radio_button :profession, "Student",:checked => true %>&nbsp;Student &nbsp; <%= f.radio_button :profession, "Professional" %>&nbsp;Professional
+    </p>
+    <p class="spacer04">
+    </p>
+    <p class="c1">
+        Country:
+    </p>
+    <p class="c2">
+        <%#=country_select("user", "country") %>
+        <%=f.country_select :country,["India"],{},{:class => "inputtxt01"} %>
+        <br>
+        <span id="country_error"></span>
+    </p>
+    <p class="spacer04">
+    </p>
+    <p class="c1">
+        Contact No:
+    </p>
+    <p class="c2">
+        STD Code <%= f.text_field :std_code, :class=> "inputtxt05" %>&nbsp; No# <%= f.text_field :phone_no, :class=> "inputtxt06" %>
+        <br>
+        <span id="contact_no_error"></span>
+    </p>
+    <p class="spacer04">
+    </p>
+    <p class="c1">
+        Date of Birth:
+    </p>
+    <p class="c2">
+        <%= f.text_field :birth_date, :class=> "inputtxt02 date_input_ui", :onfocus => "if (this.value =='') this.value = '01 Jan 1980'" %>
+        <br>
+        <span class="c2" id="birth_date_error"></span>
+    </p>
+    <p class="spacer04">
+    </p>
+    <p class="c1">
+        &nbsp;
+    </p>
+	<!--
+    <p class="c2">
+        <b>How much does 10 * 10 is ?</b>
+    </p>
+    <p class="spacer04">
+    </p>
+    <p class="c1">
+        &nbsp;
+    </p>
+    <p class="c2">
+        <%#= f.text_field :captcha, :class=> "inputtxt01" %>
+        <br>
+        <span id="captcha_error"></span>
+    </p>
+    -->
+
+  <p class="c2">
+    <b>  How much is <%= @user.captcha.task %> ? </b>
+   </p>
+   <p class="spacer04">     
+     </p>
+    <p class="c1">
+        &nbsp;
+    </p>
+  <p class="c2">
+      <%= f.text_field :captcha_solution, :class=> "inputtxt01" %>
+      <%= f.hidden_field :captcha_secret %>    
+       <br>
+        <span id="captcha_solution_error"></span>      
+    </p>
+	<p class="spacer04">
+    </p>
+	<%= f.hidden_field :preferred_page,:value => @event_page if @event_page %>
+    <p class="c1">
+        <%= f.check_box :terms_of_service %>
+        <!-- <input id = "user_agree" name="agree" type="checkbox" value="1"/> -->
+    </p>
+    <p class="c2">
+      I agree to the <a href="/terms" target="_blank">Terms of Use</a>
+        and <a href="/privacy" target="_blank">Privacy Policy</a>
+        <br>
+        <span id="terms_of_service_error"></span>
+    </p>
+    <p class="spacer04">
+    </p>
+    <p class="c1">
+        &nbsp;
+    </p>
+    <p class="c2">
+        <%= submit_tag 'Join Now!' , :class=>"grnbtn02",:id => "user_reg_submit" %>&nbsp;
+        <input type="button" class="grnbtn02" value="Cancel" onclick="return hs.close(this)"/>
+<%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner",:style=>"display:none; width: 20px; margin-top: 0px;" ) %>
+    </p><% end -%>
+</div>
+<script>
+   $(document).ready(function(){
+$(function() {
+ $(".date_input_ui").datepicker();
+ });
+ });
+</script>

@@ -1,0 +1,327 @@
+
+class AdminBaseController < ApplicationController
+  #before_filter :login_required, :get_selected_left_nav, :check_admin_access,:except => ["new", "save_critic","show_terms_and_conditions"]
+  before_filter :admin_login_required
+  layout 'admin_layout'
+  
+  def initialize
+    @user = @current_user
+  end
+  
+  def index
+    
+    redirect_to :controller => "/admin/vars" and return if current_user.user_type.to_i == 5 
+    
+    user = User.all
+    
+    #    @total_users = User.count
+    @total_designs = Design.all_count
+    @total_learnings = Learning.all_count
+    @total_discussions = Topic.all_count
+    @total_games = Game.all_count
+    @total_events = Event.all_count
+    groups = Group.find_all_by_status(1)
+    events = Event.all
+    @total_news = News.count
+    @active_news = News.all_active
+    
+    @main_banners = Banner.find_all_by_banner_type('Main').size
+    @active_main_banners = Banner.find_all_by_banner_type_and_status('Main',1).size
+    @all_top_right_banners = Banner.find_all_by_banner_position('Top').size
+    @active_top_right_banners = Banner.find_all_by_banner_position_and_status('Top',1).size    
+    @all_right_col_banners = Banner.find_all_by_banner_position('Bottom').size    
+    @active_right_col_banners = Banner.find_all_by_banner_position_and_status('Bottom',1).size        
+    
+    
+    @black_belt_users = 0
+    @green_belt_users = 0
+    @blue_belt_users = 0    
+    @yellow_belt_users = 0
+    @white_belt_users = 0
+    @blocked_users = 0
+    @admin_groups = 0
+    @user_groups = 0
+    @admin_events = 0
+    @user_events = 0
+ 
+    
+    user.each do |u|
+      @blocked_users += 1 if u.status == 0
+      
+      unless u.points.nil?
+        if u.points >=  BLACK_BELT_POINTS
+          @black_belt_users += 1          
+        elsif u.points >= GREEN_BELT_POINTS
+          @green_belt_users += 1
+        elsif u.points >= BLUE_BELT_POINTS
+          @blue_belt_users += 1          
+        elsif u.points >= YELLOW_BELT_POINTS
+          @yellow_belt_users += 1         
+        else
+          @white_belt_users += 1
+        end
+      else
+        @white_belt_users += 1
+      end
+    end
+    
+    for group in groups
+      if group.owner_id == 1
+        @admin_groups += 1
+      else
+        @user_groups += 1
+      end
+    end
+      
+    for event in events
+      if event.user_id == 1
+        @admin_events += 1
+      else
+        @user_events += 1
+      end
+    end
+    
+  end
+  
+  def manage_home_page
+    respond_to do |format|
+      format.js do
+        render :update do |page|
+          page.replace_html 'managehome', :partial=>'admin_base/manage_home_page'
+        end
+        return
+      end
+    end
+  end
+  
+  def content_position
+    respond_to do |format|
+      format.js do
+        render :update do |page|
+          page.replace_html 'admin_navigation', :partial=>'admin_base/content_position'
+        end
+        return
+      end
+    end
+  end
+  
+  def banner_main
+    respond_to do |format|
+      format.js do
+        render :update do |page|
+          page.replace_html 'admin_navigation', :partial=>'admin_base/banner_main'
+        end
+        return
+      end
+    end
+  end
+  
+  def banner_top_two
+    respond_to do |format|
+      format.js do
+        render :update do |page|
+          page.replace_html 'admin_navigation', :partial=>'admin_base/banner_top_two'
+        end
+        return
+      end
+    end
+  end
+  
+  def banner_right_panel
+    respond_to do |format|
+      format.js do
+        render :update do |page|
+          page.replace_html 'admin_navigation', :partial=>'admin_base/banner_right_panel'
+        end
+        return
+      end
+    end
+  end
+  
+  def right_panel_position
+    respond_to do |format|
+      format.js do
+        render :update do |page|
+          page.replace_html 'admin_navigation', :partial=>'admin_base/right_panel_position'
+        end
+        return
+      end
+    end
+  end
+  
+  def notify_users
+    
+  end
+  
+  def auto_complete
+    
+    result = User.find_auto_complete_results(params[:q])
+    
+    op = ""
+    
+    result.each do |r|
+      op << r.result << "|"
+    end
+    
+    render :text => op.chop
+    
+  end
+  
+  def send_mail
+    @news = nil
+    if params[:notify][:news].to_i == 1
+      @news = params[:notify][:news]
+    end
+    
+    if params[:notify][:subject].blank? or params[:notify][:message].blank? 
+      
+      message = message = "show_notice('Please fill all fields','error')"
+      
+    else
+      
+      @message = params[:notify][:message]
+      @subject = params[:notify][:subject]
+      @reply_to = params[:notify][:reply_to] unless params[:notify][:reply_to].nil?
+      email_list = ""
+      params[:notify][:to].split(',').each do |str|
+        
+        r = Regexp.new(/< (.*?)>/)
+        r.match(str)
+        email = $1
+        email_list << "'" << email.gsub('< ',"'").gsub(" >","',").chop << "',"
+      end
+      
+      #      
+      unless params[:notify][:all].to_i == 1
+        
+        logger.info email_list.chop
+        
+        users= User.find(:all,:conditions => ["email in(#{email_list.chop}) and activation_code is null and news_subscribe = 1"])
+        unless users.length == 0
+          users.each do |u|
+            UserMailer.deliver_notification(u,@message.gsub('#id#',u.id.to_s),@subject,@reply_to,@news)
+          end
+          message = "show_notice('Mail sent to selected users','success')"
+        else
+          # list empty
+          message = "show_notice('Please select Email Ids','error')"
+        end
+        
+      else
+        # send to all
+        users= User.find(:all,:conditions => ["activation_code is null and news_subscribe = 1"])
+        users.each do |u|
+          UserMailer.deliver_notification(u,@message.gsub('#id#',u.id.to_s),@subject,@reply_to,@news)
+        end
+        message = "show_notice('Mail sent to all','success')"
+      end
+    end
+    
+    render :update do |page|
+      page << message
+    end
+    
+  end
+  
+  def send_mail1
+    @message = params[:notify][:message] unless params[:notify][:message].nil?
+    @subject =  params[:notify][:subject] unless params[:notify][:subject].nil?
+    if params[:notify][:all].to_i == 1
+      i=1
+      if !params[:notify][:message].empty? and !params[:notify][:subject].empty?
+        begin
+          users_collection = User.paginate( :conditions => ["activation_code is null"],:page=>i,:per_page=>2, :order => "updated_at desc")
+          if users_collection.size > 0
+            users_collection.each do |u|
+              begin
+                begin
+                  UserMailer.deliver_notification(u,@message,@subject)
+                rescue
+                end
+              rescue
+              end
+            end
+          end
+          i = i + 1
+          #              sleep(20)
+        end while not users_collection.empty?
+        redirect_to :controller =>"admin_base" ,:action=>"notify_users"
+      else
+        message = "show_notice('Please give subject and message.','error')"
+        render :update do |page|
+          page << message
+        end
+      end
+    elsif !params[:notify][:message] == "" and !params[:notify][:subject] == ""
+      begin
+        users_collection = User.paginate( :conditions => ["activation_code is null"],:page=>i,:per_page=>2, :order => "updated_at desc")
+        if users_collection.size > 0
+          users_collection.each do |u|
+            begin
+              begin
+                UserMailer.deliver_notification(u,@message,@subject)
+              rescue
+              end
+            rescue
+            end
+          end
+        end
+        i = i + 1
+        #        sleep(20)
+      end while not users_collection.empty?
+    else
+      message = "show_notice('Please fill all fields.','error')"
+      render :update do |page|
+        page << message
+      end
+    end
+    
+    
+  end
+  
+  def edit_category
+    @category = Category.find(params[:id])
+    
+    render :action => "edit_category.html.erb",:layout => false 
+    
+  end
+  
+  def update_category
+    
+    
+    @category = params[:cat_type].constantize.find(params[:id])
+    attr = params[:cat_type].split('Category')[0].downcase
+    
+    
+    logger.debug params[attr + '_category']
+    @category.update_attributes(params[attr + '_category'])
+    @category.save
+    
+    render :update do |page|
+      if @category.errors.empty?
+        #  page << "show_notice('Category updated successfully','success')"
+        page.redirect_to :back
+        
+      else
+        
+        page.visual_effect  :appear,"cat_update_error_" + params[:id].to_s
+        page.replace_html "cat_update_error_" + params[:id].to_s,
+          :partial => '/layouts/errors'
+        page << "show_notice('Errors occured while updating category','error')"
+        page << "addError('#{attr}_category_name')"
+        
+        page.delay(10) do
+          page.visual_effect  :fade,"error"
+        end
+        
+      end
+    end
+    
+    
+    
+  end
+  
+  
+  
+  
+end

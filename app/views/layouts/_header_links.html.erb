@@ -1,0 +1,73 @@
+<div class="clear">
+</div>
+<!-- Head Link Start -->
+<div class="headlink">
+    <div class="c1">
+        <div class="navLink01" style="width:456px;">
+            <ul>
+                <li class="first L2">
+                    <a id = "L2" href="/designs" class="hvr01" id="">Design Central</a>
+                </li>
+                <li class="L1">
+                    <a id = "L1" href="/discussions" class="hvr" id="">Discussion Lounge</a>
+                </li>
+                <li class="L3">
+                    <a id = "L3" href="/learnings" class="hvr" id="">Learning Center</a>
+                </li>
+                <li class="L5">
+                    <a id = "L5" href="/cswp" class="hvr" id="">CSWP</a>
+                </li>
+                <li class="L4 last">
+                    <a id = "L4" href="/contest" class="hvr01" id="">Contest</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="c2">
+        <div class="iconlink">
+            <a href="/groups">
+            <p class="groups brdleft GP1">
+            groups
+            </p>
+            </a>
+            <a href="/games">
+                <p class="games brdleft GP2">
+                    games
+                </p>
+            </a>
+            <a href="/news">
+                <p class="news brdleft GP3">
+                    news
+                </p>
+            </a>
+            <a href="/rss_feed">
+                <p class="rss brdleft GP4">
+                    RSS feed
+                </p>
+            </a>
+            <a href="/blog">
+                <p class="blogs brdleft GP5">
+                    blog
+                </p>
+            </a>
+            <%if session[:event_organizer]%>
+                  <a href="/events/list/<%=session[:event_organizer]%>">
+                      <p class="events brdleft GP6">
+                          events
+                      </p>
+                  </a>
+            <%else%>
+                  <a href="/events">
+                      <p class="events brdleft GP6">
+                          events
+                      </p>
+                  </a>              
+            <%end%>
+            <a href="/sitemap">
+                <p class="sitemap GP7">
+                    sitemap
+                </p>
+            </a>
+        </div>
+    </div>
+</div>

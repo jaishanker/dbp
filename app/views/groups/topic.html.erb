@@ -1,0 +1,183 @@
+<%= javascript_include_tiny_mce_if_used %>
+<%= tiny_mce if using_tiny_mce? %>
+<script type="text/javascript">
+    function toggleGroupDiv(divto_show, hide1, hide2){
+        $('#' + divto_show).show();
+        $('#' + hide1).hide();
+        $('#' + hide2).hide();
+    }
+</script>
+<!-- Container Start -->
+<div class="content">
+    <!-- Left Col Start -->
+    <div class="c1">
+        <!-- Blue Box start -->
+        <div class="Blue4pxbox">
+            <code>
+                $(this).corner();
+            </code>
+            <div class="whiteBoxContent">
+                <!-- Group Start -->
+                <div class="pageheading">
+                    <p class="c1 head14">
+                        Group: <%=@group.name %>
+                    </p>
+                    <p class="c2">
+                        Owner: <%= link_to @owner.login.capitalize, my_page_path(:user_id => @owner.id), :class => "archive" %>
+                    </p>
+                </div>
+                <div class="brdBot01">
+                </div>
+                <!-- Form Start -->
+                <div id="container-9">
+                    <ul class="tabs-nav">
+                        <li class = "<%= 'tabs-selected' unless @group_discussion == 'true' %>" onclick ="profileTabSelect(this)">
+                            <a href="javascript:void(0);" onclick="toggleGroupDiv('gr_activities','gr_details','gr_discussions')"><span>Activities</span></a>
+                        </li>
+                        <li onclick ="profileTabSelect(this)">
+                            <a href="javascript:void(0);" onclick="toggleGroupDiv('gr_details','gr_activities','gr_discussions')"><span>Details</span></a>
+                        </li>
+                        <li class = "<%= 'tabs-selected' if @group_discussion == 'true' %>" onclick ="profileTabSelect(this)">
+                            <a href="javascript:void(0);" onclick="toggleGroupDiv('gr_discussions','gr_activities','gr_details')"><span>Discussions</span></a>
+                        </li>
+                        <!--<li><a href="ComingSoon.html"><span>Photos</span></a></li>-->
+                    </ul>
+                </div>
+                <p class="clear">
+                </p>
+                <div id="ComContent">
+                    <div id="gr_activities" style ="<%= 'display:none;' if @group_discussion == 'true' %>">
+                        <%= render :partial => "group_activities" %>
+                    </div>
+                    <div id="gr_details" style="display:none;">
+                        <%= render :partial => "group_details" %>
+                    </div>
+                    <div id="gr_discussions" style ="<%= 'display:none;' unless @group_discussion == 'true' %>">
+                        <div style ="width:670px">
+                            <%= render :partial => "group_topic" %>
+                        </div>
+                    </div>
+                </div>
+                <!-- Form End -->
+                <div class="clear">
+                </div>
+                <p class="clear">
+                </p>
+                <!-- Group End -->
+            </div>
+        </div>
+        <!-- Blue Box end -->
+        <div class="spacer">
+        </div>
+    </div>
+    <!-- Left Col End --><!-- Right Col Start -->
+    <div class="c2 rightcol">
+        <!-- Search Box start --><%=render :partial => "/home/members_search_form" %>
+        <!-- Search Box end -->
+        <p class="spacer01">
+        </p>
+        <!-- Group Fan Div start --><!--   <div class="populargrp">
+        <div class="greenhead01">
+        <p class="headtxt">Group Fan</p>
+        </div>
+        <p class="greenarrow"></p>
+        <div class="twcol">
+        <div class="snaprow">
+        <p class="c1"><img src="../images/profile_photo/userphoto.gif" width="98" height="98" class="snap" /></p>
+        <p class="c2"><a href="#" class="orange">Kamlesh Surve</a><br />This is very useful group for General Discussion and the DWG Editor
+        Tutorials.</p>
+        </div>
+        </div>
+        </div>--><!-- Group Fan Div end -->
+        <div class="clear">
+        </div>
+        <!-- Group Member Div start -->
+        <div class='<%= cycle("cBoxblue","cBoxorange","cBoxgreen") %>'>
+            <div class="cBoxhead">
+                <p class="headtxt">
+                    Group Members
+                </p>
+                <%= link_to "more +",members_group_path(@group),:class=>"more" %>
+            </div>
+            <div class="cBoxcontainer">
+                <!-- Three col start -->
+                <div class="snaprow">
+                    <%unless @group_users.empty? %>
+                    <%@group_users.each do |g| %>
+                    <div class="c1">
+                        <p class="snap clear">
+                            <%= link_to get_image(g,'user','thumb','nobrd'),my_page_path(:user_id => g.id) %>
+                        </p>
+                        <p class="mname">
+                            <%= link_to get_name(g.login.capitalize,10),my_page_path(:user_id => g.id) %>
+                        </p>
+                    </div>
+                    <%end %>
+                    <%else %>
+                    No member found in this group.<%end %>
+                    <p class="spacer01">
+                    </p>
+                </div>
+                <!-- Three col end -->
+                <p class="spacer01">
+                </p>
+            </div>
+        </div>
+        <!-- Group Member Div end -->
+        <div class="clear">
+        </div>
+        <div class='<%= cycle("cBoxblue","cBoxorange","cBoxgreen") %>'>
+            <div class="cBoxhead">
+                <p class="headtxt">
+                    Designs By Members
+                </p>
+                <a href="/designs?recent=true" class="more">more + </a>
+            </div>
+            <div class="cBoxcontainer">
+                <ul class="recendesignpost">
+                    <%unless @recent_post.nil? %>
+                    <% unless @recent_post.length == 0 %>
+                    <% @recent_post.each do |recent| %>
+                    <li>
+                        <%=link_to recent.name ,{:controller=>:designs, :action => :design,:permalink => recent.permalink} %>
+                        <%= time_ago(recent.created_at) %>
+                    </li>
+                    <% end %>
+                    <% else %>
+                    <% end %>
+                    <%else %>
+                    No designs found<%end %>
+                </ul>
+                <p class="spacer01">
+                </p>
+            </div>
+        </div>
+        <div class="clear">
+        </div>
+        <!-- Discussion Lounge Activity Div start -->
+        <!--<div class="actstream">
+        <div class="greenhead01">
+        <p class="headtxt">Discussion Lounge Activity</p>
+        <a href="Discussion_Lounge_Activity.html" class="more">more + </a>
+        </div>
+        <p class="greenarrow"></p>
+        <div class="twcol">
+        <div class="snaprow">
+        <p class="c1"><a href="Members_Page.html"><img src="../images/snap01.gif" width="36" height="36" class="snap" /></a><span class="mname"><a href="My_Page.html">Kamlesh</a></span></p>
+        <p class="c2"><a href="My_Page.html">Kamlesh</a> commented on <span class="commname">Power-Pro - A Mobile charger</span></p>
+        </div>
+        <div class="snaprow">
+        <p class="c1"><a href="Members_Page.html"><img src="../images/snap04.gif" width="36" height="36" class="snap" /></a><span class="mname"><a href="Members_Page.html">User05</a></span></p>
+        <p class="c2"><a href="Members_Page.html">User05</a> commented on <span class="commname">Power-Pro - A Mobile charger</span></p>
+        </div>
+        <div class="snaprow">
+        <p class="c1"><a href="Members_Page.html"><img src="../images/snap02.gif" width="36" height="36" class="snap" /></a><span class="mname"><a href="Members_Page.html">User03</a></span></p>
+        <p class="c2"><a href="#">User03</a> commented on <span class="commname">Power-Pro - A Mobile charger</span></p>
+        </div>
+        </div>
+        </div>-->
+        <!-- Discussion Lounge Activity Div end -->
+    </div>
+    <!-- Right Col End -->
+</div>
+<!-- Container End -->

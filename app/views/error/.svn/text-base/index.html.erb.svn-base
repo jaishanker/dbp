@@ -1,0 +1,122 @@
+<div class="content">
+    <!-- Left Col Start -->
+    <div class="c1">
+        <!-- Set Priority File Include -->
+        <div class="clear">
+        </div>
+        <!-- Blue Box start -->
+        <div class="Blue4pxbox">
+            <code>
+                $(this).corner();
+            </code>
+            <div class="whiteBoxContent">
+                <!-- Group Start -->
+                <p class="spacer01">
+                    &nbsp;
+                </p>
+                <p>
+                    <img alt="Sorry, something is missing here." src="../images/page-not-found.jpg" width="660" height="500" />
+                </p>
+                <p style="font-size:12px; font-weight:700; line-height:150%; text-align:center ">
+                    Sorry for the inconvenience. 
+                    <br/>
+                    The URL of the file you've typed either was wrong, 
+                    or its no longer available on our server.
+                    <br/>
+                    Please go back to our <a href="/">home page.</a>
+                </p>
+                <div class="clear">
+                </div>
+                <!-- Group End -->
+            </div>
+        </div>
+        <!-- Blue Box end -->
+        <div class="spacer">
+        </div>
+    </div>
+    <!-- Left Col End -->
+    <!-- Right Col Start -->
+    <div class="c2 rightcol">
+        <!-- Discussion Div start -->
+        <div class ="<%= cycle('cBoxblue','cBoxorange','cBoxgreen') %>">
+            <div class="cBoxhead">
+                <p class="headtxt">
+                    Discussion Lounge
+                </p>
+            </div>
+            <div class="cBoxcontainer">
+                <!-- Two col start -->
+                <div class="twcol">
+                    It is a new way for you to connect with members at the convention for more networking and learning some new ideas to improve your skills.
+                </div>
+                <!-- Two col end -->
+                <p class = "spacer01">
+                </p>
+            </div>
+        </div>
+        <!-- Discussion Div end -->
+        <div class="clear">
+        </div>
+        <!-- Design Central Div start -->
+        <div class ="<%= cycle('cBoxblue','cBoxorange','cBoxgreen') %>">
+            <div class="cBoxhead">
+                <p class="headtxt">
+                    Design Central
+                </p>
+            </div>
+            <div class="cBoxcontainer">
+                <!-- Two col start -->
+                <div class="twcol">
+                    Share your designs and exchange comments, feedbacks from Experts and Community Users
+                </div>
+                <!-- Two col end -->
+                <p class = "spacer01">
+                </p>
+            </div>
+        </div>
+        <!-- Design Central Div end -->
+        <div class="clear">
+        </div>
+        <!-- Learning Central Div start -->
+        <div class ="<%= cycle('cBoxblue','cBoxorange','cBoxgreen') %>">
+            <div class="cBoxhead">
+                <p class="headtxt">
+                    Learning Central
+                </p>
+            </div>
+            <div class="cBoxcontainer">
+                <!-- Two col start -->
+                <div class="twcol">
+                    Find the Tutorials, Learning Materials. You can also request a Materials or Tutorials here.
+                </div>
+                <!-- Two col end -->
+                <p class = "spacer01">
+                </p>
+            </div>
+        </div>
+        <!-- Learning Central Div end -->
+        <div class="clear">
+        </div>
+        <!-- Contest Div start -->
+        <div class ="<%= cycle('cBoxblue','cBoxorange','cBoxgreen') %>">
+            <div class="cBoxhead">
+                <p class="headtxt">
+                    Contest
+                </p>
+            </div>
+            <div class="cBoxcontainer">
+                <!-- Two col start -->
+                <div class="twcol">
+                    Participate in Contest and exhibit your skills and prove yourself. Do you have that challenge?
+                </div>
+                <!-- Two col end -->
+                <p class = "spacer01">
+                </p>
+            </div>
+        </div>
+        <!-- Contest Div end -->
+        <div class="clear">
+        </div>
+    </div>
+    <!-- Right Col End -->
+</div>

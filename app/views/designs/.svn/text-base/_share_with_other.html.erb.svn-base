@@ -1,0 +1,34 @@
+<div class="fourCol">
+  <p class="c7">
+    <span class="othernetwork"></span>
+    <span class="black">Share with Other Network</span>
+  </p>
+  <ul class="shareIcons">
+    <li><a class="shareFacebook" target = "_blank" href="http://www.facebook.com/sharer.php?u=http://<%=request.host_with_port%>/<%=d.class.to_s.downcase.pluralize%>/<%=d.class.to_s.downcase%>/<%=d.permalink%>"></a></li>
+    <li>
+      <%if flag %>
+        <a class="shareOrkut" target = "_blank" href="http://promote.orkut.com/preview?nt=orkut.com&du=http://<%=request.host_with_port%>/<%=d.class.to_s.downcase.pluralize%>/<%=d.class.to_s.downcase%>/<%=d.permalink%>&tt=<%=d.title%>&cn=<%= h get_name(d.description,250) %>&tn=<%= d.pictures[0].nil? ? "" : d.pictures[0].photo.url(:medium) %>"></a>
+      <%else%>
+        <a class="shareOrkut" target = "_blank" href="http://promote.orkut.com/preview?nt=orkut.com&du=http://<%=request.host_with_port%>/<%=d.class.to_s.downcase.pluralize%>/<%=d.class.to_s.downcase%>/<%=d.permalink%>&tt=<%=d.name%>&cn=<%= h get_name(d.description,250) %>&tn=<%= d.pictures[0].nil? ? "" : d.pictures[0].photo.url(:medium) %>"></a>
+      <%end%>
+    </li>
+    <li>
+      <%if flag %>
+        <a class="shareTwitter" target = "_blank" href="http://twitter.com/home?status=<%=d.title%> http://<%=request.host_with_port%>/<%=d.class.to_s.downcase.pluralize%>/<%=d.class.to_s.downcase%>/<%=d.permalink%>" title=""></a>
+      <%else%>
+        <a class="shareTwitter" target = "_blank" href="http://twitter.com/home?status=<%=d.name%> http://<%=request.host_with_port%>/<%=d.class.to_s.downcase.pluralize%>/<%=d.class.to_s.downcase%>/<%=d.permalink%>" title=""></a>
+      <%end%>
+
+    </li>
+  </ul>
+  <!--<ul class="shareIcons">
+  <li><a class="shareFacebook" href="#"><span>facebook</span></a></li>
+  <li><a class="shareIn" href="#"><span>facebook</span></a></li>
+  <li><a class="shareTwitter" href="#"><span>facebook</span></a></li>
+  <li><a class="share4" href="#"><span>facebook</span></a></li>
+  <li><a class="shareOrkut" href="#"><span>facebook</span></a></li>
+  <li><a class="share6" href="#"><span>facebook</span></a></li>
+  <li><a class="shareHi5" href="#"><span>facebook</span></a></li>
+ </ul>-->
+  <p class="clear10"></p>
+</div>

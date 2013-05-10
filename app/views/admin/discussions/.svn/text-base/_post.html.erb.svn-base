@@ -1,0 +1,12 @@
+<% fields_for "topic[new_post_attributes][]",post do |p| %>
+<%= p.hidden_field :user_id, :value => current_user.id %>
+<%= p.hidden_field :status, :value => 1 %>
+<div class="formrow">
+    <p class="c1">
+        Post:
+    </p>
+    <p class="c2">
+        <%= p.text_area :body, :class => "inputtxt04" %>
+    </p>
+</div>
+<% end %>

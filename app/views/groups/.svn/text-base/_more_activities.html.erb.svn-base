@@ -1,0 +1,10 @@
+<%= render :partial => 'activity_streams/activity_stream', :collection => @group_activities%>
+<div id="more_activities_link">
+    <p class="spacer03">
+        <span class="grnbtn02">
+          <%= link_to_remote "Show More",  :url =>  get_more_activities_groups_path(:group_id => @group.id, :offset => @offset) , :before => "$('#spinner_show').show()", :complete => "destroyDiv('more_activities_link')"%>
+        </span>
+        <span> <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner_show",:style=>"display:none; width: 16px; margin-top: 0px;" ) %> </span>
+     </p>
+</div>
+

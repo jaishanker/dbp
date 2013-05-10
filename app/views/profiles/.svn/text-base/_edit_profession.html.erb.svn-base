@@ -1,0 +1,59 @@
+<div id="profession_form">
+      <% form_remote_tag :url => {:action => "update_professions"}, :before => "$('#spinner').show();",:complete => "$('#spinner').hide();" do -%>
+          <div class="proform">
+          <div class="proform_l">
+                  <div class="formrow">
+                  <p class="c1">&nbsp;</p>
+                  <p class="c2"><b>Tip:</b> Start with Recent Employer</p>
+              </div>
+             <div class="formrow">
+                  <p class="c1">Total Years of Experience :</p>
+                  <p class="c2">
+                      <%exp_years = get_years(@profile.total_exp)%>           
+                      <%if exp_years == "More than 20"%>
+                        <% exp_years = 21%>
+                      <%end%>
+                      <%=select("profile","total_exp", YEARS.sort{|a,b| a[1]<=>b[1]},{:selected => exp_years},:class => "yearselect" ) %>
+                      <%=select("profile","total_exp_months", MONTHS.sort{|a,b| a[1]<=>b[1]},{:selected =>get_months(@profile.total_exp)},:class => "monthselect" ) %>
+                      <br>
+                      <span id="total_exp_error"></span>                      
+                      <!--
+                          <select name="" class="yearselect">
+                          <option>Years</option>
+                          <option>10</option>
+                          <option>09</option>
+                      </select>
+                          <select name="" class="monthselect">
+                          <option>Months</option>
+                          <option>Jan</option>
+                          <option>Feb</option>
+                      </select> -->
+                  </p>
+              </div>
+                <div id="user_professions">  
+                        <%= render :partial => 'user_profession', :collection => @user_professions %> 
+                 </div>
+
+            <div class="formrow">
+                     <p class="c1">&nbsp;</p>
+                      <p class="c2"><%= add_user_profession_link "Add Profession [+]" %> </p>
+            </div>
+          </div>
+        </div>
+
+          <div class="proform">
+          <div class="proform_l">
+                  <div class="formrow">
+                  <p class="c1">&nbsp;</p>
+                  <p class="c2">
+                           <%= submit_tag 'Save and Continue' , :class => "grnbtn01", :onclick => "return validateProfession()"%>
+                          <!-- <input name="Save" type="button" value="Save and Continue" class="grnbtn01" /> -->
+                          <input name="Save" type="button" value="Cancel" class="grnbtn01" onclick = " <%= remote_function :update => "ComContent1",:url =>{ :action => :get_profession} , :before => "$('#spinner').show();",:complete => "$('#spinner').hide();", :class => "grnbtn01"%>"/>
+                          <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner",:style=>"display:none; width: 20px; margin-top: 0px;" ) %>
+                  </p>
+              </div>
+              </div>
+      </div>
+      <%end%>
+      <p class="spacer01"></p>
+</div>

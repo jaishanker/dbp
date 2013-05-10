@@ -1,0 +1,35 @@
+<%= stylesheet_link_tag "styles",'notification'%>
+<%= javascript_include_tag "jquery.js","common.js","notice" %>
+<% form_remote_tag :url=>{:controller=>'report_abuse',:action=>'report_abuse_post'} ,:html=>{:name=>'main'} , :before => "$('#spinner_abuse').show();",:complete => "$('#spinner_abuse').hide();" do|f| %>
+  <div class="postadd" id="abuse_form">
+    <%=hidden_field "abuse","flag", :value =>@flag%>
+    <%=hidden_field "abuse","obj_id", :value =>@obj_id %>
+    <%=hidden_field "abuse","type", :value => @type %>
+    <%if @topic_id%>
+      <%=hidden_field "abuse","topic_id", :value => @topic_id %>
+    <%end%>
+    <div class="txt">Select The main Category in which you wish to add new forum topic</div>
+    <p class="spacer04"></p>
+    <p class="c1">Category:</p>
+    <p class="c2">
+      <% if !@reasons.empty? %>
+        <% options = [["--Select--",""]]
+        @reasons.each do |p|
+          options += [[p.cause, p.id]]
+        end %>
+        <%=select("abuse", "abuse_selector",options,{:selected=>@report_abuse ? @report_abuse.abuse_cause_id : ""},{ :class => "", :onchange => ""}) %>
+      <%end%>
+    </p>
+    <p class="spacer04"></p>
+    <p class="c1">Note:</p>
+    <p class="c2">
+       <%= text_area_tag 'comment_text', @report_abuse ? @report_abuse.description : "", :class => 'txtarea',:name=>"description"  %>
+    <p class="spacer04"></p>
+    <p class="c1">&nbsp;</p>
+    <p class="c2">
+      <%= submit_tag 'Report Abuse' ,:class=>'grnbtn02' %>
+      <input type="button" class="grnbtn02 cancel_popup" value="Cancel" onclick="return hs.close(this);" />
+      <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner_abuse",:style=>"display:none; width: 20px; margin-top: 0px;" ) %>
+    </p>
+  </div>
+<%end%>

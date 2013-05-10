@@ -1,0 +1,418 @@
+<script>
+  
+  function toggleCommentDiv(){
+    $('#design_share').hide();
+    $('#design_favorite').hide();
+    $('#design_comment').slideToggle();
+  }
+  
+  function toggleShareDiv(){
+    $('#design_comment').hide();
+    $('#design_favorite').hide();
+    $('#design_share').slideToggle();
+  }
+  
+  function toggleFavoriteDiv(){
+    $('#design_comment').hide();
+    $('#design_share').hide();
+    $('#design_favorite').slideToggle();
+  }
+  
+  function toggleAbuseDiv(){
+    $('#report_abuse').slideToggle();
+  }
+  function checkFollowings(){
+<%if logged_in?%>
+  <%if current_user.following_by_type('User').empty?%>
+        show_notice('You are not following anybody yet','error')
+        return false;
+  <%end%>
+<%end%>
+  }
+  function checkFollowers(){
+<%if logged_in?%>
+  <%if current_user.followers.empty?%>
+        show_notice('You dont have any followers yet','error')
+        return false;
+  <%end%>
+<%end%>
+  }
+  
+</script>
+<div class="clear">
+</div>
+<div class="content">
+  <!-- Left Col Start -->
+  <div class="c1">
+    <div class="clear">
+    </div>
+    <!-- Blue Box start -->
+    <div class="Blue4pxbox">
+      <code>
+        $(this).corner();
+      </code>
+      <div class="whiteBoxContent">
+        <!-- Design Central Start --><!-- Section Head start -->
+        <div class="pageheading">
+          <div class="c7 head14">
+            Design Central
+          </div>
+          <div class="c5">
+            <%@title_search="Search in Designs" %>
+            <%@type="designs" %>
+            <%=render :partial=>"search" %>
+          </div>
+        </div>
+        <p class="clear brdBot01">
+        </p>
+        <div class="pageheading">
+          <p class="c1 total">
+            <select name="searchField" class="select01" onchange ="window.location = '/designs?category_id=' + this.value">
+              <option value = "all">All</option>
+              <%= options_for_select DesignCategory.all_active.map{|c| [c.name,c.id]} , session[:category_id].to_i %>
+            </select>
+            Total Designs : <%= @design_count %>
+          </p>
+          <p class="c3">
+            <span id="design_pagination" class="pagination01"></span>
+          </p>
+        </div>
+        <!--
+                        <script type="text/javascript">
+                        $(function(){
+                        $("#design_pagination").paginate({
+                        count: 500,
+                        start: 100,
+                        display: 5,
+                        border: false,
+                        text_color: '',
+                        background_color: '',
+                        text_hover_color: '',
+                        background_hover_color: ''
+                        });
+                        });
+                        </script>
+        -->
+        <p class="clear brdBot01">
+        </p>
+        <!-- Section Head End --><!-- Two col comment start -->
+        <div class="twocol">
+          <div class="c3">
+            <p class="head01">
+              <%= get_name(@design.name,75) %>
+              <%if logged_in? and current_user.id == @design.user_id %>
+                | <%= link_to "Edit Design",:controller=>:designs, :action => :edit,:permalink => @design.permalink %>
+                | <%= link_to "Delete Design",:controller=>:designs, :action => :delete_design,:id => @design.permalink,:status=>0 %>
+              <%end %>
+            </p>
+            <p class="txt01 fleft">
+              - by&nbsp;
+            </p>
+            <p class="txtblue fleft">
+              <%= link_to get_name(@design.user.login,8),my_page_path(:user_id => @design.user.id) %>
+<%#= get_my_page_link(truncate(@design.user.login,8), @design.user.id) %>
+              <!-- <a href="Members_Page.html"><%#= get_name(@design.user.login) %></a>-->
+            </p>
+            <p class="txt01 fleft">
+              ,&nbsp;<%= time_ago(@design.created_at) %>
+            </p>
+            <% d = @design %>
+            <div id="rated_<%=d.id%>" style="display:block;">
+              <%=render :partial=>"/designs/star_rate" ,:locals => {:d => @design },:inline=>true %>
+            </div>
+            <div class="viewcomm01">
+              <p class="views">
+              </p>
+              <p class="icolink">
+                <%= get_view_count(@design.view_count) %>
+              </p>
+              <p class="comments">
+              </p>
+              <p class="icolink">
+                <%length = d.comments.length %>
+                <%if length == 1 %>
+                  <%c_name = "comment" %>
+                <%else %>
+                  <%c_name = "comments" %>
+                <%end %>
+                <span id="total_comment_top"><%=length %></span>&nbsp;<%=c_name %>
+              </p>
+              <p class="favorites">
+              </p>
+              <p class="icolink">
+                <%fav = d.favoriting_users.size %>
+                <%if fav == 1 %>
+                  <%f_name = "favorite" %>
+                <%else %>
+                  <%f_name = "favorites" %>
+                <%end %>
+                <%=fav %>&nbsp;<%=f_name %>
+              </p>
+              <p class="clear">
+              </p>
+            </div>
+          </div>
+          <p class="clear">
+          </p>
+
+
+          <table border = 0 width = "100%">
+            <tr><td align = "center" >
+                <%=get_prev_design_link(@design.id)%>
+              </td>
+              <td align = "center" >
+                <a href="<%= @design.pictures.last.photo.url %>" class="jqzoom" style="" title="zoom"><%= get_image(@design,'design','large',"nobrd") %>
+                </a> </td>
+              <td align = "center" > <%=get_next_design_link(@design.id)%> </td>
+            </tr>
+          </table>
+
+
+          <p class="clear">
+          </p>
+          <p class="txt topmargin">
+            <%= h @design.description %>
+          </p>
+          <% unless d.tags.nil? %>
+            <% unless d.tags.length == 0 %>
+              <p class="tags">
+                <% d.tags.split(',').each do |tag| %>
+                  <%= link_to h(tag) , :controller => "designs", :action => "index" , :tag => tag, :tagable_id => d.id %>
+                  <%= "," unless tag == d.tags.split(',').last %>
+                <% end %>
+              </p>
+            <% end %>
+          <% end %>
+          <div class="clear spacer05">
+          </div>
+          <p class="spacer01 brdBot01">
+          </p>
+          <div class="clear spacer05">
+          </div>
+          <%url = request.host_with_port %>
+          <iframe src="http://www.facebook.com/plugins/like.php?href=http://fans.solidworks.in/<%=@design.class.to_s.downcase.pluralize%>/<%=@design.class.to_s.downcase%>/<%=@design.permalink%>&amp;layout=standard&amp;show_faces=true&amp;width=450&amp;action=like&amp;colorscheme=light&amp;height=80" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:80px;" allowTransparency="true"></iframe>
+          <%if logged_in? %>
+            <p class="combox" style="float:right;text-align:right;">
+              <span class="abuse"></span>
+              <% @comment = "DesignReportAbuse" %>
+              <a id="href_2012748673" onclick="return hs.htmlExpand(this, { objectType:'ajax',outlineType:'rounded-white',width:450,height:325  },'Report Abuse' )" href="<%=report_abuse_path%>/?id=<%=@design.id%>&flag=design&type_id=<%=@comment%>">Report Abuse</a>
+            </p>
+            <!--<p class="">
+                                <a href="javascript:void(0);"  onclick = "toggleAbuseDiv()" style="float:right;text-align:right;font-size:9px;">Report abuse</a>
+                                </p>--><%end %>
+          <p class="spacer01">
+          </p>
+          <p class="spacer01 brdBot01">
+          </p>
+          <a name="descom"></a>
+          <!-- Heading Start -->
+          <div class="pageheading">
+            <p class="c1 head12">
+              Comments
+            </p>
+            <p class="c3">
+              <span id="pagination" class="pagination01"></span>
+            </p>
+            <p class="c2 total" id="total_comment">
+              Total Comments :<%= @design.comments.length %>
+            </p>
+          </div>
+          <p class="clear brdBot01">
+          </p>
+          <!-- Heading end --><!-- Three col comment start -->
+          <div id="design_comments">
+            <%unless @design_comments.empty? %>
+              <%=render :partial=>"designs/design_comment", :collection => @design_comments %>
+              <div id="more_design_comments_link">
+                <p class="spacer03">
+                  <span class="grnbtn02"><%= link_to_remote "Show More",    :url => { :action => "show_more_comments",:id =>@design.id,  :offset => @offset }, :before => "$('#spinner_show').show()", :complete => "destroyDiv('more_design_comments_link')" %></span>
+                  <span><%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner_show",:style=>"display:none; width: 16px; margin-top: 0px;" ) %></span>
+                </p>
+              </div>
+            <%else %>
+              No comment for this design yet. Be the first to comment! <%end %>
+          </div>
+          <!-- Three col comment end -->
+          <div class="iconComment brdBotDot01">
+            <div>
+              <div class = "fleft">
+                <p class="postcom">
+                </p>
+                <p class="icolink">
+                  <a href="javascript:void(0);" class="blacklink" onclick="toggleCommentDiv()">Comment</a>
+                </p>
+                <p class="share">
+                </p>
+                <p class="icolink">
+                  <a href="javascript:void(0);" class="blacklink" onclick="toggleShareDiv()">Share</a>
+                </p>
+                <p class="sameuser">
+                </p>
+                <p class="icolink">
+                  <%=link_to "Designs by Same User" ,{:controller=>"designs",:action=>"index",:user_id=>d.user_id},:class=>"blacklink" %>
+                </p>
+                <p class="favorites">
+                </p>
+                <p class="icolink">
+                  <a href="javascript:void(0);" class="blacklink" onclick="toggleFavoriteDiv()">Add to Favorites</a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Comment form starts -->
+        <div id = "design_comment" style ="display:block;">
+          <div id ="ComContent">
+            <% if logged_in? %>
+              <div class="brd">
+                <%@type="Design" %>
+                <% form_remote_tag :url=>{:controller=>'comment',:action=>'post_comment',:id=>@design.id,:type=>@type} ,:html=>{:name=>'postcomment'} , :before => "$('#spinner').show();",:complete => "$('#spinner').hide();  post_on_fb('commenting','Design',#{@design.id});" do|f| %>
+                  <%= text_area_tag 'comment_text', nil, :class => 'inputtxt' %>
+                  <%= submit_tag 'Post' ,:class=>'grnbtn' %>
+                  <%= image_tag("loading.gif",:align => 'absmiddle',:border=> 0,:id => "spinner",:style=>"display:none; width: 20px; margin-top: 0px;" ) %>
+                <%end %>
+              </div>
+            <%else %>
+              <div class="brd">
+                Please login to post comment.
+              </div>
+            <%end %>
+          </div>
+        </div>
+        <!-- comment form ends --><!-- sharing form -->
+        <div id = "design_share" style ="display:none;">
+          <div id="ComContent">
+            <%if logged_in?%>
+              <%height = "height:153px;"%>
+            <%else%>
+              <%height = "height:51px;"%>
+            <%end%>
+            <div class="brd" style="<%=height%>">
+              <div class="group iconComment">
+                <% if logged_in? %>
+                  <div class="fourCol">
+                    <p class="c7">
+                      <span class="followingIcon"></span>
+                      <span class="black">Share with People You Follow</span>
+                    </p>
+                    <% form_remote_tag :url => {:controller=> "share",:action => 'share_with_followings'} do -%>
+                      <p class="c8">
+                        <%=hidden_field_tag 'id', d.id %>
+                        <%=hidden_field_tag 'type', @type %>
+                        <!-- <%=check_box_tag 'all_following', '1', false, :class => 'inputcheck' %>All Followings --><span><%= submit_tag 'Share' , :class=>"grnbtn01" %>
+                        </span>
+                      </p>
+                    <%end %>
+                    <p class="frm_brd01">
+                    </p>
+                  </div>
+                  <div class="fourCol">
+                    <p class="c7">
+                      <span class="followersIcon"></span>
+                      <span class="black">Share with Followers</span>
+                    </p>
+                    <% form_remote_tag :url => "/share/share_with_followers" do -%>
+                      <p class="c8">
+                        <%=hidden_field_tag 'id', d.id %>
+                        <%=hidden_field_tag 'type', @type %>
+                        <!-- <%=check_box_tag 'all_followers', '1', false, :class => 'inputcheck' %>All Followers --><span><%= submit_tag 'Share' , :class=>"grnbtn01" %></span>
+                      </p>
+                    <%end %>
+                    <p class="frm_brd01">
+                    </p>
+                  </div>
+                <%end%>
+                <%=render :partial=>"share_with_other" ,:locals=>{:d=>d,:flag=>false},:inline=>true %>
+                <!--<div class="fourCol">
+                <p class="c7">
+                                          <span class="othernetwork"></span>
+                                          <span class="black">Share with Other Network</span>
+                                          </p>
+                                          <ul class="shareIcons">
+                <li><a class="shareFacebook" target = "_blank" href="http://www.facebook.com/sharer.php?u=http://<%=request.host_with_port%>/designs/design/<%=d.id%>"></a></li>
+                <li><a class="shareOrkut" target = "_blank" href="http://promote.orkut.com/preview?nt=orkut.com&du=http://<%=request.host_with_port%>/designs/design/<%=d.id%>&tt=<%=@title%>&cn=<%=@description%>&tn=<%= d.pictures[0].nil? ? "" : d.pictures[0].photo.url(:medium) %>"></a></li>
+                <li><a class="shareTwitter" target = "_blank" href="http://twitter.com/home?status=<%=@title%> http://<%=request.host_with_port%>/designs/design/<%=d.id%>" title=""></a></li>
+                </ul>
+                <p class="clear10"></p>
+              </div>-->
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- sharing form end -->
+        <!-- Favourite form start -->
+        <div id = "design_favorite" style ="display:none;">
+          <% if logged_in? %>
+            <div id="ComContent">
+              <%if current_user.has_favorite?(d) %>
+                <div class="brd">
+                  You have already favorited this design.
+                </div>
+              <%elsif current_user == d.user %>
+                <div class="brd">
+                  You can't favorite your own design.
+                </div>
+              <%else %>
+                <div class="brd">
+                  <form action="postcomment.jsp" method="get" name="postcomment">
+                    <p style="float:left;">
+                      Do you want to Add this Design to your Favorites?
+                    </p>
+                    <p style="float:left;">
+                      <label>
+                        <input type="radio" name="RadioGroup1" value="yes" id="RadioGroup1_0"<% if logged_in? %><%unless current_user.has_favorite?(d) %>onclick="<%= remote_function :url =>{:controller => "share", :action => :add_to_favorite, :id => d.id ,:type=>@type}, :complete => "post_on_fb('favoriting','Design',#{d.id});" %>" <%end %><%if current_user.has_favorite?(d) %>checked="checked"<%end %><%end %>/>Yes
+                      </label>
+                      <label>
+                        <input type="radio" name="RadioGroup1" value="yes" id="RadioGroup1_1"<% if logged_in? %><%if current_user.has_favorite?(d) %>onclick="<%= remote_function :url =>{:controller => "share", :action => :remove_from_favorite, :id => d.id ,:type=>@type} %>" <%end %><%unless current_user.has_favorite?(d) %>checked="checked"<%end %><%end %>/>No
+                      </label>
+                    </p>
+                  </form>
+                </div><%end %>
+            </div><%else %>
+            <div id="ComContent">
+              <div class="brd">
+                <p style="float:left;">
+                  Please login to add as Favorites.
+                </p>
+              </div>
+            </div>
+          <%end %>
+        </div>
+        <p class = "spacer05" />
+        <p class="clear brdBot01">
+        </p>
+        <div class="pageheading">
+          <div class="c7 head14">
+            Random Designs
+          </div>
+        </div>
+        <p class="clear brdBot01">
+        </p>
+        <DIV id="wheeled01" style ="margin:10px 0px 10px 40px;" class="scrollable01">
+          <!-- root element for the items -->
+          <DIV class="items01" id="design_filter">
+            <%=render :partial=>"design_filter" %>
+          </DIV>
+        </DIV>
+        <!-- Favourite form End -->
+        <!-- Two col comment end -->
+        <p class="clear">
+        </p>
+      </div>
+    </div>
+  </div>
+  <!-- Blue Box end -->
+  <!-- Left Col End -->
+  <!-- Right Col Start -->
+  <div class="c2 rightcol" id="rightcol">
+    <%= render :partial => "right_col" %>
+  </div>
+  <!-- Right Col End -->
+</div>
+<script type = "text/javascript">
+  $(document).ready(function(){
+    <%if @ask_permission%>
+      post_on_fb('uploading','Design',<%=@design.id%>)
+    <%end%>
+  });
+</script>

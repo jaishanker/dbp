@@ -1,0 +1,19 @@
+<ul class="admNav">
+    <li>
+        <a href="/admin/learnings">Report</a>
+    </li>
+    <li>
+        <a href="/admin/learnings/report">Chart</a>
+    </li>
+    <li>
+        <a href="/admin/learnings/new">Add Material</a>
+    </li>
+    <li>
+        <a href="/admin/learnings/category">Manage Category</a>
+    </li>
+    <li>
+        <a href="/admin/learnings/abuse_report">Abuse Report</a>
+    </li>
+</ul>
+<div class="spacer01">
+</div>

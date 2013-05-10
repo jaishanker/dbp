@@ -1,0 +1,304 @@
+class LearningsController < ApplicationController
+  
+  before_filter :learning_objects,:only => [:index,:learning,:active_contributors,:hot_materials,:comment_of_friends, :favorites]
+  before_filter :login_required, :only => [:ask_for_material]
+  log_activity_streams :current_user, :login, "rated",
+    :@learning, :user_id, :rate1,:rated_learning, {:total => 1 }
+  
+  def index
+    @search_text = params[:search] unless params[:search].nil?
+    @search_text = @search_text.strip() unless params[:search].nil?
+    @flag = params[:hot_material] unless params[:hot_material].nil?
+    @tag = params[:tag] unless params[:tag].nil?      
+    if @search_text and !params[:category_id].blank?
+      @learnings = Learning.search_learnings_for_categoy(@search_text,params[:category_id],params[:page] || 1)        
+    elsif @search_text
+      @learnings = Learning.search_learning(@search_text,params[:page])
+    elsif params[:category_id]
+       @learnings = Learning.search_by_category(params[:category_id], 1, params[:page] || 1)
+       if @learnings.empty?
+          @learnings = Learning.search_by_format_and_status(params[:category_id], 1 , params[:page] || 1)
+       end
+    elsif @tag
+       tag_record = Tag.find_by_name(params[:tag])      
+       if tag_record.nil?
+         Tag.create(:name => params[:tag], :no_of_clicks => 1, :tagable_type => "Learning", :status => 1, :tagable_id => params[:tagable_id])
+       else
+         tag_record.no_of_clicks = tag_record.no_of_clicks.to_i + 1
+         tag_record.save
+       end      
+       @learnings = Learning.search_by_tag(@tag , params[:page] || 1)
+    elsif @flag
+          @learnings = Learning.top_rated(1, params[:page] || 1)
+    else
+        @learnings = Learning.top_rated(1, params[:page] || 1)
+#       @learnings = Learning.search_by_status(1, params[:page] || 1)
+#        @learnings_all = Learning.find_active()
+    end
+      @recent_learnings = Learning.recent_learnings
+      @no_of_pages = (@learnings.total_entries.to_f / PER_PAGE).ceil      
+  end
+  
+  def learning
+    @offset = 0    
+    unless params[:request_id].nil?
+      request = Request.find(params[:request_id])
+      request.status = "viewed"
+      request.save
+    end
+    @learning = Learning.find_by_permalink_and_status(params[:permalink],1)    
+#    @learning = Learning.find_by_id(params[:id])
+    if @learning.nil?
+      flash[:notice] = "This learning does not exist."
+      redirect_to :action => :index
+    return
+    end
+    @learning_comments = LearningComment.learning_comment(@learning.id,PER_PAGE, @offset)
+    @reasons = AbuseCause.find(:all)
+    
+    @title = @learning.title unless @learning.title.nil?
+    @description = @learning.description unless @learning.description.nil?
+    @image_src = @learning.pictures[0].photo(:medium) unless @learning.pictures[0].nil?
+    @type = "Learning"
+    @obj_url = "http://" + SITE_URL + "/learnings/learning/" + @learning.permalink
+    if !session[:flag]
+        @learning.update_count
+    else
+        session[:flag] = false
+    end
+  end
+
+  def recent_materials
+    @recent_learnings = Learning.recent_learnings
+    respond_to do |format|
+      format.js do
+        render :update do |page|
+          page.replace_html 'learning_filter', :partial=>'learning_filter'
+        end
+        return
+      end
+    end
+  end
+
+  def top_rated_materials
+    @recent_learnings = Learning.top_rated_material
+    respond_to do |format|
+      format.js do
+        render :update do |page|
+          page.replace_html 'learning_filter', :partial=>'learning_filter'
+        end
+        return
+      end
+    end
+  end
+
+  def show_more_comments
+    @offset = params[:offset].to_i + PER_PAGE    
+    @learning = Learning.find(params[:id])
+    @learning_comments = LearningComment.learning_comment(params[:id],5,@offset)
+    respond_to do |format|
+      format.js do
+        render :update do |page|
+            unless @learning_comments.size == 0
+                page.insert_html :bottom, 'learning_comments', :partial => 'more_learning_comments'
+            else
+                page.insert_html :bottom, 'learning_comments', 'No more comments are there for this leaning material'
+            end        
+        end
+#        render :update do |page|
+#          page.replace_html 'show_more', :partial=>"learnings/learning_comment"
+#        end
+        return
+      end
+    end
+    
+  end
+  
+  def assets
+    @assets = Asset.find_by_id(params[:id])
+    send_file @assets.data.path, :type=>"application/msword", :x_sendfile=>true
+  end
+  
+  
+  def active_contributors
+#    @active_participants = Learning.find_by_sql("select user_id,count(id) as post_count from learnings group by user_id order by post_count desc limit 9")
+#    @active_participants = Learning.active_contributors(9)
+
+       @search_text = params[:search] unless params[:search].nil?         
+       if @search_text
+          @active_participants = User.search_active_contributors(@search_text , params[:page] || 1)      
+       else       
+          @active_participants = User.paginate_active_contributors(params[:page || 1])  
+       end
+       @no_of_pages = (@active_participants.total_entries.to_f / USERS_PER_PAGE).ceil        
+  end
+  
+  #  def hot_materials
+  ##     design_objects
+  #  end
+  
+  def comment_of_friends
+    @offset = 0
+    @friends_comments = LearningComment.friends_comments(current_user,PER_PAGE , @offset)    
+#    @comments = Comment.freinds_comments(current_user , @offset)
+  end
+  
+  def get_more_friends_comments  
+    @offset =  params[:offset].to_i+PER_PAGE
+    @friends_comments = LearningComment.friends_comments(current_user,PER_PAGE , @offset)    
+    respond_to do |format|
+      format.html
+      format.js {
+        render :update do |page| 
+          if @friends_comments.size == 0
+              page.insert_html :bottom, 'freinds_comments', 'No more friends comments are there'       
+          else
+              page.insert_html :bottom, 'freinds_comments', :partial => 'more_friends_comments'
+          end
+        end
+      }
+    end 
+  end
+    
+  #  def ask_fro_material
+  #
+  #  end
+  
+  def rate1
+    @suppress_activity_stream = true
+     if enough_points?(params[:rating].to_i * PER_RATING)
+          @learning = Learning.find(params[:id], :include=>'ratings')
+          if @learning
+            if(@learning.rated_by_user?(current_user))
+              old_rating = Rating.get_old_rating(current_user,@learning)  
+              points_to_remove = old_rating.rating.to_i * PER_RATING
+              @learning.user.actual_substract_points(points_to_remove,"substracted_old_points",@learning.user)                
+              @learning.rating_by_user(current_user).update_attribute('rating', params[:rating])
+              @learning.user.add_points(params[:rating].to_i * PER_RATING,"received_rating",@learning,points_to_remove)        
+            else
+              @learning.add_rating Rating.new(:rating => params[:rating],:user_id => current_user.id)
+              @learning.user.add_points(params[:rating].to_i * PER_RATING,"received_rating",@learning)        
+            end
+            current_user.add_points(RATING_GIVEN,"given_rating",@learning)
+            current_user.substract_points(params[:rating].to_i * PER_RATING,"given_rating_points_substraced",@learning)                        
+           end
+           @suppress_activity_stream = false
+          message = "show_notice('Thanks for rating.','success')"
+          render :update do |page|
+            page.replace_html "rated_right#{@learning.id}", :partial => 'learnings/star_rate',:local=>{:d => @learning}
+            page.replace_html "rated_#{@learning.id}", :partial => 'learnings/star_rate',:local=>{:d => @learning}
+            page << message
+          end
+    else
+        message = "show_notice('You dont have enough points to do this action','error')"
+        render :update do |page|
+          page << message
+        end      
+    end              
+  end
+  
+  def delete_comment
+    comment =  Comment.find(params[:id])
+    comment.destroy
+    learning = Learning.find_by_id(params[:obj_id])
+    render :update do |page|
+      msg = "show_notice('Comment has been successfully deleted','success')"
+      page.remove "comment_#{params[:id]}"
+      page.replace_html "total_comment_top", "#{learning.comments.length}"
+      page.replace_html "total_comment", "Total Comments : #{learning.comments.length}"
+      page << msg      
+      end
+  end
+
+  def delete_reply
+    comment = LearningComment.find(params[:id])
+    comment.destroy
+    learning = Learning.find_by_id(params[:obj_id])
+    render :update do |page|
+      msg = "show_notice('Comment has been successfully deleted','success')"
+      page.remove "comment_reply_#{params[:id]}"
+      page.replace_html "total_comment_top", "#{learning.comments.length}"
+      page.replace_html "total_comment", "Total Comments : #{learning.comments.length}"
+      page << msg
+      end
+  end
+  
+  def ask_for_material
+    @learning_request = LearningRequest.new
+    @learning_request.pref_format = ""
+  end
+  
+  def add_learning_request
+    params[:learning_request][:pref_format] ||= []
+    params[:learning_request][:pref_format] = getTags( params[:learning_request][:pref_format])
+    @learning_request = LearningRequest.new(params[:learning_request])
+    @learning_request.user_id = current_user.id
+    @learning_request.status = 1
+    @learning_request.save
+    
+    if @learning_request.errors.empty?
+      flash[:notice] = "Learning Request added successfully"
+      redirect_to :action => :index
+    else
+      flash[:error] = "Errors occured while adding Request"
+      render :action => :ask_for_material
+    end
+    
+  end
+
+  def favorites
+#    @learnings = current_user.favorite_learnings(params[:page] || 1)     
+    @learnings = Favorite.my_favorites(current_user.id , 'Learning', params[:page] || 1)
+#    @learnings_active = []
+#        @learnings.each do |l|
+#           if l.status == 1
+#            @learnings_active << l
+#           end
+#        end
+    @no_of_pages = (@learnings.total_entries.to_f / PER_PAGE).ceil
+  end  
+
+  def activities
+    @offset = 0
+    @activities = ActivityStream.specific_activities('Learning', activity_stream_location,@offset)           
+  end
+
+  def get_more_activities  
+    @offset =  params[:offset].to_i+PER_PAGE
+    @activities = ActivityStream.specific_activities('Learning', activity_stream_location,@offset)          
+    respond_to do |format|
+      format.html
+      format.js {
+        render :update do |page| 
+          if @activities.size == 0 or @offset >= MAX_LIMIT
+            page.insert_html :bottom, 'activities', 'No more learning center activities are there'       
+          else
+            page.insert_html :bottom, 'activities', :partial => '/home/more_activities'
+          end
+        end
+      }
+    end   
+  end
+  private
+  
+  def learning_objects
+#    @active_contributor = User.active_contributor(6)
+     when_fragment_expired 'active_contributor_cache', Time.parse(5.minute.from_now.to_s) do
+       p "active-------------contributor----------cache----------"
+         @active_contributor = Learning.active_contributors(6)
+     end
+#    @active_contributor = Learning.find_by_sql("select user_id,count(id) as post_count from learnings group by user_id order by post_count desc limit 9")
+#    @top_rated_materials = Learning.top_rated_materials(5)
+#         @top_rated_materials = Learning.top_rated_learning
+         @top_rated_materials = Learning.top_rated(1, 1)
+    if logged_in?
+      when_fragment_expired 'comment_of_friends_cache', Time.parse(5.minute.from_now.to_s) do
+        p "comment-------------of------------friends----------cache----------"
+         @friends_comments = LearningComment.friends_comments(current_user,5)
+       end
+    end
+    @learning_count = Learning.total_count(1)
+    @learning_comments = LearningComment.recent_comments(4)
+  end
+  
+end

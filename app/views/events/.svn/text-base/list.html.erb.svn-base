@@ -1,0 +1,63 @@
+<!--Table Support files -->
+<%= stylesheet_link_tag  "demo_page.css","demo_table_jui.css",'jquery-ui-1.7.2.custom.css' -%>
+<%= javascript_include_tag "jquery.paginate.js","jquery.dataTables.js" %>
+
+<script type="text/javascript" charset="utf-8">
+  $(document).ready(function() {
+    oTable = $('#example').dataTable({
+      "bJQueryUI": true,
+      "sPaginationType": "full_numbers"
+    });
+  } );
+</script>
+
+<!-- Profile File Include --><%#= javascript_include_tag "Profile" %>
+<div class="clear"></div>
+
+<!-- Container Start -->
+<div class="content">
+  <!-- Left Col Start -->
+  <div class="c1">
+    <!-- Set Priority File Include -->
+<%#= javascript_include_tag "SetPriority"%>
+    <div class="clear"></div>
+    <!-- Blue Box start -->
+    <div class="Blue4pxbox"><code>$(this).corner();</code>
+      <div class="whiteBoxContent">
+        
+        <!-- Jobs Start -->
+        <div class="pageheading">
+          <p class="c1 head14"> Events Listing</p>
+        </div>
+        <div class="brdBot01"></div>
+        <%if @event.size > 1%>
+         <div style="font-size:12px;"> You can paricipate in any one of the following events. </div>
+        <%end%>
+        <p class="spacer01"></p>
+  
+        <div class="demo_jui" id="events" >
+                <%=render :partial=>"events/events"%>
+        </div>
+        <p class="spacer05"></p>
+        <div class="brdBot01"></div>
+        <p class="spacer01"></p>
+        <!-- Event List start -->
+        <!-- Event List end -->
+        <p class="clear"></p>
+        <!-- Jobs End -->
+      </div>
+    </div>
+    <!-- Blue Box end -->
+    <div class="spacer"></div>
+  </div>
+  <!-- Left Col End -->
+
+  <!-- Right Col Start -->
+  <div class="c2 rightcol" id="eventRight">
+    <%=render :partial=>"right_col"%>
+  </div>
+  <!-- Right Col End -->
+
+</div>
+<!-- Container End -->
+<div class="clear"></div>

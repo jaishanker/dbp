@@ -1,0 +1,153 @@
+
+<div class="content">
+    <!-- Left Col Start -->
+    <div class="c1">
+        <!-- Set Priority File Include -->
+        <div class="clear">
+        </div>
+        <!-- Blue Box start -->
+        <div class="Blue4pxbox">
+            <code>
+                $(this).corner();
+            </code>
+            <div class="whiteBoxContent">
+                <!-- static content starts here -->
+                <div class="pageheading">
+                    <div class="head14">
+                        <a href="/cswp"><strong>What is CSWP/CSWE/CSWA?</strong></a>&nbsp;|&nbsp; <a href="/cswp/cswp_test"><strong>How to take the test?</strong></a>&nbsp;|&nbsp;<strong>Hall of Fame</strong>
+                    </div>
+                 </div>
+                <p class="clear brdBot01">
+                </p>
+                <% form_tag('/cswp/filter', :method => :post)  do -%>     
+                <div class="pageheading" style="width:645px;">                  
+                                 <span class="c10 total">
+                                  <select name="searchField" id="certification"  class="select02" multiple="multiple" onchange = "window.location = '/cswp/hall_of_fame?certification=' + this.value">
+                                    <%= options_for_select CERTIFICATIONS.sort, params[:certification]%>
+                                  </select>
+                                   <%= submit_tag 'Filter', :class => "grnbtn05" %>
+                                 </span>        
+                   <span class="c3">
+                      <span id="cswp_pagination" class="pagination01"></span>
+                    </span>
+                  </div>
+                <% end -%>
+ 
+                <p class="spacer">
+                </p>
+                <% unless @hof.length == 0 %>
+                <% @hof.each do |hof| %>
+                <div class="box01">
+                    <div class="col-1">
+                        <%= get_image(hof,"cswp","thumb_large") %>
+                    </div>
+                    <div class="col-2">
+                        <p>
+                            <strong>Name:</strong>
+                            <%= get_name(hof.name) %>
+                        </p>
+                    <p class="spacer06">
+                    </p>
+                    <p>
+                        <strong>Certification:</strong>
+                        <%= get_name(hof.certification) %>
+                    </p>
+                    <p class="spacer06">
+                    </p>
+                    <p>
+                        <strong>Certification No.:</strong>
+                        <%= get_name(hof.simulation_no) %>
+                    </p>
+                    <p class="spacer06">
+                    </p>
+                    <p>
+                    <strong>Date:</strong>
+                    <%= hof.certification_date.strftime("%B %d, %Y") %>
+                  </p>
+                    </div>
+
+                </div>
+                <% end %>
+                <% else %>
+                <div style ="min-height:150px">
+                    <p style ="text-align:center">
+                        No one found in Hall of Fame !
+                    </p>
+                </div>
+                <% end %>
+				<div class="clear"></div>
+                <% if logged_in? %>
+                <div class="welcome_div" style ="background:#FFCC00;margin:0 auto;">
+                    <p style ="text-align:center;margin:5px;padding:10px;color:#000;">
+                        Complete the form by clicking on the link below and get showcased in Hall Of Fame !
+                    </p>
+                </div>
+                <div class = "spacer02"/>
+                <table width = "95%">
+                    <tr>
+                        <td align = "center">
+                            <div class="greenheadrightcol" style ="width:320px;">
+                                <a href="/cswp/new">Add Your CSWP/CSWE/CSWA Profile</a>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <% else %>
+                <div class="welcome_div" style ="background:#FFCC00;margin:0 auto;">
+                    <p style ="text-align:center;margin:5px;padding:10px;color:#000;">
+                        If you are registered member please login and  complete the form by clicking on the 'Add Your CSWP/CSWE/CSWA Profile' link 
+                        else please <a href = "#" onclick ="$('#href_2012748673').trigger('click');">register</a>
+                        as a community member.
+                    </p>
+                </div>
+                <% end %>
+            </div>
+            <!-- static content ends here -->
+        </div>
+    </div>
+</div>
+<!-- Blue Box end -->
+<!-- Left Col End -->
+<!-- Right Col Start -->
+<div class="c2 rightcol">
+    <%= render :partial => '/profiles/my_page_links' if logged_in? %>
+</div>
+<!-- Right Col End -->
+<div class="spacer">
+</div>
+</div>
+<!-- Container End -->
+
+<%if @no_of_pages >= 2%>
+  <script type="text/javascript" defer="defer">
+  $(document).ready(function(){
+      $("#cswp_pagination").paginate({
+       <%if params[:certification]%>
+            href : 'filter?page=',         
+        <%else%>
+             href : '/cswp/hall_of_fame?page=',          
+        <%end%>
+        count: <%=@no_of_pages%>,
+        start: <%=params[:page] || 1%>,
+        display: 5,
+        border: false,
+        text_color: '',
+        background_color: '',
+        text_hover_color: '',
+        background_hover_color: ''
+      });
+
+ 
+
+});  
+</script>
+<%end%>
+  <script type="text/javascript">
+      $(document).ready( function() {
+    $("#certification").multiSelect({
+        selectAll: true,
+        noneSelected: 'Filter by certifications',
+        oneOrMoreSelected: '% certifications selected'
+     }); 
+});
+</script>
